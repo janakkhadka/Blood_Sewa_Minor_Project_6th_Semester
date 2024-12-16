@@ -418,13 +418,13 @@ fun SignUp(navController : NavHostController) {
             onClick = {
                 //navController.navigate(Screens.OtpVerification.route)
               //  navController.navigate(Screens.OtpVerification.route)
-                viewModel.registerUser(username,email,password){response ->
+                viewModel.registerUser(email,username,phoneNumber,bloodOptions[0],currentDistricts[0],province1Districts[0]){response ->
                     if(response.startsWith("success")){
                         navController.navigate(Screens.Login)
                         Log.d("ErrorReg", response)
                     }else{
                         username = response
-                        Log.d("ErrorReg", response)
+                        Log.e("ErrorReg", response)
                     }
 
                 }

@@ -5,10 +5,10 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
 class RegViewModel : ViewModel(){
-    fun registerUser(email:String,username : String, password : String,OnResult : (String)->Unit){
+    fun registerUser(email:String,username : String, phoneNumber : String, bloodOptions:String, province1Districts: String, currentDistricts:String, OnResult : (String)->Unit){
         viewModelScope.launch {
             try{
-                val response = UserRegistration.authService.registerUser(Registration(username,email,password))
+                val response = UserRegistration.authService.registerUser(Registration(email,username,phoneNumber,bloodOptions,currentDistricts,province1Districts))
                 if(response.success){
                     OnResult("Success : ${response.message}")
                 }else{

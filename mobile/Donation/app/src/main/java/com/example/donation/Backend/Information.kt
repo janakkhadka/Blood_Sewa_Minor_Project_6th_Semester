@@ -1,8 +1,10 @@
 package com.example.donation.Backend
 
 data class Registration(
-    val username : String,
     val email : String,
-    val password : String
-
+    val username : String,
+    val phoneNumber : String,
+    val bloodOptions: String,
+    val district: String,
+    val province: String
 )
