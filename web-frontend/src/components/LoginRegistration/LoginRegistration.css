@@ -1,0 +1,269 @@
+:root{
+    --text: #d5c9c9;
+}
+
+.wrapper{
+    width:100vw;
+    height: 100vh;
+    position: relative;
+    background-image: url('/background3.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.wrapper .background{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; 
+}
+
+/* login form */
+.wrapper .form-box-login{
+    position: relative;
+    z-index: 2; 
+    display: flex;
+    width: 840px;
+    height: 450px;
+    border: 2px solid rgba(255,255,255,.1);
+    border-radius: 20px;
+    box-shadow: 0px 0px 50px rgba(119, 81, 81, 0.6);
+    backdrop-filter: blur(5px);
+   /* pointer-events: none;   yesle garda form ko paxadi ko mouse event active hunxa, yesle block event lai kholdinxa */
+}
+
+.form-box-login .login-section{
+    width: 50%;
+    border-radius: 20px;
+    color:var(--text);
+    padding: 40px;
+}
+.form-box-login .login-form{
+    width: 50%;
+    padding: 40px;
+}
+.form-box-login form .input-box{
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 30px 0;
+    color:var(--text);
+}
+
+.form-box-login .input-box .icon{
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    translate: 0 -50%;
+    font-size: 16px;
+    color:var(--text);
+}
+
+.form-box-login form button{
+    width: 100%;
+    height: 45px;
+    background: #fff;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+form .remember-forgot{
+    display: flex;
+    justify-content: space-between;
+    font-size: 14.5px;
+    margin: -15px 0 15px;
+    color:var(--text);
+}
+
+.remember-forgot label input{
+    color:var(--text);
+    margin-right: 4px;
+    accent-color: black;
+}
+
+.remember-forgot a{
+    color: black;
+    text-decoration: none;
+    font-weight: 600;
+    color:var(--text);
+}
+
+.remember-forgot a:hover{
+    text-decoration: underline;
+}
+
+
+
+form .register-link{
+    font-size: 14.5px;
+    text-align: center;
+    margin: 20px 0 15px;
+    color: var(--text)
+}
+
+.register-link p a{
+    color:black;
+    text-decoration: none;
+    font-weight: 600;
+    color: var(--text)
+}
+
+.register-link p a:hover{
+    text-decoration: underline;
+}
+
+/* registration */
+.wrapper .form-box-registration{
+    position: relative;
+    z-index: 2; 
+    width: 1040px;
+    height: 680px;
+    border-radius: 20px;
+    box-shadow: 0 0 40px rgba(77, 5, 2,1);
+    background: transparent;
+    box-shadow: 0px 0px 50px rgba(119, 81, 81, 0.6);
+    backdrop-filter: blur(5px); 
+}
+
+.form-box-registration .registration-form{
+    width: 100%;
+    padding: 20px 40px 0px 40px;
+}
+.form-box-registration form .input-box{
+    position: relative;
+    width: 100%;
+    height: 30px;
+    margin: 30px 0;
+    color:var(--text);
+}
+
+.registration-form .organization-type{
+    margin-top: 30px;
+    color:var(--text);
+}
+
+.registration-form .organization-type input{
+   accent-color: black;
+   margin: 0 5px; 
+}
+
+
+.registration-form .organization-type .hospital{
+    margin-right: 10px
+}
+
+.registration-form .input-document{
+    position: relative;
+    width: 100%;
+    height: 30px;
+    margin: 30px 0;
+    margin-bottom: 0;
+    color: var(--text);
+}
+
+.registration-form .input-document input{
+    margin-left: 5px;
+}
+
+.form-box-registration .input-document .icon{
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    translate: 0 -20%;
+    font-size: 16px;
+    color:var(--text);
+}
+
+.form-box-registration .terms-and-conditions{
+    position: relative;
+    width: 100%;
+    height: 20px;
+    margin-top: 10px;
+    margin-bottom: 40px;
+    font-size: 14.5px;
+    color:var(--text);
+}
+
+.form-box-registration .terms-and-conditions input{
+    margin-right: 5px;
+    accent-color: black;
+}
+.form-box-registration .terms-and-conditions a{
+    color:var(--text);
+    text-decoration: none;
+    font-weight: 600;
+}
+.form-box-registration .terms-and-conditions a:hover{
+    text-decoration: underline;
+}
+
+.form-box-registration .input-box .icon{
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    translate: 0 -20%;
+    font-size: 16px;
+}
+.form-box-registration .button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-box-registration form button{
+    width: 50%;
+    height: 45px;
+    background: #fff;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    margin: auto;
+}
+
+/* common */
+
+form h1{
+    font-size: 36px;
+    text-align: center;
+    color:var(--text);
+}
+
+
+
+.input-box input{
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,.1);
+    /* border: 1px solid var(--text); */
+    outline: none;
+    border-radius: 40px;
+    font-size: 16px;
+    padding: 20px 45px 20px 20px;
+    color: var(--text);
+}
+
+.input-box input::placeholder{
+    color:var(--text);
+}
+
+
+
+
+
+
