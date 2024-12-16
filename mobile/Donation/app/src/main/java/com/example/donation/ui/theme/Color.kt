@@ -13,3 +13,4 @@ val dRed = Color(0xFFD93437)//red color for donation app
 val white = Color(0xFFEDEADE) // little white
 val RedTop = Color(0xFF7b1717) // top tira hune menu ko color
 val RedThemeTop = Color(0xFF420606)
+val DarkGreen = Color(0xFF006400)

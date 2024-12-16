@@ -9,4 +9,8 @@ sealed class Screens(val route : String) {
     object ForgetPassword : Screens(route = "ForgetPassword")
     object BottomNavBar : Screens(route = "BottomNavBar")
     object CustomTopBar : Screens(route = "CustomTopBar")
+    object BloodBanks : Screens(route = " BloodBanks")
+    object Events : Screens(route = "Events")
+    object RequestSection : Screens(route = "RequestSection")
+    object SearchDonors : Screens(route = "SearchDonors")
 }

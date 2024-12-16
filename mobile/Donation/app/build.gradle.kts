@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.donation"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.runtime.ktx)
+    implementation(libs.places)
 
 
 
@@ -82,6 +83,10 @@ dependencies {
 
     //navigation ko lagi
     implementation(libs.androidx.navigation.compose.v284)
+
+    //retrofit api
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
 
 
 
