@@ -2,8 +2,11 @@ package com.example.donation.Verification
 
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.layout.Row
@@ -43,6 +46,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -227,70 +231,87 @@ fun SignUp(navController : NavHostController) {
                 )
             }
         )
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(.9f),
-            value = Bloodselected,
-            onValueChange = { Bloodselected = it },
-            readOnly = true,
-            label = { Text("Select Blood Group") },
-            trailingIcon = {
-                Icon(
-                    imageVector = if (Bloodexpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
-                    contentDescription = if (Bloodexpanded) "Collapse Dropdown" else "Expand Dropdown",
-                    modifier = Modifier.clickable { Bloodexpanded = !Bloodexpanded }
-                )
-            },
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+        ) {
+            OutlinedTextField(
+                value = Bloodselected,
+                onValueChange = { },
+                readOnly = true,
+                label = { Text("Select Blood Group") },
+                trailingIcon = {
+                    Icon(
+                        imageVector = if (Bloodexpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
+                        contentDescription = if (Bloodexpanded) "Collapse Dropdown" else "Expand Dropdown",
+                        modifier = Modifier.clickable { Bloodexpanded = !Bloodexpanded }
+                    )
+                },
+                modifier = Modifier.fillMaxWidth()
+            )
 
-        )
+            Box(
+                modifier = Modifier
+                    .matchParentSize()
+                    .clickable { Bloodexpanded = true }
+                    .background(Color.Transparent)
+            )
+        }
+
         DropdownMenu(
             expanded = Bloodexpanded,
             onDismissRequest = { Bloodexpanded = false },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(0.9f)
         ) {
             bloodOptions.forEach { option ->
                 DropdownMenuItem(
-                    text = {
-                        Text(text = option)
-                    },
+                    text = { Text(text = option) },
                     onClick = {
                         Bloodselected = option
                         Bloodexpanded = false
-                    })
-
+                    }
+                )
             }
+        }
+        Box(
+            modifier = Modifier.fillMaxWidth(.9f)
+        ) {
 
+            OutlinedTextField(
+                value = selected,
+                onValueChange = { },
+                readOnly = true,
+                label = { Text("Select Province") },
+                trailingIcon = {
+                    Icon(
+                        imageVector = if (expanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
+                        contentDescription = if (expanded) "Collapse Dropdown" else "Expand Dropdown",
+                        modifier = Modifier.clickable { expanded = !expanded }
+                    )
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+            Box(
+                modifier = Modifier
+                    .matchParentSize()
+                    .clickable { expanded = true }
+            )
         }
 
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(.9f),
-            value = selected,
-            onValueChange = { selected = it },
-            readOnly = true,
-            label = { Text("Select Province") },
-            trailingIcon = {
-                Icon(
-                    imageVector = if (expanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
-                    contentDescription = if (expanded) "Collapse Dropdown" else "Expand Dropdown",
-                    modifier = Modifier.clickable { expanded = !expanded }
-                )
-            },
-
-            )
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(0.9f)
         ) {
             nepalProvinces.forEach { option ->
                 DropdownMenuItem(
-                    text = {
-                        Text(text = option)
-                        selectedProvice = option
-                    },
+                    text = { Text(text = option) },
                     onClick = {
                         selected = option
                         expanded = false
-                        currentDistricts = when(selected){
+
+                        currentDistricts = when (selected) {
                             "Province No. 1" -> province1Districts
                             "Madhesh Province" -> madheshProvinceDistricts
                             "Bagmati Province" -> bagmatiProvinceDistricts
@@ -300,48 +321,51 @@ fun SignUp(navController : NavHostController) {
                             "Sudurpashchim Province" -> sudurpashchimProvinceDistricts
                             else -> emptyList()
                         }
-                        Districtselected = ""
-                    })
-
+                    }
+                )
             }
-
         }
 
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(.9f),
-            value = Districtselected,
-            onValueChange = { Districtselected = it },
-            readOnly = true,
-            label = { Text("Select District") },
-            trailingIcon = {
-                Icon(
-                    imageVector = if (Districtexpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
-                    contentDescription = if (Districtexpanded) "Collapse Dropdown" else "Expand Dropdown",
-                    modifier = Modifier.clickable { Districtexpanded = !Districtexpanded }
-                )
-            },
-
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+        ) {
+            OutlinedTextField(
+                value = Districtselected,
+                onValueChange = { },
+                readOnly = true,
+                label = { Text("Select District") },
+                trailingIcon = {
+                    Icon(
+                        imageVector = if (Districtexpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
+                        contentDescription = null
+                    )
+                },
+                modifier = Modifier.fillMaxWidth()
             )
+
+
+            Box(
+                modifier = Modifier
+                    .matchParentSize()
+                    .clickable { Districtexpanded = true }
+            )
+        }
+
         DropdownMenu(
             expanded = Districtexpanded,
             onDismissRequest = { Districtexpanded = false },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(0.9f)
         ) {
             currentDistricts.forEach { option ->
                 DropdownMenuItem(
-                    text = {
-                        Text(text = option)
-                        Districtselected = option
-
-
-                    },
+                    text = { Text(text = option) },
                     onClick = {
                         Districtselected = option
                         Districtexpanded = false
-                    })
-
+                    }
+                )
             }
-
         }
 
 

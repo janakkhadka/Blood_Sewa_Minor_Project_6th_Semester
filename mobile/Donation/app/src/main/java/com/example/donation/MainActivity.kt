@@ -27,12 +27,13 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             navController = rememberNavController()
-         SetUpNavigation(navController)
+        // SetUpNavigation(navController)
        // HomeScreen(navController = navController)
             //TopMenuBar()
            // UrgentBloodScreen(navController = navController)
             //SearchDonors()
           //  BloodRequestsScreen()
+            SignUp(navController = navController)
 
 
         }
