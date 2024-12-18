@@ -1,6 +1,6 @@
 package com.example.donation.Backend
 
-data class Response(
+data class PostResponse(
     val success : Boolean,
     val message : String
 )

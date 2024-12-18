@@ -29,9 +29,11 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "app",
     "rest_framework",
+    "corsheaders"
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -140,3 +142,26 @@ SIMPLE_JWT = {
     'ALGORITHM': 'HS256',
     'SIGNING_KEY': 'your-secret-key',
 }
+CORS_ALLOW_ALL_ORIGIN = True
+CORS_ALLOWED_ORIGINS =[
+    "https://127.0.0.1:8000",
+    "http://10.0.2.2:8000",
+    "http://172.16.7.144:8000",
+    "http://192.16.7.144:8000",
+    "http://192.168.1.69",
+    "http://172.16.12.204",
+    "http://192.168.210.100:8000"
+
+]
+
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    '0.0.0.0',
+    '172.16.7.144',
+    '192.168.18.46',
+    'localhost',
+    '192.168.1.69',
+    '172.16.12.204',
+    '192.168.210.100'
+
+]

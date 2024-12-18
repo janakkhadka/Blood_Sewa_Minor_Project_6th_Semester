@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModel
 
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.donation.Backend.RegViewModel
+
 
 import com.example.donation.BottomNavBar.HomeScreen
 import com.example.donation.BottomNavBar.UrgentBloodScreen
@@ -27,13 +27,13 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             navController = rememberNavController()
-        // SetUpNavigation(navController)
+        SetUpNavigation(navController)
        // HomeScreen(navController = navController)
             //TopMenuBar()
            // UrgentBloodScreen(navController = navController)
             //SearchDonors()
           //  BloodRequestsScreen()
-            SignUp(navController = navController)
+            //SignUp(navController = navController)
 
 
         }
