@@ -1,0 +1,50 @@
+package com.example.donation.datastore
+
+import android.content.Context
+import androidx.datastore.preferences.core.edit
+
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+
+class DataStoreManager(private val context: Context) {
+
+    companion object {
+        private val Context.dataStore by preferencesDataStore(name = "user_preferences")
+        val ACCESS_TOKEN = stringPreferencesKey("access_token")
+        val REFRESH_TOKEN = stringPreferencesKey("refresh_token")
+    }
+
+    //get saved access token
+
+    val getAccessToken: Flow<String?> = context.dataStore.data
+        .map { preferences ->
+            preferences[ACCESS_TOKEN] ?: ""
+        }
+
+    //save access token
+    suspend fun saveAccessToken(token : String){
+        context.dataStore.edit {preferences ->
+            preferences[ACCESS_TOKEN] = token
+
+        }
+    }
+
+    //get refresh token
+    val getRefreshToken : Flow<String?> = context.dataStore.data
+        .map { preferences ->
+            preferences[REFRESH_TOKEN]?: ""
+
+        }
+
+    //save refresh token
+    suspend fun SaveRefreshToken(refresh : String){
+        context.dataStore.edit { preferences->
+            preferences[REFRESH_TOKEN] =refresh
+
+
+        }
+    }
+
+}

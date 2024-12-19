@@ -24,6 +24,7 @@ class RegisterUserView(APIView):
 
     def post(self, request):
         serializer = UserSerializer(data=request.data)
+        print(serializer)
         if serializer.is_valid():
             serializer.save()
             return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)

@@ -480,15 +480,15 @@ fun SignUp(navController : NavHostController) {
                     password = password
 
                 )
-                val user = Registration(
-                    name = "jdssdasfak",
-                    phone_number = "123890",
-                    blood_group = "O+",
-                    district = "Kathmandu",
-                    province = "Bagmati",
-                    email = "dfdsfe@example.com",
-                    password = "pssword23"
-                )
+//                val user = Registration(
+//                    name = "jdssdasfak",
+//                    phone_number = "123890",
+//                    blood_group = "O+",
+//                    district = "Kathmandu",
+//                    province = "Bagmati",
+//                    email = "dfdsfe@example.com",
+//                    password = "pssword23"
+//                )
 
                 loading = true
                 scope.launch {

@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
 class RegViewModel : ViewModel() {
-    val responseMessage = mutableStateOf("")
+    private val responseMessage = mutableStateOf("")
 
     fun registerUser(
         username: String,
