@@ -1,16 +1,20 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
 import './App.css'
 import LoginRegistration from './components/LoginRegistration/LoginRegistration'
+import RegistrationUser from './components/LoginRegistration/RegistrationUser'
 
-import BackThreeD from './components/LoginRegistration/3d'
+
+
 
 function App() {
   return (
     <> 
-        <LoginRegistration/>
+        {/* <LoginRegistration/> */}
         {/* <BackThreeD/> */}
+
+        {/* <Alert/> */}
+
+        <RegistrationUser/>
 
     </>
   )

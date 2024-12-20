@@ -10,7 +10,7 @@ import BackThreeD from './3d'
 
 
 
-const Registration = ({switchToLogin}) => {
+const RegistrationOrg = ({switchToLogin}) => {
     
     const [orgType, setOrgType] = useState("hospital")
     const handleChangeOrgType = (event) => {
@@ -72,21 +72,21 @@ const Registration = ({switchToLogin}) => {
                         <input type="text"
                         value = {name}
                         onChange={(e) => setName(e.target.value)}
-                        placeholder='Name of organization' require/>
+                        placeholder='Name of organization'/>
                         <FaHospitalUser className="icon"/>
                     </div>
                     <div className="input-box">
                         <input type="email"
                         value = {email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder='Email' require/>
+                        placeholder='Email'/>
                         <IoMdMail className="icon"/>
                     </div>
                     <div className="input-box">
                         <input type="password"
                         value = {password}
                         onChange={(e) => setPassword(e.target.value)}
-                        placeholder='Password' require/>
+                        placeholder='Password'/>
                         <FaLock className="icon"/>
                     </div>
 
@@ -94,27 +94,27 @@ const Registration = ({switchToLogin}) => {
                         <input type="password"
                         value = {confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
-                        placeholder='Confirm password' require/>
+                        placeholder='Confirm password'/>
                         <FaLock className="icon"/>
                     </div>
                     <div className="input-box">
                         <input type="text"
                         value = {contact}
                         onChange={(e) => setContact(e.target.value)}
-                        placeholder='Contact no' require/>
+                        placeholder='Contact no'/>
                         <RiContactsBook3Fill className="icon"/>
                     </div>
                     <div className="input-box">
                         <input type="text"
                         value = {location}
                         onChange={(e) => setLocation(e.target.value)}
-                        placeholder='Location' require/>
+                        placeholder='Location'/>
                         <FaLocationDot className="icon"/>
                     </div>
                     <div className="input-document">
                         <label htmlFor="" className='document'>
                             Upload document:
-                            <input type="file" require/>
+                            <input type="file"/>
                             <FaFile className="icon" />
                         </label>
                         
@@ -133,6 +133,12 @@ const Registration = ({switchToLogin}) => {
                         <button type="submit" disabled={!isTermsChecked}>Sign Up</button>
                     </div>
 
+                    <div className="login-link">
+                        <p> Already have an account?
+                            <a href="#" onClick={switchToLogin}>Login</a>
+                        </p>
+                    </div>
+
                    
                 </form>
             </div>
@@ -141,4 +147,4 @@ const Registration = ({switchToLogin}) => {
   )
 }
 
-export default Registration
+export default RegistrationOrg

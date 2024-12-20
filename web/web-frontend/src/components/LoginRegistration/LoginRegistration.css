@@ -12,7 +12,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow-x: hidden;
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
 }
 
 .wrapper .background{
@@ -30,7 +32,7 @@
     z-index: 2; 
     display: flex;
     width: 840px;
-    height: 450px;
+    height: 490px;
     border: 2px solid rgba(255,255,255,.1);
     border-radius: 20px;
     box-shadow: 0px 0px 50px rgba(119, 81, 81, 0.6);
@@ -103,6 +105,21 @@ form .remember-forgot{
     text-decoration: underline;
 }
 
+.login-form .account-type{
+    margin-bottom: 35px;
+    color:var(--text);
+}
+
+.login-form .account-type input{
+   accent-color: black;
+   margin: 0 5px; 
+}
+
+
+.login-form .account-type .user{
+    margin-right: 10px
+}
+
 
 
 form .register-link{
@@ -123,11 +140,14 @@ form .register-link{
     text-decoration: underline;
 }
 
-/* registration */
+
+
+
+/* registration for organization*/
 .wrapper .form-box-registration{
     position: relative;
     z-index: 2; 
-    width: 1040px;
+    width: 840px;
     height: 680px;
     border-radius: 20px;
     box-shadow: 0 0 40px rgba(77, 5, 2,1);
@@ -235,6 +255,210 @@ form .register-link{
     margin: auto;
 }
 
+form .login-link{
+    font-size: 14.5px;
+    text-align: center;
+    margin: 20px 0 15px;
+    color: var(--text)
+}
+
+.login-link p a{
+    color:black;
+    text-decoration: none;
+    font-weight: 600;
+    color: var(--text)
+}
+
+.loginr-link p a:hover{
+    text-decoration: underline;
+}
+
+
+/* registration for User*/
+
+.wrapper .form-box-user-registration{
+    position: relative;
+    z-index: 2; 
+    width: 850px;
+    height: 910px;
+    border-radius: 20px;
+    box-shadow: 0 0 40px rgba(77, 5, 2,1);
+    background: transparent;
+    box-shadow: 0px 0px 50px rgba(119, 81, 81, 0.6);
+    backdrop-filter: blur(5px);
+    margin-top: 270px;
+    margin-bottom: 30px; 
+}
+.form-box-user-registration .user-form{
+    width: 100%;
+    padding: 20px 40px 0px 40px;
+}
+
+.form-box-user-registration form .input-box{
+    position: relative;
+    width: 100%;
+    height: 30px;
+    margin: 30px 0;
+    color:var(--text);
+}
+
+.user-form .drop-down-box{
+    position: relative;
+    height: 30px;
+    width: 100%;
+    margin: 30px 0;
+    color:var(--text);
+}
+
+.drop-down-box .icon{
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    translate: 0 -20%;
+    font-size: 16px;
+    pointer-events: none;
+}
+
+.user-form .dob-box{
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    color:var(--text);
+}
+
+.dob-box .dob-label{
+    width: 130px;
+}
+
+.dob-box .date-picker{
+    width: 100%;
+    background: transparent;
+    color:var(--text);
+    border: 1px solid rgba(255,255,255,.1);
+    /* border: 1px solid var(--text); */
+    outline: none;
+    border-radius: 40px;
+    font-size: 16px;
+    padding: 5px 0px 5px 20px;
+}
+.dob-box .icon{
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    translate: 0 -50%;
+    font-size: 16px;
+    pointer-events: none;
+}
+
+.user-form .gender{
+    margin-top: 20px;
+    color:var(--text);
+}
+
+.user-form .gender input{
+   accent-color: black;
+   margin: 0 5px; 
+}
+
+
+.user-form .gender .male{
+    margin-right: 10px
+}
+
+.user-form .gender .female{
+    margin-right: 10px
+}
+
+.user-form .input-document{
+    position: relative;
+    width: 100%;
+    height: 30px;
+    margin: 30px 0;
+    margin-bottom: 0;
+    color: var(--text);
+}
+
+.user-form .input-document input{
+    margin-left: 5px;
+}
+
+.form-box-user-registration .input-document .icon{
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    translate: 0 -20%;
+    font-size: 16px;
+    color:var(--text);
+}
+
+.form-box-user-registration .terms-and-conditions{
+    position: relative;
+    width: 100%;
+    height: 20px;
+    margin-top: 10px;
+    margin-bottom: 40px;
+    font-size: 14.5px;
+    color:var(--text);
+}
+
+.form-box-user-registration .terms-and-conditions input{
+    margin-right: 5px;
+    accent-color: black;
+}
+.form-box-user-registration .terms-and-conditions a{
+    color:var(--text);
+    text-decoration: none;
+    font-weight: 600;
+}
+.form-box-user-registration .terms-and-conditions a:hover{
+    text-decoration: underline;
+}
+
+.form-box-user-registration .input-box .icon{
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    translate: 0 -20%;
+    font-size: 16px;
+}
+.form-box-user-registration .button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-box-user-registration form button{
+    width: 50%;
+    height: 45px;
+    background: #fff;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    margin: auto;
+}
+form .login-link{
+    font-size: 14.5px;
+    text-align: center;
+    margin: 20px 0 15px;
+    color: var(--text)
+}
+
+.login-link p a{
+    color:black;
+    text-decoration: none;
+    font-weight: 600;
+    color: var(--text)
+}
+
+.login-link p a:hover{
+    text-decoration: underline;
+}
+
 /* common */
 
 form h1{
@@ -242,8 +466,6 @@ form h1{
     text-align: center;
     color:var(--text);
 }
-
-
 
 .input-box input{
     width: 100%;

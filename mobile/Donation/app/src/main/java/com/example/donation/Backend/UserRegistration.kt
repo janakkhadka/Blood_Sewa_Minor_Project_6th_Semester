@@ -1,14 +1,23 @@
-package com.example.donation.Backend
+package com.example.donation.backend
 
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object UserRegistration {
-    private const val url = "http://192.168.18.46:8000/api/"
+    private const val BASE_URL = "http://192.168.170.100:8000/api/"
+//    private val logger = HttpLoggingInterceptor().apply {
+//        level = HttpLoggingInterceptor.Level.BODY
+//    }
+//
+//    private val client = OkHttpClient.Builder()
+//        .addInterceptor(logger)
+//        .build()
 
-    val authService : BackendInterface by lazy {
+    val authService: BackendInterface by lazy {
         Retrofit.Builder()
-            .baseUrl(url)
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(BackendInterface::class.java)

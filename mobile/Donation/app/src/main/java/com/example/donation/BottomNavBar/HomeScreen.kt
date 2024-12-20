@@ -1,6 +1,7 @@
 package com.example.donation.BottomNavBar
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,11 +28,11 @@ import androidx.compose.material.icons.filled.LocalHospital
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PersonAddAlt1
 import androidx.compose.material.icons.filled.PlaylistAdd
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,23 +40,31 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.donation.Navigation.Screens
+import com.example.donation.datastore.DataStoreManager
 import com.example.donation.ui.theme.RedThemeTop
-import com.example.donation.ui.theme.RedTop
-import com.example.donation.ui.theme.dRed
-import com.example.donation.ui.theme.white
 import java.time.LocalTime
 
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @Composable
-fun HomeScreen(navController : NavHostController,) {
+fun HomeScreen(navController : NavHostController ) {
     val scrollState = rememberScrollState()
+    val context = LocalContext.current
+    val dataStoreManager = DataStoreManager(context)
+    val accessToken by dataStoreManager.getAccessToken.collectAsState(initial = null)
+
+    LaunchedEffect(accessToken){
+        Log.d("accesstoken","$accessToken")
+
+    }
+
     val hour = LocalTime.now().hour
     var greetingText = when (hour) {
         in 1..12 -> "Good Morning"
@@ -131,6 +140,7 @@ fun HomeScreen(navController : NavHostController,) {
                             IconWithLabel(Icons.Default.EventAvailable, "Events")
                             {
                                 navController.navigate(Screens.Events.route)
+                                Log.d("token","$accessToken")
                             }
                             IconWithLabel(Icons.Default.PersonAddAlt1, "Search Donor")
                             {

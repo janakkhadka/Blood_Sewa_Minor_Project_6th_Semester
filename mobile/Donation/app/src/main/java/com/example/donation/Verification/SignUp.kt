@@ -2,15 +2,14 @@ package com.example.donation.Verification
 
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,38 +29,45 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.AlertDialogDefaults.containerColor
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ListItemDefaults.contentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.donation.Backend.RegViewModel
 import com.example.donation.BottomNavBar.TopBarTheme
 import com.example.donation.Navigation.Screens
+import com.example.donation.backend.RegViewModel
+import com.example.donation.backend.Registration
+import com.example.donation.backend.UserRegistration
 import com.example.donation.ui.theme.dRed
+import kotlinx.coroutines.launch
+
 
 @Composable
 fun SignUp(navController : NavHostController) {
-    val viewModel: RegViewModel = viewModel()
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+    var loading by remember { mutableStateOf(false) }
+    if (loading) {
+        CircularProgressIndicator()
+    }
 
     var username by remember { mutableStateOf("") }
     var phoneNumber by remember { mutableStateOf("") }
@@ -78,6 +84,8 @@ fun SignUp(navController : NavHostController) {
     var Districtselected by remember { mutableStateOf("") }
     var result by remember { mutableStateOf("") }
     var currentDistricts by remember { mutableStateOf(listOf<String>()) }
+
+
 
     //button ko color ko lagi
     val colors = if (isChecked) {
@@ -428,9 +436,7 @@ fun SignUp(navController : NavHostController) {
                 )
             }
         )
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(16.dp)){
+        Row(verticalAlignment = Alignment.CenterVertically){
             Checkbox(
                 checked =isChecked ,
                 onCheckedChange ={ isChecked = it} )
@@ -440,17 +446,57 @@ fun SignUp(navController : NavHostController) {
 
         Button(
             onClick = {
-                //navController.navigate(Screens.OtpVerification.route)
-              //  navController.navigate(Screens.OtpVerification.route)
-                viewModel.registerUser(email,username,phoneNumber,bloodOptions[0],currentDistricts[0],province1Districts[0]){response ->
-                    if(response.startsWith("success")){
-                        navController.navigate(Screens.Login)
-                        Log.d("ErrorReg", response)
-                    }else{
-                        username = response
-                        Log.e("ErrorReg", response)
-                    }
 
+                if (username.isBlank() || email.isBlank() || phoneNumber.isBlank() ||
+                    Bloodselected.isBlank() || Districtselected.isBlank() ||
+                    selected.isBlank() || dob.isBlank() || password.isBlank() || !isChecked) {
+                    Toast.makeText(context, "Please fill in all fields and agree to the terms.", Toast.LENGTH_SHORT).show()
+                    return@Button
+                }
+                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    Toast.makeText(context, "Invalid email format.", Toast.LENGTH_SHORT).show()
+                    return@Button
+                }
+                if (password.length < 6) {
+                    Toast.makeText(context, "Password must be at least 6 characters long.", Toast.LENGTH_SHORT).show()
+                    return@Button
+                }
+
+                val registrationData = Registration(
+                    email = email,
+                    name = username,
+                    phone_number = phoneNumber,
+                    blood_group = Bloodselected,
+                    district = Districtselected,
+                    province = selected,
+                    password = password
+
+                )
+//                val user = Registration(
+//                    name = "jdssdasfak",
+//                    phone_number = "123890",
+//                    blood_group = "O+",
+//                    district = "Kathmandu",
+//                    province = "Bagmati",
+//                    email = "dfdsfe@example.com",
+//                    password = "pssword23"
+//                )
+
+                loading = true
+                scope.launch {
+                    try {
+                        val response = UserRegistration.authService.registerUser(registrationData)
+                        loading = false
+                        if (response.isSuccessful) {
+                            Toast.makeText(context, "Registration successful!", Toast.LENGTH_SHORT).show()
+                            navController.navigate(Screens.Login.route)
+                        } else {
+                            Toast.makeText(context, "Registration failed: ${response.message()}", Toast.LENGTH_SHORT).show()
+                        }
+                    } catch (e: Exception) {
+                        loading = false
+                        Toast.makeText(context, "Error: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+                    }
                 }
             },
             colors =colors,

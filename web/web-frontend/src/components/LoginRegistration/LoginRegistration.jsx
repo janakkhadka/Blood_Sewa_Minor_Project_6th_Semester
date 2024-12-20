@@ -1,18 +1,20 @@
 import { useState } from 'react'
 
 import Login from './Login'
-import Registration from './Registration'
+import Registration from './RegistrationOrg'
+import Show from '../Show';
 
 const LoginRegistration = () => {
     const [isLoginVisible, setIsLoginVisible] = useState(true);
   
   return (
     <>
-        {isLoginVisible ? (
-        <Login switchToRegister={() => setIsLoginVisible(false)} />
-      ) : (
-        <Registration switchToLogin={() => setIsLoginVisible(true)} />
-      )}
+    <Show isVisible={isLoginVisible}>
+      <Login switchToRegister={() => setIsLoginVisible(false)} />
+    </Show>
+    <Show isVisible={!isLoginVisible}>
+      <Registration switchToLogin={() => setIsLoginVisible(true)} />
+    </Show>
     </>
   )
 }
