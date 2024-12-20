@@ -1,6 +1,6 @@
 package com.example.donation.Verification
 
-import androidx.compose.foundation.background
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,8 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -24,30 +22,35 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.donation.Backend.Login.LoginRequest
 import com.example.donation.Navigation.Screens
+import com.example.donation.backend.RegViewModel
+import com.example.donation.backend.UserRegistration
 import com.example.donation.ui.theme.dRed
+import kotlinx.coroutines.launch
 
 @Composable
 fun Login(navController : NavHostController){
-    var username by remember{ mutableStateOf("") }
-    var phoneNumber by remember{ mutableStateOf("") }
     var password by remember{ mutableStateOf("") }
     var email by remember{ mutableStateOf("") }
     var isPasswordVisible by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -65,12 +68,10 @@ fun Login(navController : NavHostController){
 
 
         OutlinedTextField(
-            value = phoneNumber,
-            onValueChange = { phoneNumber = it },
-            label = { Text("Phone Number") },
-            leadingIcon = {
-                Text(text = "+977")
-            }
+            value = email,
+            onValueChange = { email = it },
+            label = { Text("Phone email") },
+
         )
 
         OutlinedTextField(
@@ -97,7 +98,29 @@ fun Login(navController : NavHostController){
         )
 
 
-        Button(onClick = { },
+        Button(onClick = {
+            if(email.isEmpty()||password.isEmpty()){
+                Toast.makeText(context, "Please fill in all fields and agree to the terms.", Toast.LENGTH_SHORT).show()
+                return@Button
+            }
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                Toast.makeText(context, "Invalid email format.", Toast.LENGTH_SHORT).show()
+                return@Button
+            }
+            val login = LoginRequest(
+                email = email,
+                password = password
+            )
+            scope.launch {
+               val response = UserRegistration.authService.loginUser(login)
+                if(response.isSuccessful){
+                    navController.navigate(Screens.BottomNavBar.route)
+                }else{
+                    Toast.makeText(context, "Login failed: ${response.message()}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        },
             colors =androidx.compose.material3. ButtonDefaults.buttonColors(
                 containerColor = dRed,
                 contentColor = Color.White),

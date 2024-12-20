@@ -62,7 +62,6 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun SignUp(navController : NavHostController) {
-    val viewModel: RegViewModel = viewModel()
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     var loading by remember { mutableStateOf(false) }
@@ -447,13 +446,6 @@ fun SignUp(navController : NavHostController) {
 
         Button(
             onClick = {
-                Log.d("user","$username")
-                Log.d("user","$email")
-                Log.d("user","$phoneNumber")
-                Log.d("user","$Bloodselected")
-                Log.d("user","$selected")
-                Log.d("user","$password")
-                Log.d("user","$Districtselected")
 
                 if (username.isBlank() || email.isBlank() || phoneNumber.isBlank() ||
                     Bloodselected.isBlank() || Districtselected.isBlank() ||

@@ -1,6 +1,6 @@
 package com.example.donation.Backend.Login
 
-data class LoginToken(
+data class Token(
     val refresh : String,
     val access : String
 

@@ -6,7 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object UserRegistration {
-    private const val BASE_URL = "http://192.168.210.100:8000/api/"
+    private const val BASE_URL = "http://192.168.170.100:8000/api/"
 //    private val logger = HttpLoggingInterceptor().apply {
 //        level = HttpLoggingInterceptor.Level.BODY
 //    }
