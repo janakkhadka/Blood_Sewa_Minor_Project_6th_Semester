@@ -1,4 +1,3 @@
-import django_filters
 from django.contrib.auth import authenticate
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, permissions
@@ -7,7 +6,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
-from .utils import UserFilter
+from .utils import UserFilter , DistrictFilter
 from .models import User, BloodRequestModel
 from .serializers import UserSerializer, LoginSerializer, UserProfileUpdateSerializer, BloodRequestSerializer , LimitedUserSerializer
 
@@ -61,6 +60,7 @@ class UserLoginView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
 class UserProfileUpdateView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -75,6 +75,8 @@ class UserProfileUpdateView(APIView):
                 serializer.save()
                 return Response({'message': 'Profile updated successfully'}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 class BloodRequestCreateView(APIView):
@@ -112,21 +114,14 @@ class FilterUserBloodGroup(ListAPIView):
     filterset_class = UserFilter
 
 
-class UserFilter(django_filters.FilterSet):
-    district = django_filters.CharFilter(field_name='district', lookup_expr='icontains')
-    blood_group = django_filters.CharFilter(field_name='blood_group', lookup_expr='icontains')
-
-    class Meta:
-        model = User
-        fields = ['district', 'blood_group']
 
 
 class UserListView(ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = LimitedUserSerializer
-    filter_backends = (DjangoFilterBackend)
-    filterset_class = UserFilter
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = DistrictFilter
 
 
 
@@ -143,3 +138,5 @@ class LogoutView(APIView):
             return Response({"message": "Logout Successful"} , status=status.HTTP_205_RESET_CONTENT)
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+

@@ -56,3 +56,11 @@ class UserFilter(django_filters.FilterSet):
     class Meta:
         model = User
         fields = ['blood_group']
+
+
+class DistrictFilter(django_filters.FilterSet):
+    blood_group = django_filters.CharFilter(field_name='blood_group', lookup_expr='iexact')  # Case-insensitive exact match
+    district = django_filters.CharFilter(field_name='district' , lookup_expr='iexact')
+    class Meta:
+        model = User
+        fields = ['blood_group' , 'district']

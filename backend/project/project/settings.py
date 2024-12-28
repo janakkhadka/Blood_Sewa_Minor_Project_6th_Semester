@@ -28,20 +28,17 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "app",
     "rest_framework",
-<<<<<<< HEAD
     'corsheaders',
     'rest_framework_simplejwt.token_blacklist',
 ]
 
-MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
-=======
-    "corsheaders"
-]
+# MIDDLEWARE = [
+#     'corsheaders.middleware.CorsMiddleware',
+#     "corsheaders"
+# ]
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
->>>>>>> dc12dbb468fa271ec1bd98c0ed8659ef75a3049b
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -138,6 +135,7 @@ REST_FRAMEWORK = {
 }
 
 
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=100),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
@@ -145,15 +143,12 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
     'ALGORITHM': 'HS256',
     'SIGNING_KEY': 'your-secret-key',
-<<<<<<< HEAD
-
 }
 
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",  # Django server URL
     "http://10.0.2.2:8000",   # Emulator accessing Django server
-=======
-}
+]
 CORS_ALLOW_ALL_ORIGIN = True
 CORS_ALLOWED_ORIGINS =[
     "https://127.0.0.1:8000",
@@ -181,6 +176,4 @@ ALLOWED_HOSTS = [
     '192.168.18.46',
     '192.168.149.100',
     '192.168.170.100'
-
->>>>>>> dc12dbb468fa271ec1bd98c0ed8659ef75a3049b
 ]
