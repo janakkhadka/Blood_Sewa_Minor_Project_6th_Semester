@@ -53,7 +53,7 @@ ROOT_URLCONF = "project.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [  BASE_DIR / 'app/templates' ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -150,6 +150,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://10.0.2.2:8000",   # Emulator accessing Django server
 ]
 CORS_ALLOW_ALL_ORIGIN = True
+
 CORS_ALLOWED_ORIGINS =[
     "https://127.0.0.1:8000",
     "http://10.0.2.2:8000",
@@ -177,3 +178,14 @@ ALLOWED_HOSTS = [
     '192.168.149.100',
     '192.168.170.100'
 ]
+
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'parajulibishal00@gmail.com'
+EMAIL_HOST_PASSWORD = 'dbef dohg spkj xjwc'
+DEFAULT_FROM_EMAIL = 'noreply@yourdomain.com'

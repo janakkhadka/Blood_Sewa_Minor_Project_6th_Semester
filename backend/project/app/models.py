@@ -2,6 +2,9 @@ from django.utils.text import slugify
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.core.files import File
+from io import BytesIO
+import qrcode
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager, UserManager
 
 
@@ -55,6 +58,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         ('O+', 'O+'),
         ('O-', 'O-'),
     ]
+    USER_TYPES = (
+        ('user', 'User'),
+        ('organization', 'Organization'),
+    )
 
     name = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=20, unique=True)
@@ -65,6 +72,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     #file = models.FileField(upload_to='uploads/', blank=True, null=True)
     groups = models.ManyToManyField('auth.Group', related_name='user_groups', blank=True)
     user_permissions = models.ManyToManyField('auth.Permission', related_name='user_permissions_set', blank=True)
+    user_type = models.CharField(max_length=20, choices=USER_TYPES , default='user')
 
     # Define additional fields
     is_active = models.BooleanField(default=True)
@@ -102,3 +110,41 @@ class BloodRequestModel(models.Model):
 
     def __str__(self):
         return f"Blood request for {self.patient_name} - {self.blood_group}"
+
+
+
+
+class Event(models.Model):
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True, blank=True, null=True)
+    description = models.TextField()
+    location = models.CharField(max_length=255)
+    date = models.DateTimeField()
+    organizer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="organized_events")
+    qr_code = models.ImageField(upload_to="qrcodes/", blank=True, null=True)
+    attendee_count = models.PositiveIntegerField(default=0)
+
+    def save(self, *args, **kwargs):
+        if not self.qr_code:
+            qr = qrcode.QRCode(version=1, box_size=10, border=5)
+            qr.add_data(f"event_slug:{self.slug}")
+            qr.make(fit=True)
+            img = qr.make_image(fill="black", back_color="white")
+            buffer = BytesIO()
+            img.save(buffer, "PNG")
+            buffer.seek(0)
+            filename = f"event_{self.id}_qr.png"
+            self.qr_code.save(filename, File(buffer), save=False)
+            buffer.close()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+class UserEvent(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    checked_in = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.name} - {self.event.name}"

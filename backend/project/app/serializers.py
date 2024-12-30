@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, BloodRequestModel
+from .models import User, BloodRequestModel , Event , UserEvent
 from .utils import validate_password, validate_age , validate_phone_number
 
 class UserSerializer(serializers.ModelSerializer):
@@ -22,11 +22,45 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         password = validated_data.pop('password', None)
+        validated_data['user_type'] = 'user'
         user = User.objects.create(**validated_data)
         if password:
             user.set_password(password)  # Hash the password
             user.save()
         return user
+
+
+# Organization Serializer
+# class OrganizationSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = User
+#         fields = ['id', 'email', 'name', 'phone_number', 'district', 'province', 'password']
+#         extra_kwargs = {
+#             'password': {'write_only': True},  # Ensure the password is not returned in API responses
+#                 }
+
+#     def validate_phone_number(self , value):
+#         return validate_phone_number(value)
+
+#     def validate_password(self, value):
+#         return validate_password(value)
+
+
+#     def create(self, validated_data):
+#         password = validated_data.pop('password', None)
+#         validated_data.pop('DOB', None)
+#         validated_data.pop('blood_group', None)
+#         validated_data['user_type'] = 'organization'
+#         user = User.objects.create(**validated_data)
+#         if password:
+#             user.set_password(password)  # Hash the password
+#             user.save()
+#         return user
+
+
+
+
+
 
 
 class LoginSerializer(serializers.Serializer):
@@ -88,3 +122,28 @@ class LimitedUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['name', 'phone_number', 'blood_group']
+
+
+
+
+class EventSerializer(serializers.ModelSerializer):
+    organizer = serializers.SerializerMethodField()
+    class Meta:
+        model = Event
+        fields = [ 'name', 'description', 'location', 'date', 'organizer', 'qr_code']
+        read_only_fields = ['organizer', 'qr_code']
+
+    def get_organizer(self, obj):
+        try:
+            organizer = User.objects.get(id=obj.organizer_id)
+            return organizer.name
+        except Organizer.DoesNotExist:
+            return None 
+
+
+
+class UserEventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserEvent
+        fields = ['id', 'user', 'event', 'checked_in']
+        read_only_fields = ['checked_in']
