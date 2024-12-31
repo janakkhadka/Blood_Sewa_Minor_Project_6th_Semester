@@ -8,8 +8,8 @@ import RegistrationUser from './LoginRegistration/RegistrationUser';
 
 import LandingPage from './Homepage/LandingPage';
 
-import BloodDonorDashboard from './UserDashboard/UserDashboard'
-import BloodRequestForm from './BloodRequestForm';
+import BloodDonorDashboard from './UserDashboard/UserDashboard.jsx'
+import BloodRequestForm from './Common/BloodRequestForm';
 import ScheduleDonation from './UserDashboard/ScheduleDonation';
 import UserOrganizeEvent from './UserDashboard/UserOrganizeEvent';
 import UserBloodAvailability from './UserDashboard/BloodAvailability';
@@ -20,14 +20,12 @@ const Navigation = () => {
     return (
         <Router>
           <Routes>
-            <Route path="/land" element={<LandingPage />} />
+            <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/registrationorg" element={<RegistrationOrg />} />
             <Route path="/registrationuser" element={<RegistrationUser />} />
-            <Route path="/aboutus" element={<AboutUs />} />
-            <Route path="/why" element={<Why />} />
 
-            <Route path ="/" element={<BloodDonorDashboard/>}/>
+            <Route path ="/a" element={<BloodDonorDashboard/>}/>
             <Route path ="/blood-request-form" element = {<BloodRequestForm/>}/>
             <Route path ="/schedule-donation" element = {<ScheduleDonation/>}/>
             <Route path ="/user-organize-event" element = {<UserOrganizeEvent/>}/>

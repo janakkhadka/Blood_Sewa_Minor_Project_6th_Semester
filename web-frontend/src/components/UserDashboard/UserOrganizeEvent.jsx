@@ -10,7 +10,7 @@ import DatePicker from 'react-date-picker';
 import 'react-date-picker/dist/DatePicker.css';
 import '../LoginRegistration/Calender.css';
 
-import {venueList, timeSlots} from '../LoginRegistration/DropDownList';
+import {venueList} from '../LoginRegistration/DropDownList';
 
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 import { MdDateRange,MdVolunteerActivism  } from "react-icons/md";
