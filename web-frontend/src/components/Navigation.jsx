@@ -5,11 +5,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from './LoginRegistration/Login';
 import RegistrationOrg from './LoginRegistration/RegistrationOrg';
 import RegistrationUser from './LoginRegistration/RegistrationUser';
-import LandingPage from './homepage/LandingPage';
-import Why from './homepage/Why';
-import AboutUs from './homepage/AboutUs';
+
+import LandingPage from './Homepage/LandingPage';
+
 import BloodDonorDashboard from './UserDashboard/UserDashboard'
-import NavigationBar from './homepage/NavigationBar';
 import BloodRequestForm from './BloodRequestForm';
 import ScheduleDonation from './UserDashboard/ScheduleDonation';
 import UserOrganizeEvent from './UserDashboard/UserOrganizeEvent';
