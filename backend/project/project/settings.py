@@ -189,3 +189,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'parajulibishal00@gmail.com'
 EMAIL_HOST_PASSWORD = 'dbef dohg spkj xjwc'
 DEFAULT_FROM_EMAIL = 'noreply@yourdomain.com'
+
+import os
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
