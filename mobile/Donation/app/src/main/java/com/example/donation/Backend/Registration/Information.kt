@@ -1,4 +1,4 @@
-package com.example.donation.backend
+package com.example.donation.backend.registration
 
 data class Registration(
     val email: String,
@@ -7,5 +7,6 @@ data class Registration(
     val blood_group: String,
     val district: String,
     val province: String,
-    val password: String
+    val password: String,
+    val dOB: String
 )

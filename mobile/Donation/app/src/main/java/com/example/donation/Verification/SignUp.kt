@@ -53,9 +53,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.donation.BottomNavBar.TopBarTheme
 import com.example.donation.Navigation.Screens
-import com.example.donation.backend.RegViewModel
-import com.example.donation.backend.Registration
 import com.example.donation.backend.UserRegistration
+import com.example.donation.backend.registration.Registration
 import com.example.donation.ui.theme.dRed
 import kotlinx.coroutines.launch
 
@@ -469,18 +468,10 @@ fun SignUp(navController : NavHostController) {
                     blood_group = Bloodselected,
                     district = Districtselected,
                     province = selected,
-                    password = password
+                    password = password,
+                    dOB = dob
 
                 )
-//                val user = Registration(
-//                    name = "jdssdasfak",
-//                    phone_number = "123890",
-//                    blood_group = "O+",
-//                    district = "Kathmandu",
-//                    province = "Bagmati",
-//                    email = "dfdsfe@example.com",
-//                    password = "pssword23"
-//                )
 
                 loading = true
                 scope.launch {
