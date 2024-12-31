@@ -9,11 +9,10 @@
       position: fixed;
       top: 0;
       width:100vw;
-      text-align: center;
       z-index: 3 !important;
     }
     
-    .home-navigation-bar .homepage-navbar {
+    .homepage-navigation-bar .homepage-navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -31,16 +30,19 @@
       font-size: 24px;
     }
 
-    .homepage-right{
+    .homepage-navbar-right{
       color: var(--secondary);
       font-size: 18px;
       display: flex;
       flex-direction: row;
       gap: 155px;
     }
+
+    .homepage-navbar-right-left a{
+        padding: 0 15px;
+    }
   
-    .homepage-navbar-right .right-right a{
-      margin: 0 25px;
+    .homepage-navbar-right a{
       color: var(--secondary);
       text-decoration: none;
       font-size: 18px;

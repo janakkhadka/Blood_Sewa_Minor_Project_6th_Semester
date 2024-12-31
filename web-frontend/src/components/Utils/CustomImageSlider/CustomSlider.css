@@ -8,19 +8,24 @@
     align-items: center;
     flex-direction: row;
     flex-wrap: nowrap;
-    background-color: black;
+    background-color: transparent;
+    height: 400px;
   }
   
   .container__slider > button {
-    background-color: transparent;
+    background-color: var(--secondary);
     outline: none;
     border: 0;
-    color: whitesmoke;
+    color: var(--primary);
     font-size: 24px;
+    margin: 0 25px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
   }
   
   .container__slider > button:active {
-    color: black;
+    color: var(--primary);
   }
   
   .slider__btn-next {
@@ -55,7 +60,7 @@
   }
   
   .container__slider__links-small-active {
-    background-color: black;
+    background-color: var(--primary)
   }
   
   .slider__item {
@@ -67,6 +72,7 @@
     height: auto;
     transform: translateX(0);
     transition: transform 1s ease;
+    border-radius: 24px;
   }
   
   .slider__item-active-1 {
