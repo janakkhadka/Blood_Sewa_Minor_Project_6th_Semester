@@ -76,7 +76,7 @@ const Login = ({ switchToRegister }) => {
                             <input type="checkbox" />
                             Remember me
                         </label>
-                        <a href="#">Forget password?</a>
+                        <a href="#">Forgot password?</a>
                         
                     </div>
 
