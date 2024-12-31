@@ -1,0 +1,27 @@
+:root{
+    --secondary: #d5c9c9;
+    --primary: rgb(160, 25, 25)
+}
+
+.request-button {
+    position:fixed;
+    bottom:90px;
+    right: 30px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 3;
+    box-shadow: 0px 0px 50px rgba(119, 81, 81, 0.6);
+    border:2px solid rgba(255,255,255,.1);
+    background-color: var(--secondary);
+    color: var(--primary);
+}
+
+.request-button:hover {
+    color: var(--secondary);
+    backdrop-filter: blur(15px);
+    background:transparent;
+}
+

@@ -16,6 +16,11 @@
     "react-dom": "^18.3.1",
     "react-icons": "^5.4.0",
     "react-select": "^5.9.0",
+<<<<<<< HEAD
+=======
+    "react-slideshow-image": "^4.3.2",
+    "recharts": "^2.15.0",
+>>>>>>> 3885757 (web)
     "three": "^0.171.0"
   },
   "devDependencies": {
