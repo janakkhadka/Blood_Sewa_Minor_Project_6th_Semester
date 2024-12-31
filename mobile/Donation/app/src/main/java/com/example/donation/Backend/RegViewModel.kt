@@ -3,7 +3,7 @@ package com.example.donation.backend
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.donation.Backend.Login.LoginRequest
+import com.example.donation.backend.login.LoginRequest
 import com.example.donation.datastore.DataStoreManager
 import kotlinx.coroutines.launch
 
