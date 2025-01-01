@@ -92,18 +92,27 @@ data class dummyEvent(
     val venue : String,
     val organized_by : String,
     val collaboration_with : String,
-    val contact : String
+    val contact : String,
+    val desc : String
 )
 @Composable
 fun HomeScreen(navController : NavHostController ) {
-    var showDialogBox  by remember { mutableStateOf(false) }
+    var showDialogBox by remember { mutableStateOf(false) }
+    var eventDialog by remember { mutableStateOf(false) }
     var selectedPatient by remember { mutableStateOf<dummyData?>(null) }
+    var selectedEvent by remember { mutableStateOf<dummyEvent?>(null) }
+
     if (showDialogBox && selectedPatient != null) {
         Dialog(onDismissRequest = { showDialogBox = false }) {
             DialogBox(persons = selectedPatient!!)
         }
     }
+    if (eventDialog && selectedEvent != null) {
+        Dialog(onDismissRequest = { eventDialog = false }) {
+            EventDialog(events = selectedEvent!!)
+        }
 
+    }
 
 
     val scrollState = rememberScrollState()
@@ -113,21 +122,57 @@ fun HomeScreen(navController : NavHostController ) {
 
     //dummy variables for the Urgent Requests and event happening
     val persons = listOf(
-        dummyData("Janak Khadka","KMC Hospital","A+","9865445343","2081-09-9","Brain tumour","Dhankuta"),
-        dummyData("Bishal Parajuli","Civil Hospital","B-","9869985795","2081-09-9","mental","Kavre"),
-        dummyData("Kiran Acharya","Cancer Hospital","O-","9823366044","2081-09-9","Cancer","Kalikot")
+        dummyData(
+            "Janak Khadka",
+            "KMC Hospital",
+            "A+",
+            "9865445343",
+            "2081-09-9",
+            "Brain tumour",
+            "Dhankuta"
+        ),
+        dummyData(
+            "Bishal Parajuli",
+            "Civil Hospital",
+            "B-",
+            "9869985795",
+            "2081-09-9",
+            "mental",
+            "Kavre"
+        ),
+        dummyData(
+            "Kiran Acharya",
+            "Cancer Hospital",
+            "O-",
+            "9823366044",
+            "2081-09-9",
+            "Cancer",
+            "Kalikot"
+        )
     )
 
     val event = listOf(
-        dummyEvent("NCIT College","Red Cross Society","KMC Hospital","9865445343"),
-        dummyEvent("Tinkune Ground","Ram Daii ko Pasal","Civil Hospital","9823366044")
+        dummyEvent(
+            "NCIT College",
+            "Red Cross Society",
+            "KMC Hospital",
+            "9865445343",
+            "This is an event organized to make normal people engaged into donation campaign."
+        ),
+        dummyEvent(
+            "Tinkune Ground",
+            "Ram Daii ko Pasal",
+            "Civil Hospital",
+            "9823366044",
+            "This is an event organized to donate the blood to the people into age group less than 10 years."
+        )
     )
 
 
 
 
-    LaunchedEffect(accessToken){
-        Log.d("accesstoken","$accessToken")
+    LaunchedEffect(accessToken) {
+        Log.d("accesstoken", "$accessToken")
 
     }
 
@@ -141,13 +186,18 @@ fun HomeScreen(navController : NavHostController ) {
     }
     Column() {
         TopBarTheme()
-        CustomTopBar(Icons.Default.Person, greetingText, "Kiran Acharya", "Blood Sewa",navController)
+        CustomTopBar(
+            Icons.Default.Person,
+            greetingText,
+            "Kiran Acharya",
+            "Blood Sewa",
+            navController
+        )
 
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(scrollState)
-            ,
+                .verticalScroll(scrollState),
             contentAlignment = Alignment.TopCenter
         ) {
             Column(
@@ -170,22 +220,22 @@ fun HomeScreen(navController : NavHostController ) {
                         .clip(shape = RoundedCornerShape(20.dp))
                         .background(Color.White)
                         .align(Alignment.CenterHorizontally)
-                        .clickable { 
+                        .clickable {
                             showDialogBox = true
                         }
 
 
                 ) {
-                   LazyRow {
-                       items(persons){person->
-                           PersonItem(person){
-                               selectedPatient = person
-                               showDialogBox = true
-                           }
+                    LazyRow {
+                        items(persons) { person ->
+                            PersonItem(person) {
+                                selectedPatient = person
+                                showDialogBox = true
+                            }
 
-                       }
+                        }
 
-                   }
+                    }
                 }
                 Spacer(modifier = Modifier.height(15.dp))
                 Text(
@@ -219,7 +269,7 @@ fun HomeScreen(navController : NavHostController ) {
                             IconWithLabel(Icons.Default.EventAvailable, "Events")
                             {
                                 navController.navigate(Screens.Events.route)
-                                Log.d("token","$accessToken")
+                                Log.d("token", "$accessToken")
                             }
                             IconWithLabel(Icons.Default.PersonAddAlt1, "Search Donor")
                             {
@@ -261,41 +311,53 @@ fun HomeScreen(navController : NavHostController ) {
                 Spacer(modifier = Modifier.height(10.dp))
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxWidth(.9f)
                         .height(200.dp)
                         .shadow(elevation = 50.dp)
                         .clip(shape = RoundedCornerShape(20.dp))
                         .background(Color.White)
                         .align(Alignment.CenterHorizontally)
+                        .clickable {
+                            eventDialog = true
+                        }
 
 
                 ) {
                     LazyRow {
-                        items(event){events->
-                            eventData(events)
+                        items(event) { eventItem ->
+                            EventData(eventItem){
+                                selectedEvent = eventItem
+                                eventDialog = true
+
+                            }
 
                         }
+
+
                     }
                 }
                 Spacer(modifier = Modifier.height(100.dp))
             }
         }
     }
-
-
-
 }
 
+
+
+
+
 @Composable
-fun eventData(events: dummyEvent) {
+fun EventData(events: dummyEvent,onClick: () -> Unit) {
 
     Box(
         modifier = Modifier.fillMaxSize()
             .height(100.dp)
+            .width(320.dp)
             .padding(10.dp)
             .clip(shape = RoundedCornerShape(16.dp))
             .background(lightGreen)
             .clickable {
+                onClick()
 
             },
         contentAlignment = Alignment.Center
@@ -303,7 +365,8 @@ fun eventData(events: dummyEvent) {
     ){
         Column(
             modifier = Modifier.fillMaxWidth()
-                .padding(start = 10.dp)
+                .padding(start = 10.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
         ){
             Text(text = "Venue : ${events.venue}",color = RedTop)
             Text(text = "Organized by : ${events.organized_by}")
@@ -440,13 +503,13 @@ fun IconWithLabel(icon: ImageVector, label: String,onClick :() ->Unit) {
 
 
 
-//
-//@Preview(showBackground =true)
-//@Composable
-//fun Preview(){
-//    val navController = rememberNavController()
-//    HomeScreen(navController = navController)
-//}
+
+@Preview(showBackground =true)
+@Composable
+fun Preview(){
+    val navController = rememberNavController()
+    HomeScreen(navController = navController)
+}
 
 
 @Composable
@@ -526,4 +589,66 @@ fun DialogBox(persons :dummyData){
         }
 
     }
+}
+
+
+
+@Composable
+fun EventDialog(events : dummyEvent){
+    Box(
+        modifier = Modifier.height(300.dp)
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(20.dp))
+            .background(Color.White),
+        contentAlignment = Alignment.TopStart
+    ){
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 10.dp,top =10.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+
+        ){
+            Text(text ="Venue: ${events.venue}")
+            Text(text ="Organized by:${events.organized_by}")
+            Text(text ="Contact: ${events.contact}")
+            Text(text ="Collaboration with: ${events.collaboration_with}")
+            Text(text ="Description: ${events.desc}")
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.BottomEnd
+            ){
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(end = 10.dp)
+                ) {
+                    Button(
+                        onClick = {},
+                        modifier = Modifier
+                            .shadow(elevation = 20.dp),
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(DarkGreen)
+                    ) {
+                        Text(text = "Call")
+                    }
+                    Button(
+                        onClick = {},
+                        modifier = Modifier
+                            .shadow(elevation = 20.dp),
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(blue)
+                    ) {
+                        Text(text = "Share")
+                    }
+                }
+            }
+
+
+
+
+        }
+
+    }
+
 }
