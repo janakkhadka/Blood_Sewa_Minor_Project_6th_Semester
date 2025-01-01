@@ -10,6 +10,7 @@
     scrollbar-width: none; 
     -ms-overflow-style: none;
     color: var(--secondary);
+    z-index: 2;
 }
 
 .home-wrapper .home-section{
