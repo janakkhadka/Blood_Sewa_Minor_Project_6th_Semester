@@ -1,6 +1,7 @@
 :root{
-    --text: #d5c9c9;
-}
+    --secondary: #d5c9c9;
+    --primary: rgb(160, 25, 25);
+  }
 
 .wrapper{
     width:100vw;
@@ -43,7 +44,7 @@
 .form-box-login .login-section{
     width: 50%;
     border-radius: 20px;
-    color:var(--text);
+    color: var(--secondary);
     padding: 40px;
 }
 .form-box-login .login-form{
@@ -55,7 +56,7 @@
     width: 100%;
     height: 50px;
     margin: 30px 0;
-    color:var(--text);
+    color:var(--secondary);
 }
 
 .form-box-login .input-box .icon{
@@ -64,13 +65,13 @@
     top: 50%;
     translate: 0 -50%;
     font-size: 16px;
-    color:var(--text);
+    color:var(--secondary);
 }
 
 .form-box-login form button{
     width: 100%;
     height: 45px;
-    background: #fff;
+    background: var(--secondary);
     border: none;
     outline: none;
     border-radius: 40px;
@@ -85,7 +86,7 @@ form .remember-forgot{
     justify-content: space-between;
     font-size: 14.5px;
     margin: -15px 0 15px;
-    color:var(--text);
+    color: var(--secondary);
 }
 
 .remember-forgot label input{
@@ -98,7 +99,7 @@ form .remember-forgot{
     color: black;
     text-decoration: none;
     font-weight: 600;
-    color:var(--text);
+    color: var(--secondary);
 }
 
 .remember-forgot a:hover{
@@ -107,7 +108,7 @@ form .remember-forgot{
 
 .login-form .account-type{
     margin-bottom: 35px;
-    color:var(--text);
+    color: var(--secondary);
 }
 
 .login-form .account-type input{
@@ -126,14 +127,14 @@ form .register-link{
     font-size: 14.5px;
     text-align: center;
     margin: 20px 0 15px;
-    color: var(--text)
+    color: var(--secondary);
 }
 
 .register-link p a{
     color:black;
     text-decoration: none;
     font-weight: 600;
-    color: var(--text)
+    color: var(--secondary);
 }
 
 .register-link p a:hover{
@@ -165,12 +166,12 @@ form .register-link{
     width: 100%;
     height: 30px;
     margin: 30px 0;
-    color:var(--text);
+    color: var(--secondary);
 }
 
 .registration-form .organization-type{
     margin-top: 30px;
-    color:var(--text);
+    color: var(--secondary);
 }
 
 .registration-form .organization-type input{
@@ -189,7 +190,7 @@ form .register-link{
     height: 30px;
     margin: 30px 0;
     margin-bottom: 0;
-    color: var(--text);
+    color: var(--secondary);
 }
 
 .registration-form .input-document input{
@@ -202,7 +203,7 @@ form .register-link{
     top: 50%;
     translate: 0 -20%;
     font-size: 16px;
-    color:var(--text);
+    color: var(--secondary);
 }
 
 .form-box-registration .terms-and-conditions{
@@ -212,7 +213,7 @@ form .register-link{
     margin-top: 10px;
     margin-bottom: 40px;
     font-size: 14.5px;
-    color:var(--text);
+    color: var(--secondary);
 }
 
 .form-box-registration .terms-and-conditions input{
@@ -220,7 +221,7 @@ form .register-link{
     accent-color: black;
 }
 .form-box-registration .terms-and-conditions a{
-    color:var(--text);
+    color: var(--secondary);
     text-decoration: none;
     font-weight: 600;
 }
@@ -244,7 +245,7 @@ form .register-link{
 .form-box-registration form button{
     width: 50%;
     height: 45px;
-    background: #fff;
+    background: var(--secondary);;
     border: none;
     outline: none;
     border-radius: 40px;
@@ -253,20 +254,21 @@ form .register-link{
     font-size: 16px;
     font-weight: 700;
     margin: auto;
+    color: var(--primary)
 }
 
 form .login-link{
     font-size: 14.5px;
     text-align: center;
     margin: 20px 0 15px;
-    color: var(--text)
+    color: var(--secondary);
 }
 
 .login-link p a{
     color:black;
     text-decoration: none;
     font-weight: 600;
-    color: var(--text)
+    color: var(--secondary);
 }
 
 .loginr-link p a:hover{
@@ -299,7 +301,7 @@ form .login-link{
     width: 100%;
     height: 30px;
     margin: 30px 0;
-    color:var(--text);
+    color: var(--secondary);
 }
 
 .user-form .drop-down-box{
@@ -307,7 +309,7 @@ form .login-link{
     height: 30px;
     width: 100%;
     margin: 30px 0;
-    color:var(--text);
+    color: var(--secondary);
 }
 
 .drop-down-box .icon{
@@ -324,7 +326,7 @@ form .login-link{
     display: flex;
     align-items: center;
     width: 100%;
-    color:var(--text);
+    color: var(--secondary);
 }
 
 .dob-box .dob-label{
@@ -334,7 +336,7 @@ form .login-link{
 .dob-box .date-picker{
     width: 100%;
     background: transparent;
-    color:var(--text);
+    color: var(--secondary);
     border: 1px solid rgba(255,255,255,.1);
     /* border: 1px solid var(--text); */
     outline: none;
@@ -353,7 +355,7 @@ form .login-link{
 
 .user-form .gender{
     margin-top: 20px;
-    color:var(--text);
+    color: var(--secondary);
 }
 
 .user-form .gender input{
@@ -376,7 +378,7 @@ form .login-link{
     height: 30px;
     margin: 30px 0;
     margin-bottom: 0;
-    color: var(--text);
+    color: var(--secondary);
 }
 
 .user-form .input-document input{
@@ -389,7 +391,7 @@ form .login-link{
     top: 50%;
     translate: 0 -20%;
     font-size: 16px;
-    color:var(--text);
+    color: var(--secondary);
 }
 
 .form-box-user-registration .terms-and-conditions{
@@ -399,7 +401,7 @@ form .login-link{
     margin-top: 10px;
     margin-bottom: 40px;
     font-size: 14.5px;
-    color:var(--text);
+    color:var(--secondary);
 }
 
 .form-box-user-registration .terms-and-conditions input{
@@ -407,7 +409,7 @@ form .login-link{
     accent-color: black;
 }
 .form-box-user-registration .terms-and-conditions a{
-    color:var(--text);
+    color: var(--secondary);
     text-decoration: none;
     font-weight: 600;
 }
@@ -431,7 +433,7 @@ form .login-link{
 .form-box-user-registration form button{
     width: 50%;
     height: 45px;
-    background: #fff;
+    background: var(--secondary);
     border: none;
     outline: none;
     border-radius: 40px;
@@ -440,19 +442,20 @@ form .login-link{
     font-size: 16px;
     font-weight: 700;
     margin: auto;
+    color: var(--primary)
 }
 form .login-link{
     font-size: 14.5px;
     text-align: center;
     margin: 20px 0 15px;
-    color: var(--text)
+    color: var(--secondary);
 }
 
 .login-link p a{
     color:black;
     text-decoration: none;
     font-weight: 600;
-    color: var(--text)
+    color: var(--secondary);
 }
 
 .login-link p a:hover{
@@ -464,7 +467,7 @@ form .login-link{
 form h1{
     font-size: 36px;
     text-align: center;
-    color:var(--text);
+    color:var(--secondary);;
 }
 
 .input-box input{
@@ -477,11 +480,11 @@ form h1{
     border-radius: 40px;
     font-size: 16px;
     padding: 20px 45px 20px 20px;
-    color: var(--text);
+    color: var(--secondary);;
 }
 
 .input-box input::placeholder{
-    color:var(--text);
+    color: var(--secondary);;
 }
 
 

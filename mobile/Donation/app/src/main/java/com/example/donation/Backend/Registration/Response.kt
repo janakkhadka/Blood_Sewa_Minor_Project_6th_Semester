@@ -1,4 +1,4 @@
-package com.example.donation.Backend.Registration
+package com.example.donation.backend.registration
 
 data class PostResponse(
     val success : Boolean,

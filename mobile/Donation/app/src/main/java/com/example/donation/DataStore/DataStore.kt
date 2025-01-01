@@ -1,6 +1,7 @@
 package com.example.donation.datastore
 
 import android.content.Context
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -14,6 +15,18 @@ class DataStoreManager(private val context: Context) {
         private val Context.dataStore by preferencesDataStore(name = "user_preferences")
         val ACCESS_TOKEN = stringPreferencesKey("access_token")
         val REFRESH_TOKEN = stringPreferencesKey("refresh_token")
+        val LOGIN_STATUS = booleanPreferencesKey("loginStatus")
+    }
+
+    //status checking of user
+    val getStatus : Flow<Boolean?> = context.dataStore.data
+        .map { preferences ->
+            preferences[LOGIN_STATUS]?:false
+        }
+    suspend fun saveStatus(value : Boolean){
+        context.dataStore.edit { preferences->
+            preferences[LOGIN_STATUS] = value
+        }
     }
 
     //get saved access token

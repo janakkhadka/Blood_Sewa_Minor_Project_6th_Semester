@@ -1,8 +1,7 @@
 package com.example.donation.MoreItems
 
 
-import android.os.Build
-import androidx.annotation.RequiresApi
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -39,7 +38,6 @@ import com.example.donation.BottomNavBar.TopBarTheme
 import com.example.donation.ui.theme.dRed
 
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SearchDonors(navController : NavHostController) {
     val scrollState = rememberScrollState()

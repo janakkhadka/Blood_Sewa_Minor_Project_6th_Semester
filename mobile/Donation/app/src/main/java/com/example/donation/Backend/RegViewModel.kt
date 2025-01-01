@@ -3,7 +3,8 @@ package com.example.donation.backend
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.donation.Backend.Login.LoginRequest
+import com.example.donation.backend.login.LoginRequest
+import com.example.donation.backend.registration.Registration
 import com.example.donation.datastore.DataStoreManager
 import kotlinx.coroutines.launch
 
@@ -19,11 +20,12 @@ class RegViewModel(private val dataStore : DataStoreManager) : ViewModel() {
         province: String,
         email: String,
         password: String,
+        dob : String,
         onResult: (String) -> Unit
     ) {
         viewModelScope.launch {
             try {
-                val request = Registration(username, phoneNumber, bloodGroup, district, province, email, password)
+                val request = Registration(username, phoneNumber, bloodGroup, district, province, email, password,dob)
                 val response = UserRegistration.authService.registerUser(request)
 
                 if (response.isSuccessful) {

@@ -1,0 +1,57 @@
+/* General Page Styling */
+
+:root{
+    --secondary: #d5c9c9;
+    --primary: rgb(160, 25, 25);
+  }
+  
+    .homepage-navigation-bar {
+      position: fixed;
+      top: 0;
+      width:100vw;
+      z-index: 3 !important;
+    }
+    
+    .homepage-navigation-bar .homepage-navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: transparent;
+      padding: 10px 20px;
+      color: var(--text);
+      z-index: 2;
+      backdrop-filter: blur(5px);
+      box-shadow: 0px 0px 50px rgba(119, 81, 81, 0.6);
+      /* border:2px solid rgba(255,255,255,.1); */
+    }
+    
+    .homepage-navbar-left h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .homepage-navbar-right{
+      color: var(--secondary);
+      font-size: 18px;
+      display: flex;
+      flex-direction: row;
+      gap: 155px;
+    }
+
+    .homepage-navbar-right-left a{
+        padding: 0 15px;
+    }
+  
+    .homepage-navbar-right a{
+      color: var(--secondary);
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    .homepage-navbar-right a:hover{
+      text-decoration: underline;
+    }
+  
+    
+  
+    

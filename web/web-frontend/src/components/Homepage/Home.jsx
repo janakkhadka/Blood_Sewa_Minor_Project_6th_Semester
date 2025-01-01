@@ -1,18 +1,42 @@
-import React from "react";
+import React,{useState} from "react";
 
 import './Home.css'
 
-import { FaHeart } from "react-icons/fa6";
-import { MdOutlineAccessTimeFilled, MdOutlineDone, MdBloodtype  } from "react-icons/md";
+import { FaHeart, FaSyringe, FaGlassWater } from "react-icons/fa6";
+import { MdOutlineAccessTimeFilled, MdDone, MdBloodtype } from "react-icons/md";
 import { HiUserGroup } from "react-icons/hi";
 import { RxCross2 } from "react-icons/rx";
+import { GiChickenOven } from "react-icons/gi";
+import { MdOutlineSmokeFree } from "react-icons/md";
+import { FaRunning, FaHandHoldingWater } from "react-icons/fa";
+import { IoIosArrowDropdownCircle } from "react-icons/io";
+
+import Select from 'react-select';
+import customStyles from '../LoginRegistration/ReactSelectStyle';
+
 
 import CustomSlider from '../Utils/CustomImageSlider/CustomSlider'
 import { imageList } from "../Utils/CustomImageSlider/ImageList";
-
-
+import { bloodInfoList, bloodTypeList, } from "../Utils/DataList";
 
 function Home() {
+  const [bloodType, setBloodType] = useState("")
+  const [bloodInfo, setBloodInfo] = useState("")
+  const handleBloodTypeChange = (option) => {
+    setBloodType(option);
+
+    const selectedBloodInfo = bloodInfoList.find(
+      (bloodInfo) => option.value === bloodInfo.bloodType
+    );
+
+    const updatedBloodInfo = selectedBloodInfo
+    ? selectedBloodInfo.canDonate
+    : "";
+
+    setBloodInfo(updatedBloodInfo)
+  };
+  
+
   return (
     <div className="home-wrapper">
       <div className="home-section">
@@ -24,36 +48,85 @@ function Home() {
             </div>
           </section>
           <section className="left-bottom">
-            <div className="left-bottom-criteria">
+            <div className="blood-info-wrapper">
               <div className="h3">
                 <MdBloodtype className="icon"/>
+                <h3>Blood Type Info</h3>
+              </div>
+              <div className="drop-down-box">
+                <Select
+                  value = {bloodType}
+                  onChange={handleBloodTypeChange}
+                  options={bloodTypeList}
+                  styles={customStyles}
+                  placeholder="Select Blood Group"
+                  isSearchable={false}
+                />
+                <IoIosArrowDropdownCircle className='icon'/>
+              </div>
+              <div className="info-show">
+                <span>{bloodInfo}</span>
+              </div>
+            </div>
+            <div className="eligibility-wrapper">
+              <div className="h3">
+                <FaSyringe className="icon"/>
                 <h3>Eligibility Criteria</h3>
               </div>
-              <ul style={{listStyleType:"none"}}>
-                <div className="criteria-list">
-                  <MdOutlineDone />
-                  <li>Be at least 17 years old</li>
-                </div>
-                <div className="criteria-list">
-                  <MdOutlineDone />
-                  <li>Weigh at least 110 pounds</li>
-                </div>
-                <div className="criteria-list">
-                  <MdOutlineDone />
-                  <li>Be in good health</li>
-                </div>
-                <div className="criteria-list">
-                  <RxCross2/>
-                  <li>Have a recent tattoo (less than 3 months old)</li>
-                </div>
-                <div className="criteria-list">
-                  <RxCross2/>
-                  <li>Have a cold or flu</li>
-                </div>
-              </ul>
+              <div className="eligibility-message">
+                <ul style={{listStyleType:"none"}}>
+                  <div className="eligibility-list">
+                    <MdDone/>
+                    <li>Be at least 17 years old</li>
+                  </div>
+                  <div className="eligibility-list">
+                    <MdDone/>
+                    <li>Weigh at least 110 pounds</li>
+                  </div>
+                  <div className="eligibility-list">
+                    <MdDone/>
+                    <li>Be in good health</li>
+                  </div>
+                  <div className="eligibility-list">
+                    <RxCross2/>
+                    <li>Have a recent tattoo (less than 3 months old)</li>
+                  </div>
+                  <div className="eligibility-list">
+                    <RxCross2/>
+                    <li>Have a cold or flu</li>
+                  </div>
+                </ul>
+              </div>
             </div>
-            <div className="contact-us">
-
+            <div className="blood-health-wrapper">
+              <div className="h3">
+                <MdBloodtype className="icon"/>
+                <h3>Blood Health Overview</h3>
+              </div>
+              <div className="health-message">
+                <ul style={{listStyleType:"none"}}>
+                  <div className="health-list">
+                    <FaRunning/>
+                    <li>Exercise regularly to improve blood flow</li>
+                  </div>
+                  <div className="health-list">
+                    <MdOutlineSmokeFree/>
+                    <li>Avoid smoking and limit alcohol consumption</li>
+                  </div>
+                  <div className="health-list">
+                    <FaHandHoldingWater/>
+                    <li>Donate blood periodically</li>
+                  </div>
+                  <div className="health-list">
+                    <FaGlassWater/>
+                    <li>Stay hydrated to maintain blood volume</li>
+                  </div>
+                  <div className="health-list">
+                    <GiChickenOven/>
+                    <li>Eat iron-rich foods like red meat, legumes</li>
+                  </div>
+                </ul>
+              </div>
             </div>
           </section>
         </div>
