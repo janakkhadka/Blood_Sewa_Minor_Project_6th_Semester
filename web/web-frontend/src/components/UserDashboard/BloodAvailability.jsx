@@ -74,7 +74,7 @@ function BloodAvailability() {
                         value = {selectedProvince}
                         onChange={handleProvinceChange}
                         options={provinceList}
-                        styles={customStyles}
+                        styles={customStyles()}
                         placeholder="Koshi Province"
                         isSearchable={false}
                     />
@@ -86,7 +86,7 @@ function BloodAvailability() {
                         value = {selectedHospital}
                         onChange={handleHospitalChange}
                         options={hospitalOptions}
-                        styles={customStyles}
+                        styles={customStyles()}
                         placeholder={
                         selectedProvince ? "Select a Hospital" : "BPKIHS Dharan"
                         }
