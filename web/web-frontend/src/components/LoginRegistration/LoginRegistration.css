@@ -1,4 +1,7 @@
-
+:root{
+    --secondary: #d5c9c9;
+    --primary: rgb(160, 25, 25);
+  }
 
 .wrapper{
     width:100vw;

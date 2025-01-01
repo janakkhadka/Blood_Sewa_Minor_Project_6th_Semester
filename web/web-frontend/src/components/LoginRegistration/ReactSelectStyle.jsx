@@ -13,16 +13,17 @@ const customStyles = {
         borderRadius: '40px',
         fontSize: '16px',
         padding: '7px 45px 5px 10px',
-        color: '#d5c9c9' 
+        color: 'rgb(160, 25, 25)' 
         
     }),
     option: (provided) => ({
         ...provided,
+        color:'rgb(160, 25, 25)',
         backgroundColor: 'transparent',
         padding:'10px 0px 10px 20px',
         '&:hover':{
             backgroundColor: '#d5c9c9',
-            color: '#1e90ff;'
+            color: 'rgb(160, 25, 25);'
         }, 
 
     }),
@@ -35,7 +36,7 @@ const customStyles = {
         ...provided,
         position:'absolute',
         background: 'transparent',
-        backdropFilter: 'blur(5px)',
+        backdropFilter: 'blur(15px)',
         boxShadow: '0px 0px 50px rgba(119, 81, 81, 0.6)',
         borderRadius: '20px'  
       }), 
@@ -43,16 +44,16 @@ const customStyles = {
 
     menuList: (provided) => ({
         ...provided,
-        scrollbarWidth: 'none', // Firefox
-        msOverflowStyle: 'none', // Internet Explorer
+        scrollbarWidth: 'none', 
+        msOverflowStyle: 'none', 
         '&::-webkit-scrollbar': {
-          display: 'none', // Chrome, Safari, Opera
+          display: 'none',
         },
     }),
 
       
     indicatorSeparator: () => ({
-      display: 'none', // Hides the separator between the arrow and the select box
+      display: 'none',
     }),
     dropdownIndicator: (provided) => ({
       ...provided,
@@ -60,7 +61,7 @@ const customStyles = {
     }),
     placeholder: (provided) => ({
         ...provided,
-        color: '#d5c9c9'  // Change placeholder color to gray (or any color you like)
+        color: '#d5c9c9' 
       }),
 };
   

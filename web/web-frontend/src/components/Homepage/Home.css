@@ -35,7 +35,7 @@
     flex-direction: column;
     gap: 5px;
     width:470px;
-    height: 80px;
+    height: 60px;
 }
 
 .home-left-section .typing-container{
@@ -66,12 +66,49 @@
       border-color: var(--primary);
     }
   }
-
+/* left bottom */
 .home-left-section .left-bottom{
     display: flex;
     flex-direction: column;
     gap: 25px;
 }
+.left-bottom .blood-info-wrapper{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 480px;
+    height: 144px;
+    border: 2px solid rgba(255,255,255,.1);
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(119, 81, 81, 0.6);
+    backdrop-filter: blur(5px);
+    background-color: transparent;
+    padding: 15px;
+    padding-top: 10px;
+    z-index: 3;
+}
+
+.blood-info-wrapper .drop-down-box{
+    position: relative;
+    height: 30px;
+    width: 100%;
+    color: var(--secondary);
+}
+
+.blood-info-wrapper .drop-down-box .icon{
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    translate: 0 -20%;
+    font-size: 16px;
+    pointer-events: none;
+}
+
+.blood-info-wrapper .info-show{
+    margin-top: 10px;
+}
+
 
 .left-bottom .eligibility-wrapper{
     display: flex;
@@ -83,12 +120,13 @@
     backdrop-filter: blur(5px);
     background-color: var(--secondary);
     color: var(--primary);
-    height:190px;
+    height:178px;
     width:480px;
-    padding:15px;
+    padding:0 15px;
+    padding-top: 10px;
 }
 
-.eligibility-wrapper .h3{
+.left-bottom .h3{
     display: flex;
     flex-direction: row;
     gap: 15px;
@@ -111,6 +149,37 @@
     gap: 10px;
     align-items: center;
 }
+
+/* bottom left ko blood health message ho */
+.left-bottom .blood-health-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    border: 2px solid rgba(255,255,255,.1);
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px rgba(119, 81, 81, 0.6);
+    backdrop-filter: blur(5px);
+    background-color: var(--secondary);
+    color: var(--primary);
+    height:178px;
+    width:480px;
+    padding:0 15px;
+    padding-top: 10px;
+}
+
+.blood-health-wrapper .health-message{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.health-message .health-list{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+
 
 
 
