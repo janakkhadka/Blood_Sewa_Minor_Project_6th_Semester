@@ -2,9 +2,10 @@ import React from "react";
 
 import './Home.css'
 
-import { FaHeart } from "react-icons/fa6";
-import { MdOutlineAccessTimeFilled } from "react-icons/md";
+import { FaHeart, FaSyringe } from "react-icons/fa6";
+import { MdOutlineAccessTimeFilled, MdDone } from "react-icons/md";
 import { HiUserGroup } from "react-icons/hi";
+import { RxCross2 } from "react-icons/rx";
 
 import CustomSlider from '../Utils/CustomImageSlider/CustomSlider'
 import { imageList } from "../Utils/CustomImageSlider/ImageList";
@@ -21,7 +22,36 @@ function Home() {
             </div>
           </section>
           <section className="left-bottom">
-
+            <div className="eligibility-wrapper">
+              <div className="h3">
+                <FaSyringe className="icon"/>
+                <h3>Eligibility Criteria</h3>
+              </div>
+              <div className="eligibility-message">
+                <ul style={{listStyleType:"none"}}>
+                  <div className="eligibility-list">
+                    <MdDone/>
+                    <li>Be at least 17 years old</li>
+                  </div>
+                  <div className="eligibility-list">
+                    <MdDone/>
+                    <li>Weigh at least 110 pounds</li>
+                  </div>
+                  <div className="eligibility-list">
+                    <MdDone/>
+                    <li>Be in good health</li>
+                  </div>
+                  <div className="eligibility-list">
+                    <RxCross2/>
+                    <li>Have a recent tattoo (less than 3 months old)</li>
+                  </div>
+                  <div className="eligibility-list">
+                    <RxCross2/>
+                    <li>Have a cold or flu</li>
+                  </div>
+                </ul>
+              </div>
+            </div>
           </section>
         </div>
         <div className="home-right-section">

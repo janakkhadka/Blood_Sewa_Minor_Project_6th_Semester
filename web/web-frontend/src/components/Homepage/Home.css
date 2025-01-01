@@ -35,7 +35,7 @@
     flex-direction: column;
     gap: 5px;
     width:470px;
-    height: 390px;
+    height: 80px;
 }
 
 .home-left-section .typing-container{
@@ -66,6 +66,52 @@
       border-color: var(--primary);
     }
   }
+
+.home-left-section .left-bottom{
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.left-bottom .eligibility-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    border: 2px solid rgba(255,255,255,.1);
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px rgba(119, 81, 81, 0.6);
+    backdrop-filter: blur(5px);
+    background-color: var(--secondary);
+    color: var(--primary);
+    height:190px;
+    width:480px;
+    padding:15px;
+}
+
+.eligibility-wrapper .h3{
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    align-items: center;
+}
+
+.h3 .icon{
+    font-size: 28px;
+}
+
+.eligibility-wrapper .eligibility-message{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.eligibility-message .eligibility-list{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+
 
 
 
