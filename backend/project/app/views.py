@@ -316,10 +316,10 @@ class CheckInView(APIView):
             if user_event.checked_in:
                 return Response({"error": "Already checked in."}, status=status.HTTP_400_BAD_REQUEST)
 
-            # Simulate QR code validation (can be replaced with actual QR scanning logic)
-            scanned_slug = request.data.get("scanned_slug")
-            if scanned_slug != event.slug:
-                return Response({"error": "Invalid QR code."}, status=status.HTTP_400_BAD_REQUEST)
+            # # Simulate QR code validation (can be replaced with actual QR scanning logic)
+            # scanned_slug = request.data.get("scanned_slug")
+            # if scanned_slug != event.slug:
+            #     return Response({"error": "Invalid QR code."}, status=status.HTTP_400_BAD_REQUEST)
 
             user_event.checked_in = True
             user_event.save()
@@ -352,7 +352,6 @@ class UserJoinedEventHistoryView(APIView):
                     "name": ue.event.name,
                     "description": ue.event.description,
                     "location": ue.event.location,
-                    "date": ue.event.date,
                     "joined_on": ue.event.date,
                 },  
             }

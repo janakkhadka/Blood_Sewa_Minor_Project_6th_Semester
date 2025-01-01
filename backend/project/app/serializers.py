@@ -130,7 +130,7 @@ class EventSerializer(serializers.ModelSerializer):
     organizer = serializers.SerializerMethodField()
     class Meta:
         model = Event
-        fields = [ 'name', 'description', 'location', 'date', 'organizer', 'qr_code']
+        fields = [ 'name', 'description', 'location', 'date', 'organizer', 'qr_code' , 'slug']
         read_only_fields = ['organizer', 'qr_code']
 
     def get_organizer(self, obj):

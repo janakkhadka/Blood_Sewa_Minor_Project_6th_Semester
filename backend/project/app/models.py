@@ -119,27 +119,49 @@ class Event(models.Model):
     slug = models.SlugField(unique=True, blank=True, null=True)
     description = models.TextField()
     location = models.CharField(max_length=255)
-    date = models.DateTimeField()
+    date = models.DateField()
     organizer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="organized_events")
     qr_code = models.ImageField(upload_to="qrcodes/", blank=True, null=True)
     attendee_count = models.PositiveIntegerField(default=0)
 
     def save(self, *args, **kwargs):
+        # Automatically generate a unique slug if not provided
+        if not self.slug:
+            base_slug = slugify(self.name)
+            unique_slug = base_slug
+            counter = 1
+
+            # Ensure the slug is unique
+            while Event.objects.filter(slug=unique_slug).exists():
+                unique_slug = f"{base_slug}-{counter}"
+                counter += 1
+
+            self.slug = unique_slug
+
+        # Generate QR code if not already generated
         if not self.qr_code:
             qr = qrcode.QRCode(version=1, box_size=10, border=5)
-            qr.add_data(f"event_slug:{self.slug}")
+            qr.add_data(f"event_slug:{self.slug}")  # QR code data contains the unique slug
             qr.make(fit=True)
             img = qr.make_image(fill="black", back_color="white")
             buffer = BytesIO()
+
+            # Use sanitized event name for the QR code filename
+            sanitized_name = slugify(self.name)  # Converts the name to a safe format
+            filename = f"{sanitized_name}.png"  # Event name as the filename
+
             img.save(buffer, "PNG")
             buffer.seek(0)
-            filename = f"event_{self.id}_qr.png"
-            self.qr_code.save(filename, File(buffer), save=False)
+            self.qr_code.save(filename, File(buffer), save=False)  # Save without calling super().save yet
             buffer.close()
+
+        # Call the parent class's save method to persist the event
         super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
+
+
 
 class UserEvent(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
