@@ -1,2 +1,0 @@
-def kale():
-    return True
