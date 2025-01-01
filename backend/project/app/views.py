@@ -1,3 +1,4 @@
+from django.http import HttpResponse, Http404
 from django.contrib.auth import authenticate
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
@@ -17,6 +18,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from .utils import UserFilter , DistrictFilter
 from .models import User, BloodRequestModel , Event , UserEvent
+import os
 from .serializers import (UserSerializer, LoginSerializer, UserProfileUpdateSerializer, BloodRequestSerializer , LimitedUserSerializer , EventSerializer , UserEventSerializer)
 
 
@@ -357,3 +359,22 @@ class UserJoinedEventHistoryView(APIView):
             for ue in user_events
         ]
         return Response(data, status=status.HTTP_200_OK)
+
+
+
+def qr_code_view(request, filename):
+    # Define the directory where QR codes are stored
+    qr_code_dir = os.path.join(settings.MEDIA_ROOT, 'qrcodes')
+    
+    # Construct the full file path
+    file_path = os.path.join(qr_code_dir, filename)
+    
+    # Check if the file exists
+    if not os.path.exists(file_path):
+        raise Http404("QR code file not found.")
+    
+    # Open the file and return it as a response
+    with open(file_path, 'rb') as file:
+        response = HttpResponse(file.read(), content_type="image/png")
+        response['Content-Disposition'] = f'inline; filename="{filename}"'
+        return response
