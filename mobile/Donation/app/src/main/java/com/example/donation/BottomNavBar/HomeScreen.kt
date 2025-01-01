@@ -1,7 +1,10 @@
 package com.example.donation.BottomNavBar
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -595,6 +598,8 @@ fun DialogBox(persons :dummyData){
 
 @Composable
 fun EventDialog(events : dummyEvent){
+    val context = LocalContext.current
+    val contentToShare = "${events.venue}\n${events.contact}\n${events.organized_by}\n${events.collaboration_with}\n${events.desc}"
     Box(
         modifier = Modifier.height(300.dp)
             .fillMaxWidth()
@@ -624,7 +629,20 @@ fun EventDialog(events : dummyEvent){
                     modifier = Modifier.padding(end = 10.dp)
                 ) {
                     Button(
-                        onClick = {},
+                        onClick = {
+                            if(events.contact.isNotEmpty()){
+                            val intent = Intent(Intent.ACTION_DIAL).apply {
+                                data = Uri.parse("9865445343")
+                                }
+                            try {
+                                context.startActivity(intent)
+                            }catch (e : Exception){
+                                Log.e("Err","${e.message}")
+                            }
+                        }else{
+                                Toast.makeText(context, "Invalid phone number", Toast.LENGTH_SHORT).show()
+                            }
+                        },
                         modifier = Modifier
                             .shadow(elevation = 20.dp),
                         shape = RoundedCornerShape(10.dp),
@@ -633,7 +651,18 @@ fun EventDialog(events : dummyEvent){
                         Text(text = "Call")
                     }
                     Button(
-                        onClick = {},
+
+
+                        onClick = {
+                            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                                type = "text/plain"
+                                putExtra(Intent.EXTRA_TEXT,contentToShare)
+
+                            }
+                            val chooserIntent = Intent.createChooser(shareIntent,"share via")
+                            context.startActivity(chooserIntent)
+
+                        },
                         modifier = Modifier
                             .shadow(elevation = 20.dp),
                         shape = RoundedCornerShape(10.dp),
