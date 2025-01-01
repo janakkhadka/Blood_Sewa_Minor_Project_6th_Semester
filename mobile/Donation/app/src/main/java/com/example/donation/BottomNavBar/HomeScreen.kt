@@ -6,33 +6,50 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddLocation
+import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.CalendarToday
+import androidx.compose.material.icons.filled.Deck
 import androidx.compose.material.icons.filled.EventAvailable
 import androidx.compose.material.icons.filled.FindInPage
 import androidx.compose.material.icons.filled.LocalHospital
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PersonAddAlt1
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.PlaylistAdd
+import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,24 +58,73 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.donation.Navigation.Screens
+import com.example.donation.R
 import com.example.donation.datastore.DataStoreManager
+import com.example.donation.ui.theme.DarkGreen
 import com.example.donation.ui.theme.RedThemeTop
+import com.example.donation.ui.theme.RedTop
+import com.example.donation.ui.theme.blue
+import com.example.donation.ui.theme.dRed
+import com.example.donation.ui.theme.lightGreen
 import java.time.LocalTime
 
 
+//dummy data
+data class dummyData(
+    val name : String,
+    val location : String,
+    val blood_group : String,
+    val contact : String,
+    val time : String,
+    val case : String,
+    val district : String
+)
 
+data class dummyEvent(
+    val venue : String,
+    val organized_by : String,
+    val collaboration_with : String,
+    val contact : String
+)
 @Composable
 fun HomeScreen(navController : NavHostController ) {
+    var showDialogBox  by remember { mutableStateOf(false) }
+    var selectedPatient by remember { mutableStateOf<dummyData?>(null) }
+    if (showDialogBox && selectedPatient != null) {
+        Dialog(onDismissRequest = { showDialogBox = false }) {
+            DialogBox(persons = selectedPatient!!)
+        }
+    }
+
+
+
     val scrollState = rememberScrollState()
     val context = LocalContext.current
     val dataStoreManager = DataStoreManager(context)
     val accessToken by dataStoreManager.getAccessToken.collectAsState(initial = null)
+
+    //dummy variables for the Urgent Requests and event happening
+    val persons = listOf(
+        dummyData("Janak Khadka","KMC Hospital","A+","9865445343","2081-09-9","Brain tumour","Dhankuta"),
+        dummyData("Bishal Parajuli","Civil Hospital","B-","9869985795","2081-09-9","mental","Kavre"),
+        dummyData("Kiran Acharya","Cancer Hospital","O-","9823366044","2081-09-9","Cancer","Kalikot")
+    )
+
+    val event = listOf(
+        dummyEvent("NCIT College","Red Cross Society","KMC Hospital","9865445343"),
+        dummyEvent("Tinkune Ground","Ram Daii ko Pasal","Civil Hospital","9823366044")
+    )
+
+
+
 
     LaunchedEffect(accessToken){
         Log.d("accesstoken","$accessToken")
@@ -104,9 +170,22 @@ fun HomeScreen(navController : NavHostController ) {
                         .clip(shape = RoundedCornerShape(20.dp))
                         .background(Color.White)
                         .align(Alignment.CenterHorizontally)
+                        .clickable { 
+                            showDialogBox = true
+                        }
+
 
                 ) {
-                    //urgent request haru main home page ma dekhaune paryo vhane yeta dekhune ho
+                   LazyRow {
+                       items(persons){person->
+                           PersonItem(person){
+                               selectedPatient = person
+                               showDialogBox = true
+                           }
+
+                       }
+
+                   }
                 }
                 Spacer(modifier = Modifier.height(15.dp))
                 Text(
@@ -167,7 +246,7 @@ fun HomeScreen(navController : NavHostController ) {
                             {
                                 navController.navigate(Screens.Events.route)
                             }
-                            IconWithLabel(Icons.Default.EventAvailable, "Other Events")
+                            IconWithLabel(Icons.Default.Schedule, "Your Schedules")
                             {
                                 navController.navigate(Screens.Events.route)
                             }
@@ -182,21 +261,159 @@ fun HomeScreen(navController : NavHostController ) {
                 Spacer(modifier = Modifier.height(10.dp))
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth(.9f)
+                        .fillMaxWidth()
                         .height(200.dp)
                         .shadow(elevation = 50.dp)
                         .clip(shape = RoundedCornerShape(20.dp))
                         .background(Color.White)
                         .align(Alignment.CenterHorizontally)
-                        .padding(bottom = 60.dp)
+
 
                 ) {
-                    //urgent request haru main home page ma dekhaune paryo vhane yeta dekhune ho
+                    LazyRow {
+                        items(event){events->
+                            eventData(events)
+
+                        }
+                    }
                 }
                 Spacer(modifier = Modifier.height(100.dp))
             }
         }
     }
+
+
+
+}
+
+@Composable
+fun eventData(events: dummyEvent) {
+
+    Box(
+        modifier = Modifier.fillMaxSize()
+            .height(100.dp)
+            .padding(10.dp)
+            .clip(shape = RoundedCornerShape(16.dp))
+            .background(lightGreen)
+            .clickable {
+
+            },
+        contentAlignment = Alignment.Center
+
+    ){
+        Column(
+            modifier = Modifier.fillMaxWidth()
+                .padding(start = 10.dp)
+        ){
+            Text(text = "Venue : ${events.venue}",color = RedTop)
+            Text(text = "Organized by : ${events.organized_by}")
+            Text(text = "Collaboration with : ${events.collaboration_with}")
+            Text(text = "Contact : ${events.contact}")
+
+
+        }
+
+
+
+
+    }
+
+}
+
+
+@Composable
+fun PersonItem(person: dummyData,onClick : () -> Unit) {
+    Box(
+        modifier = Modifier
+            .height(200.dp)
+            .width(320.dp)
+            .padding(10.dp)
+            .clip(shape = RoundedCornerShape(16.dp))
+            .background(lightGreen)
+            .clickable { onClick() },
+        contentAlignment = Alignment.Center
+
+    ){
+        Row(
+            modifier = Modifier.fillMaxWidth()
+                .padding(start = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start
+        ){
+            Box(
+                modifier = Modifier
+                    .size(50.dp)
+                    .clip(CircleShape)
+                    .background(dRed),
+                contentAlignment = Alignment.Center
+            ){
+                Text(person.blood_group, color = Color.White, fontSize = 22.sp)
+
+            }
+            Spacer(modifier = Modifier.width(6.dp))
+
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                Text(text = " ${person.name}", fontSize = 22.sp)
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(start = 10.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        imageVector = Icons.Default.LocalHospital,
+                        contentDescription = ""
+                    )
+                    Text(text = person.location)
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(start = 10.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        imageVector = Icons.Default.Place,
+                        contentDescription = ""
+                    )
+                    Text(text = person.district)
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(start = 10.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        imageVector = Icons.Default.CalendarMonth,
+                        contentDescription = ""
+                    )
+                    Text(text = person.time)
+                }
+                Button(
+                    onClick = {},
+                    modifier = Modifier
+                        .shadow(elevation = 20.dp)
+                        .align(Alignment.End)
+                        .padding(top =20.dp,end = 10.dp,bottom = 2.dp),
+                    shape = RoundedCornerShape(10.dp),
+                    colors = ButtonDefaults.buttonColors(lightGreen)
+                ) {
+                    Text("Urgent Case",color = Color.Black)
+                }
+
+            }
+
+
+        }
+
+
+
+    }
+
 }
 
 
@@ -223,10 +440,90 @@ fun IconWithLabel(icon: ImageVector, label: String,onClick :() ->Unit) {
 
 
 
+//
+//@Preview(showBackground =true)
+//@Composable
+//fun Preview(){
+//    val navController = rememberNavController()
+//    HomeScreen(navController = navController)
+//}
 
-@Preview(showBackground =true)
+
 @Composable
-fun Preview(){
-    val navController = rememberNavController()
-    HomeScreen(navController = navController)
+fun DialogBox(persons :dummyData){
+    Box(
+        modifier = Modifier.height(300.dp)
+            .clip(RoundedCornerShape(20.dp))
+            .background(Color.White)
+            .fillMaxWidth()
+    ){
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Box(
+                modifier = Modifier.height(105.dp)
+                    .fillMaxWidth()
+                    .shadow(elevation = 20.dp)
+                    .background(Color.White),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.donate),
+                    contentDescription = "",
+                    modifier = Modifier.size(100.dp)
+                        .padding(top = 10.dp)
+                )
+            }
+            Box(
+                modifier = Modifier.fillMaxWidth()
+                    .padding(start = 10.dp)
+                    .background(Color.White)
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+
+                ) {
+                    Text(text = "Contact Person : ${persons.name}")
+                    Text(text = "Phone : ${persons.contact}")
+                    Text(text = "Hospital : ${persons.location}")
+                    Text(text = "Case : ${persons.case}")
+
+                }
+            }
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.BottomEnd
+            ){
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    modifier = Modifier.padding(bottom = 10.dp, end = 10.dp)
+                ){
+                    Button(
+                        onClick = {},
+                        modifier = Modifier
+                            .shadow(elevation = 20.dp),
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(DarkGreen)
+                    ) {
+                        Text(text ="Call")
+                    }
+                    Button(
+                        onClick = {},
+                        modifier = Modifier
+                            .shadow(elevation = 20.dp),
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(blue)
+                    ) {
+                        Text(text ="Share")
+                    }
+
+
+                }
+            }
+        }
+
+    }
 }

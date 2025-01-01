@@ -14,3 +14,5 @@ val white = Color(0xFFEDEADE) // little white
 val RedTop = Color(0xFF7b1717) // top tira hune menu ko color
 val RedThemeTop = Color(0xFF420606)
 val DarkGreen = Color(0xFF006400)
+val lightGreen = Color(0xFF9EDF9C)
+val blue = Color(0xFF0A5EB0)
