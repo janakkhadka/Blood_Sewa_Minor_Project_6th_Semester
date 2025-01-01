@@ -1,6 +1,8 @@
 
+import Navigation from './components/Navigation'
 import './App.css'
-import LoginRegistration from './components/LoginRegistration/LoginRegistration'
+import LandingPage from './components/Homepage/LandingPage'
+import Login from './components/LoginRegistration/Login'
 import RegistrationUser from './components/LoginRegistration/RegistrationUser'
 
 
@@ -14,7 +16,7 @@ function App() {
 
         {/* <Alert/> */}
 
-        <RegistrationUser/>
+        <Navigation/>
 
     </>
   )

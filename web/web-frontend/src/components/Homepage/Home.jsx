@@ -3,14 +3,11 @@ import React from "react";
 import './Home.css'
 
 import { FaHeart } from "react-icons/fa6";
-import { MdOutlineAccessTimeFilled, MdOutlineDone, MdBloodtype  } from "react-icons/md";
+import { MdOutlineAccessTimeFilled } from "react-icons/md";
 import { HiUserGroup } from "react-icons/hi";
-import { RxCross2 } from "react-icons/rx";
 
 import CustomSlider from '../Utils/CustomImageSlider/CustomSlider'
 import { imageList } from "../Utils/CustomImageSlider/ImageList";
-
-
 
 function Home() {
   return (
@@ -24,37 +21,7 @@ function Home() {
             </div>
           </section>
           <section className="left-bottom">
-            <div className="left-bottom-criteria">
-              <div className="h3">
-                <MdBloodtype className="icon"/>
-                <h3>Eligibility Criteria</h3>
-              </div>
-              <ul style={{listStyleType:"none"}}>
-                <div className="criteria-list">
-                  <MdOutlineDone />
-                  <li>Be at least 17 years old</li>
-                </div>
-                <div className="criteria-list">
-                  <MdOutlineDone />
-                  <li>Weigh at least 110 pounds</li>
-                </div>
-                <div className="criteria-list">
-                  <MdOutlineDone />
-                  <li>Be in good health</li>
-                </div>
-                <div className="criteria-list">
-                  <RxCross2/>
-                  <li>Have a recent tattoo (less than 3 months old)</li>
-                </div>
-                <div className="criteria-list">
-                  <RxCross2/>
-                  <li>Have a cold or flu</li>
-                </div>
-              </ul>
-            </div>
-            <div className="contact-us">
 
-            </div>
           </section>
         </div>
         <div className="home-right-section">
