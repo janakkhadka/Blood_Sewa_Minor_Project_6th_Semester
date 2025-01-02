@@ -1,7 +1,8 @@
 import React,{useState} from 'react';
 import './LoginRegistration.css';
 
-import Calendar from 'react-calendar';
+import { Link } from "react-router-dom";
+
 import 'react-calendar/dist/Calendar.css';
 import DatePicker from 'react-date-picker';
 import 'react-date-picker/dist/DatePicker.css';
@@ -84,8 +85,11 @@ const RegistrationUser = () => {
                 <form onSubmit={handleSubmit}>
                     <h1>Register</h1>
                     <span style={{fontSize:"14px"}}>Fill up the form carefully to register your account with Blood Sewa.</span>
+                    <br/>
+                    
+                    <span style={{fontSize:"12px",marginLeft:"20px"}}>* All fields must be filled.</span>
 
-                    <div className="input-box">
+                    <div className="input-box" style={{marginTop:"7px"}}>
                         <input type="text"
                         value = {name}
                         onChange={(e) => setName(e.target.value)}
@@ -248,8 +252,8 @@ const RegistrationUser = () => {
                     </div>
 
                     <div className="login-link">
-                        <p> Already have an account?
-                            <a href="#" onClick={switchToLogin}>Login</a>
+                    <p> Already have an account?
+                            <Link to = {'/login'}>Login</Link>
                         </p>
                     </div>
 

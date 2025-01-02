@@ -1,6 +1,8 @@
 import React,{useState} from 'react';
 import './LoginRegistration.css';
 
+import { Link } from "react-router-dom";
+
 import Select from 'react-select';
 import customStyles from './ReactSelectStyle';
 
@@ -15,7 +17,7 @@ import {provinceList, ProvinceDistrictList } from './DropDownList';
 
 
 
-const RegistrationOrg = ({switchToLogin}) => {
+const RegistrationOrg = () => {
     
     const [orgType, setOrgType] = useState("hospital")
     const handleChangeOrgType = (event) => {
@@ -72,8 +74,10 @@ const RegistrationOrg = ({switchToLogin}) => {
                 <form onSubmit={handleSubmit}>
                     <h1>Register your organization</h1>
                     <span style={{fontSize:"14px"}}>Fill up the form carefully to register Hospital/Blood Bank.</span>
+                    <br/>
+                    <span style={{fontSize:"12px",marginLeft:"20px",marginTop:"22px"}}>* All fields must be filled.</span>
 
-                    <div className="organization-type">
+                    <div className="organization-type"  style={{marginTop:"2px"}}>
                         <label>
                             Organization Type:
 
@@ -96,9 +100,7 @@ const RegistrationOrg = ({switchToLogin}) => {
                         </label>
                     </div>
 
-                    <span style={{fontSize:"12px",marginLeft:"20px",marginTop:"22px"}}>* All fields must be filled.</span>
-
-                    <div className="input-box" style={{marginTop:"2px"}}>
+                    <div className="input-box" style={{marginTop:"15px"}}>
                         <input type="text"
                         value = {name}
                         onChange={(e) => setName(e.target.value)}
@@ -198,7 +200,7 @@ const RegistrationOrg = ({switchToLogin}) => {
 
                     <div className="login-link">
                         <p> Already have an account?
-                            <a href="#" onClick={switchToLogin}>Login</a>
+                            <Link to = {'/login'}></Link>
                         </p>
                     </div>
 

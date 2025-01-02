@@ -2,14 +2,14 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import ( RegisterUserView, UserLoginView, UserProfileUpdateView, BloodRequestListView, BloodRequestCreateView , FilterUserBloodGroup , LogoutView , UserListView , CreateEventView , JoinEventView ,CheckInView , ListEventsView , ActivateAccountView , UserJoinedEventHistoryView , qr_code_view , PasswordResetRequestView , PasswordResetConfirmView)
+from .views import ( RegisterUserView, UserLoginView, UserProfileUpdateView, BloodRequestListView, BloodRequestCreateView , FilterUserBloodGroup , LogoutView , UserListView , CreateEventView , JoinEventView ,CheckInView , ListEventsView , ActivateAccountView , UserJoinedEventHistoryView , qr_code_view , PasswordResetRequestView , PasswordResetConfirmView , OrganizationLoginView , RegisterOrganizationView)
 
 urlpatterns = [
     path('user/register/', RegisterUserView.as_view(), name='register_user'),    #user registration ko lagi
     path('activate/<str:uidb64>/<str:token>/', ActivateAccountView.as_view(), name='activate_account'),   #registered user ko account activation ko lagi
-    #path('organization/register/', RegisterOrganizationView.as_view(), name='register_organization'),    
+    path('organization/register/', RegisterOrganizationView.as_view(), name='register_organization'),    
     path('user/login/', UserLoginView.as_view(), name='user-login'),       #user login ko lagi
-    #path('organization/login/', OrganizationLoginView.as_view(), name='organization-login'),
+    path('organization/login/', OrganizationLoginView.as_view(), name='organization-login'),
     path('user/profile/update/' , UserProfileUpdateView.as_view() , name="user-profile-update"),    #profile update garna ko lagi
     path('blood-requests/', BloodRequestListView.as_view(), name='blood-request-list'),         #blood request haru herna ko lagi
     path('blood-requests/create/', BloodRequestCreateView.as_view(), name='blood-request-create'),         #blood request garna ko lagi

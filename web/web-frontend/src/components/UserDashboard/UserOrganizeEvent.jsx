@@ -60,7 +60,7 @@ function UserOrganizeEvent() {
                         value = {selectedOrganization}
                         onChange={handleOrganizationChange}
                         options={venueList}
-                        styles={customStyles}
+                        styles={customStyles()}
                         placeholder="Collaboration with Organization"
                         isSearchable={false}
                         />

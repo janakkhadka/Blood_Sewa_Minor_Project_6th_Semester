@@ -5,11 +5,6 @@ import './BloodAvailability.css'
 import Select from 'react-select';
 import customStyles from '../LoginRegistration/ReactSelectStyle';
 
-import 'react-calendar/dist/Calendar.css';
-import DatePicker from 'react-date-picker';
-import 'react-date-picker/dist/DatePicker.css';
-import '../LoginRegistration/Calender.css';
-
 import {provinceList, provinceHospitalList, hospitalBloodDataList} from '../LoginRegistration/DropDownList';
 
 import { IoIosArrowDropdownCircle } from "react-icons/io";
