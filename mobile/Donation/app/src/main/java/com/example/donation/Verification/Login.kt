@@ -121,10 +121,10 @@ fun Login(navController : NavHostController){
                         dataStoreManager.saveStatus(true)
                         dataStoreManager.saveAccessToken(it.access_token)
                         dataStoreManager.SaveRefreshToken(it.refresh_token)
+                        dataStoreManager.SaveUserName(it.user_Details.name)
                         navController.navigate(Screens.BottomNavBar.route)
-                        Log.d("accessToken", it.access_token)
-                        Log.d("accessToken", it.refresh_token)
-                        Log.d("accessToken", it.message)
+                        Log.e("nameCheck", it.user_Details.name)
+
                     }
 
                 }else{
