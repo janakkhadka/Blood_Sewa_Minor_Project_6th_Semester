@@ -14,7 +14,6 @@ import {provinceList, provinceHospitalList, timeShiftOptions} from '../LoginRegi
 
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 import { MdDateRange } from "react-icons/md";
-import { IoTime } from "react-icons/io5";
 
 import BackThreeD from '../LoginRegistration/3d'
 import UserNavigationBar from './UserNavigationBar'
@@ -38,7 +37,6 @@ function ScheduleDonation() {
         setHospitalOptions(updatedHospitalOptions); // Update the district options
       };
 
-
     const [selectedHospital, setSelectedHospital] = useState("")
     const handleHospitalChange = (selectedOption) => {
         setSelectedHospital(selectedOption);
@@ -48,9 +46,6 @@ function ScheduleDonation() {
     const handleTimeShiftChange = (selectedOption) => {
       setTimeShift(selectedOption)
     }
-
-    
-
 
   return (
     <div className='schedule-donation-wrapper'>
@@ -115,7 +110,6 @@ function ScheduleDonation() {
                 </div>
             </form>
         </div>
-        
     </div>
   )
 }
