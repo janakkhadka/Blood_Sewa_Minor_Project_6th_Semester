@@ -55,14 +55,28 @@ import com.example.donation.ui.theme.dRed
 @Composable
 fun ScheduleTime(){
     val navController = rememberNavController()
-    var Bloodexpanded by remember { mutableStateOf(false) }
-    var Bloodselected by remember { mutableStateOf("") }
+    var provinceExpanded by remember { mutableStateOf(false) }
+    var provinceSelected by remember { mutableStateOf("") }
+    var hospitalExpanded by remember { mutableStateOf(false) }
+    var hospitalSelected by remember { mutableStateOf("") }
+    var shiftExpanded by remember { mutableStateOf(false) }
+    var shiftSelected by remember { mutableStateOf("") }
     var contact by remember { mutableStateOf("") }
-    var address by remember { mutableStateOf("") }
+    var donation_date by remember { mutableStateOf("") }
     val scrollState = rememberScrollState()
     //tala gayera data haru laii show garne kaam
     val request = remember { mutableStateListOf<String>() }
-    val bloodOptions = listOf("A+", "B+", "A-", "B-", "O+", "O-", "AB+", "AB-")
+    val nepalProvinces = listOf(
+        "Province No. 1",
+        "Madhesh Province",
+        "Bagmati Province",
+        "Gandaki Province",
+        "Lumbini Province",
+        "Karnali Province",
+        "Sudurpashchim Province"
+    )
+    val hospitals = listOf("KMC Hospital","Civil Hospital","B&B Hospital")
+    val shifts = listOf("Morning (9am - 12am","Afternoon (12pm - 4pm)","Evening (4pm - 8pm)")
     Box(modifier = Modifier.fillMaxSize()) {
         Column() {
             TopBarTheme()
@@ -80,9 +94,8 @@ fun ScheduleTime(){
         Box(
             modifier = Modifier
                 .padding(top = 130.dp)
-                .height(300.dp)
                 .shadow(elevation = 50.dp)
-                .fillMaxWidth(.8f)
+                .fillMaxWidth(.9f)
                 .align(Alignment.TopCenter)
                 .clip(shape = RoundedCornerShape(40.dp))
                 .background(Color.White),
@@ -91,131 +104,148 @@ fun ScheduleTime(){
         ) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(10.dp),
-                modifier = Modifier.padding(top = 20.dp)
+                modifier = Modifier.padding(top = 20.dp, bottom = 20.dp)
             ) {
                 OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(.8f),
-                    value = Bloodselected,
-                    onValueChange = { Bloodselected = it },
+                    modifier = Modifier.fillMaxWidth(.8f)
+                        .clickable { provinceExpanded = true },
+                    value = provinceSelected,
+                    onValueChange = { provinceSelected = it },
                     readOnly = true,
                     shape = RoundedCornerShape(10.dp),
-                    label = { Text("Blood Group") },
+                    label = { Text("Select Province") },
                     trailingIcon = {
                         Icon(
-                            imageVector = if (Bloodexpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
-                            contentDescription = if (Bloodexpanded) "Collapse Dropdown" else "Expand Dropdown",
-                            modifier = Modifier.clickable { Bloodexpanded = !Bloodexpanded }
+                            imageVector = if (provinceExpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
+                            contentDescription = if (provinceExpanded) "Collapse Dropdown" else "Expand Dropdown",
+                            modifier = Modifier.clickable { provinceExpanded = !provinceExpanded }
                         )
                     },
 
                     )
                 DropdownMenu(
-                    expanded = Bloodexpanded,
-                    onDismissRequest = { Bloodexpanded = false },
+                    expanded = provinceExpanded,
+                    onDismissRequest = { provinceExpanded = false },
                     modifier = Modifier.fillMaxWidth(.8f)
                 ) {
-                    bloodOptions.forEach { option ->
+                    nepalProvinces.forEach { option ->
                         DropdownMenuItem(
                             text = {
                                 Text(text = option)
                             },
                             onClick = {
-                                Bloodselected = option
-                                Bloodexpanded = false
+                                provinceSelected = option
+                                provinceExpanded = false
+                            })
+
+                    }
+                }
+
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(.8f)
+                        .clickable { hospitalExpanded= true },
+                    value = hospitalSelected,
+                    onValueChange = { hospitalSelected = it },
+                    readOnly = true,
+                    shape = RoundedCornerShape(10.dp),
+                    label = { Text("Hospital/Blood Banks") },
+                    trailingIcon = {
+                        Icon(
+                            imageVector = if (hospitalExpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
+                            contentDescription = if (hospitalExpanded) "Collapse Dropdown" else "Expand Dropdown",
+                            modifier = Modifier.clickable { hospitalExpanded = !hospitalExpanded }
+                        )
+                    },
+
+                    )
+                DropdownMenu(
+                    expanded = hospitalExpanded,
+                    onDismissRequest = { hospitalExpanded = false },
+                    modifier = Modifier.fillMaxWidth(.8f)
+                ) {
+                    hospitals.forEach { option ->
+                        DropdownMenuItem(
+                            text = {
+                                Text(text = option)
+                            },
+                            onClick = {
+                                hospitalSelected = option
+                                hospitalExpanded = false
+                            })
+
+                    }
+                }
+
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(.8f)
+                        .clickable { shiftExpanded = true },
+                    value = shiftSelected,
+                    onValueChange = { shiftSelected = it },
+                    readOnly = true,
+                    shape = RoundedCornerShape(10.dp),
+                    label = { Text("Select shift") },
+                    trailingIcon = {
+                        Icon(
+                            imageVector = if (shiftExpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
+                            contentDescription = if (shiftExpanded) "Collapse Dropdown" else "Expand Dropdown",
+                            modifier = Modifier.clickable { shiftExpanded = !shiftExpanded }
+                        )
+                    },
+
+                    )
+                DropdownMenu(
+                    expanded = shiftExpanded,
+                    onDismissRequest = { shiftExpanded = false },
+                    modifier = Modifier.fillMaxWidth(.8f)
+                ) {
+                    shifts.forEach { option ->
+                        DropdownMenuItem(
+                            text = {
+                                Text(text = option)
+                            },
+                            onClick = {
+                                shiftSelected = option
+                                shiftExpanded = false
                             })
 
                     }
                 }
                 OutlinedTextField(
-                    value = contact,
-                    onValueChange = { contact = it },
-                    label = { Text("Enter address") },
+                    value = donation_date,
+                    onValueChange = { donation_date = it },
+                    label = { Text("Preferred Donation date") },
                     shape = RoundedCornerShape(10.dp),
                     modifier = Modifier.fillMaxWidth(.8f),
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.LocationOn,
-                            contentDescription = ""
-                        )
-                    }
+                    )
+                Button(
+                    onClick = {
 
-                )
-                OutlinedTextField(
-                    value = address,
-                    onValueChange = { address = it },
-                    label = { Text("Enter contact") },
-                    shape = RoundedCornerShape(10.dp),
-                    modifier = Modifier.fillMaxWidth(.8f),
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Phone,
-                            contentDescription = ""
-                        )
-                    }
-                )
-
-
-            }
-        }
-        Button(
-            onClick = {
-                if (Bloodselected.isNotEmpty() && contact.isNotEmpty() && address.isNotEmpty()) {
-                    request.add("Blood Group: $Bloodselected\nContact: $contact\nAddress: $address")
-                }
-            },
-            modifier = Modifier
-                .align(Alignment.Center)
-                .padding(top = 40.dp)
-                .fillMaxWidth(.7f)
-                .height(50.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = dRed,
-                contentColor = Color.Gray
-            ),
-            shape = RoundedCornerShape(5.dp)
-
-        ) {
-            Text(text = "Request", color = Color.White, fontSize = 22.sp)
-
-        }
-        Text(
-            text = "Requests",
-            modifier = Modifier
-                .align(Alignment.CenterStart)
-                .padding(top = 150.dp, start = 30.dp)
-        )
-        Column(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(top = 160.dp)
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            request.forEach { request ->
-                Card(
+                    },
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.White)
-                        .shadow(4.dp, RoundedCornerShape(12.dp)),
-                    shape = RoundedCornerShape(12.dp),
-                    elevation = CardDefaults.cardElevation(4.dp),
+                        .padding()
+                        .fillMaxWidth(.8f)
+                        .height(50.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = dRed,
+                        contentColor = Color.Gray
+                    ),
+                    shape = RoundedCornerShape(5.dp)
+
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
-                    ) {
-                        Text(
-                            text = request,
-                            fontSize = 16.sp,
-                            color = Color.Black
-                        )
-                    }
+                    Text(text = "Schedule Time", color = Color.White, fontSize = 22.sp)
+
                 }
             }
 
-        }
+
+            }
+
+
+
+
 
     }
+
 }
+
 
