@@ -25,8 +25,11 @@ function LandingPage() {
 }
 
 export default LandingPage
+
+
+
+
 const NavbarRightLeft = () => {
-  
   return(
     <div className="navbar-right-left">
         <Link to="/blood-request">Request Blood Now</Link>
@@ -48,7 +51,7 @@ const NavbarRightRight = () => {
         <div className="login-option">
           <Link
             to="/login"
-              state= {{ accountType: "user" }}
+            state= {{ accountType: "user" }}
           >
             Blood Donor
           </Link>

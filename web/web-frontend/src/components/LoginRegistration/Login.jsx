@@ -12,19 +12,12 @@ import BackThreeD from './3d'
 
 const Login = () => {
     const location = useLocation()
-    const accountType = location.state?.accountType || 'user';
+    const accountType = location.state?.accountType;
+    const registerLink = accountType === 'user' ? '/registrationuser' : '/registrationorg';
 
     const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-
-    const registerLink =
-    accountType === "user"
-      ? "/registrationuser"
-      : accountType === "organization"
-      ? "/registrationorg"
-      : "/registrationuser";
+    const [password, setPassword] = useState("");
     
-
     const handleSubmit = (e) => {
         e.preventDefault(); // Prevent page reload
       };
@@ -37,6 +30,9 @@ const Login = () => {
             <div className="login-section">
                 <h1>Blood Sewa</h1>
                 <h3>Donate Blood, Save Life . . .</h3>
+                <div className="img">
+                    <img src="donate.png" alt="Donate" />
+                </div>
             </div>
             <div className="login-form">
                 <form onSubmit={handleSubmit}>

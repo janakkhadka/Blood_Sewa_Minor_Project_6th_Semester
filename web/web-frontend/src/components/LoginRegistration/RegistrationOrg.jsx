@@ -1,12 +1,17 @@
 import React,{useState} from 'react';
 import './LoginRegistration.css';
 
+import Select from 'react-select';
+import customStyles from './ReactSelectStyle';
+
 import { FaHospitalUser, FaLock, FaFile, FaBorderNone} from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
 import {RiContactsBook3Fill} from "react-icons/ri";
 import { FaLocationDot } from "react-icons/fa6";
+import { IoIosArrowDropdownCircle } from "react-icons/io";
 
 import BackThreeD from './3d'
+import {provinceList, ProvinceDistrictList } from './DropDownList';
 
 
 
@@ -21,6 +26,28 @@ const RegistrationOrg = ({switchToLogin}) => {
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
     const [contact, setContact] = useState("")
+    const [districtOptions, setDistrictOptions] = useState([]);
+    const [selectedProvince, setSelectedProvince] = useState('')
+    const handleProvinceChange = (selectedOption) => {
+        setSelectedProvince(selectedOption);
+        setSelectedDistrict(null);
+    
+        const selectedProvinceData = ProvinceDistrictList.find(
+          (province) => province.label === selectedOption.label
+        );
+    
+        const updatedDistrictOptions = selectedProvinceData
+          ? selectedProvinceData.options
+          : [];
+    
+        setDistrictOptions(updatedDistrictOptions); // Update the district options
+      };
+
+    const [selectedDistrict, setSelectedDistrict] = useState("")
+    const handleDistrictChange = (option) => {
+        setSelectedDistrict(option);
+    };
+    const [city, setCity] = useState("")
     const [location, setLocation] = useState("")
     const [isTermsChecked, setTerms] = useState(false)
     const handleTermsCheckboxChange = (event) => {
@@ -44,6 +71,7 @@ const RegistrationOrg = ({switchToLogin}) => {
             <div className="registration-form">
                 <form onSubmit={handleSubmit}>
                     <h1>Register your organization</h1>
+                    <span style={{fontSize:"14px"}}>Fill up the form carefully to register Hospital/Blood Bank.</span>
 
                     <div className="organization-type">
                         <label>
@@ -68,7 +96,9 @@ const RegistrationOrg = ({switchToLogin}) => {
                         </label>
                     </div>
 
-                    <div className="input-box">
+                    <span style={{fontSize:"12px",marginLeft:"20px",marginTop:"22px"}}>* All fields must be filled.</span>
+
+                    <div className="input-box" style={{marginTop:"2px"}}>
                         <input type="text"
                         value = {name}
                         onChange={(e) => setName(e.target.value)}
@@ -104,11 +134,44 @@ const RegistrationOrg = ({switchToLogin}) => {
                         placeholder='Contact no'/>
                         <RiContactsBook3Fill className="icon"/>
                     </div>
+                    <div className="drop-down-box">
+                        <Select
+                            value = {selectedProvince}
+                            onChange={handleProvinceChange}
+                            options={provinceList}
+                            styles={customStyles()}
+                            placeholder="Province"
+                            isSearchable={false}
+                        />
+                        <IoIosArrowDropdownCircle className='icon'/>
+                    </div>
+
+                    <div className="drop-down-box">
+                        <Select
+                            value = {selectedDistrict}
+                            onChange={handleDistrictChange}
+                            options={districtOptions}
+                            styles={customStyles()}
+                            placeholder={
+                            selectedProvince ? "Select a District" : "Select a Province first"
+                            }
+                            isDisabled={!selectedProvince}
+                            isSearchable={false}
+                        />
+                        <IoIosArrowDropdownCircle className='icon'/>
+                    </div>
+                    <div className="input-box">
+                        <input type="text"
+                        value = {city}
+                        onChange={(e) => setCity(e.target.value)}
+                        placeholder='City/Village'/>
+                        <FaLocationDot className="icon"/>
+                    </div>
                     <div className="input-box">
                         <input type="text"
                         value = {location}
                         onChange={(e) => setLocation(e.target.value)}
-                        placeholder='Location'/>
+                        placeholder='Local Address'/>
                         <FaLocationDot className="icon"/>
                     </div>
                     <div className="input-document">
