@@ -58,14 +58,14 @@ function Home() {
                   value = {bloodType}
                   onChange={handleBloodTypeChange}
                   options={bloodTypeList}
-                  styles={customStyles}
+                  styles={customStyles({optionTextColor:'rgb(160, 25, 25)'})}
                   placeholder="Select Blood Group"
                   isSearchable={false}
                 />
                 <IoIosArrowDropdownCircle className='icon'/>
               </div>
               <div className="info-show">
-                <span>{bloodInfo}</span>
+                <span style={{fontSize:"15px"}}>{bloodInfo}</span>
               </div>
             </div>
             <div className="eligibility-wrapper">

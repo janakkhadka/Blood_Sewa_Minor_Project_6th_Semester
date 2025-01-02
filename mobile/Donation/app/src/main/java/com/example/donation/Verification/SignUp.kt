@@ -212,7 +212,7 @@ fun SignUp(navController : NavHostController) {
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
-            .padding(bottom = 20.dp)
+            .padding(bottom = 200.dp)
         ,
         verticalArrangement = Arrangement.spacedBy(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
