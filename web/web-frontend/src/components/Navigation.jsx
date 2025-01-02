@@ -8,7 +8,8 @@ import RegistrationUser from './LoginRegistration/RegistrationUser';
 
 import LandingPage from './Homepage/LandingPage';
 
-import BloodDonorDashboard from './UserDashboard/UserDashboard.jsx'
+import UserDashboard from './UserDashboard/UserDashboard.jsx'
+import UserDashboardHome from './UserDashboard/UserDashboardHome.jsx'
 import BloodRequestForm from './Common/BloodRequestForm';
 import ScheduleDonation from './UserDashboard/ScheduleDonation';
 import UserOrganizeEvent from './UserDashboard/UserOrganizeEvent';
@@ -25,7 +26,7 @@ const Navigation = () => {
             <Route path="/registrationorg" element={<RegistrationOrg />} />
             <Route path="/registrationuser" element={<RegistrationUser />} />
 
-            <Route path ="/a" element={<BloodDonorDashboard/>}/>
+            <Route path ="/a" element={<UserDashboardHome/>}/>
             <Route path ="/blood-request-form" element = {<BloodRequestForm/>}/>
             <Route path ="/schedule-donation" element = {<ScheduleDonation/>}/>
             <Route path ="/user-organize-event" element = {<UserOrganizeEvent/>}/>

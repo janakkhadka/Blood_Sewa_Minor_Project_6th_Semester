@@ -10,7 +10,7 @@ import { IoMdTime } from "react-icons/io";
 import { IoLocationOutline } from "react-icons/io5";
 import { IoMdOptions } from "react-icons/io";
 
-import { getGreeting } from '../Utils/Greeting'
+// import { getGreeting } from '../Utils/Greeting'
 import {events, urgentBlood} from './DummyData'
 
 function UserDashboardHome() {
@@ -20,7 +20,7 @@ function UserDashboardHome() {
       <div className="user-dashboard-top-section">
         <div className="left-section">
           <section className="user-greeting-message">
-                <h1>{getGreeting()+", Janak Khadka!"}</h1>
+                {/* <h1>{getGreeting()+", Janak Khadka!"}</h1> */}
                 <div className="user-typing-effect">
                   <span>Happy to see you.</span>
                 </div>
