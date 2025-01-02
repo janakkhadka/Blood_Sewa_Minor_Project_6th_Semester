@@ -83,7 +83,7 @@ function BloodAvailability() {
                         options={hospitalOptions}
                         styles={customStyles()}
                         placeholder={
-                        selectedProvince ? "Select a Hospital" : "BPKIHS Dharan"
+                        selectedProvince ? "Select a Hospital/Blood Bank" : "BPKIHS Dharan"
                         }
                         isDisabled={!selectedProvince}
                         isSearchable={false}
