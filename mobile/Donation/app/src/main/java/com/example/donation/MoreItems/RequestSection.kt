@@ -33,7 +33,6 @@ import com.example.donation.BottomNavBar.CustomTopBar
 import com.example.donation.BottomNavBar.TopBarTheme
 import com.example.donation.ui.theme.dRed
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun BloodRequestsScreen(navController : NavHostController) {
     var selectedTabIndex by remember { mutableStateOf(0) }

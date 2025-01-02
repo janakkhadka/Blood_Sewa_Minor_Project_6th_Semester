@@ -18,6 +18,7 @@ import com.example.donation.MoreItems.BloodRequestsScreen
 import com.example.donation.MoreItems.SearchDonors
 import com.example.donation.Navigation.SetUpNavigation
 import com.example.donation.Verification.SignUp
+import com.example.donation.moreItems.CreateEvents
 
 
 class MainActivity : ComponentActivity() {
@@ -27,13 +28,14 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             navController = rememberNavController()
-        SetUpNavigation(navController)
+       // SetUpNavigation(navController)
        // HomeScreen(navController = navController)
             //TopMenuBar()
            // UrgentBloodScreen(navController = navController)
             //SearchDonors()
           //  BloodRequestsScreen()
             //SignUp(navController = navController)
+            CreateEvents()
 
 
         }
