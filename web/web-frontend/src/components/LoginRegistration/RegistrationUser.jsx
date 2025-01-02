@@ -23,7 +23,7 @@ import BackThreeD from './3d'
 
 
 
-const RegistrationUser = ({switchToLogin}) => {
+const RegistrationUser = () => {
 
 
     const [gender, setGender] = useState("male")
@@ -83,6 +83,7 @@ const RegistrationUser = ({switchToLogin}) => {
             <div className="user-form">
                 <form onSubmit={handleSubmit}>
                     <h1>Register</h1>
+                    <span style={{fontSize:"14px"}}>Fill up the form carefully to register your account with Blood Sewa.</span>
 
                     <div className="input-box">
                         <input type="text"
@@ -139,7 +140,7 @@ const RegistrationUser = ({switchToLogin}) => {
                             value = {selectedBloodGroup}
                             onChange={handleBloodGroupChange}
                             options={bloodGroupList}
-                            styles={customStyles}
+                            styles={customStyles()}
                             placeholder="Blood Group"
                             isSearchable={false}
                         />
@@ -174,7 +175,7 @@ const RegistrationUser = ({switchToLogin}) => {
                             value = {selectedProvince}
                             onChange={handleProvinceChange}
                             options={provinceList}
-                            styles={customStyles}
+                            styles={customStyles()}
                             placeholder="Province"
                             isSearchable={false}
                         />
@@ -186,7 +187,7 @@ const RegistrationUser = ({switchToLogin}) => {
                             value = {selectedDistrict}
                             onChange={handleDistrictChange}
                             options={districtOptions}
-                            styles={customStyles}
+                            styles={customStyles()}
                             placeholder={
                             selectedProvince ? "Select a District" : "Select a Province first"
                             }

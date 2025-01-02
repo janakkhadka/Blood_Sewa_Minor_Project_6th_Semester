@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.edit
 
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.donation.backend.UserRegistration
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -16,6 +17,7 @@ class DataStoreManager(private val context: Context) {
         val ACCESS_TOKEN = stringPreferencesKey("access_token")
         val REFRESH_TOKEN = stringPreferencesKey("refresh_token")
         val LOGIN_STATUS = booleanPreferencesKey("loginStatus")
+        val USER_NAME = stringPreferencesKey("user_name")
     }
 
     //status checking of user
@@ -55,6 +57,22 @@ class DataStoreManager(private val context: Context) {
     suspend fun SaveRefreshToken(refresh : String){
         context.dataStore.edit { preferences->
             preferences[REFRESH_TOKEN] =refresh
+
+
+        }
+    }
+
+
+    //user information from UserDetails
+    val getUserName : Flow<String?> = context.dataStore.data
+        .map { pref ->
+            pref[USER_NAME]?: ""
+
+
+        }
+    suspend fun SaveUserName(name : String){
+        context.dataStore.edit { pref ->
+            pref[USER_NAME] = name
 
 
         }

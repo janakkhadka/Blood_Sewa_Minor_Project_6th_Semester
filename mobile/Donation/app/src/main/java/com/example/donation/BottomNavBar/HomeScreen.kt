@@ -121,7 +121,12 @@ fun HomeScreen(navController : NavHostController ) {
     val scrollState = rememberScrollState()
     val context = LocalContext.current
     val dataStoreManager = DataStoreManager(context)
-    val accessToken by dataStoreManager.getAccessToken.collectAsState(initial = null)
+
+
+    //user information
+  // val userName  by dataStoreManager.getUserName.collectAsState(initial = null)
+    val _username = dataStoreManager.getUserName
+    val username by  dataStoreManager.getUserName.collectAsState(_username)
 
     //dummy variables for the Urgent Requests and event happening
     val persons = listOf(
@@ -173,12 +178,6 @@ fun HomeScreen(navController : NavHostController ) {
 
 
 
-
-    LaunchedEffect(accessToken) {
-        Log.d("accesstoken", "$accessToken")
-
-    }
-
     val hour = LocalTime.now().hour
     var greetingText = when (hour) {
         in 1..12 -> "Good Morning"
@@ -192,7 +191,7 @@ fun HomeScreen(navController : NavHostController ) {
         CustomTopBar(
             Icons.Default.Person,
             greetingText,
-            "Kiran Acharya",
+            "$username",
             "Blood Sewa",
             navController
         )
@@ -272,7 +271,6 @@ fun HomeScreen(navController : NavHostController ) {
                             IconWithLabel(Icons.Default.EventAvailable, "Events")
                             {
                                 navController.navigate(Screens.Events.route)
-                                Log.d("token", "$accessToken")
                             }
                             IconWithLabel(Icons.Default.PersonAddAlt1, "Search Donor")
                             {
