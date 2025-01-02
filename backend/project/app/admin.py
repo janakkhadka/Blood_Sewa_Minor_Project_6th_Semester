@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, BloodRequestModel , Event , UserEvent
+from .models import User, BloodRequestModel , Event , UserEvent , BloodInventory
 
 
 class CustomUserAdmin(UserAdmin):
@@ -40,3 +40,21 @@ class EventAdmin(admin.ModelAdmin):
 @admin.register(UserEvent)
 class UserEventAdmin(admin.ModelAdmin):
     list_display = ("user", "event", "checked_in")
+
+
+class BloodInventoryAdmin(admin.ModelAdmin):
+    # List display to show the organization and inventory in the list view
+    list_display = ('organization', 'inventory_display')
+
+    # Optional: Add filtering by blood group or organization
+    list_filter = ('organization',)
+
+    # Optional: Search functionality
+    search_fields = ('organization__name',)
+
+    # Custom method to display inventory in a readable format
+    def inventory_display(self, obj):
+        return ', '.join([f"{key}: {value}" for key, value in obj.inventory.items()])
+    inventory_display.short_description = 'Blood Inventory'
+
+admin.site.register(BloodInventory, BloodInventoryAdmin)

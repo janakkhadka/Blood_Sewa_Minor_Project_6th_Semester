@@ -170,3 +170,17 @@ class UserEvent(models.Model):
 
     def __str__(self):
         return f"{self.user.name} - {self.event.name}"
+
+
+
+class BloodInventory(models.Model):
+    organization = models.OneToOneField(
+        'User',
+        on_delete=models.CASCADE,
+        related_name='blood_inventory',
+        limit_choices_to={'user_type': 'organization'}
+    )
+    inventory = models.JSONField(default=dict)  # Stores blood groups and their available pints
+
+    def __str__(self):
+        return f"{self.organization.name}'s Blood Inventory"

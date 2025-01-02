@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, BloodRequestModel , Event , UserEvent
+from .models import User, BloodRequestModel , Event , UserEvent , BloodInventory
 from .utils import validate_password, validate_age , validate_phone_number
 
 class UserSerializer(serializers.ModelSerializer):
@@ -147,3 +147,12 @@ class UserEventSerializer(serializers.ModelSerializer):
         model = UserEvent
         fields = ['id', 'user', 'event', 'checked_in']
         read_only_fields = ['checked_in']
+
+
+class BloodInventorySerializer(serializers.ModelSerializer):
+    organization_name = serializers.CharField(source='organization.name', read_only=True)
+
+    class Meta:
+        model = BloodInventory
+        fields = ['organization_name', 'inventory']
+        read_only_fields = ['organization_name']
