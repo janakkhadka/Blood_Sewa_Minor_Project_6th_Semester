@@ -49,8 +49,8 @@ class RegViewModel(private val dataStore : DataStoreManager) : ViewModel() {
                 val response = UserRegistration.authService.loginUser(request)
                 if(response.isSuccessful){
                     val loginResponse = response.body()
-                    val accessToken = loginResponse?.token?.access ?: ""
-                    val refresh_token = loginResponse?.token?.refresh?: ""
+                    val accessToken = loginResponse?.access_token ?: ""
+                    val refresh_token = loginResponse?.refresh_token?: ""
 
                     SaveAccessToken(accessToken)
                     SaveRefreshToken(refresh_token)

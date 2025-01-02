@@ -1,5 +1,6 @@
 package com.example.donation.Verification
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -70,7 +71,7 @@ fun Login(navController : NavHostController){
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text("Phone email") },
+            label = { Text("email") },
 
         )
 
@@ -112,12 +113,28 @@ fun Login(navController : NavHostController){
                 password = password
             )
             scope.launch {
-                dataStoreManager.saveStatus(true)
+                try{
                val response = UserRegistration.authService.loginUser(login)
                 if(response.isSuccessful){
-                    navController.navigate(Screens.BottomNavBar.route)
+                    val loginResponse = response.body()
+                    loginResponse?.let {
+                        dataStoreManager.saveStatus(true)
+                        dataStoreManager.saveAccessToken(it.access_token)
+                        dataStoreManager.SaveRefreshToken(it.refresh_token)
+                        navController.navigate(Screens.BottomNavBar.route)
+                        Log.d("accessToken", it.access_token)
+                        Log.d("accessToken", it.refresh_token)
+                        Log.d("accessToken", it.message)
+                    }
+
                 }else{
                     Toast.makeText(context, "Login failed: ${response.message()}", Toast.LENGTH_SHORT).show()
+                    Log.d("accessToken", response.message())
+                }
+            }catch(e : Exception){
+                Toast.makeText(context, "An error occurred: ${e.message}", Toast.LENGTH_SHORT).show()
+
+
                 }
             }
 
