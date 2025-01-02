@@ -6,13 +6,9 @@ import Home from './Home'
 import HomepageNavigationBar from '../Common/NavigationBar'
 import BackThreeD from '../LoginRegistration/3d'
 
-import { Link } from "react-router-dom";
-import { HashLink } from "react-router-hash-link";
+import { Link, useNavigate } from "react-router-dom";
 
 function LandingPage() {
-  const [titleNav, setTitleNav] = useState('')
-  const [rightLeftNav, setRightLeftNav] = useState(null)
-  const [rightRightNav, setRightRightNav] = useState(null)
   return (
     <div className='landing-page-wrapper'>
         <div className="syringe">
@@ -29,21 +25,42 @@ function LandingPage() {
 }
 
 export default LandingPage
-
 const NavbarRightLeft = () => {
+  
   return(
     <div className="navbar-right-left">
-        <Link to='/request-blood'>Request Blood Now</Link>
+        <Link to="/blood-request">Request Blood Now</Link>
     </div>
   )
 }
 
 const NavbarRightRight = () => {
-  
+  const [toggle, setToggle] = useState(false)
+  const setToggleChange = () => {
+    setToggle(prevToggle => !prevToggle)
+  }
   return (
     <div className="navbar-right-right">
-      <Link to="/login">Login</Link>
-    </div> 
-  )
-}
+      <button className="login-button" onClick={setToggleChange}>
+        Login
+      </button>
+      {toggle && (
+        <div className="login-option">
+          <Link
+            to="/login"
+              state= {{ accountType: "user" }}
+          >
+            Blood Donor
+          </Link>
+          <Link
+            to="/login"
+            state={{ accountType: "organization" }}
+          >
+            Organization
+          </Link>
+        </div>
+      )}
+    </div>
+  );
+};
 
