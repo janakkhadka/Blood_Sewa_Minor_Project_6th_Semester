@@ -22,12 +22,12 @@ const Navigation = () => {
     return (
         <Router>
           <Routes>
-            <Route path="/" element={<LandingPage />} />
+            <Route path="/a" element={<LandingPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/registrationorg" element={<RegistrationOrg />} />
             <Route path="/registrationuser" element={<RegistrationUser />} />
 
-            <Route path ="/a" element={<UserDashboardHome/>}/>
+            <Route path ="/" element={<UserDashboard/>}/>
             <Route path ="/blood-request-form" element = {<BloodRequestForm/>}/>
             <Route path ="/schedule-donation" element = {<ScheduleDonation/>}/>
             <Route path ="/user-organize-event" element = {<UserOrganizeEvent/>}/>
