@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import ( RegisterUserView, UserLoginView, UserProfileUpdateView, BloodRequestListView, BloodRequestCreateView , FilterUserBloodGroup , LogoutView , UserListView , CreateEventView , JoinEventView ,CheckInView , ListEventsView , ActivateAccountView , UserJoinedEventHistoryView , qr_code_view)
+from .views import ( RegisterUserView, UserLoginView, UserProfileUpdateView, BloodRequestListView, BloodRequestCreateView , FilterUserBloodGroup , LogoutView , UserListView , CreateEventView , JoinEventView ,CheckInView , ListEventsView , ActivateAccountView , UserJoinedEventHistoryView , qr_code_view , PasswordResetRequestView , PasswordResetConfirmView)
 
 urlpatterns = [
     path('user/register/', RegisterUserView.as_view(), name='register_user'),    #user registration ko lagi
@@ -20,7 +20,8 @@ urlpatterns = [
     path("events/<slug:slug>/join/", JoinEventView.as_view(), name="join_event"),   #event join garna ko lagi
     path("events/<slug:slug>/checkin/", CheckInView.as_view(), name="checkin_event"),  #event checkin garna ko lagi
     path("events/" , ListEventsView.as_view(), name="event-lists"),   # existing event haru listout garna ko lagi
-    path('my-events-history/', UserJoinedEventHistoryView.as_view(), name="history"),  #aafnu event history haru check garna ko lagi
+    path('my-events-history/', UserJoinedEventHistoryView.as_view(), name="history"),  #aafnu event history haru check garna ko lagi 
     
+
     ]
 

@@ -51,6 +51,37 @@
     .navbar-right a:hover{
       text-decoration: underline;
     }
+
+    .navbar-right .login-button{
+      color: var(--secondary);
+      background-color: transparent;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .navbar-right .login-button:hover{
+      text-decoration: underline;
+    }
+
+    .navbar-right .login-option{
+      position: absolute;
+      top: 57px;
+      right: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 0px;
+      background-color: var(--secondary);
+      border: 2px solid rgba(255,255,255,.1);
+      border-radius: 10px;
+      padding: 4px 0;
+    }
+
+    .navbar-right .login-option a{
+      padding: 6px 20px;
+      color: var(--primary);
+      background-color: transparent;
+    }
   
     
   

@@ -1,6 +1,8 @@
 import React,{useState} from 'react';
 import './LoginRegistration.css';
 
+import { Link, useNavigate, useLocation } from "react-router-dom";
+
 import { FaLock} from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
 
@@ -8,15 +10,14 @@ import BackThreeD from './3d'
 
 
 
-const Login = ({ switchToRegister }) => {
+const Login = () => {
+    const location = useLocation()
+    const accountType = location.state?.accountType;
+    const registerLink = accountType === 'user' ? '/registrationuser' : '/registrationorg';
 
     const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [accountType, setAccountType] = useState("user")
-    const handleChangeAccountType = (event) => {
-        setAccountType(event.target.value);
-      };
-
+    const [password, setPassword] = useState("");
+    
     const handleSubmit = (e) => {
         e.preventDefault(); // Prevent page reload
       };
@@ -29,6 +30,9 @@ const Login = ({ switchToRegister }) => {
             <div className="login-section">
                 <h1>Blood Sewa</h1>
                 <h3>Donate Blood, Save Life . . .</h3>
+                <div className="img">
+                    <img src="donate.png" alt="Donate" />
+                </div>
             </div>
             <div className="login-form">
                 <form onSubmit={handleSubmit}>
@@ -48,7 +52,7 @@ const Login = ({ switchToRegister }) => {
                         <FaLock className="icon"/>
                     </div>
 
-                    <div className="account-type">
+                    {/* <div className="account-type">
                         <label>
                             Login/Register as:
 
@@ -69,7 +73,7 @@ const Login = ({ switchToRegister }) => {
                             <label htmlFor="Organization">Organization</label>
 
                         </label>
-                    </div>
+                    </div> */}
 
                     <div className="remember-forgot">
                         <label>
@@ -83,7 +87,7 @@ const Login = ({ switchToRegister }) => {
                     <button type="submit">Login</button>
                     <div className="register-link">
                         <p> Don't have an account?
-                            <a href="#" onClick={switchToRegister}>Register</a>
+                            <Link to = {registerLink}>Register</Link>
                         </p>
                     </div>
                 </form>
