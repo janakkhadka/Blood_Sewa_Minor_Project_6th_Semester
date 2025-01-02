@@ -30,32 +30,32 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
-# Organization Serializer
-# class OrganizationSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = User
-#         fields = ['id', 'email', 'name', 'phone_number', 'district', 'province', 'password']
-#         extra_kwargs = {
-#             'password': {'write_only': True},  # Ensure the password is not returned in API responses
-#                 }
 
-#     def validate_phone_number(self , value):
-#         return validate_phone_number(value)
+class OrganizationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'name', 'phone_number', 'district', 'province', 'password']
+        extra_kwargs = {
+            'password': {'write_only': True},  # Ensure the password is not returned in API responses
+                }
 
-#     def validate_password(self, value):
-#         return validate_password(value)
+    def validate_phone_number(self , value):
+        return validate_phone_number(value)
+
+    def validate_password(self, value):
+        return validate_password(value)
 
 
-#     def create(self, validated_data):
-#         password = validated_data.pop('password', None)
-#         validated_data.pop('DOB', None)
-#         validated_data.pop('blood_group', None)
-#         validated_data['user_type'] = 'organization'
-#         user = User.objects.create(**validated_data)
-#         if password:
-#             user.set_password(password)  # Hash the password
-#             user.save()
-#         return user
+    def create(self, validated_data):
+        password = validated_data.pop('password', None)
+        validated_data.pop('DOB', None)
+        validated_data.pop('blood_group', None)
+        validated_data['user_type'] = 'organization'
+        user = User.objects.create(**validated_data)
+        if password:
+            user.set_password(password)  # Hash the password
+            user.save()
+        return user
 
 
 
