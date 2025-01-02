@@ -69,7 +69,7 @@ function ScheduleDonation() {
                         onChange={handleProvinceChange}
                         options={provinceList}
                         styles={customStyles()}
-                        placeholder="Koshi Province"
+                        placeholder="Select Province"
                         isSearchable={false}
                     />
                     <IoIosArrowDropdownCircle className='icon'/>
@@ -81,9 +81,7 @@ function ScheduleDonation() {
                         onChange={handleHospitalChange}
                         options={hospitalOptions}
                         styles={customStyles()}
-                        placeholder={
-                        selectedProvince ? "Select a Hospital/Blood Bank" : "BPKIHS Dharan"
-                        }
+                        placeholder={"Select a Hospital/Blood Bank"}
                         isDisabled={!selectedProvince}
                         isSearchable={false}
                     />
@@ -110,6 +108,10 @@ function ScheduleDonation() {
                         isSearchable={false}
                     />
                     <IoIosArrowDropdownCircle className='icon'/>
+                </div>
+
+                <div className="schedule-donation-submit-button">
+                    <button type="submit" >Schedule</button>
                 </div>
             </form>
         </div>
