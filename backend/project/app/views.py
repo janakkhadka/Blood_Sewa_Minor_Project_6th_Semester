@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
+from rest_framework import serializers
 from django.utils.http import urlsafe_base64_encode
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_bytes
@@ -377,3 +378,73 @@ def qr_code_view(request, filename):
         response = HttpResponse(file.read(), content_type="image/png")
         response['Content-Disposition'] = f'inline; filename="{filename}"'
         return response
+
+
+
+
+class PasswordResetRequestView(APIView):
+    def post(self, request):
+        email = request.data.get("email")
+
+        if not email:
+            return Response({"error": "Email is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return Response({"error": "User with this email does not exist."}, status=status.HTTP_404_NOT_FOUND)
+
+        # Generate password reset token and URL
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        token = default_token_generator.make_token(user)
+        reset_url = f"{request.build_absolute_uri('/reset-password/')}{uid}/{token}/"
+
+        # Render and send email
+        subject = "Password Reset Request"
+        html_message = render_to_string("email_password_reset.htm", {"reset_url": reset_url, "name": user.name})
+        plain_message = f"Click the link to reset your password: {reset_url}"
+
+        send_mail(
+            subject,
+            plain_message,
+            settings.DEFAULT_FROM_EMAIL,
+            [email],
+            html_message=html_message,
+        )
+
+        return Response({"message": "Password reset email sent."}, status=status.HTTP_200_OK)
+
+
+class PasswordResetConfirmView(APIView):
+    def get(self, request, uidb64, token):
+        try:
+            uid = urlsafe_base64_decode(uidb64).decode()
+            user = User.objects.get(pk=uid)
+        except (User.DoesNotExist, ValueError, TypeError):
+            return Response({"error": "Invalid link."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not default_token_generator.check_token(user, token):
+            return Response({"error": "Invalid token."}, status=status.HTTP_400_BAD_REQUEST)
+
+        form = SetPasswordForm(user)
+        return render(request, "password_reset_confirm.html", {"form": form})
+
+    def post(self, request, uidb64, token):
+        try:
+            uid = urlsafe_base64_decode(uidb64).decode()
+            user = User.objects.get(pk=uid)
+        except (User.DoesNotExist, ValueError, TypeError):
+            return Response({"error": "Invalid link."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not default_token_generator.check_token(user, token):
+            return Response({"error": "Invalid token."}, status=status.HTTP_400_BAD_REQUEST)
+
+        form = SetPasswordForm(user, request.POST)
+        if form.is_valid():
+            form.save()
+            return Response({"message": "Your password has been reset successfully."}, status=status.HTTP_200_OK)
+
+        return render(request, "password_reset_confirm.htm", {"form": form})
+
+
+
