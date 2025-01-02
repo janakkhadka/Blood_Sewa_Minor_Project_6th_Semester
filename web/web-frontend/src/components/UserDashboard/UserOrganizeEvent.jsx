@@ -68,7 +68,7 @@ function UserOrganizeEvent() {
                 </div>
 
                 <div className='date-box'>
-                        <label htmlFor="" className='date-label'>Preferred Donation Date:</label>
+                        <label htmlFor="" className='date-label'>Event Date:</label>
                         <DatePicker onChange={setScheduleDate} value={scheduleDate}  className='date-picker'
                         placeholderText="Preferred Donation Date"
                         calendarIcon={null} 

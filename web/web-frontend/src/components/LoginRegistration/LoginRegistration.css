@@ -204,7 +204,7 @@ form .register-link{
 }
 
 .registration-form .organization-type input{
-   accent-color: black;
+   accent-color: var(--primary);
    margin: 0 5px; 
 }
 

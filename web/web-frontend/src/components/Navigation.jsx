@@ -16,23 +16,25 @@ import UserOrganizeEvent from './UserDashboard/UserOrganizeEvent';
 import UserBloodAvailability from './UserDashboard/BloodAvailability';
 import UserProfile from './UserDashboard/UserProfile';
 import UserProfileUpdate from './UserDashboard/UserProfileUpdate';
+import SearchDonor from './UserDashboard/SearchDonor.jsx';
 
 const Navigation = () => {
     return (
         <Router>
           <Routes>
-            <Route path="/" element={<LandingPage />} />
+            <Route path="/a" element={<LandingPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/registrationorg" element={<RegistrationOrg />} />
             <Route path="/registrationuser" element={<RegistrationUser />} />
 
-            <Route path ="/a" element={<UserDashboardHome/>}/>
+            <Route path ="/" element={<UserDashboard/>}/>
             <Route path ="/blood-request-form" element = {<BloodRequestForm/>}/>
             <Route path ="/schedule-donation" element = {<ScheduleDonation/>}/>
             <Route path ="/user-organize-event" element = {<UserOrganizeEvent/>}/>
             <Route path ="/user-blood-availability" element = {<UserBloodAvailability/>}/>
             <Route path ="/user-profile" element = {<UserProfile/>}/>
             <Route path ="/user-profile-update" element = {<UserProfileUpdate/>}/>
+            <Route path ="/search-donor" element = {<SearchDonor/>}/>
             {/* <Route path="/navigationbar" element={<NavigationBar />} /> */}
           </Routes>
         </Router>

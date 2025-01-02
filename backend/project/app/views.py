@@ -18,9 +18,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from .utils import UserFilter , DistrictFilter
-from .models import User, BloodRequestModel , Event , UserEvent
+from .models import User, BloodRequestModel , Event , UserEvent , BloodInventory
 import os
-from .serializers import (UserSerializer, LoginSerializer, UserProfileUpdateSerializer, BloodRequestSerializer , LimitedUserSerializer , EventSerializer , UserEventSerializer , OrganizationSerializer)
+from .serializers import (UserSerializer, LoginSerializer, UserProfileUpdateSerializer, BloodRequestSerializer , LimitedUserSerializer , EventSerializer , UserEventSerializer , OrganizationSerializer , BloodInventorySerializer)
 
 
 class RegisterUserView(APIView):
@@ -445,6 +445,65 @@ class PasswordResetConfirmView(APIView):
             return Response({"message": "Your password has been reset successfully."}, status=status.HTTP_200_OK)
 
         return render(request, "password_reset_confirm.htm", {"form": form})
+
+
+
+class IsOwner(permissions.BasePermission):
+    """
+    Custom permission to only allow the owner (organization) of the blood inventory to modify it.
+    """
+    def has_object_permission(self, request, view, obj):
+        # Allow viewing for all authenticated users
+        if request.method in permissions.SAFE_METHODS:  # GET, HEAD, OPTIONS
+            return True
+
+        # Allow modification only for the owner (organization)
+        return obj.organization == request.user
+
+
+class BloodInventoryDetail(APIView):
+    permission_classes = [permissions.IsAuthenticated, IsOwner]
+
+    def get(self, request):
+        try:
+            # Get the blood inventory for the logged-in user (organization)
+            inventory = BloodInventory.objects.get(organization=request.user)
+        except BloodInventory.DoesNotExist:
+            return Response({"detail": "Blood inventory not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        # Serialize and return the blood inventory
+        serializer = BloodInventorySerializer(inventory)
+        return Response(serializer.data)
+
+    def patch(self, request):
+        # Check if the logged-in user is an organization
+        if request.user.user_type != 'organization':
+            return Response({"detail": "Only organizations can update the blood inventory."}, status=status.HTTP_403_FORBIDDEN)
+
+        try:
+            # Get the blood inventory for the logged-in user (organization)
+            inventory = BloodInventory.objects.get(organization=request.user)
+        except BloodInventory.DoesNotExist:
+            return Response({"detail": "Blood inventory not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        # Get the current inventory and update only the fields provided in the request
+        current_inventory = inventory.inventory
+
+        # Get the new inventory data from the request
+        new_inventory = request.data.get("inventory", {})
+
+        # Merge the current inventory with the new data (preserving existing data)
+        current_inventory.update(new_inventory)
+
+        # Save the updated inventory
+        inventory.inventory = current_inventory
+        inventory.save()
+
+        # Serialize and return the updated blood inventory
+        serializer = BloodInventorySerializer(inventory)
+        return Response(serializer.data)
+
+
 
 
 
