@@ -5,18 +5,18 @@ from .models import User, BloodRequestModel , Event , UserEvent , BloodInventory
 
 class CustomUserAdmin(UserAdmin):
     model = User
-    list_display = ['email', 'name', 'phone_number', 'blood_group', 'district', 'province', 'is_active', 'is_staff', 'DOB', 'user_type']  # Ensure 'user_type' is correct
+    list_display = ['email', 'name', 'phone_number', 'blood_group', 'district', 'province', 'is_active', 'is_staff', 'DOB', 'user_type' , 'gender']  # Ensure 'user_type' is correct
     ordering = ['email']
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal Info', {'fields': ('name', 'phone_number', 'blood_group', 'district', 'province', 'DOB', 'user_type')}),
+        ('Personal Info', {'fields': ('name', 'phone_number', 'blood_group', 'district', 'province', 'DOB', 'user_type' , 'gender')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login',)}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2', 'name', 'phone_number', 'blood_group', 'district', 'province', 'is_active', 'is_staff', 'DOB', 'user_type'),
+            'fields': ('email', 'password1', 'password2', 'name', 'phone_number', 'blood_group', 'district', 'province', 'is_active', 'is_staff', 'DOB', 'user_type' , 'gender'),
         }),
     )
 

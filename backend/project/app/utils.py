@@ -50,6 +50,7 @@ def validate_age(value):
 
 
 
+
 class UserFilter(django_filters.FilterSet):
     blood_group = django_filters.CharFilter(field_name='blood_group', lookup_expr='iexact')  # Case-insensitive exact match
 
@@ -58,12 +59,14 @@ class UserFilter(django_filters.FilterSet):
         fields = ['blood_group']
 
 
+
 class DistrictFilter(django_filters.FilterSet):
     blood_group = django_filters.CharFilter(field_name='blood_group', lookup_expr='iexact')  # Case-insensitive exact match
     district = django_filters.CharFilter(field_name='district' , lookup_expr='iexact')
     class Meta:
         model = User
         fields = ['blood_group' , 'district']
+
 
 class OrganizationFilter(django_filters.FilterSet):
     organization_name = django_filters.CharFilter(field_name='organization__name',lookup_expr='iexact') # Case-insensitive exact match
