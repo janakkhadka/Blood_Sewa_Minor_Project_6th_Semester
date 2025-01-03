@@ -190,3 +190,13 @@ class BloodInventory(models.Model):
 
     def __str__(self):
         return f"{self.organization.name}'s Blood Inventory"
+
+
+class Bookings(models.Model):
+    SHIFT_CHOICES = [('morning' , 'morning') , ('day' , 'day') , ('evening' , 'evening')]
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE , related_name='bookings' , limit_choices_to={'user_type':'user'})
+    organization = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE , related_name='organizatio_name' , limit_choices_to={'user_type':'organization'})
+    booking_date = models.DateField()
+    shift = models.CharField(max_length=10 , choices=SHIFT_CHOICES)
+    def __str__(self):
+        return f"Booking by {self.user.name} on {self.booking_date} for {self.user.name}"

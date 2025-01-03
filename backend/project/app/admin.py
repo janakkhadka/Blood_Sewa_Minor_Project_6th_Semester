@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, BloodRequestModel , Event , UserEvent , BloodInventory
+from .models import User, BloodRequestModel , Event , UserEvent , BloodInventory , Bookings
 
 
 class CustomUserAdmin(UserAdmin):
@@ -21,6 +21,14 @@ class CustomUserAdmin(UserAdmin):
     )
 
 admin.site.register(User, CustomUserAdmin)
+
+
+@admin.register(Bookings)
+class BookingsAdmin(admin.ModelAdmin):
+    list_display = ('user', 'organization', 'booking_date', 'shift')  # Fields to display in the admin list view
+    list_filter = ('booking_date', 'shift')  # Filters for the admin list view
+    search_fields = ('user__username', 'organization__username')  # Search fields for quick lookup
+    ordering = ('-booking_date',)  # Default ordering in admin panel
 
 
 

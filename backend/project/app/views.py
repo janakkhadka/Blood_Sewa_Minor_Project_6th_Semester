@@ -18,9 +18,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from .utils import UserFilter , DistrictFilter , OrganizationFilter
-from .models import User, BloodRequestModel , Event , UserEvent , BloodInventory
+from .models import User, BloodRequestModel , Event , UserEvent , BloodInventory , Bookings
 import os
-from .serializers import (UserSerializer, LoginSerializer, UserProfileUpdateSerializer, BloodRequestSerializer , LimitedUserSerializer , EventSerializer , UserEventSerializer , OrganizationSerializer , BloodInventorySerializer)
+from datetime import date , timedelta
+from .serializers import (UserSerializer, LoginSerializer, UserProfileUpdateSerializer, BloodRequestSerializer , LimitedUserSerializer , EventSerializer , UserEventSerializer , OrganizationSerializer , BloodInventorySerializer , BookingSerializer , OrganizationBookingSerializer)
 
 
 class RegisterUserView(APIView):
@@ -525,5 +526,44 @@ class OrganizationListView(APIView):
 
 
 
+class BookingCreateView(APIView):
+    permissions_classes = [permissions.IsAuthenticated] 
 
+    def post(self, request):
+        if request.user.user_type != 'user':
+            return Response({"error": "Only users can create bookings."}, status=status.HTTP_403_FORBIDDEN)
+
+        data = request.data
+        data['user'] = request.user
+        today = date.today()
+        three_months_ago = today - timedelta(days=90)
+        if Bookings.objects.filter(user=data['user'], booking_date__gte=three_months_ago).exists():
+            return Response(
+                {"detail": "You can only make one booking in any organization every 3 months."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+
+
+        serializers = BookingSerializer(data=data , context = {'request' : request})
+        if serializers.is_valid():
+            serializers.save(user=request.user)
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
+        return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class MyBookings(APIView):
+    permissions = [permissions.IsAuthenticated]
+    def get(self, request):
+        bookings = Bookings.objects.filter(user=request.user)
+        serializer = BookingSerializer(bookings, many=True)
+        return Response(serializer.data)
+
+class OrganizationBookings(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        bookings = Bookings.objects.filter(organization=request.user)
+        serializer = OrganizationBookingSerializer(bookings, many=True)
+        return Response(serializer.data)
 
