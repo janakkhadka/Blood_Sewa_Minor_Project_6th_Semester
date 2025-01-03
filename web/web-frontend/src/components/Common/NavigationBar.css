@@ -98,13 +98,14 @@
     }
 
     .navbar-right-right .logout-button{
-      border: 2px solid rgba(255,255,255,.1);
+      border: 2px solid rgba(233, 197, 197, 0.1);
       border-radius: 5px;
       background-color: transparent;
       color: var(--secondary);
       font-size: 18px;
       padding:3px 20px;
       cursor: pointer;
+      margin-left: 15px;
     }
 
     .logout-button:hover{
