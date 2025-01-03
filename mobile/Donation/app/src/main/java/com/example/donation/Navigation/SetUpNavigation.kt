@@ -82,6 +82,10 @@ fun SetUpNavigation(navController : NavHostController) {
                 SearchDonors(navController)
             }
 
+//            composable(route = Screens.ShowCamera.route) {
+//                ShowCamera(navController)
+//            }
+
 
         }
     }

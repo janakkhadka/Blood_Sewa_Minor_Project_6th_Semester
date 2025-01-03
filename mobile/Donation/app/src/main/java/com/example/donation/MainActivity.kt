@@ -5,21 +5,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.annotation.RequiresApi
-import androidx.lifecycle.ViewModel
 
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-
-
-import com.example.donation.BottomNavBar.HomeScreen
-import com.example.donation.BottomNavBar.UrgentBloodScreen
-import com.example.donation.MoreItems.BloodRequestsScreen
-import com.example.donation.MoreItems.SearchDonors
-import com.example.donation.Navigation.SetUpNavigation
-import com.example.donation.Verification.SignUp
-import com.example.donation.moreItems.CreateEvents
-import com.example.donation.moreItems.ScheduleTime
+import com.example.donation.moreItems.ViewEvents
 
 
 class MainActivity : ComponentActivity() {
@@ -37,7 +26,9 @@ class MainActivity : ComponentActivity() {
           //  BloodRequestsScreen()
             //SignUp(navController = navController)
            // CreateEvents()
-            ScheduleTime()
+            //ScheduleTime()
+           // ViewEvents()
+            ViewEvents()
 
 
         }
