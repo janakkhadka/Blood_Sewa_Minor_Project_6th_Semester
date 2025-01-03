@@ -33,8 +33,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.donation.BottomNavBar.CustomTopBar
 import com.example.donation.BottomNavBar.TopBarTheme
+import com.example.donation.backend.searchDonor.SearchDonor
 import com.example.donation.ui.theme.dRed
 
 
@@ -80,4 +82,11 @@ fun RowSearchBlood(text: String, isSelected: Boolean, onClick: () -> Unit) {
     ) {
         Text(text = text, fontSize = 18.sp, fontWeight = FontWeight.Bold)
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PrevieW(){
+    val navController = rememberNavController()
+    SearchDonors(navController)
 }

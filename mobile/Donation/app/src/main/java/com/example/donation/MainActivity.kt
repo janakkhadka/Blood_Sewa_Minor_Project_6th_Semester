@@ -19,6 +19,7 @@ import com.example.donation.MoreItems.SearchDonors
 import com.example.donation.Navigation.SetUpNavigation
 import com.example.donation.Verification.SignUp
 import com.example.donation.moreItems.CreateEvents
+import com.example.donation.moreItems.ScheduleTime
 
 
 class MainActivity : ComponentActivity() {
@@ -35,7 +36,8 @@ class MainActivity : ComponentActivity() {
             //SearchDonors()
           //  BloodRequestsScreen()
             //SignUp(navController = navController)
-            CreateEvents()
+           // CreateEvents()
+            ScheduleTime()
 
 
         }

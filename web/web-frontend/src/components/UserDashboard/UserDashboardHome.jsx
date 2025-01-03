@@ -12,11 +12,18 @@ import { IoMdOptions } from "react-icons/io";
 
 // import { getGreeting } from '../Utils/Greeting'
 import {events, urgentBlood} from './DummyData'
+import NavigationBar from '../Common/NavigationBar'
+import { DashboardNavbarRightLeft, DashboardNavbarRightRight } from './UserNavbarComponent';
 
 function UserDashboardHome() {
   const navigate = useNavigate();
   return (
     <div className='user-dashboard-home-wrapper'>
+      <NavigationBar 
+          titleNav = "Blood Sewa" 
+          rightLeftNav = {<DashboardNavbarRightLeft/>}
+          rightRightNav = {<DashboardNavbarRightRight/>} 
+        />
       <div className="user-dashboard-top-section">
         <div className="left-section">
           <section className="user-greeting-message">
@@ -35,7 +42,7 @@ function UserDashboardHome() {
             <button className="action-button" onClick={() => navigate("/schedule-donation")}>Schedule a donation</button>
             <button className="action-button" onClick={() => navigate("/user-organize-event")}>Organize an event</button>
             <button className="action-button" onClick={() => navigate("/user-blood-availability")}>See Blood Availability</button>
-            <button className="action-button" onClick={() => navigate("/user-profile")}>Visit Your Profile</button>
+            <button className="action-button" onClick={() => navigate("/search-donor")}>Search Donor</button>
           </section>
         </div>
         <div className="right-section">
