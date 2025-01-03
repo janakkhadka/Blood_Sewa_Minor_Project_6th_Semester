@@ -8,13 +8,13 @@ import { useNavigate } from 'react-router-dom'
 import {activityHistory} from './DummyData'
 
 import { format } from "date-fns";
+
 import { SlUserFemale, SlUser } from "react-icons/sl";
-import { MdOutlineDateRange, MdDateRange } from "react-icons/md";
+import { MdOutlineDateRange, MdDateRange,MdCountertops,MdHealthAndSafety } from "react-icons/md";
 import { BsGenderAmbiguous } from "react-icons/bs";
 import { CiPhone } from "react-icons/ci";
 import { IoHomeOutline } from "react-icons/io5";
-import { MdCountertops } from "react-icons/md";
-import { FaLocationDot } from "react-icons/fa6";
+import { FaLocationDot, FaDiamond } from "react-icons/fa6";
 import { GiChoice } from "react-icons/gi";
 
 import Medal from '../Utils/Medal'
@@ -95,8 +95,33 @@ function UserProfile() {
           </section>
         </div>
         <div className="bottom-section">
+          <section className="last-donation-blood-health-info">
+            <div className="icon-title-wrapper">
+              <MdHealthAndSafety className='icon'/>
+              <h3>Last Donation Blood Info</h3>
+            </div>
+            <div className="blood-health-info-list-wrapper">
+              <FaDiamond/>
+              <span>Blood Pressure: <span style={{fontWeight:"bold"}}>120/80 mmHg</span> </span>
+            </div>
+            <div className="blood-health-info-list-wrapper">
+              <FaDiamond/>
+              <span>Pulse Rate: <span style={{fontWeight:"bold"}}>72 bpm</span></span>
+            </div>
+            <div className="blood-health-info-list-wrapper">
+              <FaDiamond/>
+              <span>Body Temperature: <span style={{fontWeight:"bold"}}>98.6°F</span></span>
+            </div>
+            <div className="blood-health-info-list-wrapper">
+              <FaDiamond/>
+              <span>Hemoglobin: <span style={{fontWeight:"bold"}}>17.2 g/dL</span></span>
+            </div>
+            <div className="blood-health-info-list-wrapper">
+              <FaDiamond/>
+              <span>Blood Sugar Level: <span style={{fontWeight:"bold"}}>85 mg/dL</span></span>
+            </div>
+          </section>
           <section className='user-donation-history'>
-            
             <h1 className='h1-history'>User Activity History</h1>
             <table border="0" style={{ width: "100%", borderCollapse: "collapse" }}>
               <thead>
