@@ -514,6 +514,12 @@ class BloodInventoryByOrganization(APIView):
         serializer = BloodInventorySerializer(filterset.qs, many=True)
         return Response(serializer.data)
 
+class OrganizationListView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self , request, *args, **kwargs):
+        organization = User.objects.filter(user_type='organization').values_list('name', flat=True)
+        return Response({"organizations":list(organization)}, status=status.HTTP_200_OK)
 
 
 
