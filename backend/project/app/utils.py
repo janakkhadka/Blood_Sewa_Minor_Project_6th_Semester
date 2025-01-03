@@ -2,7 +2,7 @@ import re
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 import django_filters
-from .models import User
+from .models import User , BloodInventory
 
 
 def validate_password(value):
@@ -64,3 +64,9 @@ class DistrictFilter(django_filters.FilterSet):
     class Meta:
         model = User
         fields = ['blood_group' , 'district']
+
+class OrganizationFilter(django_filters.FilterSet):
+    organization_name = django_filters.CharFilter(field_name='organization__name',lookup_expr='iexact') # Case-insensitive exact match
+    class Meta:
+        model = BloodInventory
+        fields = ['organization']

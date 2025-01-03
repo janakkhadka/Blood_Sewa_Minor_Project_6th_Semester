@@ -156,3 +156,6 @@ class BloodInventorySerializer(serializers.ModelSerializer):
         model = BloodInventory
         fields = ['organization_name', 'inventory']
         read_only_fields = ['organization_name']
+
+
+
