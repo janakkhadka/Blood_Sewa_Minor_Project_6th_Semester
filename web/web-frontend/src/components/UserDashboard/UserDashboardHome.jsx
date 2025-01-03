@@ -14,6 +14,7 @@ import { IoMdOptions } from "react-icons/io";
 import {events, urgentBlood} from './DummyData'
 import NavigationBar from '../Common/NavigationBar'
 import { DashboardNavbarRightLeft, DashboardNavbarRightRight } from './UserNavbarComponent';
+import {greetingMessage} from '../Utils/GreetingMessage'
 
 function UserDashboardHome() {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ function UserDashboardHome() {
       <div className="user-dashboard-top-section">
         <div className="left-section">
           <section className="user-greeting-message">
-                {/* <h1>{getGreeting()+", Janak Khadka!"}</h1> */}
+                <h1>{greetingMessage()+", Janak Khadka!"}</h1>
                 <div className="user-typing-effect">
                   <span>Happy to see you.</span>
                 </div>
