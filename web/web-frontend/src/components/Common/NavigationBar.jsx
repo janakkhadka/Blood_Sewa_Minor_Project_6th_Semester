@@ -1,11 +1,8 @@
 import React from "react";
 import "./NavigationBar.css";
 
-import { Link } from "react-router-dom";
-import { HashLink } from "react-router-hash-link";
 
-const HomepageNavigationBar = ({
-  titleNav,rightLeftNav,rightRightNav}) => {
+const NavigationBar = ({ titleNav, rightLeftNav, rightRightNav }) => {
   return (
     <div className="navigation-bar">
       <nav className="navbar">
@@ -21,4 +18,4 @@ const HomepageNavigationBar = ({
   );
 };
 
-export default HomepageNavigationBar;
+export default NavigationBar;
