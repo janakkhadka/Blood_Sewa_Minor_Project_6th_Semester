@@ -62,6 +62,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         ('user', 'User'),
         ('organization', 'Organization'),
     )
+    GENDER_CHOICES = (
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('other', 'Other'),
+    )
 
     name = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=20, unique=True)
@@ -69,6 +74,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     district = models.CharField(max_length=100)
     province = models.CharField(max_length=100)
     DOB = models.DateField(null=True, blank=True)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES , default='')
     #file = models.FileField(upload_to='uploads/', blank=True, null=True)
     groups = models.ManyToManyField('auth.Group', related_name='user_groups', blank=True)
     user_permissions = models.ManyToManyField('auth.Permission', related_name='user_permissions_set', blank=True)

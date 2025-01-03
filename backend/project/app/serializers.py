@@ -5,7 +5,7 @@ from .utils import validate_password, validate_age , validate_phone_number
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'name', 'phone_number', 'blood_group', 'district', 'province', 'password', 'DOB']
+        fields = ['id', 'email', 'name', 'phone_number', 'blood_group', 'district', 'province', 'password', 'DOB' , 'gender']
         extra_kwargs = {
             'password': {'write_only': True},  # Ensure the password is not returned in API responses
             'DOB': {'required': True}  # If DOB is required for registration
@@ -75,13 +75,14 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'name', 'email', 'phone_number', 'blood_group', 'province', 'district', 'password' , 'DOB'
+            'name', 'email', 'phone_number', 'blood_group', 'province', 'district', 'password' , 'DOB' , 'gender'
         ]
         extra_kwargs = {
             'email': {'read_only': True},
             'blood_group': {'read_only': True},
             'DOB': {'read_only':True},
-            'name':{'read_only': True}
+            'name':{'read_only': True},
+            'gender':{'read_only': True},
         }
 
     def validate_password(self, value):

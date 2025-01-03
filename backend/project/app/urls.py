@@ -23,7 +23,7 @@ urlpatterns = [
     path('my-events-history/', UserJoinedEventHistoryView.as_view(), name="history"),  #aafnu event history haru check garna ko lagi 
     path('my-blood-inventory/', BloodInventoryDetail.as_view(), name='blood-inventory-list'),  # List and Create
     path('blood-inventory/update/', BloodInventoryDetail.as_view(), name='blood-inventory-detail'),  #update available blood inventory
-     path('blood-inventory/', BloodInventoryByOrganization.as_view(), name='blood-inventory-by-organization'),
+     path('blood-inventory/', BloodInventoryByOrganization.as_view(), name='blood-inventory-by-organization'), #list organization by blood group
      path('organization-list/',OrganizationListView.as_view(), name='organization-list'), #list of organizations
 
     ]

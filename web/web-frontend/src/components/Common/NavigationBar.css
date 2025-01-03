@@ -88,16 +88,45 @@
       background-color: transparent;
       border: none;
       color: var(--secondary);
+      padding-left: 10px;
+    }
+
+    .icons-wrapper{
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
     }
 
     .icons-wrapper .icon{
       font-size: 24px;
       cursor: pointer;
-      margin:0 10px;
-      
     }
 
-    .navbar-right-right .logout-button{
+    .navbar-right .notification-list{
+      position: absolute;
+      top: 58px;
+      right: 150px;
+      height:204px;
+      width:400px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scrollbar-width: none;
+      background-color: transparent;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      background-color: transparent;
+      text-overflow: hidden;
+    }
+    .notification-list a{
+      color: var(--primary);
+      background-color: var(--secondary);
+      padding: 5px 15px;
+      border-radius: 5px;
+      text-overflow: hidden;
+    }
+
+    .navbar-right .logout-button{
       border: 2px solid rgba(233, 197, 197, 0.1);
       border-radius: 5px;
       background-color: transparent;
@@ -111,6 +140,8 @@
     .logout-button:hover{
       text-decoration: underline;
     }
+
+    
 
     
   

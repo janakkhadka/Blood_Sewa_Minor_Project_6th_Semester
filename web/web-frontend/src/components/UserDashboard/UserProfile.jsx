@@ -18,6 +18,8 @@ import { FaLocationDot } from "react-icons/fa6";
 import { GiChoice } from "react-icons/gi";
 
 import Medal from '../Utils/Medal'
+import NavigationBar from '../Common/NavigationBar'
+import { ComponentNavbarRightLeft, ComponentNavbarRightRight } from './UserNavbarComponent';
 
 function UserProfile() {
   const donationCount = 130;
@@ -27,7 +29,11 @@ function UserProfile() {
       <div className="syringe">
         <BackThreeD/>
       </div>
-      <UserNavigationBar titleBar="User Profile"/>
+      <NavigationBar 
+          titleNav = "Blood Sewa" 
+          rightLeftNav = {<ComponentNavbarRightLeft/>}
+          rightRightNav = {<ComponentNavbarRightRight/>} 
+        />
 
       <div className="user-profile">
         <div className="top-section">

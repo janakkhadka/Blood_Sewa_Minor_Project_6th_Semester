@@ -125,25 +125,26 @@ class UserLoginView(APIView):
             user = authenticate(email=email, password=password)
 
             if user and isinstance(user, User):  # Ensure the authenticated user is of type User
-                # Generate JWT tokens
-                refresh = RefreshToken.for_user(user)
+                 if user.user_type == 'user':
+                    refresh = RefreshToken.for_user(user)
 
-                user_details = {
-                    "name": user.name,
-                    "email": user.email,
-                    "phone_number": user.phone_number,
-                    "blood_group": user.blood_group,
-                    "district": user.district,
-                    "province": user.province,
-                    "DOB": user.DOB,
-                }
+                    user_details = {
+                        "name": user.name,
+                        "email": user.email,
+                        "phone_number": user.phone_number,
+                        "blood_group": user.blood_group,
+                        "district": user.district,
+                        "province": user.province,
+                        "DOB": user.DOB,
+                        "gender": user.gender
+                    }
 
-                return Response({
-                    "message": "Login successful",
-                    "user_detail": user_details ,
-                    "access_token": str(refresh.access_token),
-                    "refresh_token": str(refresh),
-                }, status=status.HTTP_200_OK)
+                    return Response({
+                        "message": "Login successful",
+                        "user_detail": user_details ,
+                        "access_token": str(refresh.access_token),
+                        "refresh_token": str(refresh),
+                    }, status=status.HTTP_200_OK)
 
             return Response({"message": "Invalid email or password"}, status=status.HTTP_401_UNAUTHORIZED)
 
