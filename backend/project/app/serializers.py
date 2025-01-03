@@ -1,6 +1,10 @@
 from rest_framework import serializers
-from .models import User, BloodRequestModel , Event , UserEvent , BloodInventory
+from .models import User, BloodRequestModel , Event , UserEvent , BloodInventory , Bookings
 from .utils import validate_password, validate_age , validate_phone_number
+from django.utils import timezone
+from datetime import date , timedelta
+from django.contrib.auth import get_user_model
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -160,3 +164,44 @@ class BloodInventorySerializer(serializers.ModelSerializer):
 
 
 
+
+class BookingSerializer(serializers.ModelSerializer):
+    User = get_user_model
+    organization = serializers.CharField() 
+    class Meta:
+        model = Bookings
+        fields = ['organization', 'booking_date', 'shift']
+        read_only_fields = ['id', 'user']
+
+    def validate(self,data):
+        user = self.context['request'].user
+        today = date.today()
+        three_months_age = today - timedelta(days=90)
+
+        recent_booking = Bookings.objects.filter(user=user, booking_date__gte=three_months_ago).exists()
+        if recent_booking:
+            raise serializers.ValidationError("You can only have one booking every three months")
+
+        return data
+
+
+    def validate_organization(self, value):
+        # Ensure the organization exists
+        try:
+            organization = User.objects.get(name=value, user_type='organization')
+        except User.DoesNotExist:
+            raise serializers.ValidationError(f"Organization with name '{value}' does not exist.")
+        return organization
+
+    def create(self, validated_data):
+        organization = validated_data.pop('organization')
+        validated_data['organization'] = User.objects.get(name=organization, user_type='organization')
+        return super().create(validated_data)
+
+
+
+class OrganizationBookingSerializer(serializers.ModelSerializer):
+    user_name = serializers.CharField(source='user.name')
+    class Meta:
+        model = Bookings
+        fields = ['user_name', 'booking_date', 'shift', 'user']  
