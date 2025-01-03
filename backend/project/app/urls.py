@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import ( RegisterUserView, UserLoginView, UserProfileUpdateView, BloodRequestListView, BloodRequestCreateView , FilterUserBloodGroup , LogoutView , UserListView , CreateEventView , JoinEventView ,CheckInView , ListEventsView , ActivateAccountView , UserJoinedEventHistoryView , qr_code_view , PasswordResetRequestView , PasswordResetConfirmView , OrganizationLoginView , RegisterOrganizationView , BloodInventoryDetail)
+from .views import ( RegisterUserView, UserLoginView, UserProfileUpdateView, BloodRequestListView, BloodRequestCreateView , FilterUserBloodGroup , LogoutView , UserListView , CreateEventView , JoinEventView ,CheckInView , ListEventsView , ActivateAccountView , UserJoinedEventHistoryView , qr_code_view , PasswordResetRequestView , PasswordResetConfirmView , OrganizationLoginView , RegisterOrganizationView , BloodInventoryDetail ,BloodInventoryByOrganization , OrganizationListView)
 
 urlpatterns = [
     path('user/register/', RegisterUserView.as_view(), name='register_user'),    #user registration ko lagi
@@ -21,6 +21,9 @@ urlpatterns = [
     path("events/<slug:slug>/checkin/", CheckInView.as_view(), name="checkin_event"),  #event checkin garna ko lagi
     path("events/" , ListEventsView.as_view(), name="event-lists"),   # existing event haru listout garna ko lagi
     path('my-events-history/', UserJoinedEventHistoryView.as_view(), name="history"),  #aafnu event history haru check garna ko lagi 
-    path('blood-inventory/', BloodInventoryDetail.as_view(), name='blood-inventory-list'),  # List and Create
+    path('my-blood-inventory/', BloodInventoryDetail.as_view(), name='blood-inventory-list'),  # List and Create
     path('blood-inventory/update/', BloodInventoryDetail.as_view(), name='blood-inventory-detail'),  #update available blood inventory
+     path('blood-inventory/', BloodInventoryByOrganization.as_view(), name='blood-inventory-by-organization'),
+     path('organization-list/',OrganizationListView.as_view(), name='organization-list'), #list of organizations
+
     ]

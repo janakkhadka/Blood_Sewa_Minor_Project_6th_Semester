@@ -17,7 +17,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
-from .utils import UserFilter , DistrictFilter
+from .utils import UserFilter , DistrictFilter , OrganizationFilter
 from .models import User, BloodRequestModel , Event , UserEvent , BloodInventory
 import os
 from .serializers import (UserSerializer, LoginSerializer, UserProfileUpdateSerializer, BloodRequestSerializer , LimitedUserSerializer , EventSerializer , UserEventSerializer , OrganizationSerializer , BloodInventorySerializer)
@@ -449,9 +449,6 @@ class PasswordResetConfirmView(APIView):
 
 
 class IsOwner(permissions.BasePermission):
-    """
-    Custom permission to only allow the owner (organization) of the blood inventory to modify it.
-    """
     def has_object_permission(self, request, view, obj):
         # Allow viewing for all authenticated users
         if request.method in permissions.SAFE_METHODS:  # GET, HEAD, OPTIONS
@@ -502,6 +499,28 @@ class BloodInventoryDetail(APIView):
         # Serialize and return the updated blood inventory
         serializer = BloodInventorySerializer(inventory)
         return Response(serializer.data)
+
+
+class BloodInventoryByOrganization(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        # Apply filtering
+        filterset = OrganizationFilter(request.GET, queryset=BloodInventory.objects.all())
+        if not filterset.is_valid():
+            return Response(filterset.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        # Serialize filtered results
+        serializer = BloodInventorySerializer(filterset.qs, many=True)
+        return Response(serializer.data)
+
+class OrganizationListView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self , request, *args, **kwargs):
+        organization = User.objects.filter(user_type='organization').values_list('name', flat=True)
+        return Response({"organizations":list(organization)}, status=status.HTTP_200_OK)
+
 
 
 

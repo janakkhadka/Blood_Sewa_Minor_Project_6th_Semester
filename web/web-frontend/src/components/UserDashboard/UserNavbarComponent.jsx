@@ -57,12 +57,15 @@ export const DashboardNavbarRightLeft = () => {
     return(
       <div className="navbar-right-left">
           <div className="icons-wrapper">
-            <FaHome/>
-            <button className="login-button" onClick={setToggleChange}>
-            <MdNotifications/>
+            <Link to= "/" state={{ loginState: true }}>
+                <FaHome className='icon'/>
+            </Link>
+            
+            <button className="notification-button" onClick={setToggleChange}>
+                <MdNotifications className='icon'/>
             </button>
             {toggle && (
-            <div className="notification-option">
+            <div className="notification-list">
                 <Link
                 to="/event-detail"
                 state= {{ nofiticationId: "user" }}
@@ -85,13 +88,15 @@ export const DashboardNavbarRightLeft = () => {
 export const DashboardNavbarRightRight = () => {
     return (
       <div className="navbar-right-right">
-        Welcome, Janak Khadka
-        <button className="login-button">
+        Welcome, Janak
+        <button className="logout-button">
           Logout
         </button>
       </div>
     );
   };
+
+
 
 
 
