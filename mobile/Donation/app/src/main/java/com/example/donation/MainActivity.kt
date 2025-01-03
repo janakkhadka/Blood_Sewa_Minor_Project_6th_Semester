@@ -5,14 +5,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.annotation.RequiresApi
-import androidx.lifecycle.ViewModel
 
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.donation.moreItems.ShowCamera
-
-
 import com.example.donation.moreItems.ViewEvents
 
 
@@ -33,7 +28,7 @@ class MainActivity : ComponentActivity() {
            // CreateEvents()
             //ScheduleTime()
            // ViewEvents()
-            ShowCamera()
+            ViewEvents()
 
 
         }
