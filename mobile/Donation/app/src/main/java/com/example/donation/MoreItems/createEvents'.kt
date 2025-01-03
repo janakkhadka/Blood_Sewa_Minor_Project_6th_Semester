@@ -35,11 +35,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.example.donation.BottomNavBar.CustomTopBar
 import com.example.donation.BottomNavBar.TopBarTheme
-import com.example.donation.ui.theme.DarkGreen
 import com.example.donation.ui.theme.RedThemeTop
-import com.example.donation.ui.theme.blue
 import com.example.donation.ui.theme.dRed
-import com.example.donation.ui.theme.lightGreen
+
 
 @Preview(showBackground = true)
 @Composable
