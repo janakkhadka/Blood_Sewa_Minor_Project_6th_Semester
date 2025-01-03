@@ -12,11 +12,18 @@ import { IoMdOptions } from "react-icons/io";
 
 // import { getGreeting } from '../Utils/Greeting'
 import {events, urgentBlood} from './DummyData'
+import NavigationBar from '../Common/NavigationBar'
+import { DashboardNavbarRightLeft, DashboardNavbarRightRight } from './UserNavbarComponent';
 
 function UserDashboardHome() {
   const navigate = useNavigate();
   return (
     <div className='user-dashboard-home-wrapper'>
+      <NavigationBar 
+          titleNav = "Blood Sewa" 
+          rightLeftNav = {<DashboardNavbarRightLeft/>}
+          rightRightNav = {<DashboardNavbarRightRight/>} 
+        />
       <div className="user-dashboard-top-section">
         <div className="left-section">
           <section className="user-greeting-message">

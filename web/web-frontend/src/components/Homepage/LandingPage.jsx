@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import './LandingPage.css'
 
 import Home from './Home'
-import HomepageNavigationBar from '../Common/NavigationBar'
+import NavigationBar from '../Common/NavigationBar'
 import BackThreeD from '../LoginRegistration/3d'
 
 import { Link, useNavigate } from "react-router-dom";
@@ -14,7 +14,7 @@ function LandingPage() {
         <div className="syringe">
           <BackThreeD/>
         </div>
-        <HomepageNavigationBar 
+        <NavigationBar 
           titleNav = "Blood Sewa" 
           rightLeftNav = {<NavbarRightLeft/>}
           rightRightNav = {<NavbarRightRight/>} 
