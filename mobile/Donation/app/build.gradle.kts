@@ -95,5 +95,14 @@ dependencies {
     implementation(libs.androidx.datastore.preferences.rxjava3)
 
 
+    //scanner rw camera ko lagi
+
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
+    implementation(libs.barcode.scanning)
+
+
+
 
 }
