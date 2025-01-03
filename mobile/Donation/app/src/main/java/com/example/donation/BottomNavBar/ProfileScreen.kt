@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -59,8 +61,24 @@ import com.example.donation.ui.theme.DarkGreen
 import com.example.donation.ui.theme.dRed
 
 
+//dummy data
+data class History(
+    val date : String,
+    val event : String,
+    val task : String
+)
+
+
 @Composable
 fun ProfileScreen(navController : NavHostController) {
+
+    //dummy data
+    val historyData = listOf(
+        History("July 12,2024","Blood Donation Campaign","Donation") ,
+        History("July 12,2024","KMC Hospital","Donation"),
+        History("July 12,2024","Tinkune Programme","Donation")
+
+    )
     val scroll   = rememberScrollState()
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -127,6 +145,8 @@ fun ProfileScreen(navController : NavHostController) {
                     }
                 }
             }
+
+
             //donation details
             Box(
                 modifier = Modifier
@@ -210,6 +230,35 @@ fun ProfileScreen(navController : NavHostController) {
 
                 }
             }
+            //dummy data history ko
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(.95f)
+                    .padding(top = 10.dp)
+                    .align(Alignment.CenterHorizontally)
+                    .shadow(elevation = 50.dp)
+                    .clip(shape = RoundedCornerShape(10.dp))
+                    .background(Color.White),
+                contentAlignment = Alignment.TopStart,
+
+                ) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    modifier = Modifier.padding(start = 10.dp,top = 10.dp)
+                ) {
+                    Text(text = "Donation Activity", fontWeight = FontWeight.Bold, fontSize = 22.sp)
+                    DonationActivityHeading()
+                    LazyColumn {
+                        items(historyData){data ->
+                            DonationActivity(data)
+                        }
+
+                    }
+                    Spacer(modifier = Modifier.height(10.dp))
+                }
+
+            }
         }
 
     }
@@ -274,6 +323,35 @@ fun Details(
 
 
     }
+
+@Composable
+fun DonationActivityHeading(){
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        Text(text = "Date", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+        Text(text = "Event",fontSize = 16.sp,fontWeight = FontWeight.Bold)
+        Text(text = "Activity",fontSize = 16.sp,fontWeight = FontWeight.Bold)
+
+    }
+
+}
+@Composable
+fun DonationActivity(data: History){
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        Text(text = data.date, fontSize = 14.sp)
+        Text(text = data.event,fontSize = 14.sp)
+        Text(text = data.task,fontSize = 14.sp)
+
+    }
+
+}
 
 
 

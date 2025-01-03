@@ -8,7 +8,8 @@ import androidx.activity.enableEdgeToEdge
 
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.donation.moreItems.ViewEvents
+import com.example.donation.BottomNavBar.ProfileScreen
+
 
 
 class MainActivity : ComponentActivity() {
@@ -28,7 +29,8 @@ class MainActivity : ComponentActivity() {
            // CreateEvents()
             //ScheduleTime()
            // ViewEvents()
-            ViewEvents()
+            //ViewEvents()
+            ProfileScreen(navController)
 
 
         }
