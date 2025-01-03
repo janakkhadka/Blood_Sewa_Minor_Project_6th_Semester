@@ -17,6 +17,8 @@ import { MdDateRange } from "react-icons/md";
 
 import BackThreeD from '../LoginRegistration/3d'
 import UserNavigationBar from './UserNavigationBar'
+import NavigationBar from '../Common/NavigationBar'
+import { ComponentNavbarRightLeft, ComponentNavbarRightRight } from './UserNavbarComponent';
 
 
 function ScheduleDonation() {
@@ -52,7 +54,11 @@ function ScheduleDonation() {
         <div className="syringe">
             <BackThreeD/>
         </div>
-        <UserNavigationBar titleBar="Blood Availability"/>
+        <NavigationBar 
+          titleNav = "Blood Sewa" 
+          rightLeftNav = {<ComponentNavbarRightLeft/>}
+          rightRightNav = {<ComponentNavbarRightRight/>} 
+        />
         <div className="schedule-donation">
             <form action="">
                 <h1>Schedule Donation Form</h1>

@@ -22,6 +22,8 @@ import { MdDateRange } from "react-icons/md";
 
 import BackThreeD from '../LoginRegistration/3d'
 import UserNavigationBar from './UserNavigationBar'
+import NavigationBar from '../Common/NavigationBar'
+import { ComponentNavbarRightLeft, ComponentNavbarRightRight } from './UserNavbarComponent';
 
 
 
@@ -124,7 +126,11 @@ const UserProfileUpdate = () => {
         <div className="syringe">
             <BackThreeD/>
         </div>
-        <UserNavigationBar titleBar="Update User Profile"/>
+        <NavigationBar 
+          titleNav = "Blood Sewa" 
+          rightLeftNav = {<ComponentNavbarRightLeft/>}
+          rightRightNav = {<ComponentNavbarRightRight/>} 
+        />
             <div className="user-profile-update">
                 <form onSubmit={handleSubmit}>
                     <h1>Update Profile</h1>
@@ -182,7 +188,7 @@ const UserProfileUpdate = () => {
                             value = {selectedBloodGroup}
                             onChange={handleBloodGroupChange}
                             options={bloodGroupList}
-                            styles={customStyles}
+                            styles={customStyles()}
                             placeholder="Blood Group"
                             isSearchable={false}
                         />
@@ -194,7 +200,7 @@ const UserProfileUpdate = () => {
                             value = {selectedProvince}
                             onChange={handleProvinceChange}
                             options={provinceList}
-                            styles={customStyles}
+                            styles={customStyles()}
                             placeholder="Province"
                             isSearchable={false}
                         />
@@ -206,7 +212,7 @@ const UserProfileUpdate = () => {
                             value = {selectedDistrict}
                             onChange={handleDistrictChange}
                             options={districtOptions}
-                            styles={customStyles}
+                            styles={customStyles()}
                             placeholder={
                             selectedProvince ? "Select a District" : "Select a Province first"
                             }

@@ -44,7 +44,7 @@ const MyBarChart = ({barList}) => {
           choosedBarList.map((entry, index) => (
             <Cell 
               key={`cell-${index}`} 
-              fill={entry.pint > 20 ? "rgb(25, 160, 25)" : "rgb(160, 25, 25)"} 
+              fill={entry.pint > 20 ? "rgb(25, 160, 25)" : "#ff9510"} 
             />
           ))
         }
