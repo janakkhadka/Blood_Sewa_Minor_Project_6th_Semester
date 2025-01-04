@@ -18,6 +18,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Donation"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:resource="barcode_ui"
+            />
         <activity
             android:name=".MainActivity"
             android:exported="true"
