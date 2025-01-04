@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.donation.BottomNavBar.BottomNavBar
 import com.example.donation.BottomNavBar.ProfileScreen
 
 
@@ -31,6 +32,7 @@ class MainActivity : ComponentActivity() {
            // ViewEvents()
             //ViewEvents()
             ProfileScreen(navController)
+           // BottomNavBar(navController)
 
 
         }

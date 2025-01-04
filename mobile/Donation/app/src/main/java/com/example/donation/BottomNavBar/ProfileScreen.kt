@@ -13,16 +13,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Badge
 import androidx.compose.material.icons.filled.Bloodtype
 import androidx.compose.material.icons.filled.Cached
 import androidx.compose.material.icons.filled.CalendarMonth
@@ -32,17 +27,16 @@ import androidx.compose.material.icons.filled.LocalFlorist
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.PersonOutline
 import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material.icons.filled.RemoveRedEye
-import androidx.compose.material.icons.filled.Transgender
-import androidx.compose.material.icons.rounded.Person
-import androidx.compose.material.icons.rounded.SupervisedUserCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,14 +44,17 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
+import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.donation.ui.theme.DarkGreen
+import com.example.donation.R
 import com.example.donation.ui.theme.dRed
 
 
@@ -69,8 +66,30 @@ data class History(
 )
 
 
+data class BadgeDetails(
+    val imageRes: Int,
+    val badgeText: String,
+    val rangeMin: Int,
+    val rangeMax: Int
+)
+
 @Composable
 fun ProfileScreen(navController : NavHostController) {
+
+    //badge ko lagi
+    val donationCount by remember { mutableIntStateOf(8) }
+    val badgeDetails = when (donationCount) {
+        in 0..10 -> BadgeDetails(R.drawable.bronze, "Bronze", 0, 10)
+        in 11..20 -> BadgeDetails(R.drawable.silver, "Silver", 11, 20)
+        in 21..30 -> BadgeDetails(R.drawable.platinum, "Platinum", 21, 30)
+        in 31..40 -> BadgeDetails(R.drawable.diamond, "Diamond", 31, 40)
+        else -> BadgeDetails(R.drawable.heroic, "Heroic", 41, 50)
+    }
+
+    val (imageRes, badgeText, rangeMin, rangeMax) = badgeDetails
+
+    val progress = if(rangeMin == rangeMax) 1f
+    else (donationCount-rangeMin).toFloat()/(rangeMax-rangeMin)
 
     //dummy data
     val historyData = listOf(
@@ -80,15 +99,24 @@ fun ProfileScreen(navController : NavHostController) {
 
     )
     val scroll   = rememberScrollState()
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.TopCenter
-    ) {
+    Scaffold(
+        topBar = {
+            Column() {
+                TopBarTheme()
+                CustomTopBar(Icons.Default.ArrowBack, "", "", "Profile Section", navController)
+            }
+        },
+
+
+    )
+    { innerPadding ->
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .verticalScroll(rememberScrollState())
         ) {
-            TopBarTheme()
-            CustomTopBar(Icons.Default.ArrowBack,"","","Profile Section",navController)
+
 
             Box(
                 modifier = Modifier
@@ -96,7 +124,6 @@ fun ProfileScreen(navController : NavHostController) {
                     .padding(top = 10.dp)
                     .align(Alignment.CenterHorizontally)
                     .shadow(elevation = 50.dp)
-                    .verticalScroll(scroll)
                     .clip(shape = RoundedCornerShape(10.dp))
                     .background(Color.White),
                 contentAlignment = Alignment.TopStart
@@ -105,23 +132,23 @@ fun ProfileScreen(navController : NavHostController) {
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                     modifier = Modifier.padding(start = 10.dp,top = 10.dp),
 
-                ) {
+                    ) {
                     Text(text = "User Information", fontSize = 20.sp)
-                   Row(
-                       modifier = Modifier.fillMaxWidth(),
-                       horizontalArrangement = Arrangement.spacedBy(10.dp),
-                       verticalAlignment = Alignment.CenterVertically
-                   ){
-                       Image(
-                           Icons.Default.PersonOutline,
-                           contentDescription = "",
-                           modifier = Modifier.size(60.dp)
-                       )
-                       Column() {
-                           Text(text = "Kiran Acharya", fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                           Text(text = "kiran.211720@ncit.edu.np", fontSize = 16.sp)
-                       }
-                   }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
+                        Image(
+                            Icons.Default.PersonOutline,
+                            contentDescription = "",
+                            modifier = Modifier.size(60.dp)
+                        )
+                        Column() {
+                            Text(text = "Kiran Acharya", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                            Text(text = "kiran.211720@ncit.edu.np", fontSize = 16.sp)
+                        }
+                    }
 
                     PDetails(Icons.Default.CalendarMonth,"Date of Birth:","2003")
                     PDetails(Icons.Default.CalendarMonth,"Gender:","Male")
@@ -158,14 +185,14 @@ fun ProfileScreen(navController : NavHostController) {
                     .background(Color.White),
                 contentAlignment = Alignment.TopStart,
 
-            ) {
+                ) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                     modifier = Modifier.padding(start = 10.dp,top = 10.dp)
 
 
 
-                    ) {
+                ) {
                     Text(text = "Donation Profile", fontWeight = FontWeight.Bold, color = dRed, fontSize = 22.sp)
                     Text(text = "Your donation have made a difference!", fontSize = 14.sp)
                     Row(
@@ -174,24 +201,41 @@ fun ProfileScreen(navController : NavHostController) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column() {
-                            Details(Icons.Default.LocalFlorist, "Current Badge:", "Heroic")
+                            Details(Icons.Default.LocalFlorist, "Current Badge:", badgeText)
                             Row(
                                 modifier = Modifier.padding(start = 10.dp, top = 10.dp),
 
                                 ) {
-                                Text(text = " Progress to next milestone")
-                                Text(text = "25%", fontWeight = FontWeight.Bold)
+                                Text(text = "Progress in ${badgeText}")
+                                Spacer(modifier = Modifier.width(30.dp))
+                                Text(text = "${(progress * 100).toInt()}%%", fontWeight = FontWeight.Bold)
 
                             }
+                            Spacer(modifier = Modifier.height(10.dp))
+
+                            LinearProgressIndicator(
+                                progress = progress.coerceIn(0f,1f),
+                                modifier = Modifier
+                                    .height(20.dp)
+                                    .shadow( elevation = 20.dp)
+                                    .padding(start = 10.dp)
+                                    .clip(shape = RoundedCornerShape(10.dp)),
+                                color = Color.Green,
+                                trackColor = dRed
+
+
+                            )
                             Spacer(modifier = Modifier.height(10.dp))
                             Details(Icons.Default.Bloodtype, "Blood Type", "AB-")
                         }
                         Image(
-                            Icons.Default.Cached,
+                            painter = painterResource(imageRes),
                             contentDescription = "",
                             modifier = Modifier.size(100.dp)
+
                         )
                     }
+                    Spacer(modifier = Modifier.height(10.dp))
 
                 }
             }
@@ -208,23 +252,23 @@ fun ProfileScreen(navController : NavHostController) {
 
                 ) {
 
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(10.dp),
-                        modifier = Modifier.padding(start = 10.dp, top = 10.dp)
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    modifier = Modifier.padding(start = 10.dp, top = 10.dp)
 
 
-                    ) {
-                        Text(text = " Donation Information", fontWeight = FontWeight.Bold, color = dRed, fontSize = 22.sp)
+                ) {
+                    Text(text = " Donation Information", fontWeight = FontWeight.Bold, color = dRed, fontSize = 22.sp)
 
-                        Details(Icons.Default.Countertops, "Donation Count:", "21")
-                        Details(Icons.Default.CalendarMonth, "Last Donation Date:", "December 1, 2024")
-                        Details(Icons.Default.LocationOn, "Last Donation Event:", "KMC Hospital")
+                    Details(Icons.Default.Countertops, "Donation Count:", "21")
+                    Details(Icons.Default.CalendarMonth, "Last Donation Date:", "December 1, 2024")
+                    Details(Icons.Default.LocationOn, "Last Donation Event:", "KMC Hospital")
 
-                        Text(
-                            text = " Your are currently elligible to Donate Blood",
-                            modifier = Modifier.padding(bottom = 10.dp),
-                            color = dRed
-                        )
+                    Text(
+                        text = " Your are currently elligible to Donate Blood",
+                        modifier = Modifier.padding(bottom = 10.dp),
+                        color = dRed
+                    )
 
 
 
@@ -235,7 +279,7 @@ fun ProfileScreen(navController : NavHostController) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth(.95f)
-                    .padding(top = 10.dp)
+                    .padding(top = 10.dp, bottom = 150.dp)
                     .align(Alignment.CenterHorizontally)
                     .shadow(elevation = 50.dp)
                     .clip(shape = RoundedCornerShape(10.dp))
@@ -245,27 +289,29 @@ fun ProfileScreen(navController : NavHostController) {
                 ) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(10.dp),
-                    modifier = Modifier.padding(start = 10.dp,top = 10.dp)
+                    modifier = Modifier.padding(start = 10.dp,top = 10.dp,end = 10.dp)
                 ) {
-                    Text(text = "Donation Activity", fontWeight = FontWeight.Bold, fontSize = 22.sp)
+                    Text(text = "Donation Activity", fontWeight = FontWeight.Bold, fontSize = 22.sp, color = dRed)
                     DonationActivityHeading()
-                    LazyColumn {
-                        items(historyData){data ->
+                    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                        historyData.forEach(){data ->
                             DonationActivity(data)
                         }
 
                     }
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier =  Modifier.height(10.dp))
+
                 }
 
             }
         }
 
+
     }
 
-
-
 }
+
+
 
 @Composable
 fun Details(
@@ -292,6 +338,7 @@ fun Details(
             Text(text = value, color = dRed, fontWeight = FontWeight.Bold)
 
         }
+        Spacer(modifier = Modifier.padding(bottom = 20.dp))
     }
 }
 
@@ -331,9 +378,9 @@ fun DonationActivityHeading(){
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ){
-        Text(text = "Date", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-        Text(text = "Event",fontSize = 16.sp,fontWeight = FontWeight.Bold)
-        Text(text = "Activity",fontSize = 16.sp,fontWeight = FontWeight.Bold)
+        Text(text = "Date", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = dRed)
+        Text(text = "Event",fontSize = 16.sp,fontWeight = FontWeight.Bold, color = dRed)
+        Text(text = "Activity",fontSize = 16.sp,fontWeight = FontWeight.Bold, color = dRed)
 
     }
 
@@ -345,9 +392,9 @@ fun DonationActivity(data: History){
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ){
-        Text(text = data.date, fontSize = 14.sp)
-        Text(text = data.event,fontSize = 14.sp)
-        Text(text = data.task,fontSize = 14.sp)
+        Text(text = data.date, fontSize = 14.sp, color = dRed)
+        Text(text = data.event,fontSize = 14.sp, color = dRed)
+        Text(text = data.task,fontSize = 14.sp, color = dRed)
 
     }
 
