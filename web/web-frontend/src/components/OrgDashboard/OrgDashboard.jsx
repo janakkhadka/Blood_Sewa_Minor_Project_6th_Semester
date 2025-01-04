@@ -5,6 +5,8 @@ import './OrgDashboard.css'
 import { OrgDashboardNavbarRightLeft, OrgDashboardNavbarRightRight } from './OrgNavbarComponent'
 import BackThreeD from '../LoginRegistration/3d'
 
+import { IoMdSquare } from "react-icons/io";
+import { TbAxisX, TbAxisY } from "react-icons/tb";
 
 import { format } from "date-fns";
 import { useNavigate } from 'react-router-dom';
@@ -34,9 +36,36 @@ function OrgDashboard() {
                     <button className="action-button" onClick={() => navigate("/search-donor")}>Find Donor</button>
                 </section>
             </div>
-            <div className="bar-chart">
-                <MyBarChart/>
-            </div>
+            <div className="right-section">
+                <div className="right-top-section">
+                    <h1>Blood Inventory</h1>
+                    <div className="bar-chart-wrapper">
+                        <div className="chart-info-wrapper">
+                            <div className="chart-info">
+                                <TbAxisX/>
+                                <span>X-Axis: Blood Group</span>
+                            </div>
+                            <div className="chart-info">
+                                <TbAxisY/>
+                                <span>Y-Axis: Pint Value</span>
+                            </div>
+                            <div className="chart-info">
+                                <IoMdSquare style={{color:"#8B0000"}}/>
+                                <span>Pint value between 0-10</span>
+                            </div>
+                            <div className="chart-info">
+                                <IoMdSquare style={{color:"#ff9510"}}/>
+                                <span>Pint value between 11-25</span>
+                            </div>
+                            <div className="chart-info">
+                                <IoMdSquare style={{color:"rgb(25, 160, 25)"}}/>
+                                <span>Pint value greater than 25</span>
+                            </div>
+                        </div>
+                        <MyBarChart className='bar-chart'/>
+                    </div>
+                </div>
+            </div> 
         </div>
     </div>
   )

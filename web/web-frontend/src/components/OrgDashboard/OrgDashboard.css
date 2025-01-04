@@ -1,3 +1,9 @@
+:root{
+    --pint10:#ff9510;
+    --pint25:rgb(25, 160, 25);
+    --pint0: #8B0000;
+}
+
 .org-dashboard-wrapper{
     position: relative;
     width:100vw;
@@ -11,7 +17,7 @@
     align-items: center;
     overflow-x: hidden;
     scrollbar-width: none; 
-    -ms-overflow-style: none; 
+    -ms-overflow-style: none;
 }
 
 .org-dashboard-wrapper .syringe{
@@ -25,22 +31,26 @@
 
 .org-dashboard-wrapper .org-dashboard{
     position: relative;
+    padding: 0 20px;
     width:100vw;
     z-index: 2;
     background: transparent;
     color: var(--text);
     padding-top: 60px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 20px;
 }
 
+
+
+/* left section */
 .org-dashboard .quick-actions{
     display:flex;
     flex-direction: column;
     gap: 15px;
     padding: 20px;
-    width:470px;
+    width:300px;
     height: 390px;
     border: 2px solid rgba(255,255,255,.1);
     border-radius: 10px;
@@ -64,4 +74,44 @@
     color: var(--secondary);
     backdrop-filter: blur(15px);
     background:transparent;
+  }
+
+
+  /* right section */
+  .org-dashboard .right-section{
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+  }
+
+  .org-dashboard .right-section .right-top-section{
+    z-index: 2; 
+    width: 1080px;
+    height: 370px;
+    border-radius: 10px;
+    box-shadow: 0 0 40px rgba(77, 5, 2,1);
+    background: transparent;
+    box-shadow: 0px 0px 50px rgba(119, 81, 81, 0.6);
+    backdrop-filter: blur(5px);
+    padding: 10px 20px 10px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .org-dashboard .bar-chart-wrapper{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+  .org-dashboard .bar-chart-wrapper .chart-info-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    margin-top: 50px;
+  }
+  .org-dashboard .bar-chart-wrapper .chart-info{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
   }
