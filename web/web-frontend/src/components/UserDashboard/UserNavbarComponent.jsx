@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 
-import NavigationBar from '../Common/NavigationBar'
 
 import { FaHome } from "react-icons/fa";
 import { MdNotificationsActive, MdNotifications, MdDashboard } from "react-icons/md";
