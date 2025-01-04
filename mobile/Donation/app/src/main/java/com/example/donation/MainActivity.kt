@@ -10,7 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.donation.BottomNavBar.BottomNavBar
 import com.example.donation.BottomNavBar.ProfileScreen
-
+import com.example.donation.BottomNavBar.UpdateProfile
 
 
 class MainActivity : ComponentActivity() {
@@ -31,8 +31,9 @@ class MainActivity : ComponentActivity() {
             //ScheduleTime()
            // ViewEvents()
             //ViewEvents()
-            ProfileScreen(navController)
+            //ProfileScreen(navController)
            // BottomNavBar(navController)
+            UpdateProfile()
 
 
         }
