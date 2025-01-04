@@ -13,8 +13,6 @@
     background-size: cover;
     background-position: center;
     display: flex;
-    justify-content: center;
-    align-items: center;
     overflow-x: hidden;
     scrollbar-width: none; 
     -ms-overflow-style: none;
@@ -32,6 +30,7 @@
 .org-dashboard-wrapper .org-dashboard{
     position: relative;
     padding: 0 20px;
+    margin-top:20px;
     width:100vw;
     z-index: 2;
     background: transparent;
@@ -98,6 +97,31 @@
     flex-direction: column;
     gap: 10px;
   }
+  .org-dashboard .h1-wrapper{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .right-section .h1-wrapper .alert-wrapper{
+    color: var(--pint0);
+    background-color: var(--secondary);
+    border-radius: 2px;
+    padding: 0 4px;
+  }
+  .right-section .h1-wrapper .alert{
+      font-size: 24px;
+      font-weight: bold;
+      animation: blink-animation 1s steps(2, start) infinite;
+  }
+  @keyframes blink-animation {
+    from {
+      visibility: visible;
+    }
+    to {
+      visibility: hidden;
+    }
+}
   .org-dashboard .bar-chart-wrapper{
     display: flex;
     flex-direction: row;
@@ -107,7 +131,7 @@
     display: flex;
     flex-direction: column;
     gap:10px;
-    margin-top: 50px;
+    margin-top: 40px;
   }
   .org-dashboard .bar-chart-wrapper .chart-info{
     display: flex;
