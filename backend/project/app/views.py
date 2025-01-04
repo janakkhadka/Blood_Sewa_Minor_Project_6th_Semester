@@ -543,8 +543,6 @@ class BookingCreateView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-
-
         serializers = BookingSerializer(data=data , context = {'request' : request})
         if serializers.is_valid():
             serializers.save(user=request.user)
@@ -558,6 +556,7 @@ class MyBookings(APIView):
         bookings = Bookings.objects.filter(user=request.user)
         serializer = BookingSerializer(bookings, many=True)
         return Response(serializer.data)
+
 
 class OrganizationBookings(APIView):
     permission_classes = [permissions.IsAuthenticated]
