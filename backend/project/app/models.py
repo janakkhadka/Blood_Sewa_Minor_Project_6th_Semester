@@ -179,6 +179,7 @@ class UserEvent(models.Model):
 
 
 
+
 class BloodInventory(models.Model):
     organization = models.OneToOneField(
         'User',
@@ -192,11 +193,23 @@ class BloodInventory(models.Model):
         return f"{self.organization.name}'s Blood Inventory"
 
 
+
 class Bookings(models.Model):
     SHIFT_CHOICES = [('morning' , 'morning') , ('day' , 'day') , ('evening' , 'evening')]
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE , related_name='bookings' , limit_choices_to={'user_type':'user'})
     organization = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE , related_name='organizatio_name' , limit_choices_to={'user_type':'organization'})
+    #blood_group = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE , related_name='blood_group')
     booking_date = models.DateField()
     shift = models.CharField(max_length=10 , choices=SHIFT_CHOICES)
+    user_phone_number = models.CharField(max_length=20 , default='')
+    user_blood_group = models.CharField(max_length=10,default='')
+
+    def save(self, *args, **kwargs):
+        # Populate user details before saving
+        if not self.pk:  # Only for new bookings
+            self.user_phone_number = self.user.phone_number
+            self.user_blood_group = self.user.blood_group
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"Booking by {self.user.name} on {self.booking_date} for {self.user.name}"

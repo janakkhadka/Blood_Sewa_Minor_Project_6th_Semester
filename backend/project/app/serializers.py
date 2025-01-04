@@ -168,15 +168,18 @@ class BloodInventorySerializer(serializers.ModelSerializer):
 class BookingSerializer(serializers.ModelSerializer):
     User = get_user_model
     organization = serializers.CharField() 
+    user_phone_number = serializers.CharField(source='user.phone_number', read_only=True)
+    user_blood_group = serializers.CharField(source='user.blood_group', read_only=True)
+
     class Meta:
         model = Bookings
-        fields = ['organization', 'booking_date', 'shift']
+        fields = ['organization', 'booking_date', 'shift' , 'user_blood_group' , 'user_phone_number']
         read_only_fields = ['id', 'user']
 
     def validate(self,data):
         user = self.context['request'].user
         today = date.today()
-        three_months_age = today - timedelta(days=90)
+        three_months_ago = today - timedelta(days=90)
 
         recent_booking = Bookings.objects.filter(user=user, booking_date__gte=three_months_ago).exists()
         if recent_booking:
@@ -204,4 +207,4 @@ class OrganizationBookingSerializer(serializers.ModelSerializer):
     user_name = serializers.CharField(source='user.name')
     class Meta:
         model = Bookings
-        fields = ['user_name', 'booking_date', 'shift', 'user']  
+        fields = ['user_name', 'booking_date', 'shift', 'user' ,   'user_phone_number','user_blood_group']  
