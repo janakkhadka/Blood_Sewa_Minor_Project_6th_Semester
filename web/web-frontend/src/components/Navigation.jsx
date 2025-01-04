@@ -17,6 +17,7 @@ import UserBloodAvailability from './UserDashboard/BloodAvailability';
 import UserProfile from './UserDashboard/UserProfile';
 import UserProfileUpdate from './UserDashboard/UserProfileUpdate';
 import SearchDonor from './UserDashboard/SearchDonor.jsx';
+import OrgDashboard from './OrgDashboard/OrgDashboard.jsx';
 
 const Navigation = () => {
     return (
@@ -35,6 +36,9 @@ const Navigation = () => {
             <Route path ="/user-profile" element = {<UserProfile/>}/>
             <Route path ="/user-profile-update" element = {<UserProfileUpdate/>}/>
             <Route path ="/search-donor" element = {<SearchDonor/>}/>
+            
+            {/* organization route */}
+            <Route path ="/org-dashboard" element = {<OrgDashboard/>}/>
             {/* <Route path="/navigationbar" element={<NavigationBar />} /> */}
           </Routes>
         </Router>
