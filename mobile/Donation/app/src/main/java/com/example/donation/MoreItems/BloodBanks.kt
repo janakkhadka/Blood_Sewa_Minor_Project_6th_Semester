@@ -6,16 +6,22 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,12 +31,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.donation.BottomNavBar.CustomTopBar
 import com.example.donation.BottomNavBar.TopBarTheme
+import com.example.donation.ui.theme.dRed
 
 
 @Composable
@@ -91,6 +100,26 @@ fun BloodBanks(navController: NavHostController) {
                 }
             }
 
+        }
+        Box(
+            modifier = Modifier.fillMaxWidth()
+                .shadow(elevation = 20.dp),
+            contentAlignment = Alignment.Center
+        ){
+            Spacer(modifier = Modifier.height(20.dp) )
+            Text(text = " Bar chart will appear here")
+            Spacer(modifier = Modifier.height(20.dp) )
+        }
+        OutlinedButton(
+            onClick = {},
+
+            modifier = Modifier
+                .shadow(elevation = 40.dp),
+            colors = ButtonDefaults.buttonColors(dRed),
+            shape = RoundedCornerShape(10.dp)
+
+        ) {
+            Text(text = "Want to contribute? make schedule ")
         }
 
 
