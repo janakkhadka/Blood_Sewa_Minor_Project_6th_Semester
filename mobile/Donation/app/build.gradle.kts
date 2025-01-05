@@ -96,7 +96,8 @@ dependencies {
     implementation(libs.androidx.datastore.preferences.rxjava3)
 
 
-
+    // qr scanner ko lagi dependencies
+    implementation(libs.play.services.code.scanner.v1600)
 
 
 
