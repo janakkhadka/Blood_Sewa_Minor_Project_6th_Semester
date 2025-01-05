@@ -195,7 +195,7 @@ class BloodInventory(models.Model):
 
 
 class Bookings(models.Model):
-    SHIFT_CHOICES = [('morning' , 'morning') , ('day' , 'day') , ('evening' , 'evening')]
+    SHIFT_CHOICES = [('morning' , 'morning') , ('afternoon' , 'afternoon') , ('evening' , 'evening')]
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE , related_name='bookings' , limit_choices_to={'user_type':'user'})
     organization = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE , related_name='organizatio_name' , limit_choices_to={'user_type':'organization'})
     booking_date = models.DateField()
