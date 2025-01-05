@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.places)
+    implementation(libs.androidx.espresso.core)
 
 
 
@@ -101,6 +102,11 @@ dependencies {
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.camera.view)
     implementation(libs.barcode.scanning)
+    implementation(libs.journeyapps.zxing.android.embeded)
+    implementation(libs.core)
+    implementation(libs.play.services.code.scanner)
+    implementation(libs.kotlinx.coroutines.android)
+
 
 
 

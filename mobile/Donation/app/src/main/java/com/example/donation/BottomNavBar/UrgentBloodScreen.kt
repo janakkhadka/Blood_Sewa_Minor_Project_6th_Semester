@@ -178,7 +178,7 @@ fun UrgentBloodScreen(navController : NavHostController) {
             shape = RoundedCornerShape(5.dp)
 
         ) {
-            Text(text = "Request", color = Color.White, fontSize = 22.sp)
+            Text(text = "Update", color = Color.White, fontSize = 22.sp)
 
         }
         Text(
