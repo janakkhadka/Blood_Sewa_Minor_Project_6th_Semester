@@ -17,7 +17,9 @@ import UserBloodAvailability from './UserDashboard/BloodAvailability';
 import UserProfile from './UserDashboard/UserProfile';
 import UserProfileUpdate from './UserDashboard/UserProfileUpdate';
 import SearchDonor from './UserDashboard/SearchDonor.jsx';
+
 import OrgDashboard from './OrgDashboard/OrgDashboard.jsx';
+import Events from './OrgDashboard/Events.jsx';
 
 const Navigation = () => {
     return (
@@ -39,7 +41,7 @@ const Navigation = () => {
             
             {/* organization route */}
             <Route path ="/org-dashboard" element = {<OrgDashboard/>}/>
-            {/* <Route path="/navigationbar" element={<NavigationBar />} /> */}
+            <Route path ="/events" element = {<Events/>}/>
           </Routes>
         </Router>
       );

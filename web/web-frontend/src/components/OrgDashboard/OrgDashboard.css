@@ -43,14 +43,20 @@
 
 
 
-/* left section */
+/* top section */
+.org-dashboard .top-section{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+/* top left */
 .org-dashboard .quick-actions{
     display:flex;
     flex-direction: column;
     gap: 15px;
-    padding: 20px;
+    padding: 10px 20px;
     width:300px;
-    height: 390px;
+    height: 370px;
     border: 2px solid rgba(255,255,255,.1);
     border-radius: 10px;
     box-shadow: 0px 0px 50px rgba(119, 81, 81, 0.6);
@@ -76,14 +82,10 @@
   }
 
 
-  /* right section */
-  .org-dashboard .right-section{
-    display: flex;
-    flex-direction: column;
-    gap:20px;
-  }
+  /* top right section */
 
-  .org-dashboard .right-section .right-top-section{
+
+  .org-dashboard .top-section .blood-inventory-section{
     z-index: 2; 
     width: 1080px;
     height: 370px;
@@ -92,7 +94,7 @@
     background: transparent;
     box-shadow: 0px 0px 50px rgba(119, 81, 81, 0.6);
     backdrop-filter: blur(5px);
-    padding: 10px 20px 10px 20px;
+    padding: 10px 20px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -103,13 +105,13 @@
     gap: 20px;
   }
 
-  .right-section .h1-wrapper .alert-wrapper{
+  .blood-inventory-section .h1-wrapper .alert-wrapper{
     color: var(--pint0);
     background-color: var(--secondary);
     border-radius: 2px;
     padding: 0 4px;
   }
-  .right-section .h1-wrapper .alert{
+  .blood-inventory-section .h1-wrapper .alert{
       font-size: 24px;
       font-weight: bold;
       animation: blink-animation 1s steps(2, start) infinite;

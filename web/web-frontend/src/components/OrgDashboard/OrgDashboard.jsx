@@ -8,7 +8,6 @@ import BackThreeD from '../LoginRegistration/3d'
 import { IoMdSquare } from "react-icons/io";
 import { TbAxisX, TbAxisY } from "react-icons/tb";
 
-import { format } from "date-fns";
 import { useNavigate } from 'react-router-dom';
 import MyBarChart from '../Utils/MyBarChart'
 
@@ -26,18 +25,17 @@ function OrgDashboard() {
         />
 
         <div className="org-dashboard">
-            <div className="left-section">
+            <div className="top-section">
                 <section className='quick-actions'>
-                <h1>Quick Actions!</h1>
+                    <h1>Quick Actions!</h1>
                     <button className="action-button" onClick={() => navigate("/blood-request-form")}>Urgent Blood Request</button>
                     <button className="action-button" onClick={() => navigate("/schedule-donation")}>Scheduled Donation</button>
-                    <button className="action-button" onClick={() => navigate("/user-organize-event")}>Organize an Event</button>
+                    <button className="action-button" onClick={() => navigate("/events")}>Manage Events</button>
                     <button className="action-button" onClick={() => navigate("/user-blood-availability")}>Blood Inventory</button>
                     <button className="action-button" onClick={() => navigate("/search-donor")}>Find Donor</button>
                 </section>
-            </div>
-            <div className="right-section">
-                <div className="right-top-section">
+
+                <section className="blood-inventory-section">
                     <div className="h1-wrapper">
                         <h1>Blood Inventory</h1>
                         <div className="alert-wrapper">
@@ -56,11 +54,11 @@ function OrgDashboard() {
                             </div>
                             <div className="chart-info">
                                 <IoMdSquare style={{color:"#8B0000"}}/>
-                                <span>Pint value between 0-10</span>
+                                <span>Pint value range 0-10</span>
                             </div>
                             <div className="chart-info">
                                 <IoMdSquare style={{color:"#ff9510"}}/>
-                                <span>Pint value between 11-25</span>
+                                <span>Pint value range 11-25</span>
                             </div>
                             <div className="chart-info">
                                 <IoMdSquare style={{color:"rgb(25, 160, 25)"}}/>
@@ -69,7 +67,10 @@ function OrgDashboard() {
                         </div>
                         <MyBarChart className='bar-chart'/>
                     </div>
-                </div>
+                </section>
+            </div>
+            <div className="bottom-section">
+                
             </div> 
         </div>
     </div>
