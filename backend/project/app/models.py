@@ -75,7 +75,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     province = models.CharField(max_length=100)
     DOB = models.DateField(null=True, blank=True)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES , default='')
-    #file = models.FileField(upload_to='uploads/', blank=True, null=True)
+    file = models.FileField(upload_to='user_file/', blank=True, null=True)
     groups = models.ManyToManyField('auth.Group', related_name='user_groups', blank=True)
     user_permissions = models.ManyToManyField('auth.Permission', related_name='user_permissions_set', blank=True)
     user_type = models.CharField(max_length=20, choices=USER_TYPES , default='user')
@@ -195,10 +195,9 @@ class BloodInventory(models.Model):
 
 
 class Bookings(models.Model):
-    SHIFT_CHOICES = [('morning' , 'morning') , ('day' , 'day') , ('evening' , 'evening')]
+    SHIFT_CHOICES = [('morning' , 'morning') , ('afternoon' , 'afternoon') , ('evening' , 'evening')]
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE , related_name='bookings' , limit_choices_to={'user_type':'user'})
     organization = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE , related_name='organizatio_name' , limit_choices_to={'user_type':'organization'})
-    #blood_group = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE , related_name='blood_group')
     booking_date = models.DateField()
     shift = models.CharField(max_length=10 , choices=SHIFT_CHOICES)
     user_phone_number = models.CharField(max_length=20 , default='')
