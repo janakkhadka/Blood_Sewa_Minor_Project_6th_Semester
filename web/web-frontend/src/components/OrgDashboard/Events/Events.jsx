@@ -37,6 +37,10 @@ function Events() {
                         <h1>Organize New Event</h1>
                         <button className="top-left-button" onClick={() => navigate("/org-organize-event")}>Create New Event</button>
                       </section>
+                      <div className="collaboration-request-wrapper">
+                        <h2>Collab Request</h2>
+                        <button className="top-left-button" onClick={() => navigate("/collab-request")}>View Requests</button>
+                      </div>
                     </div>
                     
                     <section className='upcoming-events'>
