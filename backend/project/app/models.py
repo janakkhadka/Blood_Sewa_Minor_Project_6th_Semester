@@ -126,6 +126,7 @@ class Event(models.Model):
     description = models.TextField()
     location = models.CharField(max_length=255)
     date = models.DateField()
+    collabrator = models.ForeignKey(User , on_delete=models.CASCADE , related_name="collabrator" , limit_choices_to={'user_type':'organization'} , null=True , default=None,blank=True)
     organizer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="organized_events")
     qr_code = models.ImageField(upload_to="qrcodes/", blank=True, null=True)
     attendee_count = models.PositiveIntegerField(default=0)
@@ -143,6 +144,9 @@ class Event(models.Model):
                 counter += 1
 
             self.slug = unique_slug
+
+        if not self.collabrator and self.organizer.user_type == 'normal_user':
+            self.collabrator = None
 
         # Generate QR code if not already generated
         if not self.qr_code:

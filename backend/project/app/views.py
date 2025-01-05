@@ -21,7 +21,8 @@ from .utils import UserFilter , DistrictFilter , OrganizationFilter
 from .models import User, BloodRequestModel , Event , UserEvent , BloodInventory , Bookings
 import os
 from datetime import date , timedelta
-from .serializers import (UserSerializer, LoginSerializer, UserProfileUpdateSerializer, BloodRequestSerializer , LimitedUserSerializer , EventSerializer , UserEventSerializer , OrganizationSerializer , BloodInventorySerializer , BookingSerializer , OrganizationBookingSerializer)
+from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
+from .serializers import (UserSerializer, LoginSerializer, UserProfileUpdateSerializer, BloodRequestSerializer , LimitedUserSerializer , EventSerializer , UserEventSerializer , OrganizationSerializer , BloodInventorySerializer , BookingSerializer , OrganizationBookingSerializer , UserEventCreateSerializer)
 
 
 class RegisterUserView(APIView):
@@ -262,18 +263,45 @@ class UserListView(ListAPIView):
 class LogoutView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
+        refresh_token = request.data.get("refresh_token")
+        if not refresh_token:
+            return Response(
+                {"error": "Refresh token is required for logout"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         try:
-            refresh_token = request.data["refresh_token"]
+            # Blacklist the RefreshToken
             token = RefreshToken(refresh_token)
             token.blacklist()
 
-            return Response({"message": "Logout Successful"} , status=status.HTTP_205_RESET_CONTENT)
-        except Exception as e:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"message": "Logout successful"},
+                status=status.HTTP_205_RESET_CONTENT,
+            )
+        except TokenError:
+            return Response(
+                {"error": "Invalid or expired refresh token"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        except Exception:
+            return Response(
+                {"error": "An unexpected error occurred"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
 
 
+#Event Create View For User
+class UserEventCreateView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
 
+    def post(self, request):
+        serializer = UserEventCreateSerializer(data=request.data)
+        if serializer.is_valid():
+            event = serializer.save(organizer=request.user)
+            return Response(EventSerializer(event).data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 

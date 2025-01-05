@@ -4,6 +4,7 @@ from .utils import validate_password, validate_age , validate_phone_number
 from django.utils import timezone
 from datetime import date , timedelta
 from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -129,8 +130,34 @@ class LimitedUserSerializer(serializers.ModelSerializer):
         fields = ['name', 'phone_number', 'blood_group']
 
 
+#Event Creation serializer For User
+class UserEventCreateSerializer(serializers.ModelSerializer):
+    organizer = serializers.SerializerMethodField()
+    collabrator = serializers.CharField()
+    class Meta:
+        model = Event
+        fields = [ 'name', 'description', 'location', 'date', 'organizer', 'qr_code' , 'slug' , 'collabrator']
+        read_only_fields = ['organizer', 'qr_code' , 'collabrator']
+
+    def get_organizer(self, obj):
+        try:
+            organizer = User.objects.get(id=obj.organizer_id)
+            return organizer.name
+        except Organizer.DoesNotExist:
+            return None
+    
+    def create(self, validated_data):
+        collaborator_name = validated_data.pop('collabrator')  # Extract the name
+        # Attempt to find a single collaborator with this name
+        collaborator = get_object_or_404(User, name=collaborator_name)
+
+        # Create the event with the resolved collaborator
+        event = Event.objects.create(collabrator=collaborator, **validated_data)
+        return event
 
 
+
+#Event Creation Serializer For Organization
 class EventSerializer(serializers.ModelSerializer):
     organizer = serializers.SerializerMethodField()
     class Meta:
