@@ -1,5 +1,6 @@
 package com.example.donation.BottomNavBar
 
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,10 +21,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Bloodtype
-import androidx.compose.material.icons.filled.Cached
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Countertops
-import androidx.compose.material.icons.filled.Diamond
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocalFlorist
 import androidx.compose.material.icons.filled.LocationOn
@@ -47,19 +46,18 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
-import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.donation.R
 import com.example.donation.ui.theme.dRed
+
 
 
 //dummy data
@@ -82,6 +80,7 @@ data class Report(
 )
 @Composable
 fun ProfileScreen(navController : NavHostController) {
+    val context  = LocalContext.current
 
     //badge ko lagi
     val donationCount by remember { mutableIntStateOf(8) }
@@ -114,6 +113,8 @@ fun ProfileScreen(navController : NavHostController) {
 
 
     )
+
+
     val scroll   = rememberScrollState()
     Scaffold(
         topBar = {
@@ -302,13 +303,16 @@ fun ProfileScreen(navController : NavHostController) {
 
 
                             //download report
-                            Text(text = " Download Report",
+                            Text(
+                                text = "Download Report",
                                 textDecoration = TextDecoration.Underline,
                                 color = Color.Blue,
                                 modifier = Modifier.padding(bottom = 10.dp)
                                     .clickable {
-                                        //SaveToDevice()
-                                    })
+
+                                    }
+                            )
+
                         }
 
                     }
@@ -475,5 +479,8 @@ fun show(){
     val navController = rememberNavController()
     ProfileScreen(navController = navController)
 }
+
+
+
 
 
