@@ -2,19 +2,19 @@ import React from 'react'
 
 import './Events.css'
 
-import NavigationBar from '../Common/NavigationBar'
-import './OrgDashboard.css'
-import { OrgComponentNavbarRightLeft, OrgDashboardNavbarRightRight } from './OrgNavbarComponent'
-import BackThreeD from '../LoginRegistration/3d'
+import NavigationBar from '../../Common/NavigationBar'
+import { OrgComponentNavbarRightLeft, OrgDashboardNavbarRightRight } from '../OrgNavbarComponent'
+import BackThreeD from '../../LoginRegistration/3d'
 
 import { format } from "date-fns";
 
 import { useNavigate } from 'react-router-dom';
 
-import {events, pastEvents} from '../UserDashboard/DummyData'
+import {events, pastEvents} from '../../UserDashboard/DummyData'
 
 
 function Events() {
+  const navigate = useNavigate()
   return (
     <div className='events-wrapper'>
         <div className="syringe">
@@ -31,11 +31,11 @@ function Events() {
                     <div className="top-left-section">
                       <section className='today-event'>
                         <h1>Today's Event</h1>
-                        <button className="top-left-button" onClick={() => navigate("/")}>Manage</button>
+                        <button className="top-left-button" onClick={() => navigate("/todays-event")}>Manage</button>
                       </section>
                       <section className='create-event-wrapper'>
                         <h1>Organize New Event</h1>
-                        <button className="top-left-button" onClick={() => navigate("/")}>Create New Event</button>
+                        <button className="top-left-button" onClick={() => navigate("/org-organize-event")}>Create New Event</button>
                       </section>
                     </div>
                     
@@ -80,16 +80,16 @@ function Events() {
                 <table border="0" style={{tableLayout: "fixed", width: "100%", borderCollapse: "collapse" }}>
                   <colgroup>
                     <col style={{ width: "20%" }} />
+                    <col style={{ width: "28%" }} /> 
+                    <col style={{ width: "15%" }} />
                     <col style={{ width: "25%" }} /> 
-                    <col style={{ width: "18%" }} />
-                    <col style={{ width: "23%" }} /> 
-                    <col style={{ width: "10%" }} />
+                    <col style={{ width: "12%" }} />
                   </colgroup>
                   <thead>
                     <tr>
                       <th>Date</th>
                       <th>Event Name</th>
-                      <th style={{textAlign:"center"}}>Donor Count</th>
+                      <th>Donor Count</th>
                       <th>Location</th>
                     </tr>
                   </thead>
@@ -98,7 +98,7 @@ function Events() {
                       <tr key={index}>
                         <td>{format(event.date, "MMMM dd, yyyy")}</td> {/* Format date */}
                         <td  className='table-data'>{event.title}</td>
-                        <td style={{textAlign:"center"}}>{event.donorNumber}</td>
+                        <td style={{paddingLeft:"40px"}}>{event.donorNumber}</td>
                         <td  className='table-data'>{event.location}</td>
                         <td><button className="notify-button" onClick={() => navigate("/")}>Detail</button></td>
                       </tr>
