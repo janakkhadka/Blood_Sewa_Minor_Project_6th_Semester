@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.example.donation.ui.theme.dRed
 
-
+@Preview(showBackground = true)
 @Composable
 fun UpdateProfile() {
 

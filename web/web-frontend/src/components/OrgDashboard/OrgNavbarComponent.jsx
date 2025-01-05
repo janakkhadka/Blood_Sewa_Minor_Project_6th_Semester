@@ -54,3 +54,41 @@ export const OrgDashboardNavbarRightRight = () => {
       </div>
     );
   };
+
+
+  //different component ko lagi rightleft hai ta
+  export const OrgComponentNavbarRightLeft = () => {
+    const [toggle, setToggle] = useState(false)
+    const setToggleChange = () => {
+      setToggle(prevToggle => !prevToggle)
+    }
+    return(
+      <div className="navbar-right-left">
+          <div className="icons-wrapper">
+            <Link to= "/org-dashboard" state={{ loginState: true }}>
+                <MdDashboard className='icon'/>
+            </Link>
+            
+            <button className="notification-button" onClick={setToggleChange}>
+                <MdNotifications className='icon'/>
+            </button>
+            {toggle && (
+            <div className="notification-list">
+                <Link
+                to="/event-detail"
+                state= {{ nofiticationId: "user" }}
+                >
+                Notification 1
+                </Link>
+                <Link
+                to="/event-detail"
+                state={{ notificationId: "organization" }}
+                >
+                Notification 2
+                </Link>
+            </div>
+            )}
+          </div>
+      </div>
+    )
+  }

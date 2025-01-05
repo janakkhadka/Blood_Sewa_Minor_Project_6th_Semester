@@ -2,6 +2,7 @@ package com.example.donation.BottomNavBar
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,11 +23,13 @@ import androidx.compose.material.icons.filled.Bloodtype
 import androidx.compose.material.icons.filled.Cached
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Countertops
+import androidx.compose.material.icons.filled.Diamond
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocalFlorist
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.PersonOutline
 import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.LinearProgressIndicator
@@ -47,6 +50,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
@@ -72,7 +76,10 @@ data class BadgeDetails(
     val rangeMin: Int,
     val rangeMax: Int
 )
-
+data class Report(
+    val header : String,
+    val value : String
+)
 @Composable
 fun ProfileScreen(navController : NavHostController) {
 
@@ -96,6 +103,15 @@ fun ProfileScreen(navController : NavHostController) {
         History("July 12,2024","Blood Donation Campaign","Donation") ,
         History("July 12,2024","KMC Hospital","Donation"),
         History("July 12,2024","Tinkune Programme","Donation")
+
+    )
+    val report = listOf(
+        Report("Blood Pressure","120/80 mmHg"),
+        Report("Pulse rate","72 bpm"),
+        Report("Body Temperature","98.6°F"),
+        Report("Hemoglobin","17.2 g/dL"),
+        Report("Blood Sugar","85 mg/dL")
+
 
     )
     val scroll   = rememberScrollState()
@@ -239,6 +255,7 @@ fun ProfileScreen(navController : NavHostController) {
 
                 }
             }
+
             //donation information
             Box(
                 modifier = Modifier
@@ -269,11 +286,39 @@ fun ProfileScreen(navController : NavHostController) {
                         modifier = Modifier.padding(bottom = 10.dp),
                         color = dRed
                     )
+                    //last donation blood information
+
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(10.dp),
+                            modifier = Modifier.padding(start = 10.dp, top = 10.dp)
+
+
+                        ) {
+                            Text(text = " Last Donation Blood Information", fontWeight = FontWeight.Bold, color = dRed, fontSize = 16.sp)
+                            report.forEach{report ->
+                                DonationReport(report)
+
+                            }
+
+
+                            //download report
+                            Text(text = " Download Report",
+                                textDecoration = TextDecoration.Underline,
+                                color = Color.Blue,
+                                modifier = Modifier.padding(bottom = 10.dp)
+                                    .clickable {
+                                        //SaveToDevice()
+                                    })
+                        }
+
+                    }
 
 
 
                 }
-            }
+
+
+
             //dummy data history ko
 
             Box(
@@ -291,7 +336,11 @@ fun ProfileScreen(navController : NavHostController) {
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                     modifier = Modifier.padding(start = 10.dp,top = 10.dp,end = 10.dp)
                 ) {
-                    Text(text = "Donation Activity", fontWeight = FontWeight.Bold, fontSize = 22.sp, color = dRed)
+
+                        Text(text = "Donation Activity", fontWeight = FontWeight.Bold, fontSize = 22.sp, color = dRed)
+
+
+
                     DonationActivityHeading()
                     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                         historyData.forEach(){data ->
@@ -400,6 +449,24 @@ fun DonationActivity(data: History){
 
 }
 
+@Composable
+fun DonationReport(
+    report : Report
+){
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
+    ){
+        Image(
+            imageVector = Icons.Default.Star,
+            contentDescription = "",
+            colorFilter = ColorFilter.tint(dRed)
+        )
+        Text(text = report.header, color = dRed, fontSize = 14.sp)
+        Text(text = report.value, color = dRed, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+    }
+
+}
 
 
 @Preview(showBackground = true)
