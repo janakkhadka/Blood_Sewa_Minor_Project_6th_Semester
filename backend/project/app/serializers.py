@@ -129,8 +129,24 @@ class LimitedUserSerializer(serializers.ModelSerializer):
         fields = ['name', 'phone_number', 'blood_group']
 
 
+#Event Creation serializer For User
+class UserEventCreateSerializer(serializers.ModelSerializer):
+    organizer = serializers.SerializerMethodField()
+    class Meta:
+        model = Event
+        fields = [ 'name', 'description', 'location', 'date', 'organizer', 'qr_code' , 'slug' , 'collabrator']
+        read_only_fields = ['organizer', 'qr_code' , 'collabrator']
+
+    def get_organizer(self, obj):
+        try:
+            organizer = User.objects.get(id=obj.organizer_id)
+            return organizer.name
+        except Organizer.DoesNotExist:
+            return None 
 
 
+
+#Event Creation Serializer For Organization
 class EventSerializer(serializers.ModelSerializer):
     organizer = serializers.SerializerMethodField()
     class Meta:
