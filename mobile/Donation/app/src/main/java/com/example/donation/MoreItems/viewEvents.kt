@@ -5,6 +5,7 @@ package com.example.donation.moreItems
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -33,6 +34,7 @@ fun ViewEvents() {
     //scanner ko lagi
     val gmsScannerOptions = configureScannerOption()
     val instance = getBarcodeScannerInstance(gmsScannerOptions)
+    var value by remember { mutableStateOf("") }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Scaffold(
@@ -45,7 +47,10 @@ fun ViewEvents() {
             floatingActionButton = {
                 FloatingActionButton(
                     onClick = {
-                        initiateScanner(instance)
+                        initiateScanner(instance){scannedValue ->
+                            value = scannedValue
+
+                        }
                     },
                     backgroundColor = dRed
                 ) {
@@ -58,6 +63,7 @@ fun ViewEvents() {
                 }
             }
         ) {
+            Text(text = value)
 
         }
     }
@@ -78,12 +84,10 @@ private fun getBarcodeScannerInstance(gmsBarcodeScannerOptions: GmsBarcodeScanne
     return GmsBarcodeScanning.getClient(context,gmsBarcodeScannerOptions)
 }
 
-private fun initiateScanner(gmsBarcodeScanner: GmsBarcodeScanner) {
+private fun initiateScanner(gmsBarcodeScanner: GmsBarcodeScanner,onScanned : (String) -> Unit) {
     gmsBarcodeScanner.startScan()
         .addOnSuccessListener { barcode ->
-            val result = barcode.rawValue
-            Log.d(TAG, "initiateScanner: $result")
-
+            barcode.rawValue?.let { onScanned(it) }
             when (barcode.valueType) {
                 Barcode.TYPE_URL -> {
                     Log.d(TAG, "initiateScanner: ${barcode.valueType}")
@@ -104,6 +108,8 @@ private fun initiateScanner(gmsBarcodeScanner: GmsBarcodeScanner) {
             // exception
         }
 }
+
+
 
 
 
