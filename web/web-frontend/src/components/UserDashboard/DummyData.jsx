@@ -28,6 +28,26 @@ export const activityHistory = [
     { date: new Date(2023, 11, 22), location: "Regional Hospital, Austin", bloodType: "O+" },
   ];
   
+
+  export const donorList = [
+    { sn: 1, name: "John Doe", bloodGroup: "A+" },
+    { sn: 2, name: "Jane Smith", bloodGroup: "O-" },
+    { sn: 3, name: "Alice Johnson", bloodGroup: "B+" },
+    { sn: 4, name: "Robert Brown", bloodGroup: "AB-" },
+    { sn: 5, name: "Michael Green", bloodGroup: "A-" },
+    { sn: 6, name: "Emily Davis", bloodGroup: "O+" },
+    { sn: 7, name: "David Wilson", bloodGroup: "B-" },
+    { sn: 8, name: "Sophia Lee", bloodGroup: "AB+" },
+    { sn: 9, name: "James Taylor", bloodGroup: "O+" },
+    { sn: 10, name: "Emma White", bloodGroup: "A-" },
+    { sn: 11, name: "Oliver Harris", bloodGroup: "B+" },
+    { sn: 12, name: "Isabella Clark", bloodGroup: "AB-" },
+    { sn: 13, name: "Liam Martinez", bloodGroup: "A+" },
+    { sn: 14, name: "Mia Rodriguez", bloodGroup: "O-" },
+    { sn: 15, name: "Noah Lewis", bloodGroup: "B+" },
+    { sn: 16, name: "Charlotte Hall", bloodGroup: "AB+" },
+  ];
+  
   
   
   

@@ -16,6 +16,8 @@ import NavigationBar from '../../Common/NavigationBar'
 import { OrgComponentNavbarRightLeft, OrgDashboardNavbarRightRight } from '../OrgNavbarComponent'
 import BackThreeD from '../../LoginRegistration/3d'
 
+import {donorList} from '../../UserDashboard/DummyData'
+
 import { format } from "date-fns";
 
 function TodaysEvent() {
@@ -30,8 +32,8 @@ function TodaysEvent() {
           rightRightNav = {<OrgDashboardNavbarRightRight/>} 
         />
       <div className="todays-event">
-        <div className="top-section">
-          <div className="top-left-section">
+        <div className="left-section">
+          <div className="left-top-section">
             <h1>Ongoing Event</h1>
             <section className='event-details'>
               <h3>Event Details</h3>
@@ -57,13 +59,47 @@ function TodaysEvent() {
               </div>
             </section>
           </div>
-          <div className="top-right-section">
-            <section className='scan-qr'>
-              
+          <div className="left-bottom-section">
+            <section className='donor-details'>
+              <div className="h1">
+                <h1>Donor List</h1>
+              </div>
+              <table border="0" style={{tableLayout: "fixed", width: "100%", borderCollapse: "collapse" }}>
+                <colgroup>
+                  <col style={{ width: "20%" }} />
+                  <col style={{ width: "40%" }} /> 
+                  <col style={{ width: "25%" }} />
+                  <col style={{ width: "15%" }} />
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th>SN</th>
+                    <th>Donor Name</th>
+                    <th>Blood Group</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {donorList.map((donor, index) => (
+                    <tr key={index}>
+                      <td>{donor.sn}</td> {/* Format date */}
+                      <td  className='table-data'>{donor.name}</td>
+                      <td  className='table-data'>{donor.bloodGroup}</td>
+                      <td><button className="notify-button" onClick={() => navigate("/")}>Add</button></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </section>
           </div>
-          
         </div>
+        <div className="right-section">
+            <section className='scan-qr'>
+              <div className="qr-wrapper" style={{width:"800px"}}>
+                <img className='qr-image' src="https://www.qrstuff.com/images/default_qrcode.png" alt="qr-code"/>
+              </div>
+            </section>
+          </div>
+        
       </div>
     </div>
   )
