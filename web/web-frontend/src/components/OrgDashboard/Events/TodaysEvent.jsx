@@ -31,30 +31,38 @@ function TodaysEvent() {
         />
       <div className="todays-event">
         <div className="top-section">
-          <h1>Live Event</h1>
-          <section className='event-details'>
-            <h3>Event Details</h3>
-            <div className="icon-info-wrapper">
-              <MdEvent/>
-              <span>Event: <span>Bir Hospital Donation Event</span></span>
-            </div>
-            <div className="icon-info-wrapper">
-              <MdDateRange/>
-              <span>Date: <span>January 15, 2025</span></span>
-            </div>
-            <div className="icon-info-wrapper">
-              <IoMdTime/>
-              <span>Time: <span>09:00 AM - 05:00 PM</span></span>
-            </div>
-            <div className="icon-info-wrapper">
-              <IoLocationOutline/>
-              <span>Location: <span>Balkumari, Lalitpur</span></span>
-            </div>
-            <div className="icon-info-wrapper">
-              <MdOutlineCountertops/>
-              <span>Expected Donor Count: <span>35</span></span>
-            </div>
-          </section>
+          <div className="top-left-section">
+            <h1>Ongoing Event</h1>
+            <section className='event-details'>
+              <h3>Event Details</h3>
+              <div className="icon-info-wrapper">
+                <MdEvent/>
+                <span>Event: <span style={{fontWeight:"bold"}}>Bir Hospital Donation Event</span></span>
+              </div>
+              <div className="icon-info-wrapper">
+                <MdDateRange/>
+                <span>Date: <span style={{fontWeight:"bold"}}>January 15, 2025</span></span>
+              </div>
+              <div className="icon-info-wrapper">
+                <IoMdTime/>
+                <span>Time: <span style={{fontWeight:"bold"}}>09:00 AM - 05:00 PM</span></span>
+              </div>
+              <div className="icon-info-wrapper">
+                <IoLocationOutline/>
+                <span>Location: <span style={{fontWeight:"bold"}}>Balkumari, Lalitpur</span></span>
+              </div>
+              <div className="icon-info-wrapper">
+                <MdOutlineCountertops/>
+                <span>Expected Donor Count: <span style={{fontWeight:"bold"}}>35</span></span>
+              </div>
+            </section>
+          </div>
+          <div className="top-right-section">
+            <section className='scan-qr'>
+              
+            </section>
+          </div>
+          
         </div>
       </div>
     </div>
