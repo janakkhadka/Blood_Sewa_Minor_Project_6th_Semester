@@ -3,14 +3,14 @@ import React,{useState} from 'react'
 import './OrgOrganizeEvent.css'
 
 import Select from 'react-select';
-import customStyles from '../LoginRegistration/ReactSelectStyle';
+import customStyles from '../../LoginRegistration/ReactSelectStyle';
 
 import 'react-calendar/dist/Calendar.css';
 import DatePicker from 'react-date-picker';
 import 'react-date-picker/dist/DatePicker.css';
-import '../LoginRegistration/Calender.css';
+import '../../LoginRegistration/Calender.css';
 
-import {venueList} from '../LoginRegistration/DropDownList';
+import {venueList} from '../../LoginRegistration/DropDownList';
 
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 import { MdDateRange,MdVolunteerActivism  } from "react-icons/md";
@@ -18,17 +18,13 @@ import { IoTime } from "react-icons/io5";
 import { TbTimelineEventPlus } from "react-icons/tb";
 import {FaLocationDot} from "react-icons/fa6";
 
-import BackThreeD from '../LoginRegistration/3d'
-import UserNavigationBar from './UserNavigationBar'
-import NavigationBar from '../Common/NavigationBar'
-import { ComponentNavbarRightLeft, ComponentNavbarRightRight } from './UserNavbarComponent';
+import BackThreeD from '../../LoginRegistration/3d'
+import NavigationBar from '../../Common/NavigationBar'
+import { OrgComponentNavbarRightLeft, OrgDashboardNavbarRightRight } from '../OrgNavbarComponent';
 
 function OrgOrganizeEvent() {
     const [eventName, setEventName] = useState("")
-    const [selectedOrganization, setSelectedOrganization] = useState("")
-    const handleOrganizationChange = (option) => {
-        setSelectedOrganization(option);
-    };
+  
     const [scheduleDate, setScheduleDate] = useState("")
     const [startTime, setStartTime] = useState("")
     const [endTime, setEndTime] = useState("")
@@ -39,16 +35,16 @@ function OrgOrganizeEvent() {
       };
     const [volunteerNumber, setVolunteerNumber] = useState("")
   return (
-    <div className='user-organize-event-wrapper'>
+    <div className='org-organize-event-wrapper'>
         <div className="syringe">
             <BackThreeD/>
         </div>
         <NavigationBar 
           titleNav = "Blood Sewa" 
-          rightLeftNav = {<ComponentNavbarRightLeft/>}
-          rightRightNav = {<ComponentNavbarRightRight/>} 
+          rightLeftNav = {<OrgComponentNavbarRightLeft/>}
+          rightRightNav = {<OrgDashboardNavbarRightRight/>} 
         />
-        <div className="user-organize-event">
+        <div className="org-organize-event">
             <form action="">
                 <h1>Create an Event</h1>
                 <span>Please fill out the details.</span>
@@ -60,18 +56,6 @@ function OrgOrganizeEvent() {
                         placeholder='Event Name'/>
                         <TbTimelineEventPlus className="icon"/>
                     </div>
-
-                <div className="drop-down-box">
-                        <Select
-                        value = {selectedOrganization}
-                        onChange={handleOrganizationChange}
-                        options={venueList}
-                        styles={customStyles()}
-                        placeholder="Collaboration with Organization"
-                        isSearchable={false}
-                        />
-                        <IoIosArrowDropdownCircle className='icon'/>
-                </div>
 
                 <div className='date-box'>
                         <label htmlFor="" className='date-label'>Event Date:</label>
@@ -143,7 +127,7 @@ function OrgOrganizeEvent() {
                 </div>
                 
                 
-                <div className="user-organize-event-submit-button">
+                <div className="org-organize-event-submit-button">
                     <button type="submit" >Create Event</button>
                 </div>
                 
