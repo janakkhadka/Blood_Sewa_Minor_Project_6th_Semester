@@ -1,6 +1,5 @@
-package com.example.donation.moreItems
+package com.example.donation.moreitems
 
-import android.graphics.Paint.Align
 import android.icu.util.Calendar
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

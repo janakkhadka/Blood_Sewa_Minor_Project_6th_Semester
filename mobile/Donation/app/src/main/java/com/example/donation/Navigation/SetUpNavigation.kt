@@ -26,6 +26,7 @@ import com.example.donation.Verification.Login
 import com.example.donation.Verification.OtpVerification
 import com.example.donation.Verification.SignUp
 import com.example.donation.datastore.DataStoreManager
+import com.example.donation.moreitems.ViewEvents
 
 
 @Composable
@@ -85,6 +86,10 @@ fun SetUpNavigation(navController : NavHostController) {
             composable(route = Screens.ShowCamera.route) {
                 ShowCamera(navController)
             }*/
+
+            composable(route = Screens.ViewEvents.route) {
+                ViewEvents(navController)
+            }
 
 
         }

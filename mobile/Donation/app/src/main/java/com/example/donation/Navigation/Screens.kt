@@ -14,4 +14,5 @@ sealed class Screens(val route : String) {
     object RequestSection : Screens(route = "RequestSection")
     object SearchDonors : Screens(route = "SearchDonors")
     object ShowCamera : Screens(route = "Showcamera")
+    object ViewEvents : Screens(route = "ViewEvents")
 }

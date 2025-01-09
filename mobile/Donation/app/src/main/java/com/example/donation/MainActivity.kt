@@ -1,6 +1,5 @@
 package com.example.donation
 
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,10 +7,7 @@ import androidx.activity.enableEdgeToEdge
 
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.donation.BottomNavBar.BottomNavBar
-import com.example.donation.BottomNavBar.ProfileScreen
-import com.example.donation.MoreItems.BloodBanks
-
+import com.example.donation.moreitems.ViewEvents
 
 
 class MainActivity : ComponentActivity() {
@@ -21,21 +17,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             navController = rememberNavController()
-       // SetUpNavigation(navController)
-       // HomeScreen(navController = navController)
-            //TopMenuBar()
-           // UrgentBloodScreen(navController = navController)
-            //SearchDonors()
-          //  BloodRequestsScreen()
-            //SignUp(navController = navController)
-           // CreateEvents()
-            //ScheduleTime()
-           // ViewEvents()
-            //ViewEvents()
-            //ProfileScreen(navController)
-           // BottomNavBar(navController)
-            //UpdateProfile()
-            BloodBanks(navController)
+            // SetUpNavigation(navController)
+            ViewEvents(navController)
+           // BloodBanks(navController)
+
 
 
         }

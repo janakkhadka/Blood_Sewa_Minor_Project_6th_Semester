@@ -1,11 +1,10 @@
-package com.example.donation.moreItems
+package com.example.donation.moreitems
 
 
 
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -16,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.donation.BottomNavBar.CustomTopBar
 import com.example.donation.BottomNavBar.TopBarTheme
@@ -28,8 +28,7 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun ViewEvents() {
-    val navController = rememberNavController()
+fun ViewEvents(navController : NavHostController) {
 
     //scanner ko lagi
     val gmsScannerOptions = configureScannerOption()
