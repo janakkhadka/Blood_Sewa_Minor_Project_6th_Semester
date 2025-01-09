@@ -34,19 +34,31 @@
     flex-direction: column;
     gap: 20px;
 }
+.todays-event h1{
+    color:var(--secondary);
+    margin-top: -12px;
+}
 
-.todays-event .top-section{
+.todays-event-wrapper .todays-event{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.todays-event .left-section{
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
+
+
 
 .todays-event .event-details{
     display: flex;
     flex-direction: column;
     gap: 5px;
     width:350px;
-    height:190px;
+    height:192px;
     background-color: var(--secondary);
     border: 2px solid rgba(255,255,255,.1);
     border-radius: 10px;
@@ -62,3 +74,88 @@
     flex-direction: row;
     gap: 8px;
 }
+
+/* donor details */
+.todays-event .donor-details{
+    position: relative;
+    display:flex;
+    flex-direction: column;
+    gap: 15px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    width:750px;
+    height: 380px;
+    border: 2px solid rgba(255,255,255,.1);
+    border-radius: 10px;
+    box-shadow: 0px 0px 50px rgba(119, 81, 81, 0.6);
+    backdrop-filter: blur(5px);
+}
+
+.todays-event .h1{
+    width: 100%;
+    position: sticky;
+    top: 0;
+    background-color: transparent;
+    backdrop-filter: blur(15px);
+    padding: 7px 20px;
+    background-color: var(--secondary);
+    color: var(--primary);
+}
+
+.todays-event table{
+    margin: 0 20px 20px;
+    color: var(--secondary);
+  }
+  
+  .todays-event table th{
+    text-align: start;
+    font-size: 18px;
+  }
+
+  
+  .todays-event table td{
+    padding-top: 10px;
+    font-size: 17px;
+  }
+
+
+  .todays-event table td button{
+    text-decoration: none;
+    padding: 2px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 3;
+    box-shadow: 0px 0px 50px rgba(119, 81, 81, 0.6);
+    border:2px solid rgba(255,255,255,.1);
+    background-color: var(--secondary);
+    color: var(--primary);
+  }
+  
+  .todays-event table td button:hover{
+    color: var(--secondary);
+    backdrop-filter: blur(15px);
+    background: transparent;
+  }
+
+
+  .todays-event .table-data{
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+
+  /* qr code section */
+  .todays-event-wrapper .right-section .qr-wrapper{
+    width: 630px;
+  }
+
+
+  .todays-event .qr-image{
+    border-radius: 10px;
+    width: 630px;
+  }
