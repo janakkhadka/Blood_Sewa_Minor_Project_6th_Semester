@@ -43,7 +43,7 @@
     display: flex;
     align-items: center;
     flex-direction: row;
-    gap: 8px;
+    gap: 10px;
 }
 
 .user-profile .top-section .user-basic-info{
