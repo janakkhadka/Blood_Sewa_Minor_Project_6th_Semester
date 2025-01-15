@@ -29,7 +29,7 @@ function OrgDashboard() {
                 <section className='quick-actions'>
                     <h1>Quick Actions!</h1>
                     <button className="action-button" onClick={() => navigate("/blood-request-form")}>Urgent Blood Request</button>
-                    <button className="action-button" onClick={() => navigate("/schedule-donation")}>Scheduled Donation</button>
+                    <button className="action-button" onClick={() => navigate("/scheduled-donation")}>Scheduled Donation</button>
                     <button className="action-button" onClick={() => navigate("/events")}>Manage Events</button>
                     <button className="action-button" onClick={() => navigate("/user-blood-availability")}>Blood Inventory</button>
                     <button className="action-button" onClick={() => navigate("/search-donor")}>Find Donor</button>

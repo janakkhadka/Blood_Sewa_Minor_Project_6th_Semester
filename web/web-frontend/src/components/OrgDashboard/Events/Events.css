@@ -70,7 +70,7 @@
     flex-direction: column;
     gap:5px;
 }
-.events-section-wrapper .top-section .collaboration-request-wrapper{
+.events-section-wrapper .top-section .collaboration-request-section{
     width:300px;
     height:100px;
     background-color: var(--secondary);
