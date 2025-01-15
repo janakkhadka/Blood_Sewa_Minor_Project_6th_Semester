@@ -1,45 +1,25 @@
 package com.example.donation.MoreItems
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.util.Pair
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,8 +30,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.donation.BottomNavBar.CustomTopBar
 import com.example.donation.BottomNavBar.TopBarTheme
 import com.example.donation.ui.theme.dRed
+import kotlin.math.round
 
-
+// Data class to hold hospital blood availability details
 data class HospitalAvailability(
     val name: String,
     val aPlus: Float,
@@ -64,125 +45,131 @@ data class HospitalAvailability(
     val bMinus: Float
 )
 
-
 @Composable
 fun BloodBanks(navController: NavHostController) {
-    var blood_selected by remember { mutableStateOf("") }
-    var blood_expended by remember { mutableStateOf(false) }
-    val blood_banks = listOf(
-        "KMC Hospital",
-        "Civil Hospital",
-        "Bhaktapur Cancer Hospital"
+    // Hospital data list
+    val hospitalData = listOf(
+        HospitalAvailability("KMC Hospital", 5f, 3f, 12f, 21f, 29f, 42f, 43f, 56f),
+        HospitalAvailability("Civil Hospital", 35f, 13f, 1f, 2f, 9f, 4f, 11f, 6f),
+        HospitalAvailability("Cancer Hospital", 23f, 33f, 52f, 1f, 2f, 7f, 13f, 29f)
     )
 
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
+    var bloodSelected by remember { mutableStateOf("") }
+    var bloodExpanded by remember { mutableStateOf(false) }
+    var selectedHospital by remember { mutableStateOf<HospitalAvailability?>(null) }
+
+    val handleDropDown = { name: String ->
+        bloodSelected = name
+        bloodExpanded = false
+        selectedHospital = hospitalData.find { it.name == name }
+    }
+
+    Column(modifier = Modifier.fillMaxSize()) {
+
         TopBarTheme()
+        // Top bar
         CustomTopBar(img = Icons.Default.ArrowBack, greetingText = "", name = "", text = "Blood Banks", navController)
 
-        Box(
-            modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.TopCenter
-        ) {
+        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
             OutlinedTextField(
-                value = blood_selected,
-                onValueChange = { blood_selected = it },
+                value = bloodSelected,
+                onValueChange = { bloodSelected = it },
                 readOnly = true,
                 label = { Text("Select Blood Bank") },
                 trailingIcon = {
                     Icon(
-                        imageVector = if (blood_expended) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
-                        contentDescription = if (blood_expended) "Collapse Dropdown" else "Expand Dropdown",
-                        modifier = Modifier.clickable { blood_expended = !blood_expended }
+                        imageVector = if (bloodExpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
+                        contentDescription = if (bloodExpanded) "Collapse Dropdown" else "Expand Dropdown",
+                        modifier = Modifier.clickable { bloodExpanded = !bloodExpanded }
                     )
                 },
-                modifier = Modifier.fillMaxWidth(.9f)
+                modifier = Modifier.fillMaxWidth(0.9f)
                     .align(Alignment.TopCenter)
             )
 
-            Box(
-                modifier = Modifier
-                    .matchParentSize()
-                    .clickable { blood_expended = true }
-                    .background(Color.Transparent)
-            )
+            Box(modifier = Modifier.matchParentSize().clickable { bloodExpanded = true }.background(Color.Transparent))
+
             DropdownMenu(
-                expanded = blood_expended,
-                onDismissRequest = { blood_expended = false },
+                expanded = bloodExpanded,
+                onDismissRequest = { bloodExpanded = false },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                blood_banks.forEach { option ->
+                hospitalData.forEach { option ->
                     DropdownMenuItem(
-                        text = { Text(text = option) },
-                        onClick = {
-                            blood_selected = option
-                            blood_expended = false
-                        }
+                        text = { Text(text = option.name) },
+                        onClick = { handleDropDown(option.name) }
                     )
                 }
             }
+        }
 
+        // Show the selected hospital's bar chart
+        selectedHospital?.let { hospital ->
+            Box(modifier = Modifier.fillMaxWidth().shadow(elevation = 20.dp), contentAlignment = Alignment.Center) {
+                Spacer(modifier = Modifier.height(20.dp))
+                BarChart(hospital)
+            }
         }
-        Box(
-            modifier = Modifier.fillMaxWidth()
-                .shadow(elevation = 20.dp),
-            contentAlignment = Alignment.Center
-        ){
-            Spacer(modifier = Modifier.height(20.dp) )
-            Text(text = " Bar chart will appear here")
-            Spacer(modifier = Modifier.height(20.dp) )
+
+        // Show all hospitals' bar charts
+        Box(modifier = Modifier.fillMaxWidth().shadow(elevation = 20.dp), contentAlignment = Alignment.Center) {
+            Spacer(modifier = Modifier.height(20.dp))
+            hospitalData.forEach { hospital ->
+                BarChart(hospital)
+            }
         }
+
+        // Schedule button
         OutlinedButton(
             onClick = {},
-
-            modifier = Modifier
-                .shadow(elevation = 40.dp),
+            modifier = Modifier.shadow(elevation = 40.dp),
             colors = ButtonDefaults.buttonColors(dRed),
             shape = RoundedCornerShape(10.dp)
-
         ) {
-            Text(text = "Want to contribute? make schedule ")
+            Text(text = "Want to contribute? Make a schedule")
         }
-
-
-
-
     }
 }
 
-//@Preview(showBackground = true)
+@Preview(showBackground = true)
 @Composable
-fun PShow(){
+fun PreviewBloodBanks() {
     val navController = rememberNavController()
     BloodBanks(navController)
 }
+
+
+
+// Bar chart function to display the blood data in graphical form
 @SuppressLint("RememberReturnType")
-@Preview(showBackground = true)
 @Composable
-fun BarChart() {
-    val hospitalData = listOf(
-        HospitalAvailability(
-            name = "KMC Hospital",
-            aPlus = 2f,
-            bPlus = 2f,
-            abPlus = 2f,
-            abMinus = 2f,
-            oPlus = 2f,
-            oMinus = 2f,
-            aMinus = 2f,
-            bMinus = 2f
-        )
+fun BarChart(hospitalData: HospitalAvailability) {
+    val lowThreshold = 10f
+
+    val chartData = listOf(
+        Pair("A+", hospitalData.aPlus),
+        Pair("A-", hospitalData.aMinus),
+        Pair("B+", hospitalData.bPlus),
+        Pair("B-", hospitalData.bMinus),
+        Pair("AB+", hospitalData.abPlus),
+        Pair("AB-", hospitalData.abMinus),
+        Pair("O+", hospitalData.oPlus),
+        Pair("O-", hospitalData.oMinus)
     )
 
-    val chartDataHorizontal = listOf("A+", "B+", "AB+", "AB-", "O+", "O-", "A-", "B-")
+
+
     val spacingFromLeft = 100f
     val spacingFromBottom = 40f
+    val upperValue = remember { chartData.maxOfOrNull { it.second }?.plus(10) ?: 0f }
+    val lowerValue = remember { 0f }
 
+    // Paint settings for the text labels
     val density = LocalDensity.current
     val textPaint = remember(density) {
         android.graphics.Paint().apply {
             color = android.graphics.Color.BLACK
+            textAlign = android.graphics.Paint.Align.CENTER
             textSize = density.run { 12.sp.toPx() }
         }
     }
@@ -196,48 +183,85 @@ fun BarChart() {
     ) {
         val canvasHeight = size.height
         val canvasWidth = size.width
+        val spacerData = (canvasWidth - spacingFromLeft) / chartData.size
 
-        val spacerData = (canvasWidth - spacingFromLeft) / chartDataHorizontal.size
-
-        // Show horizontal data
-        chartDataHorizontal.forEachIndexed { index, text ->
+        // Draw horizontal labels (blood group names)
+        chartData.forEachIndexed { index, pair ->
             drawContext.canvas.nativeCanvas.apply {
                 drawText(
-                    text,
-                    spacingFromLeft + index * spacerData,
-                    canvasHeight - spacingFromBottom / 2,
+                    pair.first,
+                    spacingFromLeft + 50f + index * spacerData,
+                    canvasHeight - spacingFromBottom / 20,
                     textPaint
                 )
             }
         }
 
-        //vertical data show
-        val valuesToshow = 6f
+        // Draw vertical values
+        val valueToShow = 5f
+        val eachStep = (upperValue - lowerValue) / valueToShow
 
-        chartDataHorizontal.forEachIndexed { index,text ->
-            drawContext.canvas.nativeCanvas.apply{
+        (0 until valueToShow.toInt()).forEach { i ->
+            val label = lowerValue + eachStep * i
+            drawContext.canvas.nativeCanvas.apply {
                 drawText(
-                    text,
-                    60f,
-                    spacingFromLeft + index * spacerData,
+                    round(label).toString(),
+                    20f,
+                    canvasHeight - 30f - i * canvasHeight / 5f,
                     textPaint
-
                 )
             }
 
+            // Draw horizontal grid lines
+            drawLine(
+                start = Offset(spacingFromLeft - 20f, canvasHeight - spacingFromBottom - i * canvasHeight / 5f),
+                end = Offset(spacingFromLeft, canvasHeight - spacingFromBottom - i * canvasHeight / 5f),
+                color = Color.Black,
+                strokeWidth = 3f
+            )
         }
 
-//        hospitalData.forEach { data ->
-//            chartDataHorizontal.forEachIndexed { index, _ ->
-//                drawRect(
-//                    color = Color.Blue,
-//                    topLeft = androidx.compose.ui.geometry.Offset(
-//                        spacingFromLeft + index * spacerData,
-//                        canvasHeight - spacingFromBottom - data.aPlus * 20f
-//                    ),
-//                    size = androidx.compose.ui.geometry.Size(20f, data.aPlus * 20f)
-//                )
-//            }
-//        }
+        // Vertical and horizontal axis lines
+        drawLine(
+            start = Offset(spacingFromLeft, canvasHeight - spacingFromBottom),
+            end = Offset(spacingFromLeft, 0f),
+            color = Color.Black,
+            strokeWidth = 3f
+        )
+
+        drawLine(
+            start = Offset(spacingFromLeft, canvasHeight - spacingFromBottom),
+            end = Offset(canvasWidth - 40f, canvasHeight - spacingFromBottom),
+            color = Color.Black,
+            strokeWidth = 3f
+        )
+
+        // Draw bars
+        chartData.forEachIndexed { index, chartPair ->
+
+            val barColor = when{
+                chartPair.second < lowThreshold -> Color.Red
+                else -> Color.Green
+            }
+            drawRoundRect(
+                color = barColor,
+                topLeft = Offset(
+                    spacingFromLeft + 10f + index * spacerData,
+                    (upperValue - chartPair.second) / upperValue * canvasHeight
+                ),
+                size = Size(55f, (chartPair.second / upperValue) * canvasHeight - spacingFromBottom),
+                cornerRadius = CornerRadius(10f, 10f)
+            )
+
+            // Display value on top of the bar
+            drawContext.canvas.nativeCanvas.apply {
+                drawText(
+                    chartPair.second.toString(),
+                    spacingFromLeft + 40f + index * spacerData,
+                    (upperValue - chartPair.second) / upperValue * canvasHeight - 10f,
+                    textPaint
+                )
+            }
+        }
     }
 }

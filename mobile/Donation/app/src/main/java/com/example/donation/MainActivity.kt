@@ -7,7 +7,9 @@ import androidx.activity.enableEdgeToEdge
 
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.donation.moreitems.ViewEvents
+
+import com.example.donation.MoreItems.BloodBanks
+
 
 
 class MainActivity : ComponentActivity() {
@@ -18,8 +20,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             navController = rememberNavController()
             // SetUpNavigation(navController)
-            ViewEvents(navController)
-           // BloodBanks(navController)
+            //ViewEvents(navController)
+            BloodBanks(navController)
 
 
 
