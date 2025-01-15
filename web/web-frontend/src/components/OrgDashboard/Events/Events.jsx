@@ -30,7 +30,7 @@ function Events() {
                 <div className="top-section">
                     <div className="top-left-section">
                       <section className='today-event'>
-                        <h1>Today's Event</h1>
+                        <h1>Today Event</h1>
                         <button className="top-left-button" onClick={() => navigate("/todays-event")}>Manage</button>
                       </section>
                       <section className='create-event-wrapper'>
