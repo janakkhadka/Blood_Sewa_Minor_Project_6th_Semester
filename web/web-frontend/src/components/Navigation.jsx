@@ -26,6 +26,7 @@ import UpcomingEvents from './OrgDashboard/Events/UpcomingEvents.jsx';
 import OrgOrganizeEvent from './OrgDashboard/Events/OrgOrganizeEvent.jsx';
 import CollabRequest from './OrgDashboard/Events/CollabRequest.jsx';
 import ScheduledDonation from './OrgDashboard/ScheduledDonation.jsx';
+import EventDetail from './OrgDashboard/Events/EventDetail.jsx';
 
 const Navigation = () => {
     return (
@@ -53,8 +54,10 @@ const Navigation = () => {
             <Route path ="/upcoming-events" element = {<UpcomingEvents/>}/>
             <Route path ="/org-organize-event" element = {<OrgOrganizeEvent/>}/>
             <Route path ="/collab-request" element = {<CollabRequest/>}/>
+            <Route path ="/event-details" element = {<EventDetail/>}/>
 
             <Route path ="/scheduled-donation" element = {<ScheduledDonation/>}/>
+            
             
           </Routes>
         </Router>
