@@ -12,7 +12,7 @@ import { IoIosArrowDropdownCircle } from "react-icons/io";
 import BackThreeD from '../LoginRegistration/3d'
 import MyBarChart from '../Utils/MyBarChart';
 import NavigationBar from '../Common/NavigationBar'
-import { ComponentNavbarRightLeft, ComponentNavbarRightRight } from './UserNavbarComponent';
+import { UserComponentNavbarRightLeft, UserComponentNavbarRightRight } from './UserNavbarComponent';
 
 
 function BloodAvailability() {
@@ -61,8 +61,8 @@ function BloodAvailability() {
         </div>
         <NavigationBar 
           titleNav = "Blood Sewa" 
-          rightLeftNav = {<ComponentNavbarRightLeft/>}
-          rightRightNav = {<ComponentNavbarRightRight/>} 
+          rightLeftNav = {<UserComponentNavbarRightLeft/>}
+          rightRightNav = {<UserComponentNavbarRightRight/>} 
         />
         <div className="blood-availability">
             <form action="">

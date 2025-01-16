@@ -13,7 +13,7 @@ import { IoMdOptions } from "react-icons/io";
 // import { getGreeting } from '../Utils/Greeting'
 import {events, urgentBlood} from './DummyData'
 import NavigationBar from '../Common/NavigationBar'
-import { DashboardNavbarRightLeft, DashboardNavbarRightRight } from './UserNavbarComponent';
+import { UserDashboardNavbarRightLeft, UserDashboardNavbarRightRight } from './UserNavbarComponent';
 import {greetingMessage} from '../Utils/GreetingMessage'
 
 function UserDashboardHome() {
@@ -22,8 +22,8 @@ function UserDashboardHome() {
     <div className='user-dashboard-home-wrapper'>
       <NavigationBar 
           titleNav = "Blood Sewa" 
-          rightLeftNav = {<DashboardNavbarRightLeft/>}
-          rightRightNav = {<DashboardNavbarRightRight/>} 
+          rightLeftNav = {<UserDashboardNavbarRightLeft/>}
+          rightRightNav = {<UserDashboardNavbarRightRight/>} 
         />
       <div className="user-dashboard-top-section">
         <div className="left-section">
@@ -39,7 +39,7 @@ function UserDashboardHome() {
           </section>
           <section className='quick-actions'>
             <h1>Quick Actions!</h1>
-            <button className="action-button" onClick={() => navigate("/blood-request-form")}>Urgent Blood Request</button>
+            <button className="action-button" onClick={() => navigate("/blood-request-form", { state: { identifier: 1 }})}>Urgent Blood Request</button>
             <button className="action-button" onClick={() => navigate("/schedule-donation")}>Schedule a donation</button>
             <button className="action-button" onClick={() => navigate("/user-organize-event")}>Organize an event</button>
             <button className="action-button" onClick={() => navigate("/user-blood-availability")}>Blood Inventory</button>

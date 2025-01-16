@@ -5,8 +5,9 @@ import './LandingPage.css'
 import Home from './Home'
 import NavigationBar from '../Common/NavigationBar'
 import BackThreeD from '../LoginRegistration/3d'
+import { NavbarRightLeft, NavbarRightRight } from '../Common/CommonNavBarComponent'
 
-import { Link, useNavigate } from "react-router-dom";
+
 
 function LandingPage() {
   return (
@@ -29,41 +30,5 @@ export default LandingPage
 
 
 
-const NavbarRightLeft = () => {
-  return(
-    <div className="navbar-right-left">
-        <Link to="/blood-request">Request Blood Now</Link>
-    </div>
-  )
-}
 
-const NavbarRightRight = () => {
-  const [toggle, setToggle] = useState(false)
-  const setToggleChange = () => {
-    setToggle(prevToggle => !prevToggle)
-  }
-  return (
-    <div className="navbar-right-right">
-      <button className="login-button" onClick={setToggleChange}>
-        Login
-      </button>
-      {toggle && (
-        <div className="login-option">
-          <Link
-            to="/login"
-            state= {{ accountType: "user" }}
-          >
-            Blood Donor
-          </Link>
-          <Link
-            to="/login"
-            state={{ accountType: "organization" }}
-          >
-            Organization
-          </Link>
-        </div>
-      )}
-    </div>
-  );
-};
 
