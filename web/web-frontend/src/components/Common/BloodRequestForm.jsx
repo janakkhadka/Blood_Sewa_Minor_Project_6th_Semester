@@ -25,7 +25,9 @@ import {RiContactsBook3Fill} from "react-icons/ri";
 
 import BackThreeD from '../LoginRegistration/3d'
 
-function BloodRequestForm({identifier=0}) {
+function BloodRequestForm() {
+    const locationDom = useLocation();
+    const { identifier } = locationDom.state || { identifier: 0 }; //kei aayena vane by defaylt 0 hunxa
     const [patinetName, setPatientName] = useState("")
     const [bloodType, setBloodType] = useState("")
     const handleBloodTypeChange = (option) => {

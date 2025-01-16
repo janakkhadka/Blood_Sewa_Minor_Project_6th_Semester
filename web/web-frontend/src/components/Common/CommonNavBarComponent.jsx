@@ -4,7 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 export const NavbarRightLeft = () => {
     return(
       <div className="navbar-right-left">
-          <Link to="/blood-request">Request Blood Now</Link>
+          <Link to="/blood-request-form">
+          Request Blood Now</Link>
       </div>
     )
   }
