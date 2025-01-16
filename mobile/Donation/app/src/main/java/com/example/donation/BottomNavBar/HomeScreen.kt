@@ -392,8 +392,8 @@ fun PersonItem(person: dummyData,onClick : () -> Unit) {
             .height(200.dp)
             .width(320.dp)
             .padding(10.dp)
+            .shadow(elevation = 180.dp)
             .clip(shape = RoundedCornerShape(16.dp))
-            .background(Color.White)
             .clickable { onClick() },
         contentAlignment = Alignment.Center
 

@@ -2,7 +2,9 @@ package com.example.donation.MoreItems
 
 
 
+import android.content.Intent
 import android.graphics.Paint.Align
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -17,6 +19,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -76,6 +81,14 @@ fun SearchDonors(navController : NavHostController) {
 
     )
 
+
+    //filter apply gareko yesma
+    val filterData = if(selectedBloodType.isEmpty()){
+        donorDatas
+    }else{
+        donorDatas.filter { it.blood_group == selectedBloodType }
+    }
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -97,6 +110,23 @@ fun SearchDonors(navController : NavHostController) {
                     onClick = { selectedBloodType = bloodType }
                 )
             }
+
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+
+            LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                items(filterData) { donors ->
+                    ShowDataItems(donors)
+
+
+                }
+
+            }
         }
     }
 }
@@ -106,6 +136,7 @@ fun RowSearchBlood(text: String, isSelected: Boolean, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .size(50.dp)
+            .padding(top = 10.dp)
             .clip(CircleShape)
             .background(if (isSelected) dRed else Color.LightGray)
             .clickable { onClick() },
@@ -115,25 +146,23 @@ fun RowSearchBlood(text: String, isSelected: Boolean, onClick: () -> Unit) {
     }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun PrevieW(){
-//    val navController = rememberNavController()
-//    SearchDonors(navController)
-//}
-
 @Preview(showBackground = true)
 @Composable
-fun ShowDataItems(){
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ){
+fun PrevieW(){
+    val navController = rememberNavController()
+    SearchDonors(navController)
+}
+
+//@Preview(showBackground = true)
+@Composable
+fun ShowDataItems(donor : DonorsList){
+    val context = LocalContext.current
+
     Box(
         modifier = Modifier.fillMaxWidth(.95f)
             .clip(shape = RoundedCornerShape(10.dp))
-            .shadow(elevation = 20.dp)
-            .background(Color.White)
+            .shadow(elevation = 180.dp)
+
     ) {
         Row(
             modifier = Modifier.fillMaxWidth()
@@ -149,7 +178,7 @@ fun ShowDataItems(){
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "A+",
+                    text = donor.blood_group,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
@@ -160,31 +189,34 @@ fun ShowDataItems(){
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                Text(text = " Name : Kiran Acharya")
-                Text(text = " Age : 23")
-                Text(text = " Phone Number : 9865445343")
-                Text(text = " Address : kalikot, karnali")
+                Text(text = " Name : ${donor.name}")
+                Text(text = " Age : ${donor.age}")
+                Text(text = " Phone Number : ${donor.phone_number}")
+                Text(text = " Address : ${donor.district}, ${donor.province}")
+                    Button(
+                        onClick = {
+                            val number = donor.phone_number
+                            val intent = Intent(Intent.ACTION_DIAL).apply {
+                                data = Uri.parse("tel:$number")
+                            }
+                            context.startActivity(intent)
 
-
-            }
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.BottomEnd
-            ) {
-                Button(
-                    onClick = {},
-                    shape = RoundedCornerShape(10.dp),
-                    colors = ButtonDefaults.buttonColors(DarkGreen),
-                    modifier = Modifier.width(10.dp)
+                        },
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(DarkGreen),
 
                     ) {
-                    Text(text = "Contact")
-                }
+                        Text(text = "Contact")
+                    }
+
+
+
             }
+
 
 
         }
     }
 
-    }
+
 }
