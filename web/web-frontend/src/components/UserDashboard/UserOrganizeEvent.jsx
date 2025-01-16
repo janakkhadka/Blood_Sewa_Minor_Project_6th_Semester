@@ -21,7 +21,7 @@ import {FaLocationDot} from "react-icons/fa6";
 import BackThreeD from '../LoginRegistration/3d'
 import UserNavigationBar from './UserNavigationBar'
 import NavigationBar from '../Common/NavigationBar'
-import { ComponentNavbarRightLeft, ComponentNavbarRightRight } from './UserNavbarComponent';
+import { UserComponentNavbarRightLeft, UserComponentNavbarRightRight } from './UserNavbarComponent';
 
 function UserOrganizeEvent() {
     const [eventName, setEventName] = useState("")
@@ -45,8 +45,8 @@ function UserOrganizeEvent() {
         </div>
         <NavigationBar 
           titleNav = "Blood Sewa" 
-          rightLeftNav = {<ComponentNavbarRightLeft/>}
-          rightRightNav = {<ComponentNavbarRightRight/>} 
+          rightLeftNav = {<UserComponentNavbarRightLeft/>}
+          rightRightNav = {<UserComponentNavbarRightRight/>} 
         />
         <div className="user-organize-event">
             <form action="">

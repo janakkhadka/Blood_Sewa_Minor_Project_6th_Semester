@@ -15,7 +15,7 @@ import { IoIosArrowDropdownCircle } from "react-icons/io";
 
 import BackThreeD from '../LoginRegistration/3d'
 import NavigationBar from '../Common/NavigationBar'
-import { ComponentNavbarRightLeft, ComponentNavbarRightRight } from './UserNavbarComponent';  
+import { UserComponentNavbarRightLeft, UserComponentNavbarRightRight } from './UserNavbarComponent';  
 
 function SearchDonor() {
     const [bloodType, setBloodType] = useState("")
@@ -57,8 +57,8 @@ function SearchDonor() {
         </div>
         <NavigationBar 
           titleNav = "Blood Sewa" 
-          rightLeftNav = {<ComponentNavbarRightLeft/>}
-          rightRightNav = {<ComponentNavbarRightRight/>} 
+          rightLeftNav = {<UserComponentNavbarRightLeft/>}
+          rightRightNav = {<UserComponentNavbarRightRight/>} 
         />
         
         <div className="donor-search">

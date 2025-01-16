@@ -20,7 +20,7 @@ import { MdEvent } from "react-icons/md";
 
 import Medal from '../Utils/Medal'
 import NavigationBar from '../Common/NavigationBar'
-import { ComponentNavbarRightLeft, ComponentNavbarRightRight } from './UserNavbarComponent';
+import { UserComponentNavbarRightLeft, UserComponentNavbarRightRight } from './UserNavbarComponent';
 
 function UserProfile() {
   const donationCount = 130;
@@ -32,8 +32,8 @@ function UserProfile() {
       </div>
       <NavigationBar 
           titleNav = "Blood Sewa" 
-          rightLeftNav = {<ComponentNavbarRightLeft/>}
-          rightRightNav = {<ComponentNavbarRightRight/>} 
+          rightLeftNav = {<UserComponentNavbarRightLeft/>}
+          rightRightNav = {<UserComponentNavbarRightRight/>} 
         />
 
       <div className="user-profile">
