@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -106,6 +107,13 @@ private fun initiateScanner(gmsBarcodeScanner: GmsBarcodeScanner,onScanned : (St
         .addOnFailureListener { e ->
             // exception
         }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ShowEvents(){
+    val navController = rememberNavController()
+    ViewEvents(navController)
 }
 
 

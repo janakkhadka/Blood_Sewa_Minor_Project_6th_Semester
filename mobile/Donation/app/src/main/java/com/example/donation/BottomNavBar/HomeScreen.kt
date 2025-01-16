@@ -356,7 +356,7 @@ fun EventData(events: dummyEvent,onClick: () -> Unit) {
             .width(320.dp)
             .padding(10.dp)
             .clip(shape = RoundedCornerShape(16.dp))
-            .background(lightGreen)
+            .background(Color.White)
             .clickable {
                 onClick()
 
@@ -393,7 +393,7 @@ fun PersonItem(person: dummyData,onClick : () -> Unit) {
             .width(320.dp)
             .padding(10.dp)
             .clip(shape = RoundedCornerShape(16.dp))
-            .background(lightGreen)
+            .background(Color.White)
             .clickable { onClick() },
         contentAlignment = Alignment.Center
 

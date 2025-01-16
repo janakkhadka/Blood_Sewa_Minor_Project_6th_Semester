@@ -2,6 +2,7 @@ package com.example.donation.MoreItems
 
 
 
+import android.graphics.Paint.Align
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -13,20 +14,28 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.internal.composableLambdaN
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,13 +46,35 @@ import androidx.navigation.compose.rememberNavController
 import com.example.donation.BottomNavBar.CustomTopBar
 import com.example.donation.BottomNavBar.TopBarTheme
 import com.example.donation.backend.searchDonor.SearchDonor
+import com.example.donation.ui.theme.DarkGreen
 import com.example.donation.ui.theme.dRed
+import com.example.donation.ui.theme.lightGreen
+
+//dummy data for searching
+data class DonorsList(
+    val blood_group : String,
+    val name : String,
+    val phone_number : String,
+    val district : String,
+    val province : String,
+    val age : String
+)
 
 
 @Composable
 fun SearchDonors(navController : NavHostController) {
     val scrollState = rememberScrollState()
-    var selectedBloodType by remember { mutableStateOf("") } 
+    var selectedBloodType by remember { mutableStateOf("") }
+
+    //dummy data values
+    val donorDatas = listOf(
+        DonorsList("A+","Kiran Acharya","9865445343","Kalikot","Karnali","23"),
+        DonorsList("AB+","Kishor Acharya","9823366044","Kathmandu","Bagmati","22"),
+        DonorsList("O+","Janak Khadka","9847984933","kailali","Sudhurpaschim","33"),
+        DonorsList("AB-","Bishal Parajuli","999999999","Kavre","Bagmati","22"),
+        DonorsList("A+","Neymar junior","9090909090","Kapilvastu","Lumbini","19")
+
+    )
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -84,9 +115,76 @@ fun RowSearchBlood(text: String, isSelected: Boolean, onClick: () -> Unit) {
     }
 }
 
+//@Preview(showBackground = true)
+//@Composable
+//fun PrevieW(){
+//    val navController = rememberNavController()
+//    SearchDonors(navController)
+//}
+
 @Preview(showBackground = true)
 @Composable
-fun PrevieW(){
-    val navController = rememberNavController()
-    SearchDonors(navController)
+fun ShowDataItems(){
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+    Box(
+        modifier = Modifier.fillMaxWidth(.95f)
+            .clip(shape = RoundedCornerShape(10.dp))
+            .shadow(elevation = 20.dp)
+            .background(Color.White)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth()
+                .padding(10.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(50.dp)
+                    .clip(CircleShape)
+                    .background(dRed),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "A+",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+            }
+
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Text(text = " Name : Kiran Acharya")
+                Text(text = " Age : 23")
+                Text(text = " Phone Number : 9865445343")
+                Text(text = " Address : kalikot, karnali")
+
+
+            }
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.BottomEnd
+            ) {
+                Button(
+                    onClick = {},
+                    shape = RoundedCornerShape(10.dp),
+                    colors = ButtonDefaults.buttonColors(DarkGreen),
+                    modifier = Modifier.width(10.dp)
+
+                    ) {
+                    Text(text = "Contact")
+                }
+            }
+
+
+        }
+    }
+
+    }
 }

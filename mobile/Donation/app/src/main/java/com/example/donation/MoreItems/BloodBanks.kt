@@ -1,6 +1,7 @@
 package com.example.donation.MoreItems
 
 import android.annotation.SuppressLint
+import android.service.autofill.OnClickAction
 import android.util.Pair
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -32,7 +33,7 @@ import com.example.donation.BottomNavBar.TopBarTheme
 import com.example.donation.ui.theme.dRed
 import kotlin.math.round
 
-// Data class to hold hospital blood availability details
+// dummy data
 data class HospitalAvailability(
     val name: String,
     val aPlus: Float,
@@ -50,13 +51,14 @@ fun BloodBanks(navController: NavHostController) {
     // Hospital data list
     val hospitalData = listOf(
         HospitalAvailability("KMC Hospital", 5f, 3f, 12f, 21f, 29f, 42f, 43f, 56f),
-        HospitalAvailability("Civil Hospital", 35f, 13f, 1f, 2f, 9f, 4f, 11f, 6f),
-        HospitalAvailability("Cancer Hospital", 23f, 33f, 52f, 1f, 2f, 7f, 13f, 29f)
+        HospitalAvailability("Civil Hospital", 35f, 13f, 11f, 24f, 9f, 44f, 11f, 6f),
+        HospitalAvailability("Cancer Hospital", 23f, 33f, 52f, 14f, 22f, 7f, 13f, 29f)
     )
 
     var bloodSelected by remember { mutableStateOf("") }
     var bloodExpanded by remember { mutableStateOf(false) }
     var selectedHospital by remember { mutableStateOf<HospitalAvailability?>(null) }
+
 
     val handleDropDown = { name: String ->
         bloodSelected = name
@@ -103,21 +105,18 @@ fun BloodBanks(navController: NavHostController) {
             }
         }
 
-        // Show the selected hospital's bar chart
+
         selectedHospital?.let { hospital ->
-            Box(modifier = Modifier.fillMaxWidth().shadow(elevation = 20.dp), contentAlignment = Alignment.Center) {
+            Box(modifier = Modifier.fillMaxWidth()
+                .padding(20.dp),
+                contentAlignment = Alignment.Center,
+
+                    ) {
                 Spacer(modifier = Modifier.height(20.dp))
                 BarChart(hospital)
             }
         }
 
-        // Show all hospitals' bar charts
-        Box(modifier = Modifier.fillMaxWidth().shadow(elevation = 20.dp), contentAlignment = Alignment.Center) {
-            Spacer(modifier = Modifier.height(20.dp))
-            hospitalData.forEach { hospital ->
-                BarChart(hospital)
-            }
-        }
 
         // Schedule button
         OutlinedButton(
@@ -140,7 +139,6 @@ fun PreviewBloodBanks() {
 
 
 
-// Bar chart function to display the blood data in graphical form
 @SuppressLint("RememberReturnType")
 @Composable
 fun BarChart(hospitalData: HospitalAvailability) {
@@ -160,11 +158,11 @@ fun BarChart(hospitalData: HospitalAvailability) {
 
 
     val spacingFromLeft = 100f
-    val spacingFromBottom = 40f
+    val spacingFromBottom = 50f
     val upperValue = remember { chartData.maxOfOrNull { it.second }?.plus(10) ?: 0f }
     val lowerValue = remember { 0f }
 
-    // Paint settings for the text labels
+
     val density = LocalDensity.current
     val textPaint = remember(density) {
         android.graphics.Paint().apply {
@@ -177,7 +175,7 @@ fun BarChart(hospitalData: HospitalAvailability) {
     Canvas(
         modifier = Modifier
             .fillMaxWidth()
-            .height(300.dp)
+            .height(400.dp)
             .background(Color.White)
             .padding(15.dp)
     ) {
@@ -185,7 +183,7 @@ fun BarChart(hospitalData: HospitalAvailability) {
         val canvasWidth = size.width
         val spacerData = (canvasWidth - spacingFromLeft) / chartData.size
 
-        // Draw horizontal labels (blood group names)
+        // horizontal value
         chartData.forEachIndexed { index, pair ->
             drawContext.canvas.nativeCanvas.apply {
                 drawText(
@@ -197,8 +195,8 @@ fun BarChart(hospitalData: HospitalAvailability) {
             }
         }
 
-        // Draw vertical values
-        val valueToShow = 5f
+        // vertical line
+        val valueToShow = 8f
         val eachStep = (upperValue - lowerValue) / valueToShow
 
         (0 until valueToShow.toInt()).forEach { i ->
@@ -207,21 +205,21 @@ fun BarChart(hospitalData: HospitalAvailability) {
                 drawText(
                     round(label).toString(),
                     20f,
-                    canvasHeight - 30f - i * canvasHeight / 5f,
+                    canvasHeight - 30f - i * canvasHeight / 8f,
                     textPaint
                 )
             }
 
-            // Draw horizontal grid lines
+            // dash line haru
             drawLine(
-                start = Offset(spacingFromLeft - 20f, canvasHeight - spacingFromBottom - i * canvasHeight / 5f),
-                end = Offset(spacingFromLeft, canvasHeight - spacingFromBottom - i * canvasHeight / 5f),
+                start = Offset(spacingFromLeft - 20f, canvasHeight - spacingFromBottom - i * canvasHeight / 8f),
+                end = Offset(spacingFromLeft, canvasHeight - spacingFromBottom - i * canvasHeight / 8f),
                 color = Color.Black,
                 strokeWidth = 3f
             )
         }
 
-        // Vertical and horizontal axis lines
+        //  x rw y axis
         drawLine(
             start = Offset(spacingFromLeft, canvasHeight - spacingFromBottom),
             end = Offset(spacingFromLeft, 0f),
@@ -231,7 +229,7 @@ fun BarChart(hospitalData: HospitalAvailability) {
 
         drawLine(
             start = Offset(spacingFromLeft, canvasHeight - spacingFromBottom),
-            end = Offset(canvasWidth - 40f, canvasHeight - spacingFromBottom),
+            end = Offset(canvasWidth - 50f, canvasHeight - spacingFromBottom),
             color = Color.Black,
             strokeWidth = 3f
         )
@@ -249,11 +247,12 @@ fun BarChart(hospitalData: HospitalAvailability) {
                     spacingFromLeft + 10f + index * spacerData,
                     (upperValue - chartPair.second) / upperValue * canvasHeight
                 ),
-                size = Size(55f, (chartPair.second / upperValue) * canvasHeight - spacingFromBottom),
-                cornerRadius = CornerRadius(10f, 10f)
+                size = Size(55f, (chartPair.second / upperValue) * canvasHeight-(spacingFromBottom+5f)),
+                cornerRadius = CornerRadius(10f, 10f),
+
             )
 
-            // Display value on top of the bar
+            //top ma value display garna laii
             drawContext.canvas.nativeCanvas.apply {
                 drawText(
                     chartPair.second.toString(),
