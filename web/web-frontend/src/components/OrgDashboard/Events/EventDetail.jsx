@@ -14,6 +14,7 @@ import { IoMdSquare } from "react-icons/io";
 import { TbAxisX, TbAxisY } from "react-icons/tb";
 
 import {events, pastEvents} from '../../UserDashboard/DummyData'
+import {donorList} from '../../UserDashboard/DummyData'
 
 function EventDetail() {
   return (
@@ -68,10 +69,66 @@ function EventDetail() {
           </div>
           <div className="bottom-section">
             <section className='bottom-left'>
-                
+              <div className="h1">
+                <h1>Donor List</h1>
+              </div>
+              <table border="0" style={{tableLayout: "fixed", width: "100%", borderCollapse: "collapse" }}>
+                <colgroup>
+                  <col style={{ width: "4%" }} />
+                  <col style={{ width: "22%" }} /> 
+                  <col style={{ width: "15%" }} />
+                  <col style={{ width: "20%" }} />
+                  <col style={{ width: "20%" }} />
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th>SN</th>
+                    <th>Donor Name</th>
+                    <th>Blood Group</th>
+                    <th>Phone Number</th>
+                    <th>Screening Result</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {donorList.map((donor, index) => (
+                    <tr key={index}>
+                      <td>{donor.sn}</td> {/* Format date */}
+                      <td  className='table-data'>{donor.name}</td>
+                      <td  className='table-data'>{donor.bloodGroup}</td>
+                      <td>9840989641</td>
+                      <td style={{textAlign:"center"}}><button className="notify-button" onClick={() => navigate("/")}>Add</button></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </section>
             <section className='bottom-right'>
-
+              <div className="h1">
+                <h1>Volunteer List</h1>
+              </div>
+              <table border="0" style={{tableLayout: "fixed", width: "100%", borderCollapse: "collapse" }}>
+                <colgroup>
+                  <col style={{ width: "15%" }} />
+                  <col style={{ width: "45%" }} /> 
+                  <col style={{ width: "40%" }} />
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th>SN</th>
+                    <th>Donor Name</th>
+                    <th>Phone Number</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {donorList.map((donor, index) => (
+                    <tr key={index}>
+                      <td>{donor.sn}</td> {/* Format date */}
+                      <td  className='table-data'>{donor.name}</td>
+                      <td>9840989641</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </section>
           </div>
         </div>
