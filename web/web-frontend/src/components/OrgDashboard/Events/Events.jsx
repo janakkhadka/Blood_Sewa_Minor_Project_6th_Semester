@@ -67,7 +67,7 @@ function Events() {
                                 <td>{format(event.date, "MMMM dd, yyyy")}</td> {/* Format date */}
                                 <td  className='table-data'>{event.title}</td>
                                 <td  className='table-data'>{event.location}</td>
-                                <td><button className="notify-button" onClick={() => navigate("/")}>Detail</button></td>
+                                <td><button className="notify-button" onClick={() => navigate("/event-details")}>Detail</button></td>
                               </tr>
                             ))}
                           </tbody>
@@ -104,7 +104,7 @@ function Events() {
                         <td  className='table-data'>{event.title}</td>
                         <td style={{paddingLeft:"40px"}}>{event.donorNumber}</td>
                         <td  className='table-data'>{event.location}</td>
-                        <td><button className="notify-button" onClick={() => navigate("/")}>Detail</button></td>
+                        <td><button className="notify-button" onClick={() => navigate("/event-details")}>Detail</button></td>
                       </tr>
                     ))}
                   </tbody>
