@@ -7,7 +7,7 @@
     background-size: cover;
     background-position: center;
     display: flex;
-    overflow-x: hidden;
+    overflow: hidden;
     scrollbar-width: none; 
     -ms-overflow-style: none;
 }
@@ -168,4 +168,16 @@
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  .event-details-wrapper .screening-modal{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: transparent;
+    backdrop-filter: blur(5px);
+    z-index: 3;
+    color: var(--secondary)
   }

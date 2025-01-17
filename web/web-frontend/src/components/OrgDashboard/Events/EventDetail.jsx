@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState} from 'react'
 import './EventDetail.css'
 
 import NavigationBar from '../../Common/NavigationBar'
@@ -15,8 +15,10 @@ import { TbAxisX, TbAxisY } from "react-icons/tb";
 
 import {events, pastEvents} from '../../UserDashboard/DummyData'
 import {donorList} from '../../UserDashboard/DummyData'
+import ScreeningResultModal from './ScreeningResultModal'
 
 function EventDetail() {
+  const [toggleScreeningResultModal, setToggleScreeningResultModal] = useState(false);
   return (
     <div className="event-details-wrapper">
         <div className="syringe">
@@ -96,7 +98,10 @@ function EventDetail() {
                       <td  className='table-data'>{donor.name}</td>
                       <td  className='table-data'>{donor.bloodGroup}</td>
                       <td>9840989641</td>
-                      <td style={{textAlign:"center"}}><button className="notify-button" onClick={() => navigate("/")}>Add</button></td>
+                      <td style={{textAlign:"center"}}><button className="notify-button" onClick={
+                        () => setToggleScreeningResultModal(true)
+                        }>Add</button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -131,6 +136,12 @@ function EventDetail() {
               </table>
             </section>
           </div>
+          
+            {toggleScreeningResultModal && (
+              <div className="screening-modal">
+                <ScreeningResultModal/>
+              </div>
+            )}
         </div>
     </div>
   )

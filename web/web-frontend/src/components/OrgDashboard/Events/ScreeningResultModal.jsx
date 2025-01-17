@@ -4,9 +4,8 @@ import './ScreeningResultModal.css';
 import { Link } from "react-router-dom";
 
 
-import { FaUser, FaLock, FaFile} from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 
-import BackThreeD from './3d'
 
 
 
@@ -26,60 +25,55 @@ const ScreeningResultModal = () => {
 
   return (
     <div className="screening-result-wrapper">
-        <div className="background">
-            <BackThreeD/>
-        </div>
-        <div className="form-box-user-registration">
-            <div className="user-form">
-                <form onSubmit={handleSubmit}>
-                    <h1>Screening Result</h1>
-                    <span style={{fontSize:"14px"}}>Fill up the form carefully to register your account with Blood Sewa.</span>
-                    <br/>
+        <div className="screening-form">
+            <form onSubmit={handleSubmit}>
+                <h1>Screening Result</h1>
+                <span style={{fontSize:"14px"}}>Enter the info carefully.</span>
+                <br/>
 
-                    <div className="input-box" style={{marginTop:"7px"}}>
-                        <input type="text"
-                        value = {bloodPressure}
-                        onChange={(e) => setBloodPressure(e.target.value)}
-                        placeholder='Full Name'/>
-                        <FaUser className="icon"/>
-                    </div>
-                    <div className="input-box" style={{marginTop:"7px"}}>
-                        <input type="text"
-                        value = {pulseRate}
-                        onChange={(e) => setPulseRate(e.target.value)}
-                        placeholder='Full Name'/>
-                        <FaUser className="icon"/>
-                    </div>
-                    <div className="input-box" style={{marginTop:"7px"}}>
-                        <input type="text"
-                        value = {temperature}
-                        onChange={(e) => setTemperature(e.target.value)}
-                        placeholder='Full Name'/>
-                        <FaUser className="icon"/>
-                    </div>
-                    <div className="input-box" style={{marginTop:"7px"}}>
-                        <input type="text"
-                        value = {hemoglobin}
-                        onChange={(e) => setHemoglobin(e.target.value)}
-                        placeholder='Full Name'/>
-                        <FaUser className="icon"/>
-                    </div>
-                    <div className="input-box" style={{marginTop:"7px"}}>
-                        <input type="text"
-                        value = {sugarLevel}
-                        onChange={(e) => setSugarLevel(e.target.value)}
-                        placeholder='Full Name'/>
-                        <FaUser className="icon"/>
-                    </div>
+                <div className="input-box" style={{marginTop:"7px"}}>
+                    <input type="text"
+                    value = {bloodPressure}
+                    onChange={(e) => setBloodPressure(e.target.value)}
+                    placeholder='Blood Pressure'/>
+                    <FaUser className="icon"/>
+                </div>
+                <div className="input-box" style={{marginTop:"7px"}}>
+                    <input type="text"
+                    value = {pulseRate}
+                    onChange={(e) => setPulseRate(e.target.value)}
+                    placeholder='Pulse Rate'/>
+                    <FaUser className="icon"/>
+                </div>
+                <div className="input-box" style={{marginTop:"7px"}}>
+                    <input type="text"
+                    value = {temperature}
+                    onChange={(e) => setTemperature(e.target.value)}
+                    placeholder='Body Temperature'/>
+                    <FaUser className="icon"/>
+                </div>
+                <div className="input-box" style={{marginTop:"7px"}}>
+                    <input type="text"
+                    value = {hemoglobin}
+                    onChange={(e) => setHemoglobin(e.target.value)}
+                    placeholder='Hemoglobin'/>
+                    <FaUser className="icon"/>
+                </div>
+                <div className="input-box" style={{marginTop:"7px"}}>
+                    <input type="text"
+                    value = {sugarLevel}
+                    onChange={(e) => setSugarLevel(e.target.value)}
+                    placeholder='Blood Sugar Level'/>
+                    <FaUser className="icon"/>
+                </div>
 
 
-                    <div className="button">
-                        <button type="submit">Add</button>
-                    </div>
+                <div className="button">
+                    <button type="submit">Add</button>
+                </div>
 
-                   
-                </form>
-            </div>
+                
+            </form>
         </div>
     </div>
   )
