@@ -115,7 +115,7 @@ function EventDetail() {
                 <thead>
                   <tr>
                     <th>SN</th>
-                    <th>Donor Name</th>
+                    <th>Volunteer Name</th>
                     <th>Phone Number</th>
                   </tr>
                 </thead>
