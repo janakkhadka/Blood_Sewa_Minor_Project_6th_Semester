@@ -25,8 +25,8 @@ const MyBarChart = ({barList, width, height}) => {
   const choosedBarList = barList && barList.length > 0 ? barList : defaultBarList
   return (
     <BarChart
-      width={width?width:700}
-      height={height?height:300}
+      width={width?width:800}
+      height={height?height:310}
       data={choosedBarList}
     >
       {/* <CartesianGrid strokeDasharray="1 1" /> */}
