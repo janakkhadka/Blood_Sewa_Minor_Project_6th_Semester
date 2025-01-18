@@ -1,8 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=SUSE:wght@100..800&family=Sevillana&display=swap');
 
 :root {
-  --background-color: #ffffff;
+  --background-color: #d5c9c9;
   --text-color: #000000;
+  --button-color: rgb(160, 25, 25);
 }
 
 /* Dark Theme */
@@ -12,7 +13,7 @@
 }
 
 /* Custom Theme (example) */
-[data-theme="custom"] {
+[data-theme="bloody"] {
   --background-color: #ffefd5;
   --text-color: #8b0000;
 }
