@@ -15,7 +15,7 @@
 /* Custom Theme (example) */
 [data-theme="bloody"] {
   --background-color: #ffefd5;
-  --text-color: #8b0000;
+  --text-color: rgb(160, 25, 25);
 }
 
 
