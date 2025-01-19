@@ -365,10 +365,18 @@ class CheckInView(APIView):
 
 class ListEventsView(APIView):
     permission_classes = [permissions.IsAuthenticated]
+
     def get(self, request):
         events = Event.objects.all()
         serializer = EventSerializer(events, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+        # Modify serialized data to conditionally handle 'collabrator_name'
+        serialized_data = serializer.data
+        for event in serialized_data:
+            if not event.get("collabrator_name"):  # If 'collabrator_name' is missing or None
+                event.pop("collabrator_name", None)  # Remove 'collabrator_name'
+
+        return Response(serialized_data, status=status.HTTP_200_OK)
 
 
 
