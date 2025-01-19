@@ -70,6 +70,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.donation.Navigation.Screens
 import com.example.donation.R
+import com.example.donation.ViewModels.dummyEvent
+import com.example.donation.ViewModels.dummyUrgentData
 import com.example.donation.datastore.DataStoreManager
 import com.example.donation.ui.theme.DarkGreen
 import com.example.donation.ui.theme.RedThemeTop
@@ -80,29 +82,14 @@ import com.example.donation.ui.theme.lightGreen
 import java.time.LocalTime
 
 
-//dummy data
-data class dummyData(
-    val name : String,
-    val location : String,
-    val blood_group : String,
-    val contact : String,
-    val time : String,
-    val case : String,
-    val district : String
-)
 
-data class dummyEvent(
-    val venue : String,
-    val organized_by : String,
-    val collaboration_with : String,
-    val contact : String,
-    val desc : String
-)
+
+
 @Composable
 fun HomeScreen(navController : NavHostController ) {
     var showDialogBox by remember { mutableStateOf(false) }
     var eventDialog by remember { mutableStateOf(false) }
-    var selectedPatient by remember { mutableStateOf<dummyData?>(null) }
+    var selectedPatient by remember { mutableStateOf<dummyUrgentData?>(null) }
     var selectedEvent by remember { mutableStateOf<dummyEvent?>(null) }
 
     if (showDialogBox && selectedPatient != null) {
@@ -130,7 +117,7 @@ fun HomeScreen(navController : NavHostController ) {
 
     //dummy variables for the Urgent Requests and event happening
     val persons = listOf(
-        dummyData(
+        dummyUrgentData(
             "Janak Khadka",
             "KMC Hospital",
             "A+",
@@ -139,7 +126,7 @@ fun HomeScreen(navController : NavHostController ) {
             "Brain tumour",
             "Dhankuta"
         ),
-        dummyData(
+        dummyUrgentData(
             "Bishal Parajuli",
             "Civil Hospital",
             "B-",
@@ -148,7 +135,7 @@ fun HomeScreen(navController : NavHostController ) {
             "mental",
             "Kavre"
         ),
-        dummyData(
+        dummyUrgentData(
             "Kiran Acharya",
             "Cancer Hospital",
             "O-",
@@ -386,7 +373,7 @@ fun EventData(events: dummyEvent,onClick: () -> Unit) {
 
 
 @Composable
-fun PersonItem(person: dummyData,onClick : () -> Unit) {
+fun PersonItem(person: dummyUrgentData,onClick : () -> Unit) {
     Box(
         modifier = Modifier
             .height(200.dp)
@@ -514,7 +501,7 @@ fun Preview(){
 
 
 @Composable
-fun DialogBox(persons :dummyData){
+fun DialogBox(persons :dummyUrgentData){
     Box(
         modifier = Modifier.height(300.dp)
             .clip(RoundedCornerShape(20.dp))
