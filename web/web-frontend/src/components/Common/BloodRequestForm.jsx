@@ -9,6 +9,10 @@ import 'react-calendar/dist/Calendar.css';
 import DatePicker from 'react-date-picker';
 import 'react-date-picker/dist/DatePicker.css';
 import '../LoginRegistration/Calender.css';
+import NavigationBar from './NavigationBar';
+import {NavbarRightRight } from '../Common/CommonNavBarComponent'
+import { OrgComponentNavbarRightLeft, OrgDashboardNavbarRightRight } from '../OrgDashboard/OrgNavbarComponent';
+import { UserComponentNavbarRightLeft, UserComponentNavbarRightRight } from '../UserDashboard/UserNavbarComponent';
 
 import {provinceList, ProvinceDistrictList, bloodGroupList} from '../LoginRegistration/DropDownList';
 
@@ -22,6 +26,8 @@ import {RiContactsBook3Fill} from "react-icons/ri";
 import BackThreeD from '../LoginRegistration/3d'
 
 function BloodRequestForm() {
+    const locationDom = useLocation();
+    const { identifier } = locationDom.state || { identifier: 0 }; //kei aayena vane by defaylt 0 hunxa
     const [patinetName, setPatientName] = useState("")
     const [bloodType, setBloodType] = useState("")
     const handleBloodTypeChange = (option) => {
@@ -53,6 +59,32 @@ function BloodRequestForm() {
       const [location, setLocation] = useState("")
   return (
     <div className='blood-request-wrapper'>
+        {/* user login navako bela */}
+        {identifier == 0 && (  
+            <NavigationBar 
+            titleNav = "Blood Sewa" 
+            rightLeftNav = {null}
+            rightRightNav = {<NavbarRightRight/>} 
+          />
+        )}
+        {/* user login gareko bela */}
+        {identifier == 1 && (  
+            <NavigationBar 
+            titleNav = "Blood Sewa" 
+            rightLeftNav = {<UserComponentNavbarRightLeft/>}
+            rightRightNav = {<UserComponentNavbarRightRight/>} 
+          />
+        )}
+        {/* orgle login gareko bela */}
+        {identifier == 2 && (  
+            <NavigationBar 
+            titleNav = "Blood Sewa" 
+            rightLeftNav = {<OrgComponentNavbarRightLeft/>}
+            rightRightNav = {<OrgDashboardNavbarRightRight/>} 
+          />
+        )}
+
+
         <div className="syringe">
             <BackThreeD/>
         </div>

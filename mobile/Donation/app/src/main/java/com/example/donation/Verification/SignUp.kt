@@ -2,6 +2,7 @@ package com.example.donation.Verification
 
 
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -47,6 +48,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -482,6 +484,7 @@ fun SignUp(navController : NavHostController) {
                             navController.navigate(Screens.Login.route)
                         } else {
                             Toast.makeText(context, "Registration failed: ${response.message()}", Toast.LENGTH_SHORT).show()
+                            Log.e("registration", response.message())
                         }
                     } catch (e: Exception) {
                         loading = false
@@ -514,6 +517,12 @@ fun SignUp(navController : NavHostController) {
 
 
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun showBackground(){
+
 }
 
 

@@ -4,17 +4,17 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.donation.BottomNavBar.CustomTopBar
 import com.example.donation.BottomNavBar.TopBarTheme
 
-
-@RequiresApi(Build.VERSION_CODES.O)
 
 @Composable
 fun Events(navController : NavHostController){
@@ -25,4 +25,11 @@ fun Events(navController : NavHostController){
         CustomTopBar(img = Icons.Default.ArrowBack, greetingText = "", name ="" , text ="Events" ,navController)
 
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Show(){
+    val navController = rememberNavController()
+    Events(navController)
 }

@@ -46,29 +46,42 @@
 }
 .events-section-wrapper .today-event{
     width:300px;
-    height:140px;
+    height:100px;
     background-color: var(--secondary);
     border: 2px solid rgba(255,255,255,.1);
     border-radius: 10px;
     box-shadow: 0px 0px 20px rgba(119, 81, 81, 0.6);
     color: var(--primary);
-    padding: 10px 20px;
+    padding: 5px 15px;
     display: flex;
     flex-direction: column;
-    gap:20px;
+    gap:5px;
 }
 .events-section-wrapper .top-section .create-event-wrapper{
     width:300px;
-    height:140px;
+    height:100px;
     background-color: var(--secondary);
     border: 2px solid rgba(255,255,255,.1);
     border-radius: 10px;
     box-shadow: 0px 0px 20px rgba(119, 81, 81, 0.6);
     color: var(--primary);
-    padding: 10px 20px;
+    padding: 5px 15px;
     display: flex;
     flex-direction: column;
-    gap:20px;
+    gap:5px;
+}
+.events-section-wrapper .top-section .collaboration-request-section{
+    width:300px;
+    height:100px;
+    background-color: var(--secondary);
+    border: 2px solid rgba(255,255,255,.1);
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px rgba(119, 81, 81, 0.6);
+    color: var(--primary);
+    padding: 5px 15px;
+    display: flex;
+    flex-direction: column;
+    gap:5px;
 }
 
 .events-section-wrapper .top-left-button{
@@ -97,7 +110,7 @@
     scroll-behavior: smooth;
     scrollbar-width: none;
     width:1090px;
-    height: 304px;
+    height: 340px;
     border: 2px solid rgba(255,255,255,.1);
     border-radius: 10px;
     box-shadow: 0px 0px 50px rgba(119, 81, 81, 0.6);
@@ -172,7 +185,7 @@
     scroll-behavior: smooth;
     scrollbar-width: none;
     width:1420px;
-    height: 304px;
+    height: 264px;
     border: 2px solid rgba(255,255,255,.1);
     border-radius: 10px;
     box-shadow: 0px 0px 50px rgba(119, 81, 81, 0.6);

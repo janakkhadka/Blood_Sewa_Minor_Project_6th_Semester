@@ -1,4 +1,4 @@
-.todays-event-wrapper{
+.event-details-wrapper{
     position: relative;
     width:100vw;
     height:100vh;
@@ -7,12 +7,12 @@
     background-size: cover;
     background-position: center;
     display: flex;
-    overflow-x: hidden;
+    overflow: hidden;
     scrollbar-width: none; 
     -ms-overflow-style: none;
 }
 
-.todays-event-wrapper .syringe{
+.event-details-wrapper .syringe{
     position: absolute;
     top: 0;
     left: 0;
@@ -21,7 +21,7 @@
     z-index: 1; 
 }
 
-.todays-event-wrapper .todays-event{
+.event-details-wrapper .event-details{
     position: relative;
     padding: 0 20px;
     margin:20px 0;
@@ -34,49 +34,67 @@
     flex-direction: column;
     gap: 20px;
 }
-.todays-event h1{
-    color:var(--secondary);
-    margin-top: -12px;
-}
 
-.todays-event-wrapper .todays-event{
+.event-details-wrapper .top-section{
     display: flex;
     flex-direction: row;
     gap: 20px;
 }
 
-.todays-event .left-section{
+.event-details-wrapper .top-left{
+    padding: 8px;
+    padding-left: 18px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 3px;
+    color: var(--primary);
+    background-color: var(--secondary);
+    width: 400px;
+    height: 155px;
+    border-radius: 8px;
 }
 
-
-
-.todays-event .event-details{
+.event-details-wrapper .top-right{
+    z-index: 2; 
+    width: 990px;
+    height: 270px;
+    border-radius: 10px;
+    box-shadow: 0 0 40px rgba(77, 5, 2,1);
+    background: transparent;
+    box-shadow: 0px 0px 50px rgba(119, 81, 81, 0.6);
+    backdrop-filter: blur(5px);
+    padding: 10px 20px;
     display: flex;
     flex-direction: column;
     gap: 5px;
-    width:350px;
-    height:192px;
-    background-color: var(--secondary);
-    border: 2px solid rgba(255,255,255,.1);
-    border-radius: 10px;
-    box-shadow: 0px 0px 20px rgba(119, 81, 81, 0.6);
-    color: var(--primary);
-    padding: 5px 15px;
-
+    color: var(--secondary);
 }
 
-.todays-event .top-section .icon-info-wrapper{
+.event-details-wrapper .bar-chart-wrapper{
     display: flex;
-    align-items: center;
     flex-direction: row;
-    gap: 8px;
-}
+    gap: 0px;
+  }
+  .event-details-wrapper .bar-chart-wrapper .chart-info-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    margin-top: 40px;
+  }
+  .event-details-wrapper .bar-chart-wrapper .chart-info{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+  }
 
-/* donor details */
-.todays-event .donor-details{
+  .event-details-wrapper .bottom-section{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  .event-details-wrapper .bottom-left, .event-details-wrapper .bottom-right{
     position: relative;
     display:flex;
     flex-direction: column;
@@ -85,7 +103,7 @@
     overflow-x: hidden;
     scroll-behavior: smooth;
     scrollbar-width: none;
-    width:750px;
+    width:800px;
     height: 380px;
     border: 2px solid rgba(255,255,255,.1);
     border-radius: 10px;
@@ -93,7 +111,11 @@
     backdrop-filter: blur(5px);
 }
 
-.todays-event .h1{
+.event-details-wrapper .bottom-right{
+    width:600px;
+}
+
+.bottom-left .h1, .bottom-right .h1{
     width: 100%;
     position: sticky;
     top: 0;
@@ -104,24 +126,24 @@
     color: var(--primary);
 }
 
-.todays-event table{
+.bottom-left table, .bottom-right table{
     margin: 0 20px 20px;
     color: var(--secondary);
   }
   
-  .todays-event table th{
+  .bottom-left table th, .bottom-right table th{
     text-align: start;
     font-size: 18px;
   }
 
   
-  .todays-event table td{
+  .bottom-left table td, .bottom-right table td{
     padding-top: 10px;
     font-size: 17px;
   }
 
 
-  .todays-event table td button{
+  .bottom-left table td button{
     text-decoration: none;
     padding: 2px 20px;
     border: none;
@@ -135,27 +157,27 @@
     color: var(--primary);
   }
   
-  .todays-event table td button:hover{
+  .bottom-left table td button:hover{
     color: var(--secondary);
     backdrop-filter: blur(15px);
     background: transparent;
   }
 
 
-  .todays-event .table-data{
+  .bottom-left .table-data, .bottom-right .table-data{
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
-
-  /* qr code section */
-  .todays-event-wrapper .right-section .qr-wrapper{
-    width: 630px;
-  }
-
-
-  .todays-event .qr-image{
-    border-radius: 10px;
-    width: 630px;
+  .event-details-wrapper .screening-modal{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: transparent;
+    backdrop-filter: blur(5px);
+    z-index: 3;
+    color: var(--secondary)
   }

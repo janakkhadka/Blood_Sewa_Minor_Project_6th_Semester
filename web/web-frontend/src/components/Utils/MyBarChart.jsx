@@ -21,12 +21,12 @@ const defaultBarList = [  //bpkish  ko data ho
       { type: 'O-', pint: 25 }
 ];
 
-const MyBarChart = ({barList}) => {
+const MyBarChart = ({barList, width, height}) => {
   const choosedBarList = barList && barList.length > 0 ? barList : defaultBarList
   return (
     <BarChart
-      width={770}
-      height={300}
+      width={width?width:800}
+      height={height?height:310}
       data={choosedBarList}
     >
       {/* <CartesianGrid strokeDasharray="1 1" /> */}

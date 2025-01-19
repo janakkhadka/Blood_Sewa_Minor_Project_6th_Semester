@@ -8,7 +8,7 @@ import { IoPersonCircle } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 
 //user login vaye paxi homepage maa dekhine navbar ko lagi --kaam garnai baaki xa
-export const HomeNavbarRightLeft = () => {
+export const UserNavbarRightLeft = () => {
     return(
       <div className="navbar-right-left">
           <Link to="/blood-request">Request Blood Now</Link>
@@ -16,7 +16,7 @@ export const HomeNavbarRightLeft = () => {
     )
   }
   
-export const HomeNavbarRightRight = () => {
+export const UserNavbarRightRight = () => {
     const [toggle, setToggle] = useState(false)
     const setToggleChange = () => {
       setToggle(prevToggle => !prevToggle)
@@ -49,7 +49,7 @@ export const HomeNavbarRightRight = () => {
 
 
 //   user dashboard ko lagi  -completed
-export const DashboardNavbarRightLeft = () => {
+export const UserDashboardNavbarRightLeft = () => {
     const [toggle, setToggle] = useState(false)
     const setToggleChange = () => {
       setToggle(prevToggle => !prevToggle)
@@ -88,7 +88,7 @@ export const DashboardNavbarRightLeft = () => {
     )
   }
   
-export const DashboardNavbarRightRight = () => {
+export const UserDashboardNavbarRightRight = () => {
     return (
       <div className="navbar-right-right">
         Welcome, Janak
@@ -104,7 +104,7 @@ export const DashboardNavbarRightRight = () => {
 
 
   //user ko different components haruko lagi
-  export const ComponentNavbarRightLeft = () => {
+  export const UserComponentNavbarRightLeft = () => {
     const [toggle, setToggle] = useState(false)
     const setToggleChange = () => {
       setToggle(prevToggle => !prevToggle)
@@ -143,7 +143,7 @@ export const DashboardNavbarRightRight = () => {
     )
   }
   
-export const ComponentNavbarRightRight = () => {
+export const UserComponentNavbarRightRight = () => {
     return (
       <div className="navbar-right-right">
         Welcome, Janak

@@ -30,13 +30,17 @@ function Events() {
                 <div className="top-section">
                     <div className="top-left-section">
                       <section className='today-event'>
-                        <h1>Today's Event</h1>
+                        <h1>Today Event</h1>
                         <button className="top-left-button" onClick={() => navigate("/todays-event")}>Manage</button>
                       </section>
                       <section className='create-event-wrapper'>
                         <h1>Organize New Event</h1>
                         <button className="top-left-button" onClick={() => navigate("/org-organize-event")}>Create New Event</button>
                       </section>
+                      <div className="collaboration-request-section">
+                        <h2>Collab Request</h2>
+                        <button className="top-left-button" onClick={() => navigate("/collab-request")}>View Requests</button>
+                      </div>
                     </div>
                     
                     <section className='upcoming-events'>
@@ -63,7 +67,7 @@ function Events() {
                                 <td>{format(event.date, "MMMM dd, yyyy")}</td> {/* Format date */}
                                 <td  className='table-data'>{event.title}</td>
                                 <td  className='table-data'>{event.location}</td>
-                                <td><button className="notify-button" onClick={() => navigate("/")}>Detail</button></td>
+                                <td><button className="notify-button" onClick={() => navigate("/event-details")}>Detail</button></td>
                               </tr>
                             ))}
                           </tbody>
@@ -100,7 +104,7 @@ function Events() {
                         <td  className='table-data'>{event.title}</td>
                         <td style={{paddingLeft:"40px"}}>{event.donorNumber}</td>
                         <td  className='table-data'>{event.location}</td>
-                        <td><button className="notify-button" onClick={() => navigate("/")}>Detail</button></td>
+                        <td><button className="notify-button" onClick={() => navigate("/event-details")}>Detail</button></td>
                       </tr>
                     ))}
                   </tbody>

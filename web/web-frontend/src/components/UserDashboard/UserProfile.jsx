@@ -16,10 +16,11 @@ import { CiPhone } from "react-icons/ci";
 import { IoHomeOutline } from "react-icons/io5";
 import { FaLocationDot, FaDiamond } from "react-icons/fa6";
 import { GiChoice } from "react-icons/gi";
+import { MdEvent } from "react-icons/md";
 
 import Medal from '../Utils/Medal'
 import NavigationBar from '../Common/NavigationBar'
-import { ComponentNavbarRightLeft, ComponentNavbarRightRight } from './UserNavbarComponent';
+import { UserComponentNavbarRightLeft, UserComponentNavbarRightRight } from './UserNavbarComponent';
 
 function UserProfile() {
   const donationCount = 130;
@@ -31,8 +32,8 @@ function UserProfile() {
       </div>
       <NavigationBar 
           titleNav = "Blood Sewa" 
-          rightLeftNav = {<ComponentNavbarRightLeft/>}
-          rightRightNav = {<ComponentNavbarRightRight/>} 
+          rightLeftNav = {<UserComponentNavbarRightLeft/>}
+          rightRightNav = {<UserComponentNavbarRightRight/>} 
         />
 
       <div className="user-profile">
@@ -85,7 +86,7 @@ function UserProfile() {
                 <span>Last Donation Date: <span style={{fontWeight:"Bold"}}>December 24, 2024</span></span>
               </div>
               <div className="icon-info-wrapper">
-                <FaLocationDot />
+                <MdEvent />
                 <span>Last Donation Event: <span style={{fontWeight:"Bold"}}>Red Cross Donation Event</span></span>
               </div>
               <div className="icon-info-wrapper">

@@ -1,8 +1,10 @@
-package com.example.donation.moreItems
+package com.example.donation.moreitems
 
 
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -12,17 +14,27 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.donation.BottomNavBar.CustomTopBar
 import com.example.donation.BottomNavBar.TopBarTheme
 import com.example.donation.ui.theme.dRed
+import com.google.mlkit.vision.barcode.common.Barcode
+import com.google.mlkit.vision.codescanner.GmsBarcodeScanner
+import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
+import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun ViewEvents() {
-    val navController = rememberNavController()
+fun ViewEvents(navController : NavHostController) {
+
+    //scanner ko lagi
+    val gmsScannerOptions = configureScannerOption()
+    val instance = getBarcodeScannerInstance(gmsScannerOptions)
+    var value by remember { mutableStateOf("") }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Scaffold(
@@ -35,6 +47,10 @@ fun ViewEvents() {
             floatingActionButton = {
                 FloatingActionButton(
                     onClick = {
+                        initiateScanner(instance){scannedValue ->
+                            value = scannedValue
+
+                        }
                     },
                     backgroundColor = dRed
                 ) {
@@ -47,8 +63,61 @@ fun ViewEvents() {
                 }
             }
         ) {
+            Text(text = value)
 
         }
     }
 }
+
+private fun configureScannerOption(): GmsBarcodeScannerOptions {
+    return GmsBarcodeScannerOptions.Builder()
+        .setBarcodeFormats(
+            Barcode.FORMAT_QR_CODE,
+            Barcode.FORMAT_AZTEC
+        )
+        .build()
+}
+
+@Composable
+private fun getBarcodeScannerInstance(gmsBarcodeScannerOptions: GmsBarcodeScannerOptions): GmsBarcodeScanner {
+    val context = LocalContext.current
+    return GmsBarcodeScanning.getClient(context,gmsBarcodeScannerOptions)
+}
+
+private fun initiateScanner(gmsBarcodeScanner: GmsBarcodeScanner,onScanned : (String) -> Unit) {
+    gmsBarcodeScanner.startScan()
+        .addOnSuccessListener { barcode ->
+            barcode.rawValue?.let { onScanned(it) }
+            when (barcode.valueType) {
+                Barcode.TYPE_URL -> {
+                    Log.d(TAG, "initiateScanner: ${barcode.valueType}")
+                }
+
+                else -> {
+                    Log.d(TAG, "initiateScanner: ${barcode.valueType}")
+                }
+            }
+
+            Log.d(TAG, "initiateScanner: Display value ${barcode.displayValue}")
+            Log.d(TAG, "initiateScanner: Display value ${barcode.format}")
+        }
+        .addOnCanceledListener {
+            // cancell vako bela
+        }
+        .addOnFailureListener { e ->
+            // exception
+        }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ShowEvents(){
+    val navController = rememberNavController()
+    ViewEvents(navController)
+}
+
+
+
+
+
 

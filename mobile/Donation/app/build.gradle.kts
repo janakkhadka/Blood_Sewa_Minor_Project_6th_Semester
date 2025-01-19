@@ -62,6 +62,7 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.places)
     implementation(libs.androidx.espresso.core)
+    implementation(libs.androidx.media3.common.ktx)
 
 
 
@@ -94,9 +95,11 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.datastore.preferences.rxjava2)
     implementation(libs.androidx.datastore.preferences.rxjava3)
+    implementation(libs.androidx.datastore.preferences.v100)
 
 
-
+    // qr scanner ko lagi dependencies
+    implementation(libs.play.services.code.scanner.v1600)
 
 
 
