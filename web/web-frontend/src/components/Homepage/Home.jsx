@@ -20,6 +20,8 @@ import { imageList } from "../Utils/CustomImageSlider/ImageList";
 import { bloodInfoList, bloodTypeList, } from "../Utils/DataList";
 
 function Home() {
+  const value = localStorage.getItem('myData')
+
   const [bloodType, setBloodType] = useState("")
   const [bloodInfo, setBloodInfo] = useState("")
   const handleBloodTypeChange = (option) => {
@@ -42,7 +44,7 @@ function Home() {
       <div className="home-section">
         <div className="home-left-section">
           <section className="left-top">
-            <h1>Welcome to Blood Sewa</h1>
+            <h1>Welcome to Blood Sewa {value}</h1>
             <div className="typing-container">
               Donate Blood, Save Life!
             </div>
