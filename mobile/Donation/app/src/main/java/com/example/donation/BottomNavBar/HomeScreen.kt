@@ -299,7 +299,7 @@ fun HomeScreen(navController : NavHostController ) {
                             }
                             IconWithLabel(Icons.Default.Schedule, "Your Schedules")
                             {
-                                navController.navigate(Screens.Events.route)
+                                navController.navigate(Screens.schedultTime.route)
                             }
                         }
                     }
