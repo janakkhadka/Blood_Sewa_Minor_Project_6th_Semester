@@ -18,8 +18,10 @@ import customStyles from '../LoginRegistration/ReactSelectStyle';
 import CustomSlider from '../Utils/CustomImageSlider/CustomSlider'
 import { imageList } from "../Utils/CustomImageSlider/ImageList";
 import { bloodInfoList, bloodTypeList, } from "../Utils/DataList";
+import LocalStorage from "../Common/LocalStorage";
 
 function Home() {
+  LocalStorage()
   const value = localStorage.getItem('myData')
 
   const [bloodType, setBloodType] = useState("")
@@ -44,7 +46,7 @@ function Home() {
       <div className="home-section">
         <div className="home-left-section">
           <section className="left-top">
-            <h1>Welcome to Blood Sewa {value}</h1>
+            <h1>Welcome to Blood Sewa</h1>
             <div className="typing-container">
               Donate Blood, Save Life!
             </div>
