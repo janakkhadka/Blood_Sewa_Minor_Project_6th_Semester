@@ -365,10 +365,18 @@ class CheckInView(APIView):
 
 class ListEventsView(APIView):
     permission_classes = [permissions.IsAuthenticated]
+
     def get(self, request):
         events = Event.objects.all()
         serializer = EventSerializer(events, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+        # Modify serialized data to conditionally handle 'collabrator_name'
+        serialized_data = serializer.data
+        for event in serialized_data:
+            if not event.get("collabrator_name"):  # If 'collabrator_name' is missing or None
+                event.pop("collabrator_name", None)  # Remove 'collabrator_name'
+
+        return Response(serialized_data, status=status.HTTP_200_OK)
 
 
 
@@ -513,14 +521,17 @@ class BloodInventoryDetail(APIView):
         except BloodInventory.DoesNotExist:
             return Response({"detail": "Blood inventory not found."}, status=status.HTTP_404_NOT_FOUND)
 
-        # Get the current inventory and update only the fields provided in the request
-        current_inventory = inventory.inventory
+        # Ensure the request data is a dictionary
+        new_inventory = request.data
+        if not isinstance(new_inventory, dict):
+            return Response({"detail": "Invalid data format. Expected a dictionary."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Get the new inventory data from the request
-        new_inventory = request.data.get("inventory", {})
-
-        # Merge the current inventory with the new data (preserving existing data)
-        current_inventory.update(new_inventory)
+        # Update the current inventory with the new values
+        current_inventory = inventory.inventory  # Assuming inventory is a JSONField
+        if isinstance(current_inventory, dict):
+            current_inventory.update(new_inventory)  # Update only specified fields
+        else:
+            current_inventory = new_inventory  # If no existing inventory, use new data
 
         # Save the updated inventory
         inventory.inventory = current_inventory
@@ -528,7 +539,8 @@ class BloodInventoryDetail(APIView):
 
         # Serialize and return the updated blood inventory
         serializer = BloodInventorySerializer(inventory)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 
 class BloodInventoryByOrganization(APIView):
@@ -543,6 +555,7 @@ class BloodInventoryByOrganization(APIView):
         # Serialize filtered results
         serializer = BloodInventorySerializer(filterset.qs, many=True)
         return Response(serializer.data)
+
 
 class OrganizationListView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -573,7 +586,20 @@ class BookingCreateView(APIView):
 
         serializers = BookingSerializer(data=data , context = {'request' : request})
         if serializers.is_valid():
-            serializers.save(user=request.user)
+            booking = serializers.save(user=request.user)
+
+            subject = "Booking Confirmation"
+            message = f"Dear {request.user.name}, \n\n Your booking has been successfully created.\n\n Booking Details : \n\n Organization Name : {booking.organization} \n Date : {booking.booking_date} \n\n  Thank You for Chosing Our Service!!!"
+            recipient_email = request.user.email
+
+            send_mail(
+                subject,
+                message,
+                settings.DEFAULT_FROM_EMAIL,  # Sender email
+                [recipient_email],  # Recipient email
+                fail_silently=False,
+            )
+
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
