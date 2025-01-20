@@ -25,18 +25,18 @@
   
   .light-icon {
     left: 8px; /* Adjusted position for smaller button */
-    opacity: 1;
+    opacity: 0;
   }
   
   .dark-icon {
     left: 50%;
     transform: translate(-50%, -50%);
-    opacity: 1;
+    opacity: 0;
   }
   
   .custom-icon {
     right: 8px; /* Adjusted position for smaller button */
-    opacity: 1;
+    opacity: 0;
   }
   
   .slider {
@@ -57,6 +57,7 @@
   
   .toggle-button.light .light-icon {
     opacity: 1;
+    z-index: 2;
   }
   
   .toggle-button.light .slider {
@@ -70,10 +71,11 @@
   
   .toggle-button.dark .dark-icon {
     opacity: 1;
+    z-index: 2;
   }
   
   .toggle-button.dark .slider {
-    transform: translateX(18px); /* Adjusted to fit new width */
+    transform: translateX(18px);
   }
   
   /* Custom theme */
@@ -83,9 +85,10 @@
   
   .toggle-button.custom .custom-icon {
     opacity: 1;
+    z-index: 2;
   }
   
   .toggle-button.custom .slider {
-    transform: translateX(36px); /* Adjusted to fit new width */
+    transform: translateX(36px);
   }
   
