@@ -21,7 +21,6 @@ export default function ToggleTheme() {
 
   return (
     <button onClick={toggleTheme} className={`toggle-button ${theme}`}>
-      <span className="sr-only">Toggle theme</span>
       <span className="icon light-icon">☀️</span>
       <span className="icon dark-icon">🌙</span>
       <span className="icon custom-icon">🎨</span>

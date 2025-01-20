@@ -1,9 +1,9 @@
 .toggle-button {
     position: relative;
-    width: 80px;
-    height: 40px;
+    width: 66px; /* Adjusted width for proportion */
+    height: 30px; /* Updated height */
     background-color: #f0f0f0;
-    border-radius: 20px;
+    border-radius: 15px; /* Half of the height for a perfect oval */
     border: none;
     cursor: pointer;
     transition: background-color 0.3s;
@@ -19,32 +19,32 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 20px;
+    font-size: 16px; /* Reduced font size to match smaller button */
     transition: opacity 0.3s;
   }
   
   .light-icon {
-    left: 10px;
-    opacity: 0;
+    left: 8px; /* Adjusted position for smaller button */
+    opacity: 1;
   }
   
   .dark-icon {
     left: 50%;
     transform: translate(-50%, -50%);
-    opacity: 0;
+    opacity: 1;
   }
   
   .custom-icon {
-    right: 10px;
-    opacity: 0;
+    right: 8px; /* Adjusted position for smaller button */
+    opacity: 1;
   }
   
   .slider {
     position: absolute;
-    top: 5px;
-    left: 5px;
-    width: 30px;
-    height: 30px;
+    top: 3px; /* Centered inside the 30px height */
+    left: 3px; /* Matches top padding */
+    width: 24px; /* Proportional to new height */
+    height: 24px; /* Matches the width for a circle */
     background-color: white;
     border-radius: 50%;
     transition: transform 0.3s;
@@ -73,7 +73,7 @@
   }
   
   .toggle-button.dark .slider {
-    transform: translateX(20px);
+    transform: translateX(18px); /* Adjusted to fit new width */
   }
   
   /* Custom theme */
@@ -86,19 +86,6 @@
   }
   
   .toggle-button.custom .slider {
-    transform: translateX(40px);
+    transform: translateX(36px); /* Adjusted to fit new width */
   }
-  
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
-  }
-  
   
