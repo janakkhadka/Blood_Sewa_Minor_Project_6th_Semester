@@ -15,7 +15,7 @@
     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
   }
   
-  .icon {
+  .icon1 {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -34,7 +34,7 @@
     opacity: 0;
   }
   
-  .custom-icon {
+  .bloody-icon {
     right: 8px; /* Adjusted position for smaller button */
     opacity: 0;
   }
@@ -78,17 +78,17 @@
     transform: translateX(18px);
   }
   
-  /* Custom theme */
-  .toggle-button.custom {
+  /* Bloody theme */
+  .toggle-button.bloody {
     background-color: #9c27b0;
   }
   
-  .toggle-button.custom .custom-icon {
+  .toggle-button.bloody .bloody-icon {
     opacity: 1;
     z-index: 2;
   }
   
-  .toggle-button.custom .slider {
+  .toggle-button.bloody .slider {
     transform: translateX(35px);
   }
   

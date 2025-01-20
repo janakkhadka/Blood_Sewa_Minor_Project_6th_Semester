@@ -14,8 +14,10 @@
 
 /* Custom Theme (example) */
 [data-theme="bloody"] {
-  --background-color: #ffefd5;
-  --text-color: rgb(160, 25, 25);
+  --background-color: rgb(160, 25, 25);
+  --text-color: #d5c9c9;
+  --shadow-color: rgba(119, 81, 81, 0.6);
+  --border-color: rgba(255,255,255,.1);
 }
 
 
@@ -26,4 +28,5 @@
 }
 body {
   font-family: "Poppins", sans-serif;
+  transition: background-color 0.3s, color 0.3s;
 }
