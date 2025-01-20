@@ -22,7 +22,7 @@ from .models import User, BloodRequestModel , Event , UserEvent , BloodInventory
 import os
 from datetime import date , timedelta
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
-from .serializers import (UserSerializer, LoginSerializer, UserProfileUpdateSerializer, BloodRequestSerializer , LimitedUserSerializer , EventSerializer , UserEventSerializer , OrganizationSerializer , BloodInventorySerializer , BookingSerializer , OrganizationBookingSerializer , UserEventCreateSerializer)
+from .serializers import (UserSerializer, LoginSerializer, UserProfileUpdateSerializer, BloodRequestSerializer , LimitedUserSerializer , EventSerializer, MyEventSerializer , UserEventSerializer , OrganizationSerializer , BloodInventorySerializer , BookingSerializer , OrganizationBookingSerializer , UserEventCreateSerializer)
 
 
 class RegisterUserView(APIView):
@@ -340,6 +340,7 @@ class CheckInView(APIView):
     def post(self, request, slug):
         try:
             event = Event.objects.get(slug=slug)
+            print(event.slug, event.attendee_count)
             user_event = UserEvent.objects.filter(user=request.user, event=event).first()
             if not user_event:
                 return Response({"error": "Not registered for this event."}, status=status.HTTP_400_BAD_REQUEST)
@@ -354,7 +355,7 @@ class CheckInView(APIView):
 
             user_event.checked_in = True
             user_event.save()
-            event.attendee_count += 1
+            event.attendee_count = event.attendee_count + 1
             event.save()
             return Response({"message": "Check-in successful."}, status=status.HTTP_200_OK)
 
@@ -397,6 +398,16 @@ class UserJoinedEventHistoryView(APIView):
             for ue in user_events
         ]
         return Response(data, status=status.HTTP_200_OK)
+
+
+class MyeventInfo(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        my_events = Event.objects.filter(organizer=request.user)
+        serializers = MyEventSerializer(my_events, many=True)
+        return Response(serializers.data , status=status.HTTP_200_OK)
+
 
 
 

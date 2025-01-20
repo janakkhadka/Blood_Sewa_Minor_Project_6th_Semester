@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import ( RegisterUserView, UserLoginView, UserProfileUpdateView, BloodRequestListView, BloodRequestCreateView , FilterUserBloodGroup , LogoutView , UserListView , CreateEventView , JoinEventView ,CheckInView , ListEventsView , ActivateAccountView , UserJoinedEventHistoryView , qr_code_view , PasswordResetRequestView , PasswordResetConfirmView , OrganizationLoginView , RegisterOrganizationView , BloodInventoryDetail ,BloodInventoryByOrganization , OrganizationListView , BookingCreateView,MyBookings , OrganizationBookings , UserEventCreateView)
+from .views import ( RegisterUserView, UserLoginView, UserProfileUpdateView, BloodRequestListView, BloodRequestCreateView , FilterUserBloodGroup , LogoutView , UserListView , CreateEventView , JoinEventView ,CheckInView , ListEventsView , ActivateAccountView , UserJoinedEventHistoryView , qr_code_view , PasswordResetRequestView , PasswordResetConfirmView , OrganizationLoginView , RegisterOrganizationView , BloodInventoryDetail ,BloodInventoryByOrganization , OrganizationListView , BookingCreateView,MyBookings , OrganizationBookings , UserEventCreateView , MyeventInfo)
 
 urlpatterns = [
     path('user/register/', RegisterUserView.as_view(), name='register_user'),    #user registration ko lagi
@@ -19,6 +19,7 @@ urlpatterns = [
     path('user/event/create/' , UserEventCreateView.as_view() , name='user-event-create'), #api to create event for user
     path("org/event/create/", CreateEventView.as_view(), name="create_event"),    #event create garna ko lagi (organization)
     path("events/<slug:slug>/join/", JoinEventView.as_view(), name="join_event"),   #event join garna ko lagi
+    path("my/event/info/",MyeventInfo.as_view(), name="my-event-info"),
     path("events/<slug:slug>/checkin/", CheckInView.as_view(), name="checkin_event"),  #event checkin garna ko lagi
     path("events/" , ListEventsView.as_view(), name="event-lists"),   # existing event haru listout garna ko lagi
     path('my-events-history/', UserJoinedEventHistoryView.as_view(), name="history"),  #aafnu event history haru check garna ko lagi 

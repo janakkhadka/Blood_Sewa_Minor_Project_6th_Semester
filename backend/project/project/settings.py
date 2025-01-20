@@ -146,39 +146,11 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
-CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:8000",  # Django server URL
-    "http://10.0.2.2:8000",   # Emulator accessing Django server
-]
 CORS_ALLOW_ALL_ORIGIN = True
 
-CORS_ALLOWED_ORIGINS =[
-    "https://127.0.0.1:8000",
-    "http://10.0.2.2:8000",
-    "http://172.16.7.144:8000",
-    "http://192.16.7.144:8000",
-    "http://192.168.1.69:8000",
-    "http://172.16.12.204:8000",
-    "http://192.168.210.100:8000",
-    "http://192.168.18.46:8000",
-    "http://192.168.149.100:8000",
-    "http://192.168.170.100:8000"
+#CORS_ALLOWED_ORIGINS =['*']
 
-]
-
-ALLOWED_HOSTS = [
-    '127.0.0.1',
-    '0.0.0.0',
-    '172.16.7.144',
-    '192.168.18.46',
-    'localhost',
-    '192.168.1.69',
-    '172.16.12.204',
-    '192.168.210.100',
-    '192.168.18.46',
-    '192.168.149.100',
-    '192.168.170.100'
-]
+ALLOWED_HOSTS = ['*']
 
 
 
