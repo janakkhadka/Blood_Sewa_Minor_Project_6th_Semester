@@ -1,0 +1,104 @@
+.toggle-button {
+    position: relative;
+    width: 80px;
+    height: 40px;
+    background-color: #f0f0f0;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    overflow: hidden;
+  }
+  
+  .toggle-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  .icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    transition: opacity 0.3s;
+  }
+  
+  .light-icon {
+    left: 10px;
+    opacity: 0;
+  }
+  
+  .dark-icon {
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+  }
+  
+  .custom-icon {
+    right: 10px;
+    opacity: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+  }
+  
+  /* Light theme */
+  .toggle-button.light {
+    background-color: #f0f0f0;
+  }
+  
+  .toggle-button.light .light-icon {
+    opacity: 1;
+  }
+  
+  .toggle-button.light .slider {
+    transform: translateX(0);
+  }
+  
+  /* Dark theme */
+  .toggle-button.dark {
+    background-color: #333;
+  }
+  
+  .toggle-button.dark .dark-icon {
+    opacity: 1;
+  }
+  
+  .toggle-button.dark .slider {
+    transform: translateX(20px);
+  }
+  
+  /* Custom theme */
+  .toggle-button.custom {
+    background-color: #9c27b0;
+  }
+  
+  .toggle-button.custom .custom-icon {
+    opacity: 1;
+  }
+  
+  .toggle-button.custom .slider {
+    transform: translateX(40px);
+  }
+  
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+  
+  
