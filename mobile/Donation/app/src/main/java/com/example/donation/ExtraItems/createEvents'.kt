@@ -1,4 +1,4 @@
-package com.example.donation.moreitems
+package com.example.donation.ExtraItems
 
 import android.icu.util.Calendar
 import androidx.compose.foundation.background
@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.donation.BottomNavBar.CustomTopBar
 import com.example.donation.BottomNavBar.TopBarTheme
@@ -38,10 +39,8 @@ import com.example.donation.ui.theme.RedThemeTop
 import com.example.donation.ui.theme.dRed
 
 
-@Preview(showBackground = true)
 @Composable
-fun CreateEvents(){
-    val navController = rememberNavController()
+fun CreateEvents(navController : NavHostController){
     var eventName by remember { mutableStateOf("") }
     var eventTime by remember { mutableStateOf("") }
     var startTime by remember { mutableStateOf("") }

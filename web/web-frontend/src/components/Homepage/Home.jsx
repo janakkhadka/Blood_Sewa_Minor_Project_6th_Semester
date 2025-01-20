@@ -18,8 +18,12 @@ import customStyles from '../LoginRegistration/ReactSelectStyle';
 import CustomSlider from '../Utils/CustomImageSlider/CustomSlider'
 import { imageList } from "../Utils/CustomImageSlider/ImageList";
 import { bloodInfoList, bloodTypeList, } from "../Utils/DataList";
+import LocalStorage from "../Common/LocalStorage";
 
 function Home() {
+  LocalStorage()
+  const value = localStorage.getItem('myData')
+
   const [bloodType, setBloodType] = useState("")
   const [bloodInfo, setBloodInfo] = useState("")
   const handleBloodTypeChange = (option) => {

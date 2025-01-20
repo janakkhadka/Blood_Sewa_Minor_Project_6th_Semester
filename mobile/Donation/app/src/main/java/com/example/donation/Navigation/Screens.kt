@@ -15,4 +15,6 @@ sealed class Screens(val route : String) {
     object SearchDonors : Screens(route = "SearchDonors")
     object ShowCamera : Screens(route = "Showcamera")
     object ViewEvents : Screens(route = "ViewEvents")
+    object createEvents : Screens(route = "create events")
+    object schedultTime : Screens(route = "Schedule time")
 }

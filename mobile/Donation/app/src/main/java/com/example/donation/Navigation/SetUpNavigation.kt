@@ -15,6 +15,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.donation.BottomNavBar.BottomNavBar
+import com.example.donation.ExtraItems.CreateEvents
 import com.example.donation.MoreItems.BloodBanks
 import com.example.donation.MoreItems.BloodRequestsScreen
 import com.example.donation.MoreItems.Events
@@ -26,6 +27,7 @@ import com.example.donation.Verification.Login
 import com.example.donation.Verification.OtpVerification
 import com.example.donation.Verification.SignUp
 import com.example.donation.datastore.DataStoreManager
+import com.example.donation.moreitems.ScheduleTime
 import com.example.donation.moreitems.ViewEvents
 
 
@@ -90,6 +92,15 @@ fun SetUpNavigation(navController : NavHostController) {
             composable(route = Screens.ViewEvents.route) {
                 ViewEvents(navController)
             }
+
+            composable(route = Screens.createEvents.route) {
+                CreateEvents(navController)
+            }
+
+            composable(Screens.schedultTime.route) {
+                ScheduleTime(navController)
+            }
+
 
 
         }
