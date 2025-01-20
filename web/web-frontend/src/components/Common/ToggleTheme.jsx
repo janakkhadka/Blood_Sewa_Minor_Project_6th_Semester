@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import "./ToggleTheme.css";
 
 export default function ToggleTheme() {
-  const [theme, setTheme] = useState("light"); // Initial state set to "light"
+  const [theme, setTheme] = useState("light");
+  localStorage.setItem('theme', theme);
+  console.log(localStorage.getItem('theme'));
 
   const toggleTheme = () => {
     setTheme((currentTheme) => {

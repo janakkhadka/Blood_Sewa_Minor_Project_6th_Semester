@@ -25,5 +25,4 @@ const NavigationBar = ({ titleNav, rightLeftNav, rightRightNav }) => {
 
 export default NavigationBar;
 
-// yo chai theme toggle ko lagi ho
 
