@@ -36,13 +36,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 
-class UserDataSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = [  'name', 'phone_number', 'blood_group', 'district', 'province', 'DOB' , 'gender']
-
-
-
 
 
 

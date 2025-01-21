@@ -22,7 +22,7 @@ from .models import User, BloodRequestModel , Event , UserEvent , BloodInventory
 import os
 from datetime import date , timedelta
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
-from .serializers import (UserSerializer, UserDataSerializer,LoginSerializer, UserProfileUpdateSerializer, BloodRequestSerializer , LimitedUserSerializer , EventSerializer, MyEventSerializer , UserEventSerializer , OrganizationSerializer , BloodInventorySerializer , BookingSerializer , OrganizationBookingSerializer , UserEventCreateSerializer)
+from .serializers import (UserSerializer,LoginSerializer, UserProfileUpdateSerializer, BloodRequestSerializer , LimitedUserSerializer , EventSerializer, MyEventSerializer , UserEventSerializer , OrganizationSerializer , BloodInventorySerializer , BookingSerializer , OrganizationBookingSerializer , UserEventCreateSerializer)
 
 
 class RegisterUserView(APIView):

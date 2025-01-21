@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "rest_framework",
     'corsheaders',
     'rest_framework_simplejwt.token_blacklist',
+    "channels",
 ]
 
 # MIDDLEWARE = [
@@ -166,3 +167,18 @@ DEFAULT_FROM_EMAIL = 'noreply@yourdomain.com'
 import os
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+
+
+ASGI_APPLICATION = 'project.asgi.application'
+
+# Redis Channel Layer
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)],  # Adjust if Redis is hosted elsewhere
+        },
+    },
+}
