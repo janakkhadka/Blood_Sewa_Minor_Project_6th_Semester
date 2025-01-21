@@ -1,88 +1,83 @@
-:root{
-    --secondary: #d5c9c9;
-    --primary: rgb(160, 25, 25);
-  }
-
-.blood-availability-wrapper{
-    width:100vw;
+.blood-availability-wrapper {
+    width: 100vw;
     height: 100vh;
     position: relative;
-    background-image: url('/background3.jpg');
+    background:var(--primary-background);
     background-size: cover;
     background-position: center;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow-x: hidden;
-    scrollbar-width: none; 
-    -ms-overflow-style: none; 
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
-.blood-availability-wrapper .syringe{
+
+.blood-availability-wrapper .syringe {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1; 
+    z-index: 1;
 }
 
-
-.blood-availability-wrapper .blood-availability{
+.blood-availability-wrapper .blood-availability {
     position: absolute;
-    z-index: 2; 
+    z-index: 2;
     width: 900px;
     height: 620px;
     border-radius: 20px;
-    box-shadow: 0 0 40px rgba(77, 5, 2,1);
+    box-shadow: var(--shadow);
     background: transparent;
-    box-shadow: 0px 0px 50px rgba(119, 81, 81, 0.6);
-    backdrop-filter: blur(5px);
+    backdrop-filter: var(--backdrop-filter);
     margin-top: 85px;
     margin-bottom: 30px;
-    padding: 10px 40px 10px 40px; 
+    padding: 10px 40px 10px 40px;
 }
-.blood-availability .bar-chart{
+
+.blood-availability .bar-chart {
     width: 100%;
     height: 360px;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: transparent;
-    border: 1px solid rgba(255,255,255,.1);
+    border: 1px solid var(--border-color);
     border-radius: 20px;
-    /* box-shadow: 0px 0px 10px rgba(119, 81, 81, 0.6); */
-    backdrop-filter: blur(5px);
-    padding-top:30px;
+    backdrop-filter: var(--backdrop-filter);
+    padding-top: 30px;
     padding-bottom: 20px;
-    padding-right:40px;
-    color: var(--secondary) !important;
+    padding-right: 40px;
+    color: var(--secondary-text-color) !important;
 }
 
-.blood-availability h1{
+.blood-availability h1 {
     margin-bottom: 7px;
+    color: var(--text-color);
 }
 
-.blood-availability span{
-    color: var(--secondary); 
+.blood-availability span {
+    color: var(--text-color);
 }
 
-.blood-availability .input-box{
+.blood-availability .input-box {
     position: relative;
     width: 100%;
     height: 30px;
     margin: 30px 0;
-    color:var(--text);
+    color: var(--text-color);
 }
 
-.blood-availability .drop-down-box{
+.blood-availability .drop-down-box {
     position: relative;
     height: 30px;
     width: 100%;
     margin: 30px 0;
-    color:var(--text);
+    color: var(--text-color);
 }
 
-.blood-availability .drop-down-box .icon{
+.blood-availability .drop-down-box .icon {
     position: absolute;
     right: 20px;
     top: 50%;
@@ -91,7 +86,7 @@
     pointer-events: none;
 }
 
-.blood-availability .input-box .icon{
+.blood-availability .input-box .icon {
     position: absolute;
     right: 20px;
     top: 50%;
@@ -99,22 +94,21 @@
     font-size: 16px;
 }
 
-
-.blood-availability .blood-availability-submit-button{
+.blood-availability .blood-availability-submit-button {
     display: flex;
     align-items: center;
     justify-content: center;
     padding-top: 40px;
 }
 
-.blood-availability button{
+.blood-availability button {
     width: 50%;
     height: 45px;
-    background: #fff;
+    background: var(--button-background);
     border: none;
     outline: none;
     border-radius: 40px;
-    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    box-shadow: var(--button-shadow);
     cursor: pointer;
     font-size: 16px;
     font-weight: 700;
