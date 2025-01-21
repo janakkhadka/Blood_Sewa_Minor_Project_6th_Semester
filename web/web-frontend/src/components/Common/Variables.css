@@ -1,0 +1,26 @@
+button{
+    color: var(--button-text-color);
+    background: var(--button-background-color);
+    box-shadow: var(--shadow);
+}
+input{
+    color: var(--text-color);
+    background: transparent;
+    border: 1px solid var(--border-color);
+    accent-color: var(--text-color);
+}
+
+input::placeholder{
+    color: var(--text-color);
+}
+
+
+span{
+    color: var(--text-color);
+}
+table ul li{
+    color: var(--text-color);
+}
+.icon{
+    color: var(--text-color);
+}

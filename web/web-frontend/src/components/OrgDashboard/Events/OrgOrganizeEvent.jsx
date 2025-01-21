@@ -1,6 +1,7 @@
 import React,{useState} from 'react'
 
 import './OrgOrganizeEvent.css'
+import '../../Common/Variables.css'
 
 import Select from 'react-select';
 import customStyles from '../../LoginRegistration/ReactSelectStyle';

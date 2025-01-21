@@ -17,12 +17,12 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
-from .utils import UserFilter , DistrictFilter , OrganizationFilter
+from .utils import UserFilter , DistrictFilter , OrganizationFilter , is_date_in_past
 from .models import User, BloodRequestModel , Event , UserEvent , BloodInventory , Bookings
 import os
 from datetime import date , timedelta
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
-from .serializers import (UserSerializer, LoginSerializer, UserProfileUpdateSerializer, BloodRequestSerializer , LimitedUserSerializer , EventSerializer, MyEventSerializer , UserEventSerializer , OrganizationSerializer , BloodInventorySerializer , BookingSerializer , OrganizationBookingSerializer , UserEventCreateSerializer)
+from .serializers import (UserSerializer,LoginSerializer, UserProfileUpdateSerializer, BloodRequestSerializer , LimitedUserSerializer , EventSerializer, MyEventSerializer , UserEventSerializer , OrganizationSerializer , BloodInventorySerializer , BookingSerializer , OrganizationBookingSerializer , UserEventCreateSerializer)
 
 
 class RegisterUserView(APIView):
@@ -152,6 +152,15 @@ class UserLoginView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+
+class GetUserDetails(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get(self, request):
+        users = User.objects.filter(user_type='user')
+        serializer = LimitedUserSerializer(users , many=True)
+        return Response(serializer.data)
 
 
 
@@ -587,6 +596,13 @@ class BookingCreateView(APIView):
 
         data = request.data
         data['user'] = request.user
+
+        booking_date = data.get('booking_date')
+
+        if booking_date and is_date_in_past(date.fromisoformat(booking_date)):
+            return Response({"detail": "Booking date cannot be in the past."}, status=status.HTTP_400_BAD_REQUEST)
+
+
         today = date.today()
         three_months_ago = today - timedelta(days=90)
         if Bookings.objects.filter(user=data['user'], booking_date__gte=three_months_ago).exists():

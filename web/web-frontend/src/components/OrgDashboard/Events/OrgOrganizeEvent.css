@@ -1,8 +1,8 @@
-.org-organize-event-wrapper{
-    width:100vw;
+.org-organize-event-wrapper {
+    width: 100vw;
     height: 100vh;
     position: relative;
-    background-image: url('/background3.jpg');
+    background: var(--primary-background);
     background-size: cover;
     background-position: center;
     display: flex;
@@ -12,7 +12,8 @@
     scrollbar-width: none; 
     -ms-overflow-style: none; 
 }
-.org-organize-event-wrapper .syringe{
+
+.org-organize-event-wrapper .syringe {
     position: absolute;
     top: 0;
     left: 0;
@@ -21,46 +22,49 @@
     z-index: 1; 
 }
 
-.org-organize-event-wrapper .org-organize-event{
+.org-organize-event-wrapper .org-organize-event {
     position: relative;
     z-index: 2; 
     width: 850px;
     height: 600px;
     border-radius: 20px;
-    box-shadow: 0 0 40px rgba(77, 5, 2,1);
     background: transparent;
-    box-shadow: 0px 0px 50px rgba(119, 81, 81, 0.6);
-    backdrop-filter: blur(5px);
+    box-shadow: var(--shadow);
+    backdrop-filter: var(--backdrop-filter);
     margin-top: 85px;
     margin-bottom: 30px;
     padding: 20px 40px 0px 40px; 
 }
 
-.org-organize-event h1{
+.org-organize-event h1 {
     margin-bottom: 15px;
+    color: var(--text-color);
 }
 
-.org-organize-event span{
-    color: var(--secondary); 
+.org-organize-event span {
+    color: var(--text-color); 
 }
 
-.org-organize-event .input-box{
+.org-organize-event .input-box {
     position: relative;
     width: 100%;
     height: 30px;
     margin: 25px 0;
-    color:var(--text);
+    color: var(--text-color);
+}
+.org-organize-event .input-box input::placeholder{
+    color: var(--text-color)
 }
 
-.org-organize-event .drop-down-box{
+.org-organize-event .drop-down-box {
     position: relative;
     height: 30px;
     width: 100%;
     margin: 30px 0;
-    color:var(--text);
+    color: var(--text-color);
 }
 
-.org-organize-event .drop-down-box .icon{
+.org-organize-event .drop-down-box .icon {
     position: absolute;
     right: 20px;
     top: 50%;
@@ -69,7 +73,7 @@
     pointer-events: none;
 }
 
-.org-organize-event .input-box .icon{
+.org-organize-event .input-box .icon {
     position: absolute;
     right: 20px;
     top: 50%;
@@ -77,30 +81,30 @@
     font-size: 16px;
 }
 
-.org-organize-event .date-box{
+.org-organize-event .date-box {
     position: relative;
     display: flex;
     align-items: center;
     width: 100%;
-    color:var(--text);
+    color: var(--text-color);
 }
 
-.org-organize-event .date-box .date-label{
+.org-organize-event .date-box .date-label {
     width: 120px;
 }
 
-.org-organize-event .date-box .date-picker{
+.org-organize-event .date-box .date-picker {
     width: 100%;
     background: transparent;
-    color:var(--text);
-    border: 1px solid rgba(255,255,255,.1);
-    /* border: 1px solid var(--text); */
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
     outline: none;
     border-radius: 40px;
     font-size: 16px;
     padding: 6px 0px 6px 20px;
 }
-.org-organize-event .date-box .icon{
+
+.org-organize-event .date-box .icon {
     position: absolute;
     right: 20px;
     top: 50%;
@@ -109,39 +113,40 @@
     pointer-events: none;
 }
 
-/* time-picker */
+/* Time Picker */
 
-.org-organize-event .time-box{
+.org-organize-event .time-box {
     position: relative;
     display: flex;
     align-items: center;
     width: 100%;
-    color:var(--text);
+    color: var(--text-color);
     height: 30px;
     margin-bottom: 30px;
     margin-top: 25px;
 }
 
-.org-organize-event .time-box .time-label{
+.org-organize-event .time-box .time-label {
     width: 110px;
 }
 
-.org-organize-event .time-box .time-picker{
+.org-organize-event .time-box .time-picker {
     width: 100%;
     background: transparent;
-    color:var(--text);
-    border: 1px solid rgba(255,255,255,.1);
-    /* border: 1px solid var(--text); */
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
     outline: none;
     border-radius: 40px;
     font-size: 16px;
     padding: 10px 0px 10px 20px;
 }
-.time-box input[type="time"]{
-    color: var(--secondary);
-    accent-color: var(--secondary);
+
+.time-box input[type="time"] {
+    color: var(--text-color);
+    accent-color: var(--text-color);
 }
-.org-organize-event .time-box .icon{
+
+.org-organize-event .time-box .icon {
     position: absolute;
     right: 20px;
     top: 50%;
@@ -150,52 +155,52 @@
     pointer-events: none;
 }
 
-.org-organize-event .volunteer-wrapper{
+.org-organize-event .volunteer-wrapper {
     display: flex;
     flex-direction: row;
     gap: 20px;
     align-items: center;
 }
 
-.org-organize-event .volunteer{
+.org-organize-event .volunteer {
     margin-top: 20px;
-    color: var(--secondary);
+    color: var(--text-color);
     width: 450px;
 }
 
-.org-organize-event .volunteer input{
-    accent-color: black;
+.org-organize-event .volunteer input {
+    accent-color: var(--button-background-color);
     margin: 0 5px; 
- }
+}
  
- .org-organize-event .volunteer .yes{
-     margin-right: 10px
- }
+.org-organize-event .volunteer .yes {
+    margin-right: 10px;
+}
 
- .volunteer-wrapper .input-box{
+.volunteer-wrapper .input-box {
     width: 100%;
     margin: 0px;
- }
- 
+    
+}
 
-
-.org-organize-event .org-organize-event-submit-button{
+.org-organize-event .org-organize-event-submit-button {
     display: flex;
     align-items: center;
     justify-content: center;
     padding-top: 40px;
 }
 
-.org-organize-event button{
+.org-organize-event button {
     width: 40%;
     height: 45px;
-    background: #fff;
+    background: var(--button-background-color);
     border: none;
     outline: none;
     border-radius: 40px;
-    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    box-shadow: var(--button-shadow);
     cursor: pointer;
     font-size: 16px;
     font-weight: 700;
+    color: var(--button-text-color);
     margin: auto;
 }

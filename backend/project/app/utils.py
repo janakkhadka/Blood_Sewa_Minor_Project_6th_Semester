@@ -2,6 +2,7 @@ import re
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 import django_filters
+from datetime import date
 from .models import User , BloodInventory
 
 
@@ -73,3 +74,10 @@ class OrganizationFilter(django_filters.FilterSet):
     class Meta:
         model = BloodInventory
         fields = ['organization']
+
+
+
+def is_date_in_past(booking_date):
+    if booking_date < date.today():
+        return True
+    return False

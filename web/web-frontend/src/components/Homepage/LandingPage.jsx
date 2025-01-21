@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 import './LandingPage.css'
+import '../Common/Variables.css'
 
 import Home from './Home'
 import NavigationBar from '../Common/NavigationBar'

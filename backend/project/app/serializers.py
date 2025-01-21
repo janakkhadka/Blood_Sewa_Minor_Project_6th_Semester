@@ -36,6 +36,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 
+
+
+
 class OrganizationSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -125,9 +128,17 @@ class BloodRequestSerializer(serializers.ModelSerializer):
 
 
 class LimitedUserSerializer(serializers.ModelSerializer):
+    age = serializers.SerializerMethodField()
     class Meta:
         model = User
-        fields = ['name', 'phone_number', 'blood_group']
+        fields = ['name', 'phone_number', 'blood_group' , 'district' , 'province' , 'age']
+
+    def get_age(self,obj):
+        today = date.today()
+        if obj.DOB:
+            return today.year - obj.DOB.year - ((today.month, today.day) < (obj.DOB.month, obj.DOB.day))
+        return None
+
 
 
 #Event Creation serializer For User
