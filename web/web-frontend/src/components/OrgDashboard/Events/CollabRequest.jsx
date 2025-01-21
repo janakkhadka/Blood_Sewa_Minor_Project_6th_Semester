@@ -1,6 +1,6 @@
 import React from 'react'
 
-import './CollabRequest.css'
+
 import {events, pastEvents} from '../../UserDashboard/DummyData'
 import { format } from "date-fns";
 
@@ -9,6 +9,7 @@ import { TiTick, TiTimes } from "react-icons/ti";
 import NavigationBar from '../../Common/NavigationBar'
 import { OrgComponentNavbarRightLeft, OrgDashboardNavbarRightRight } from '../OrgNavbarComponent'
 import BackThreeD from '../../LoginRegistration/3d'
+
 
 function CollabRequest() {
   return (
@@ -70,3 +71,5 @@ function CollabRequest() {
 }
 
 export default CollabRequest
+
+import './CollabRequest.css'

@@ -210,7 +210,7 @@ fun SignUp(navController : NavHostController) {
     val genders = listOf(
         "male",
         "female",
-        "Others"
+        "others"
     )
 
 

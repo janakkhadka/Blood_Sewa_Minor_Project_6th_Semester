@@ -27,9 +27,15 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -68,30 +74,133 @@ data class DonorsList(
 
 
 @Composable
-fun SearchDonors(navController : NavHostController,viewModel: RegViewModel = viewModel()) {
+fun SearchDonors(navController : NavHostController) {
     val scrollState = rememberScrollState()
     var selectedBloodType by remember { mutableStateOf("") }
-    val donorsList by viewModel.donors.collectAsState()
+    var expanded by remember { mutableStateOf(false) }
+    var province by remember { mutableStateOf("") }
+    var Districtexpanded by remember { mutableStateOf(false) }
+    var district by remember { mutableStateOf("") }
+    var result by remember { mutableStateOf("") }
+    var currentDistricts by remember { mutableStateOf(listOf<String>()) }
 
     //dummy data values
     val donorDatas = listOf(
-        DonorsList("A+","Kiran Acharya","9865445343","Kalikot","Karnali","23"),
-        DonorsList("AB+","Kishor Acharya","9823366044","Kathmandu","Bagmati","22"),
-        DonorsList("O+","Janak Khadka","9847984933","kailali","Sudhurpaschim","33"),
-        DonorsList("AB-","Bishal Parajuli","999999999","Kavre","Bagmati","22"),
-        DonorsList("A+","Neymar junior","9090909090","Kapilvastu","Lumbini","19")
+        DonorsList("A+", "Kiran Acharya", "9865445343", "Kalikot", "Karnali", "23"),
+        DonorsList("AB+", "Kishor Acharya", "9823366044", "Kathmandu", "Bagmati", "22"),
+        DonorsList("O+", "Janak Khadka", "9847984933", "kailali", "Sudhurpaschim", "33"),
+        DonorsList("AB-", "Bishal Parajuli", "999999999", "Kavre", "Bagmati", "22"),
+        DonorsList("A+", "Neymar junior", "9090909090", "Kapilvastu", "Lumbini", "19")
 
     )
 
-    if (donorsList.isEmpty()) {
-        CircularProgressIndicator(modifier = Modifier.fillMaxSize().wrapContentSize())
+    //district rw province
+    val nepalProvinces = listOf(
+        "Province No. 1",
+        "Madhesh Province",
+        "Bagmati Province",
+        "Gandaki Province",
+        "Lumbini Province",
+        "Karnali Province",
+        "Sudurpashchim Province"
+    )
 
-    } else {
-        //filter apply gareko yesma
+    val province1Districts = listOf(
+        "Bhojpur",
+        "Dhankuta",
+        "Ilam",
+        "Jhapa",
+        "Khotang",
+        "Morang",
+        "Okhaldhunga",
+        "Panchthar",
+        "Sankhuwasabha",
+        "Solukhumbu",
+        "Sunsari",
+        "Taplejung",
+        "Terhathum",
+        "Udayapur"
+    )
+    val madheshProvinceDistricts = listOf(
+        "Bara",
+        "Dhanusha",
+        "Mahottari",
+        "Parsa",
+        "Rautahat",
+        "Saptari",
+        "Sarlahi",
+        "Siraha"
+    )
+    val bagmatiProvinceDistricts = listOf(
+        "Bhaktapur",
+        "Chitwan",
+        "Dhading",
+        "Dolakha",
+        "Kathmandu",
+        "Kavrepalanchok",
+        "Lalitpur",
+        "Makawanpur",
+        "Nuwakot",
+        "Ramechhap",
+        "Rasuwa",
+        "Sindhuli",
+        "Sindhupalchok"
+    )
+    val gandakiProvinceDistricts = listOf(
+        "Baglung",
+        "Gorkha",
+        "Kaski",
+        "Lamjung",
+        "Manang",
+        "Mustang",
+        "Myagdi",
+        "Nawalpur",
+        "Parbat",
+        "Syangja",
+        "Tanahun"
+    )
+    val lumbiniProvinceDistricts = listOf(
+        "Arghakhanchi",
+        "Banke",
+        "Bardiya",
+        "Dang",
+        "Gulmi",
+        "Kapilvastu",
+        "Parasi (Nawalparasi West)",
+        "Palpa",
+        "Pyuthan",
+        "Rolpa",
+        "Rukum (East)",
+        "Rupandehi"
+    )
+    val karnaliProvinceDistricts = listOf(
+        "Dailekh",
+        "Dolpa",
+        "Humla",
+        "Jajarkot",
+        "Jumla",
+        "Kalikot",
+        "Mugu",
+        "Rukum (West)",
+        "Salyan",
+        "Surkhet"
+    )
+    val sudurpashchimProvinceDistricts = listOf(
+        "Achham",
+        "Baitadi",
+        "Bajhang",
+        "Bajura",
+        "Dadeldhura",
+        "Darchula",
+        "Doti",
+        "Kailali",
+        "Kanchanpur"
+    )
+
         val filterData = if (selectedBloodType.isEmpty()) {
-            donorsList
+            donorDatas
         } else {
-            donorsList.filter { it.blood_group == selectedBloodType }
+            donorDatas.filter { it.blood_group == selectedBloodType }
         }
 
         Column(
@@ -122,26 +231,133 @@ fun SearchDonors(navController : NavHostController,viewModel: RegViewModel = vie
                     )
                 }
 
+
+
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+
+            ){
+
+                Box(
+                    modifier = Modifier.fillMaxWidth(.9f),
+                ) {
+
+                    OutlinedTextField(
+                        value = province,
+                        onValueChange = { },
+                        readOnly = true,
+                        label = { Text("Select Province") },
+                        trailingIcon = {
+                            Icon(
+                                imageVector = if (expanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
+                                contentDescription = if (expanded) "Collapse Dropdown" else "Expand Dropdown",
+                                modifier = Modifier.clickable { expanded = !expanded }
+                            )
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 20.dp)
+                    )
+                    Box(
+                        modifier = Modifier
+                            .matchParentSize()
+                            .clickable { expanded = true }
+                    )
+                }
+
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    nepalProvinces.forEach { option ->
+                        DropdownMenuItem(
+                            text = { Text(text = option) },
+                            onClick = {
+                                province = option
+                                expanded = false
+
+                                currentDistricts = when (province) {
+                                    "Province No. 1" -> province1Districts
+                                    "Madhesh Province" -> madheshProvinceDistricts
+                                    "Bagmati Province" -> bagmatiProvinceDistricts
+                                    "Gandaki Province" -> gandakiProvinceDistricts
+                                    "Lumbini Province" -> lumbiniProvinceDistricts
+                                    "Karnali Province" -> karnaliProvinceDistricts
+                                    "Sudurpashchim Province" -> sudurpashchimProvinceDistricts
+                                    else -> emptyList()
+                                }
+                            }
+                        )
+                    }
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 20.dp)
+                ) {
+                    OutlinedTextField(
+                        value = district,
+                        onValueChange = { },
+                        readOnly = true,
+                        label = { Text("Select District") },
+                        trailingIcon = {
+                            Icon(
+                                imageVector = if (Districtexpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
+                                contentDescription = null
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth(.9f)
+                    )
+
+
+                    Box(
+                        modifier = Modifier
+                            .matchParentSize()
+                            .clickable { Districtexpanded = true }
+                    )
+                }
+
+                DropdownMenu(
+                    expanded = Districtexpanded,
+                    onDismissRequest = { Districtexpanded = false },
+                    modifier = Modifier.fillMaxWidth(0.9f)
+                ) {
+                    currentDistricts.forEach { option ->
+                        DropdownMenuItem(
+                            text = { Text(text = option) },
+                            onClick = {
+                                district = option
+                                Districtexpanded = false
+                            }
+                        )
+                    }
+                }
+
             }
             Spacer(modifier = Modifier.height(16.dp))
 
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
-            ) {
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
 
-                LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                    items(donorsList) { donors ->
-                        ShowDataItems(donors)
+            LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                items(donorDatas) { donors ->
+                    ShowDataItems(donors)
 
-
-                    }
 
                 }
+
             }
         }
     }
 }
+
+
 
 @Composable
 fun RowSearchBlood(text: String, isSelected: Boolean, onClick: () -> Unit) {
@@ -160,14 +376,15 @@ fun RowSearchBlood(text: String, isSelected: Boolean, onClick: () -> Unit) {
 
 @Preview(showBackground = true)
 @Composable
-fun PrevieW(){
+fun PReVuew(){
     val navController = rememberNavController()
     SearchDonors(navController)
+
 }
 
 //@Preview(showBackground = true)
 @Composable
-fun ShowDataItems(donor : SearchDonor){
+fun ShowDataItems(donor : DonorsList){
     val context = LocalContext.current
 
     Box(
