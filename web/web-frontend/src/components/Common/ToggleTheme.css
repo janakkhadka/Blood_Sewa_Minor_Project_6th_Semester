@@ -1,0 +1,94 @@
+.toggle-button {
+    position: relative;
+    width: 66px; /* Adjusted width for proportion */
+    height: 30px; /* Updated height */
+    background-color: #f0f0f0;
+    border-radius: 15px; /* Half of the height for a perfect oval */
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    overflow: hidden;
+  }
+  
+  .toggle-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  .icon1 {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px; /* Reduced font size to match smaller button */
+    transition: opacity 0.3s;
+  }
+  
+  .light-icon {
+    left: 8px; /* Adjusted position for smaller button */
+    opacity: 0;
+  }
+  
+  .dark-icon {
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+  }
+  
+  .bloody-icon {
+    right: 8px; /* Adjusted position for smaller button */
+    opacity: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    top: 3px; /* Centered inside the 30px height */
+    left: 3px; /* Matches top padding */
+    width: 24px; /* Proportional to new height */
+    height: 24px; /* Matches the width for a circle */
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+  }
+  
+  /* Light theme */
+  .toggle-button.light {
+    background-color: #f0f0f0;
+  }
+  
+  .toggle-button.light .light-icon {
+    opacity: 1;
+    z-index: 2;
+  }
+  
+  .toggle-button.light .slider {
+    transform: translateX(0);
+  }
+  
+  /* Dark theme */
+  .toggle-button.dark {
+    background-color: #333;
+  }
+  
+  .toggle-button.dark .dark-icon {
+    opacity: 1;
+    z-index: 2;
+  }
+  
+  .toggle-button.dark .slider {
+    transform: translateX(18px);
+  }
+  
+  /* Bloody theme */
+  .toggle-button.bloody {
+    background-color: #d5c9c9;
+  }
+  
+  .toggle-button.bloody .bloody-icon {
+    opacity: 1;
+    z-index: 2;
+  }
+  
+  .toggle-button.bloody .slider {
+    transform: translateX(35px);
+  }
+  

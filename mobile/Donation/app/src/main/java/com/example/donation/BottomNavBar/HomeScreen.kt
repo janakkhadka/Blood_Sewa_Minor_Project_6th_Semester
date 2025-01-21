@@ -70,6 +70,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.donation.Navigation.Screens
 import com.example.donation.R
+import com.example.donation.ViewModels.SharedViewModel
 import com.example.donation.ViewModels.dummyEvent
 import com.example.donation.ViewModels.dummyUrgentData
 import com.example.donation.datastore.DataStoreManager
@@ -86,7 +87,9 @@ import java.time.LocalTime
 
 
 @Composable
-fun HomeScreen(navController : NavHostController ) {
+fun HomeScreen(navController : NavHostController) {
+
+  //  val eventData by viewModel.event.collectAsState()
     var showDialogBox by remember { mutableStateOf(false) }
     var eventDialog by remember { mutableStateOf(false) }
     var selectedPatient by remember { mutableStateOf<dummyUrgentData?>(null) }
@@ -146,22 +149,22 @@ fun HomeScreen(navController : NavHostController ) {
         )
     )
 
-    val event = listOf(
-        dummyEvent(
-            "NCIT College",
-            "Red Cross Society",
-            "KMC Hospital",
-            "9865445343",
-            "This is an event organized to make normal people engaged into donation campaign."
-        ),
-        dummyEvent(
-            "Tinkune Ground",
-            "Ram Daii ko Pasal",
-            "Civil Hospital",
-            "9823366044",
-            "This is an event organized to donate the blood to the people into age group less than 10 years."
-        )
-    )
+//    val event = listOf(
+//        dummyEvent(
+//            "NCIT College",
+//            "Red Cross Society",
+//            "KMC Hospital",
+//            "9865445343",
+//            "This is an event organized to make normal people engaged into donation campaign."
+//        ),
+//        dummyEvent(
+//            "Tinkune Ground",
+//            "Ram Daii ko Pasal",
+//            "Civil Hospital",
+//            "9823366044",
+//            "This is an event organized to donate the blood to the people into age group less than 10 years."
+//        )
+//    )
 
 
 
@@ -312,14 +315,14 @@ fun HomeScreen(navController : NavHostController ) {
 
                 ) {
                     LazyRow {
-                        items(event) { eventItem ->
-                            EventData(eventItem){
-                                selectedEvent = eventItem
-                                eventDialog = true
+//                        items(eventData) { eventItem ->
+//                            EventData(eventItem){
+//                                selectedEvent = eventItem
+//                                eventDialog = true
+//
+//                            }
 
-                            }
-
-                        }
+                       // }
 
 
                     }
@@ -492,12 +495,7 @@ fun IconWithLabel(icon: ImageVector, label: String,onClick :() ->Unit) {
 
 
 
-@Preview(showBackground =true)
-@Composable
-fun Preview(){
-    val navController = rememberNavController()
-    HomeScreen(navController = navController)
-}
+
 
 
 @Composable

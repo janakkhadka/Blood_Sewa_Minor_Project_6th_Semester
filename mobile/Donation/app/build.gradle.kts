@@ -101,6 +101,11 @@ dependencies {
     // qr scanner ko lagi dependencies
     implementation(libs.play.services.code.scanner.v1600)
 
+    //hilt ko dependencies
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.lifecycle.viewmodel)
+
+
 
 
 

@@ -35,7 +35,14 @@
       font-size: 18px;
       display: flex;
       flex-direction: row;
+      align-items: center;
       gap: 155px;
+    }
+    .navbar-right .right-right{
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      align-items: center;
     }
 
     .navbar-right-left a{

@@ -1,13 +1,13 @@
 :root{
-    --secondary: #d5c9c9;
-    --primary: rgb(160, 25, 25);
+    /* --text-color: #d5c9c9;
+    --primary: rgb(160, 25, 25); */
   }
 
 .wrapper{
     width:100vw;
     height: 100vh;
     position: relative;
-    background-image: url('/background3.jpg');
+    background: var(--primary-background);
     background-size: cover;
     background-position: center;
     display: flex;
@@ -16,7 +16,7 @@
     overflow-x: hidden;
     scrollbar-width: none; 
     -ms-overflow-style: none;
-    color:var(--secondary) 
+    color:var(--text-color); 
 }
 
 .wrapper .background{
@@ -35,17 +35,17 @@
     display: flex;
     width: 840px;
     height: 440px;
-    border: 2px solid rgba(255,255,255,.1);
+    border: 2px solid var(--border-color);
     border-radius: 20px;
-    box-shadow: 0px 0px 50px rgba(119, 81, 81, 0.6);
-    backdrop-filter: blur(5px);
+    box-shadow: var(--shadow);
+    backdrop-filter: var(--backdrop-filter);
    /* pointer-events: none;   yesle garda form ko paxadi ko mouse event active hunxa, yesle block event lai kholdinxa */
 }
 
 .form-box-login .login-section{
     width: 50%;
     border-radius: 20px;
-    color: var(--secondary);
+    color: var(--text-color);
     padding: 40px;
 }
 .login-section .img{
@@ -53,9 +53,9 @@
     margin-top: 20px;
     width: 350px;
     height: 260px;
-    border: 2px solid rgba(255,255,255,.1);
+    border: 2px solid var(--border-color);
     border-radius: 20px;
-    box-shadow: 0px 0px 10px rgba(119, 81, 81, 0.6);
+    box-shadow: 0px 0px 10px var(--shadow-color);
     backdrop-filter: blur(5px);
     background-color: transparent;
 }
@@ -74,7 +74,7 @@
     width: 100%;
     height: 50px;
     margin: 30px 0;
-    color:var(--secondary);
+    color:var(--text-color);
 }
 
 .form-box-login .input-box .icon{
@@ -83,20 +83,21 @@
     top: 50%;
     translate: 0 -50%;
     font-size: 16px;
-    color:var(--secondary);
+    color:var(--text-color);
 }
 
 .form-box-login form button{
     width: 100%;
     height: 45px;
-    background: var(--secondary);
+    background-color: var(--button-background-color);
     border: none;
     outline: none;
     border-radius: 40px;
-    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    box-shadow: var(--button-shadow);
     cursor: pointer;
     font-size: 16px;
     font-weight: 700;
+    color: var(--button-text-color);
 }
 
 form .remember-forgot{
@@ -104,7 +105,7 @@ form .remember-forgot{
     justify-content: space-between;
     font-size: 14.5px;
     margin: -15px 0 15px;
-    color: var(--secondary);
+    color: var(--text-color);
 }
 
 .remember-forgot label input{
@@ -117,7 +118,7 @@ form .remember-forgot{
     color: black;
     text-decoration: none;
     font-weight: 600;
-    color: var(--secondary);
+    color: var(--text-color);
 }
 
 .remember-forgot a:hover{
@@ -126,7 +127,7 @@ form .remember-forgot{
 
 .login-form .account-type{
     margin-bottom: 35px;
-    color: var(--secondary);
+    color: var(--text-color);
 }
 
 .login-form .account-type input{
@@ -145,14 +146,14 @@ form .register-link{
     font-size: 14.5px;
     text-align: center;
     margin: 20px 0 15px;
-    color: var(--secondary);
+    color: var(--text-color);
 }
 
 .register-link p a{
     color:black;
     text-decoration: none;
     font-weight: 600;
-    color: var(--secondary);
+    color: var(--text-color);
 }
 
 .register-link p a:hover{
@@ -171,9 +172,9 @@ form .register-link{
     width: 840px;
     height: 920px;
     border-radius: 20px;
-    box-shadow: 0 0 40px rgba(77, 5, 2,1);
+    box-shadow: 0 0 40px var(--border-color);
     background: transparent;
-    box-shadow: 0px 0px 50px rgba(119, 81, 81, 0.6);
+    box-shadow: 0px 0px 50px var(--shadow-color);
     backdrop-filter: blur(5px); 
 }
 
@@ -186,7 +187,7 @@ form .register-link{
     width: 100%;
     height: 30px;
     margin: 30px 0;
-    color: var(--secondary);
+    color: var(--text-color);
 }
 
 .form-box-registration .drop-down-box{
@@ -194,17 +195,17 @@ form .register-link{
     height: 30px;
     width: 100%;
     margin: 30px 0;
-    color: var(--secondary);
+    color: var(--text-color);
 }
 
 
 .registration-form .organization-type{
     margin-top: 15px;
-    color: var(--secondary);
+    color: var(--text-color);
 }
 
 .registration-form .organization-type input{
-   accent-color: var(--primary);
+   accent-color: var(--button-color);
    margin: 0 5px; 
 }
 
@@ -219,7 +220,7 @@ form .register-link{
     height: 30px;
     margin: 30px 0;
     margin-bottom: 0;
-    color: var(--secondary);
+    color: var(--text-color);
 }
 
 .registration-form .input-document input{
@@ -232,7 +233,7 @@ form .register-link{
     top: 50%;
     translate: 0 -20%;
     font-size: 16px;
-    color: var(--secondary);
+    color: var(--text-color);
 }
 
 .form-box-registration .terms-and-conditions{
@@ -242,7 +243,7 @@ form .register-link{
     margin-top: 10px;
     margin-bottom: 40px;
     font-size: 14.5px;
-    color: var(--secondary);
+    color: var(--text-color);
 }
 
 .form-box-registration .terms-and-conditions input{
@@ -250,7 +251,7 @@ form .register-link{
     accent-color: black;
 }
 .form-box-registration .terms-and-conditions a{
-    color: var(--secondary);
+    color: var(--text-color);
     text-decoration: none;
     font-weight: 600;
 }
@@ -274,30 +275,30 @@ form .register-link{
 .form-box-registration form button{
     width: 50%;
     height: 45px;
-    background: var(--secondary);;
+    background: var(--button-background-color);
     border: none;
     outline: none;
     border-radius: 40px;
-    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    box-shadow: var(--button-shadow);
     cursor: pointer;
     font-size: 16px;
     font-weight: 700;
     margin: auto;
-    color: var(--primary)
+    color: var(--button-text-color);
 }
 
 form .login-link{
     font-size: 14.5px;
     text-align: center;
     margin: 20px 0 15px;
-    color: var(--secondary);
+    color: var(--button-color);
 }
 
 .login-link p a{
     color:black;
     text-decoration: none;
     font-weight: 600;
-    color: var(--secondary);
+    color: var(--button-color);
 }
 
 .login-link p a:hover{
@@ -313,10 +314,9 @@ form .login-link{
     width: 850px;
     height: 925px;
     border-radius: 20px;
-    box-shadow: 0 0 40px rgba(77, 5, 2,1);
     background: transparent;
-    box-shadow: 0px 0px 50px rgba(119, 81, 81, 0.6);
-    backdrop-filter: blur(5px);
+    box-shadow: var(--shadow);
+    backdrop-filter: var(--backdrop-filter);
     margin-top: 270px;
     margin-bottom: 30px; 
 }
@@ -330,7 +330,7 @@ form .login-link{
     width: 100%;
     height: 30px;
     margin: 30px 0;
-    color: var(--secondary);
+    color: var(--text-color);
 }
 
 .user-form .drop-down-box{
@@ -338,7 +338,7 @@ form .login-link{
     height: 30px;
     width: 100%;
     margin: 30px 0;
-    color: var(--secondary);
+    color: var(--text-color);
 }
 
 .drop-down-box .icon{
@@ -355,7 +355,7 @@ form .login-link{
     display: flex;
     align-items: center;
     width: 100%;
-    color: var(--secondary);
+    color: var(--text-color);
 }
 
 .dob-box .dob-label{
@@ -365,8 +365,8 @@ form .login-link{
 .dob-box .date-picker{
     width: 100%;
     background: transparent;
-    color: var(--secondary);
-    border: 1px solid rgba(255,255,255,.1);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
     /* border: 1px solid var(--text); */
     outline: none;
     border-radius: 40px;
@@ -384,7 +384,7 @@ form .login-link{
 
 .user-form .gender{
     margin-top: 20px;
-    color: var(--secondary);
+    color: var(--text-color);
 }
 
 .user-form .gender input{
@@ -407,7 +407,7 @@ form .login-link{
     height: 30px;
     margin: 30px 0;
     margin-bottom: 0;
-    color: var(--secondary);
+    color: var(--text-color);
 }
 
 .user-form .input-document input{
@@ -420,7 +420,7 @@ form .login-link{
     top: 50%;
     translate: 0 -20%;
     font-size: 16px;
-    color: var(--secondary);
+    color: var(--text-color);
 }
 
 .form-box-user-registration .terms-and-conditions{
@@ -430,7 +430,7 @@ form .login-link{
     margin-top: 10px;
     margin-bottom: 40px;
     font-size: 14.5px;
-    color:var(--secondary);
+    color:var(--text-color);
 }
 
 .form-box-user-registration .terms-and-conditions input{
@@ -438,7 +438,7 @@ form .login-link{
     accent-color: black;
 }
 .form-box-user-registration .terms-and-conditions a{
-    color: var(--secondary);
+    color: var(--text-color);
     text-decoration: none;
     font-weight: 600;
 }
@@ -462,29 +462,29 @@ form .login-link{
 .form-box-user-registration form button{
     width: 50%;
     height: 45px;
-    background: var(--secondary);
+    background: var(--button-background-color);
     border: none;
     outline: none;
     border-radius: 40px;
-    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    box-shadow: var(--shadow);
     cursor: pointer;
     font-size: 16px;
     font-weight: 700;
     margin: auto;
-    color: var(--primary)
+    color: var(--button-text-color);
 }
 form .login-link{
     font-size: 14.5px;
     text-align: center;
     margin: 20px 0 15px;
-    color: var(--secondary);
+    color: var(--text-color);
 }
 
 .login-link p a{
     color:black;
     text-decoration: none;
     font-weight: 600;
-    color: var(--secondary);
+    color: var(--button-color);
 }
 
 .login-link p a:hover{
@@ -493,27 +493,27 @@ form .login-link{
 
 /* common */
 
-form h1{
+.wrapper form h1{
     font-size: 36px;
     text-align: center;
-    color:var(--secondary);;
+    color:var(--text-color);
 }
 
-.input-box input{
+.wrapper .input-box input{
     width: 100%;
     height: 100%;
     background: transparent;
-    border: 1px solid rgba(255,255,255,.1);
+    border: 1px solid var(--border-color);
     /* border: 1px solid var(--text); */
     outline: none;
     border-radius: 40px;
     font-size: 16px;
     padding: 20px 45px 20px 20px;
-    color: var(--secondary);;
+    color: var(--text-color);
 }
 
-.input-box input::placeholder{
-    color: var(--secondary);;
+.wrapper .input-box input::placeholder{
+    color: var(--text-color);
 }
 
 

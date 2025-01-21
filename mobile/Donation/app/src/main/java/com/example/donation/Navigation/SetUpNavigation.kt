@@ -1,6 +1,5 @@
 package com.example.donation.Navigation
 
-import android.content.Context
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 //noinspection UsingMaterialAndMaterial3Libraries
@@ -16,10 +15,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.donation.BottomNavBar.BottomNavBar
 import com.example.donation.ExtraItems.CreateEvents
-import com.example.donation.MoreItems.BloodBanks
-import com.example.donation.MoreItems.BloodRequestsScreen
-import com.example.donation.MoreItems.Events
-import com.example.donation.MoreItems.SearchDonors
+import com.example.donation.ExtraItems.BloodBanks
+import com.example.donation.ExtraItems.BloodRequestsScreen
+import com.example.donation.ExtraItems.Events
+import com.example.donation.ExtraItems.SearchDonors
 import com.example.donation.OnBoardingScreens.OnBoardingScreen
 import com.example.donation.Verification.ChangePassword
 import com.example.donation.Verification.ForgetPassword
@@ -27,8 +26,8 @@ import com.example.donation.Verification.Login
 import com.example.donation.Verification.OtpVerification
 import com.example.donation.Verification.SignUp
 import com.example.donation.datastore.DataStoreManager
-import com.example.donation.moreitems.ScheduleTime
-import com.example.donation.moreitems.ViewEvents
+import com.example.donation.ExtraItems.ViewEvents
+import com.example.donation.ExtraItems.ScheduleTime
 
 
 @Composable
@@ -45,7 +44,7 @@ fun SetUpNavigation(navController : NavHostController) {
 
         NavHost(
             navController = navController,
-            startDestination = startDestination
+            startDestination = Screens.OnBoarding.route
         ) {
             composable(Screens.OnBoarding.route) {
                 OnBoardingScreen(navController)
@@ -84,10 +83,6 @@ fun SetUpNavigation(navController : NavHostController) {
             composable(route = Screens.SearchDonors.route) {
                 SearchDonors(navController)
             }
-/*
-            composable(route = Screens.ShowCamera.route) {
-                ShowCamera(navController)
-            }*/
 
             composable(route = Screens.ViewEvents.route) {
                 ViewEvents(navController)

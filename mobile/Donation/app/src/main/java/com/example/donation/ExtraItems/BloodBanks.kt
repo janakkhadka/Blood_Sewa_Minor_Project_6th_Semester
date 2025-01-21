@@ -1,7 +1,6 @@
-package com.example.donation.MoreItems
+package com.example.donation.ExtraItems
 
 import android.annotation.SuppressLint
-import android.service.autofill.OnClickAction
 import android.util.Pair
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background

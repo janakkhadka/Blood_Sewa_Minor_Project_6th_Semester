@@ -1,5 +1,6 @@
 import React from "react";
 import "./NavigationBar.css";
+import ToggleTheme from "./ToggleTheme";
 
 
 const NavigationBar = ({ titleNav, rightLeftNav, rightRightNav }) => {
@@ -11,7 +12,11 @@ const NavigationBar = ({ titleNav, rightLeftNav, rightRightNav }) => {
         </div>
         <div className="navbar-right">
             {rightLeftNav}
-            {rightRightNav}
+            <div className="right-right">
+              {rightRightNav}
+              <ToggleTheme/>
+            </div>
+            
         </div>
       </nav>
     </div>
@@ -19,3 +24,5 @@ const NavigationBar = ({ titleNav, rightLeftNav, rightRightNav }) => {
 };
 
 export default NavigationBar;
+
+

@@ -5,5 +5,7 @@ data class dummyEvent(
     val organized_by : String,
     val collaboration_with : String,
     val contact : String,
-    val desc : String
+    val desc : String,
+    val start_time : String,
+    val End_time : String
 )

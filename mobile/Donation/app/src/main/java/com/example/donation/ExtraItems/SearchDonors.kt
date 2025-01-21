@@ -1,10 +1,11 @@
-package com.example.donation.MoreItems
+package com.example.donation.ExtraItems
 
 
 
 import android.content.Intent
-import android.graphics.Paint.Align
 import android.net.Uri
+import android.util.Log
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -18,7 +19,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -28,11 +29,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.internal.composableLambdaN
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -50,10 +51,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.donation.BottomNavBar.CustomTopBar
 import com.example.donation.BottomNavBar.TopBarTheme
+import com.example.donation.backend.RegViewModel
 import com.example.donation.backend.searchDonor.SearchDonor
 import com.example.donation.ui.theme.DarkGreen
 import com.example.donation.ui.theme.dRed
-import com.example.donation.ui.theme.lightGreen
 
 //dummy data for searching
 data class DonorsList(
@@ -67,9 +68,10 @@ data class DonorsList(
 
 
 @Composable
-fun SearchDonors(navController : NavHostController) {
+fun SearchDonors(navController : NavHostController,viewModel: RegViewModel = viewModel()) {
     val scrollState = rememberScrollState()
     var selectedBloodType by remember { mutableStateOf("") }
+    val donorsList by viewModel.donors.collectAsState()
 
     //dummy data values
     val donorDatas = listOf(
@@ -81,51 +83,61 @@ fun SearchDonors(navController : NavHostController) {
 
     )
 
+    if (donorsList.isEmpty()) {
+        CircularProgressIndicator(modifier = Modifier.fillMaxSize().wrapContentSize())
 
-    //filter apply gareko yesma
-    val filterData = if(selectedBloodType.isEmpty()){
-        donorDatas
-    }else{
-        donorDatas.filter { it.blood_group == selectedBloodType }
-    }
-
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        TopBarTheme()
-        CustomTopBar(img = Icons.Default.ArrowBack, greetingText = "", name = "", text = "Search Donors",navController)
-        Spacer(modifier = Modifier.height(10.dp))
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(scrollState),
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            val bloodTypes = listOf("A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-")
-            bloodTypes.forEach { bloodType ->
-                RowSearchBlood(
-                    text = bloodType,
-                    isSelected = selectedBloodType == bloodType,
-                    onClick = { selectedBloodType = bloodType }
-                )
-            }
-
+    } else {
+        //filter apply gareko yesma
+        val filterData = if (selectedBloodType.isEmpty()) {
+            donorsList
+        } else {
+            donorsList.filter { it.blood_group == selectedBloodType }
         }
-        Spacer(modifier = Modifier.height(16.dp))
 
-        Box(
-            modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.Center
+        Column(
+            modifier = Modifier.fillMaxSize()
         ) {
-
-            LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                items(filterData) { donors ->
-                    ShowDataItems(donors)
-
-
+            TopBarTheme()
+            CustomTopBar(
+                img = Icons.Default.ArrowBack,
+                greetingText = "",
+                name = "",
+                text = "Search Donors",
+                navController
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(scrollState),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                val bloodTypes = listOf("A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-")
+                bloodTypes.forEach { bloodType ->
+                    RowSearchBlood(
+                        text = bloodType,
+                        isSelected = selectedBloodType == bloodType,
+                        onClick = { selectedBloodType = bloodType }
+                    )
                 }
 
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+
+                LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                    items(donorsList) { donors ->
+                        ShowDataItems(donors)
+
+
+                    }
+
+                }
             }
         }
     }
@@ -155,7 +167,7 @@ fun PrevieW(){
 
 //@Preview(showBackground = true)
 @Composable
-fun ShowDataItems(donor : DonorsList){
+fun ShowDataItems(donor : SearchDonor){
     val context = LocalContext.current
 
     Box(

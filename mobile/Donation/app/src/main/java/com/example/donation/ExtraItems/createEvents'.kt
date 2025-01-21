@@ -28,13 +28,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.donation.BottomNavBar.CustomTopBar
 import com.example.donation.BottomNavBar.TopBarTheme
+import com.example.donation.ViewModels.dummyEvent
 import com.example.donation.ui.theme.RedThemeTop
 import com.example.donation.ui.theme.dRed
 
@@ -47,6 +46,9 @@ fun CreateEvents(navController : NavHostController){
     var endTime by remember { mutableStateOf("") }
     var collaboration_with by remember { mutableStateOf("") }
     var venue by remember { mutableStateOf("") }
+    val contact by remember { mutableStateOf("") }
+    val organized_by by remember { mutableStateOf("") }
+    val desc by remember { mutableStateOf("") }
 
     //dummy data
     val hospitals = listOf("KMC Hospital","Civil Hospital","Bhaktapur Cancer Hospital")
@@ -80,10 +82,18 @@ fun CreateEvents(navController : NavHostController){
                 OutlineTextField(collaboration_with,"Collaboration With") { }
                 OutlineTextField(startTime,"Start Time") {}
                 OutlineTextField(endTime,"End Time") { }
-                OutlineTextField(collaboration_with,"Collaboration With") { }
+                OutlineTextField(organized_by,"organized_by") { }
                 OutlineTextField(venue,"venue") { }
+                OutlineTextField(contact,"contact") { }
+                OutlineTextField(desc,"Description") { }
                 Button(
                     onClick = {
+
+                        if(eventName.isNotEmpty()||eventTime.isNotEmpty()||collaboration_with.isNotEmpty()||startTime.isNotEmpty()||venue.isNotEmpty())
+                        {
+                            val data = dummyEvent(eventName,organized_by,collaboration_with,contact,desc,startTime,endTime)
+                            //viewModel.addEvents(data)
+                        }
 
                     },
                     modifier = Modifier
