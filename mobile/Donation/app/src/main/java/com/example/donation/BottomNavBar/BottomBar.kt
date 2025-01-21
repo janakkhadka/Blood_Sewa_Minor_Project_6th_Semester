@@ -27,6 +27,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.donation.ViewModels.SharedViewModel
 import com.example.donation.ui.theme.dRed
 import com.example.donation.ui.theme.white
 
@@ -63,16 +64,6 @@ fun BottomNavBar(navController: NavHostController) {
 
 
                 }
-
-
-
-
-
-
-
-
-
-
             }
         }
     ) { paddingValues ->
@@ -86,7 +77,7 @@ fun Content(navController : NavHostController ,paddingValues: PaddingValues,sele
     when(selected){
         0-> HomeScreen(navController)
         1-> UrgentBloodScreen(navController)
-        2-> ProfileScreen(navController =navController)
+        2-> ProfileScreen(navController = navController)
     }
 
 

@@ -51,7 +51,7 @@ fun Login(navController : NavHostController){
     var isPasswordVisible by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
-    val dataStoreManager = DataStoreManager(context)
+//    val dataStoreManager = DataStoreManager(context)
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -118,11 +118,6 @@ fun Login(navController : NavHostController){
                 if(response.isSuccessful){
                     val loginResponse = response.body()
                     loginResponse?.let {
-                        dataStoreManager.saveStatus(true)
-                        dataStoreManager.saveAccessToken(it.access_token)
-                        dataStoreManager.SaveRefreshToken(it.refresh_token)
-                        dataStoreManager.SaveUserName(it.user_Details.name)
-                        navController.navigate(Screens.BottomNavBar.route)
                         Log.e("nameCheck", it.user_Details.name)
 
                     }
@@ -133,6 +128,7 @@ fun Login(navController : NavHostController){
                 }
             }catch(e : Exception){
                 Toast.makeText(context, "An error occurred: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Log.e("Attempt","${e.message}")
 
 
                 }

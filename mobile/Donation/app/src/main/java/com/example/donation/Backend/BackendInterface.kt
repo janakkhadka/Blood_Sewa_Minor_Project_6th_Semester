@@ -9,6 +9,7 @@ import com.example.donation.backend.searchDonor.SearchDonor
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -23,6 +24,9 @@ interface BackendInterface {
    suspend fun loginUser(@Body information: LoginRequest) :Response<LoginResponse>
 
    @GET("user/blood-group")
-   suspend fun searchUser(@Query("blood_group = O-") response : SearchDonor)
+   suspend fun searchUser(
+      @Header("Authorization") authorization: String
+   ):List<SearchDonor>
+
 
 }

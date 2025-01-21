@@ -1,7 +1,5 @@
-package com.example.donation.MoreItems
+package com.example.donation.ExtraItems
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -24,6 +21,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.donation.BottomNavBar.CustomTopBar
 import com.example.donation.BottomNavBar.TopBarTheme
+import com.example.donation.Navigation.Screens
 import com.example.donation.ui.theme.dRed
 import com.example.donation.ui.theme.white
 
@@ -42,7 +40,9 @@ fun Events(navController : NavHostController){
             contentAlignment = Alignment.BottomEnd
         ){
             FloatingActionButton(
-                onClick = {},
+                onClick = {
+                    navController.navigate(Screens.createEvents.route)
+                },
                 backgroundColor = dRed
             ) {
                 Image(

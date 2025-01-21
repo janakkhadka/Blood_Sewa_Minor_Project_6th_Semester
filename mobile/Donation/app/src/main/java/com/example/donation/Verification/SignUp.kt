@@ -69,21 +69,23 @@ fun SignUp(navController : NavHostController) {
         CircularProgressIndicator()
     }
 
-    var username by remember { mutableStateOf("") }
-    var phoneNumber by remember { mutableStateOf("") }
+    var name by remember { mutableStateOf("") }
+    var phone_number by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
-    var dob by remember { mutableStateOf("") }
+    var DOB by remember { mutableStateOf("") }
     var isChecked by remember{ mutableStateOf(false) }
     var isPasswordVisible by remember { mutableStateOf(false) }
     var Bloodexpanded by remember { mutableStateOf(false) }
-    var Bloodselected by remember { mutableStateOf("") }
+    var blood_group by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
-    var selected by remember { mutableStateOf("") }
+    var province by remember { mutableStateOf("") }
     var Districtexpanded by remember { mutableStateOf(false) }
-    var Districtselected by remember { mutableStateOf("") }
+    var district by remember { mutableStateOf("") }
     var result by remember { mutableStateOf("") }
     var currentDistricts by remember { mutableStateOf(listOf<String>()) }
+    var gender by remember{ mutableStateOf("") }
+    var genderExpanded by remember{ mutableStateOf(false) }
 
 
 
@@ -205,6 +207,11 @@ fun SignUp(navController : NavHostController) {
         "Kailali",
         "Kanchanpur"
     )
+    val genders = listOf(
+        "male",
+        "female",
+        "Others"
+    )
 
 
     TopBarTheme()
@@ -229,8 +236,8 @@ fun SignUp(navController : NavHostController) {
 
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(.9f),
-            value = username,
-            onValueChange = { username = it },
+            value = name,
+            onValueChange = { name = it },
             label = { Text("Full Name") },
             leadingIcon = {
                 Icon(
@@ -244,7 +251,7 @@ fun SignUp(navController : NavHostController) {
                 .fillMaxWidth(0.9f)
         ) {
             OutlinedTextField(
-                value = Bloodselected,
+                value = blood_group,
                 onValueChange = { },
                 readOnly = true,
                 label = { Text("Select Blood Group") },
@@ -275,7 +282,7 @@ fun SignUp(navController : NavHostController) {
                 DropdownMenuItem(
                     text = { Text(text = option) },
                     onClick = {
-                        Bloodselected = option
+                        blood_group = option
                         Bloodexpanded = false
                     }
                 )
@@ -286,7 +293,7 @@ fun SignUp(navController : NavHostController) {
         ) {
 
             OutlinedTextField(
-                value = selected,
+                value = province,
                 onValueChange = { },
                 readOnly = true,
                 label = { Text("Select Province") },
@@ -316,10 +323,10 @@ fun SignUp(navController : NavHostController) {
                 DropdownMenuItem(
                     text = { Text(text = option) },
                     onClick = {
-                        selected = option
+                        province = option
                         expanded = false
 
-                        currentDistricts = when (selected) {
+                        currentDistricts = when (province) {
                             "Province No. 1" -> province1Districts
                             "Madhesh Province" -> madheshProvinceDistricts
                             "Bagmati Province" -> bagmatiProvinceDistricts
@@ -339,7 +346,7 @@ fun SignUp(navController : NavHostController) {
                 .fillMaxWidth(0.9f)
         ) {
             OutlinedTextField(
-                value = Districtselected,
+                value = district,
                 onValueChange = { },
                 readOnly = true,
                 label = { Text("Select District") },
@@ -369,8 +376,52 @@ fun SignUp(navController : NavHostController) {
                 DropdownMenuItem(
                     text = { Text(text = option) },
                     onClick = {
-                        Districtselected = option
+                        district = option
                         Districtexpanded = false
+                    }
+                )
+            }
+        }
+
+        //gender ko lagi
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+        ) {
+            OutlinedTextField(
+                value =gender,
+                onValueChange = { },
+                readOnly = true,
+                label = { Text("Select District") },
+                trailingIcon = {
+                    Icon(
+                        imageVector = if (genderExpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
+                        contentDescription = null
+                    )
+                },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+
+            Box(
+                modifier = Modifier
+                    .matchParentSize()
+                    .clickable { genderExpanded = true }
+            )
+        }
+
+        DropdownMenu(
+            expanded = genderExpanded,
+            onDismissRequest = { genderExpanded = false },
+            modifier = Modifier.fillMaxWidth(0.9f)
+        ) {
+            genders.forEach { option ->
+                DropdownMenuItem(
+                    text = { Text(text = option) },
+                    onClick = {
+                        gender = option
+                        genderExpanded = false
                     }
                 )
             }
@@ -381,8 +432,8 @@ fun SignUp(navController : NavHostController) {
 
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(.9f),
-            value = phoneNumber,
-            onValueChange = { phoneNumber = it },
+            value = phone_number,
+            onValueChange = { phone_number = it },
             label = { Text("Phone Number") },
             leadingIcon = {
                 Text(text = "+977")
@@ -390,8 +441,8 @@ fun SignUp(navController : NavHostController) {
         )
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(.9f),
-            value = dob,
-            onValueChange = { dob = it },
+            value = DOB,
+            onValueChange = { DOB = it },
             label = { Text("DOB") },
             leadingIcon = {
                 Icon(
@@ -447,9 +498,9 @@ fun SignUp(navController : NavHostController) {
         Button(
             onClick = {
 
-                if (username.isBlank() || email.isBlank() || phoneNumber.isBlank() ||
-                    Bloodselected.isBlank() || Districtselected.isBlank() ||
-                    selected.isBlank() || dob.isBlank() || password.isBlank() || !isChecked) {
+                if (name.isBlank() || email.isBlank() || phone_number.isBlank() ||
+                    blood_group.isBlank() || district.isBlank() ||
+                    province.isBlank() || DOB.isBlank() || password.isBlank() || !isChecked) {
                     Toast.makeText(context, "Please fill in all fields and agree to the terms.", Toast.LENGTH_SHORT).show()
                     return@Button
                 }
@@ -464,15 +515,19 @@ fun SignUp(navController : NavHostController) {
 
                 val registrationData = Registration(
                     email = email,
-                    name = username,
-                    phone_number = phoneNumber,
-                    blood_group = Bloodselected,
-                    district = Districtselected,
-                    province = selected,
+                    name = name,
+                    phone_number = phone_number,
+                    blood_group = blood_group,
+                    district = district,
+                    province = province,
                     password = password,
-                    dOB = dob
+                    DOB = DOB,
+                    gender = gender
 
                 )
+
+
+                Log.d("checkData",registrationData.toString())
 
                 loading = true
                 scope.launch {
@@ -489,6 +544,7 @@ fun SignUp(navController : NavHostController) {
                     } catch (e: Exception) {
                         loading = false
                         Toast.makeText(context, "Error: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+                        e.localizedMessage?.let { Log.e("error", it) }
                     }
                 }
             },
@@ -519,11 +575,7 @@ fun SignUp(navController : NavHostController) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun showBackground(){
 
-}
 
 
 
