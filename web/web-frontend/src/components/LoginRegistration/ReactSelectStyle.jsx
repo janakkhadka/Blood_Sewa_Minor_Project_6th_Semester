@@ -14,40 +14,40 @@ const customStyles = ({
   control: (provided, state) => ({
       ...provided,
       '&:hover': {
-          border: `1px solid ${hoverBorderColor}`,
+          border: `1px solid var(--border-color)`,
       },
       width: '100%',
       outline: 'none',
       backgroundColor,
       border: state.isFocused
-          ? `1px solid ${focusBorderColor}`
-          : `1px solid ${defaultBorderColor}`,
+          ? `1px solid var(--border-color)`
+          : `1px solid var(--border-color)`,
       boxShadow: state.isFocused ? 'none' : 'none',
       borderRadius: '40px',
       fontSize: '16px',
       padding: '7px 45px 5px 10px',
-      color: textColor,
+      color: 'var(--text-color)',
   }),
   option: (provided) => ({
       ...provided,
-      color: optionTextColor,
+      color: 'var(--secondary-text-color)',
       backgroundColor: 'transparent',
       padding: '10px 0px 10px 20px',
       '&:hover': {
-          backgroundColor: optionHoverBackgroundColor,
-          color: optionHoverTextColor,
+          color: 'var(--button-text-color)',
+          backgroundColor: 'var(--button-background-color)',
       },
   }),
   singleValue: (provided) => ({
       ...provided,
-      color: singleValueTextColor,
+      color: 'var(--text-color)',
   }),
   menu: (provided) => ({
       ...provided,
       position: 'absolute',
-      background: menuBackground,
+      background: 'var(--secondary-background)',
       backdropFilter: 'blur(15px)',
-      boxShadow: '0px 0px 50px rgba(119, 81, 81, 0.6)',
+      boxShadow: 'var(--shadow)',
       borderRadius: '20px',
   }),
   menuList: (provided) => ({
@@ -69,7 +69,7 @@ const customStyles = ({
   }),
   placeholder: (provided) => ({
       ...provided,
-      color: placeholderColor,
+      color: 'var(--text-color)',
   }),
 });
 

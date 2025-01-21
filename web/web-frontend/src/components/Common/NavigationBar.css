@@ -1,157 +1,149 @@
-/* General Page Styling */
 
-:root{
-    --secondary: #d5c9c9;
-    --primary: rgb(160, 25, 25);
-  }
-  
-    .navigation-bar {
-      position: fixed;
-      top: 0;
-      width:100vw;
-      z-index: 3 !important;
-    }
-    
-    .navigation-bar .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: transparent;
-      padding: 10px 20px;
-      color: var(--text);
-      z-index: 2;
-      backdrop-filter: blur(5px);
-      box-shadow: 0px 0px 50px rgba(119, 81, 81, 0.6);
-      /* border:2px solid rgba(255,255,255,.1); */
-    }
-    
-    .navbar-left h1 {
-      margin: 0;
-      font-size: 24px;
-    }
+.navigation-bar {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  z-index: 3 !important;
+}
 
-    .navbar-right{
-      color: var(--secondary);
-      font-size: 18px;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 155px;
-    }
-    .navbar-right .right-right{
-      display: flex;
-      flex-direction: row;
-      gap: 20px;
-      align-items: center;
-    }
+.navigation-bar .navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: transparent;
+  padding: 10px 20px;
+  color: var(--text-color);
+  z-index: 2;
+  backdrop-filter: var(--backdrop-filter);
+  box-shadow: var(--shadow);
+}
 
-    .navbar-right-left a{
-        padding: 0 15px;
-    }
-  
-    .navbar-right a{
-      color: var(--secondary);
-      text-decoration: none;
-      font-size: 18px;
-    }
+.navbar-left h1 {
+  margin: 0;
+  font-size: 24px;
+  color: var(--text-color);
+}
 
-    .navbar-right a:hover{
-      text-decoration: underline;
-    }
+.navbar-right {
+  color: var(--text-color);
+  font-size: 18px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 155px;
+}
 
-    .navbar-right .login-button{
-      color: var(--secondary);
-      background-color: transparent;
-      border: none;
-      font-size: 18px;
-      cursor: pointer;
-    }
+.navbar-right .right-right {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+}
 
-    .navbar-right .login-button:hover{
-      text-decoration: underline;
-    }
+.navbar-right-left a {
+  padding: 0 15px;
+}
 
-    .navbar-right .login-option{
-      position: absolute;
-      top: 57px;
-      right: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 0px;
-      background-color: var(--secondary);
-      border: 2px solid rgba(255,255,255,.1);
-      border-radius: 10px;
-      padding: 4px 0;
-    }
+.navbar-right a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 18px;
+}
 
-    .navbar-right .login-option a{
-      padding: 6px 20px;
-      color: var(--primary);
-      background-color: transparent;
-    }
+.navbar-right a:hover {
+  text-decoration: underline;
+}
 
-    .navbar-right .icons-wrapper .notification-button{
-      position: relative;
-      background-color: transparent;
-      border: none;
-      color: var(--secondary);
-      padding-left: 10px;
-    }
 
-    .icons-wrapper{
-      display: flex;
-      flex-direction: row;
-      gap: 20px;
-    }
+.navbar-right .icons-wrapper .notification-button {
+  position: relative;
+  background-color: transparent;
+  border: none;
+  color: var(--text-color);
+  padding-left: 10px;
+  box-shadow: none;
+}
 
-    .icons-wrapper .icon{
-      font-size: 24px;
-      cursor: pointer;
-    }
+.icons-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
 
-    .navbar-right .notification-list{
-      position: absolute;
-      top: 58px;
-      right: 150px;
-      height:204px;
-      width:400px;
-      overflow-x: hidden;
-      overflow-y: auto;
-      scrollbar-width: none;
-      background-color: transparent;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      background-color: transparent;
-      text-overflow: hidden;
-    }
-    .notification-list a{
-      color: var(--primary);
-      background-color: var(--secondary);
-      padding: 5px 15px;
-      border-radius: 5px;
-      text-overflow: hidden;
-    }
+.icons-wrapper .icon {
+  font-size: 24px;
+  cursor: pointer;
+}
 
-    .navbar-right .logout-button{
-      border: 2px solid rgba(233, 197, 197, 0.1);
-      border-radius: 5px;
-      background-color: transparent;
-      color: var(--secondary);
-      font-size: 18px;
-      padding:3px 20px;
-      cursor: pointer;
-      margin-left: 15px;
-    }
+.navbar-right .notification-list {
+  position: absolute;
+  top: 58px;
+  right: 250px;
+  height: 204px;
+  width: 400px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-overflow: hidden;
+}
 
-    .logout-button:hover{
-      text-decoration: underline;
-    }
+.notification-list a {
+  color: var(--secondary-text-color);
+  background-color: var(--secondary-background);
+  padding: 5px 15px;
+  border-radius: 5px;
+  text-overflow: hidden;
+}
 
-    
+.navbar-right .logout-button {
+  border: 2px solid var(--border-color);
+  border-radius: 5px;
+  background-color: transparent;
+  color: var(--text-color);
+  font-size: 18px;
+  padding: 3px 20px;
+  cursor: pointer;
+  box-shadow: none;
+  margin-left: 15px;
+}
 
-    
-  
-    
-  
-    
+.logout-button:hover {
+  text-decoration: underline;
+}
+
+.navbar-right .login-button {
+  color: var(--text-color);
+  background-color: transparent;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.navbar-right .login-button:hover {
+  text-decoration: underline;
+}
+
+.navbar-right .login-option {
+  position: absolute;
+  top: 57px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  background-color: var(--secondary-background);
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  padding: 4px 0;
+  color: var(--secondary-text-color);
+}
+
+.navbar-right .login-option a {
+  padding: 6px 20px;
+  color: var(--secondary-text-color);
+  background-color: transparent;
+}
