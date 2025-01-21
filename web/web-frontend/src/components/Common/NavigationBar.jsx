@@ -1,5 +1,6 @@
 import React from "react";
 import "./NavigationBar.css";
+import "./Variables.css";
 import ToggleTheme from "./ToggleTheme";
 
 

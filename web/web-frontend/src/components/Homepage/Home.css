@@ -1,8 +1,9 @@
 .home-wrapper{
     margin: auto;
-    margin-top: 75px;
+    margin-top: 0px;
     position: relative;
     width:100vw;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -44,7 +45,7 @@
     white-space: nowrap; 
     overflow: hidden; 
     width: 24ch; 
-    border-right: 2px solid var(--primary); 
+    border-right: 2px solid var(--text-color); 
     animation: typing 5s steps(24) infinite, blink 0.1s infinite;
 }
 
@@ -63,7 +64,7 @@
       border-color: transparent;
     }
     to {
-      border-color: var(--primary);
+      border-color: var(--text-color);
     }
   }
 /* left bottom */
@@ -79,10 +80,10 @@
     gap: 12px;
     width: 480px;
     height: 144px;
-    border: 2px solid rgba(255,255,255,.1);
+    border: 2px solid var(--border-color);
     border-radius: 10px;
-    box-shadow: 0px 0px 15px rgba(119, 81, 81, 0.6);
-    backdrop-filter: blur(5px);
+    box-shadow: var(--shadow);
+    backdrop-filter: var(--backdrop-filter);
     background-color: transparent;
     padding: 15px;
     padding-top: 10px;
@@ -93,7 +94,7 @@
     position: relative;
     height: 30px;
     width: 100%;
-    color: var(--secondary);
+    color: var(--text-color);
 }
 
 .blood-info-wrapper .drop-down-box .icon{
@@ -114,12 +115,12 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
-    border: 2px solid rgba(255,255,255,.1);
+    border: 2px solid var(--border-color);
     border-radius: 10px;
-    box-shadow: 0px 0px 5px rgba(119, 81, 81, 0.6);
+    box-shadow: var(--shadow);
     backdrop-filter: blur(5px);
-    background-color: var(--secondary);
-    color: var(--primary);
+    background-color: var(--secondary-background);
+    color: var(--secondary-text-color);
     height:178px;
     width:480px;
     padding:0 15px;
@@ -131,10 +132,15 @@
     flex-direction: row;
     gap: 15px;
     align-items: center;
+    columns: var(--text-color);
 }
 
 .h3 .icon{
     font-size: 28px;
+    color:var(--secondary-text-color)
+}
+.blood-info-wrapper .h3 .icon{
+    color:var(--text-color)
 }
 
 .eligibility-wrapper .eligibility-message{
@@ -155,12 +161,12 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
-    border: 2px solid rgba(255,255,255,.1);
+    border: 2px solid var(--border-color);
     border-radius: 10px;
-    box-shadow: 0px 0px 5px rgba(119, 81, 81, 0.6);
+    box-shadow: var(--shadow);
     backdrop-filter: blur(5px);
-    background-color: var(--secondary);
-    color: var(--primary);
+    background-color: var(--secondary-background);
+    color: var(--secondary-text-color);
     height:178px;
     width:480px;
     padding:0 15px;
@@ -220,15 +226,19 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
-    border: 2px solid rgba(255,255,255,.1);
+    border: 2px solid var(--border-color);
     border-radius: 10px;
-    box-shadow: 0px 0px 5px rgba(119, 81, 81, 0.6);
+    box-shadow: var(--shadow);
     backdrop-filter: blur(5px);
-    background-color: var(--secondary);
-    color: var(--primary);
+    background-color: var(--secondary-background);
+    color: var(--secondary-text-color);
     height:170px;
     width:290px;
     padding:15px;
+}
+
+.home-right-section .message span{
+    color: var(--secondary-text-color);
 }
 
 .message .message-icon{
