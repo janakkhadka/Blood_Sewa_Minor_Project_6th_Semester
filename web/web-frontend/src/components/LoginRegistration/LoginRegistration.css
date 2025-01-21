@@ -166,7 +166,7 @@ form .register-link{
 /* registration for organization*/
 .wrapper .form-box-registration{
     position: relative;
-    margin-top: 300px;
+    margin-top: 340px;
     margin-bottom: 40px;
     z-index: 2; 
     width: 840px;
@@ -205,7 +205,7 @@ form .register-link{
 }
 
 .registration-form .organization-type input{
-   accent-color: var(--button-color);
+   accent-color: black;
    margin: 0 5px; 
 }
 
@@ -317,7 +317,7 @@ form .login-link{
     background: transparent;
     box-shadow: var(--shadow);
     backdrop-filter: var(--backdrop-filter);
-    margin-top: 270px;
+    margin-top: 330px;
     margin-bottom: 30px; 
 }
 .form-box-user-registration .user-form{

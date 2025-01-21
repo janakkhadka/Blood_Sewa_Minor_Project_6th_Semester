@@ -13,6 +13,9 @@ import { FaLocationDot } from "react-icons/fa6";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 
 import BackThreeD from './3d'
+
+import NavigationBar from '../Common/NavigationBar'
+import { NavbarRightLeft, NavbarRightRight } from '../Common/CommonNavBarComponent'
 import {provinceList, ProvinceDistrictList } from './DropDownList';
 
 
@@ -66,6 +69,11 @@ const RegistrationOrg = () => {
     
     
     <div className="wrapper">
+        <NavigationBar 
+          titleNav = "Blood Sewa" 
+          rightLeftNav = {<NavbarRightLeft/>}
+          rightRightNav = {null} 
+        />
         <div className="background">
             <BackThreeD/>
         </div>
