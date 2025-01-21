@@ -1,23 +1,43 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=SUSE:wght@100..800&family=Sevillana&display=swap');
 
 :root {
-  --background-color: #d5c9c9;
-  --text-color: #191414;
-  --button-color: rgb(160, 25, 25);
+  --button-background-color: rgb(160, 25, 25);
+  --button-text-color: #fdfdfd;
+  --text-color: #111111;
+  --border-color: rgba(12, 12, 12, 0.1);
+  --primary-background:#fdfdfd; 
+  --secondary-background: #fdfdfd;
+  --shadow: 0px 0px 50px rgba(43, 39, 39, 0.6);
+  --backdrop-filter: blur(5px);
 }
 
 /* Dark Theme */
 [data-theme="dark"] {
-  --background-color: #121212;
-  --text-color: #ffffff;
+  --button-background-color: rgb(197, 44, 44);
+  --button-text-color: #fdfdfd;
+  --text-color: #fdfdfd;
+  --border-color: rgba(255, 255, 255, 0.187);
+  --primary-background: #111111;
+  --secondary-background: #111111;
+  --shadow: 0px 0px 20px rgba(222, 212, 212, 0.6);
+  --backdrop-filter: blur(5px);
 }
 
 /* Custom Theme (example) */
 [data-theme="bloody"] {
-  --background-color: rgb(160, 25, 25);
+  --button-background-color: #d5c9c9;
+  --button-text-color: #000000;
   --text-color: #d5c9c9;
-  --shadow-color: rgba(119, 81, 81, 0.6);
   --border-color: rgba(255,255,255,.1);
+  --primary-background: url('/background3.jpg');
+  --secondary-background: #d5c9c9;
+  --shadow: 0px 0px 50px rgba(119, 81, 81, 0.6);
+  --button-shadow: 0 0 10px rgba(0,0,0,.1);
+  --backdrop-filter: blur(5px);
+}
+
+input::placeholder{
+  color: var(--text-color);
 }
 
 

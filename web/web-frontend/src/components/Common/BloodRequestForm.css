@@ -2,7 +2,7 @@
     width:100vw;
     height: 100vh;
     position: relative;
-    background-image: url('/background3.jpg');
+    background: var(--primary-background);
     background-size: cover;
     background-position: center;
     display: flex;
@@ -27,9 +27,8 @@
     width: 850px;
     height: 650px;
     border-radius: 20px;
-    box-shadow: 0 0 40px rgba(77, 5, 2,1);
     background: transparent;
-    box-shadow: 0px 0px 50px rgba(119, 81, 81, 0.6);
+    box-shadow: var(--shadow);
     backdrop-filter: blur(5px);
     margin-top: 85px;
     margin-bottom: 30px;
@@ -38,10 +37,11 @@
 
 .blood-request h1{
     margin-bottom: 15px;
+    color: var(--text-color);
 }
 
 .blood-request  span{
-    color: var(--secondary); 
+    color: var(--text-color); 
 }
 
 .blood-request  .input-box{
@@ -49,7 +49,11 @@
     width: 100%;
     height: 30px;
     margin: 25px 0;
-    color:var(--text);
+    color:var(--text-color);
+}
+
+.blood-request .input-box input::placeholder{
+    color: var(--text-color);
 }
 
 .blood-request .drop-down-box{
@@ -57,7 +61,7 @@
     height: 30px;
     width: 100%;
     margin: 30px 0;
-    color:var(--text);
+    color:var(--text-color);
 }
 
 .blood-request  .drop-down-box .icon{
@@ -88,11 +92,12 @@
 .blood-request  button{
     width: 40%;
     height: 45px;
-    background: #fff;
+    background: var(--button-background-color);
+    color: var(--button-text-color);
     border: none;
     outline: none;
     border-radius: 40px;
-    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    box-shadow: var(--button-shadow);
     cursor: pointer;
     font-size: 16px;
     font-weight: 700;
