@@ -14,6 +14,8 @@
   --button-shadow: 0 0 10px rgba(0,0,0,.1);
   --backdrop-filter: blur(5px);
   --progress-background-color: rgb(160, 25, 25);
+  --calender-day: #0b56a2;
+  --neighbour-month-days: #999999;
 }
 
 /* Dark Theme */
@@ -31,6 +33,8 @@
   --button-shadow: 0 0 10px rgba(0,0,0,.1);
   --backdrop-filter: blur(5px);
   --progress-background-color: rgb(197, 44, 44);
+  --calender-day: #1e90ff;
+  --neighbour-month-days: #999999;
 }
 
 /* Custom Theme (example) */
@@ -48,6 +52,8 @@
   --button-shadow: 0 0 10px rgba(0,0,0,.1);
   --backdrop-filter: blur(5px);
   --progress-background-color: rgb(160, 25, 25);
+  --calender-day: #1e90ff;
+  --neighbour-month-days: #999999;
 }
 
 input::placeholder{
