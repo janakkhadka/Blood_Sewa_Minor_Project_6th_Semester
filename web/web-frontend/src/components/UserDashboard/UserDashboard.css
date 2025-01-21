@@ -2,7 +2,7 @@
     width:100vw;
     height: 100vh;
     position: relative;
-    background-image: url('/background3.jpg');
+    background: var(--primary-background);
     background-size: cover;
     background-position: center;
     display: flex;

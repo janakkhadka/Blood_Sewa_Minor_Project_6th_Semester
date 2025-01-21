@@ -1,66 +1,63 @@
-.donor-search-wrapper{
-    width:100vw;
+.donor-search-wrapper {
+    width: 100vw;
     height: 100vh;
     position: relative;
-    background-image: url('/background3.jpg');
+    background: var(--primary-background);
     background-size: cover;
     background-position: center;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow-x: hidden;
-    scrollbar-width: none; 
-    -ms-overflow-style: none; 
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
-.donor-search-wrapper .syringe{
+
+.donor-search-wrapper .syringe {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1; 
+    z-index: 1;
 }
 
-.donor-search-wrapper .donor-search{
+.donor-search-wrapper .donor-search {
     position: relative;
-    z-index: 2; 
+    z-index: 2;
     width: 850px;
     height: 490px;
     border-radius: 20px;
-    box-shadow: 0 0 40px rgba(77, 5, 2,1);
+    box-shadow: var(--shadow);
     background: transparent;
-    box-shadow: 0px 0px 50px rgba(119, 81, 81, 0.6);
-    backdrop-filter: blur(5px);
+    backdrop-filter: var(--backdrop-filter);
     margin-top: 85px;
     margin-bottom: 30px;
-    padding: 20px 40px 0px 40px; 
+    padding: 20px 40px 0px 40px;
 }
 
-.donor-search h1{
+.donor-search h1 {
     margin-bottom: 15px;
+    color: var(--text-color);
 }
 
-.donor-search  span{
-    color: var(--secondary); 
-}
-
-.donor-search  .input-box{
+.donor-search .input-box {
     position: relative;
     width: 100%;
     height: 30px;
     margin: 25px 0;
-    color:var(--text);
+    color: var(--text-color);
 }
 
-.donor-search .drop-down-box{
+.donor-search .drop-down-box {
     position: relative;
     height: 30px;
     width: 100%;
     margin: 30px 0;
-    color:var(--text);
+    color: var(--text-color);
 }
 
-.donor-search  .drop-down-box .icon{
+.donor-search .drop-down-box .icon {
     position: absolute;
     right: 20px;
     top: 50%;
@@ -69,7 +66,7 @@
     pointer-events: none;
 }
 
-.donor-search  .input-box .icon{
+.donor-search .input-box .icon {
     position: absolute;
     right: 20px;
     top: 50%;
@@ -77,38 +74,39 @@
     font-size: 16px;
 }
 
-.donor-search .search-basis-wrapper{
+.donor-search .search-basis-wrapper {
     display: flex;
     flex-direction: row;
     gap: 10px;
-    color: var(--secondary);
+    color: var(--text-color);
 }
-.search-basis-wrapper .search-basis-option{
+
+.search-basis-wrapper .search-basis-option {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.search-basis-option input{
-    accent-color: var(--primary);
-    margin: 0 5px; 
- }
+.search-basis-option input {
+    accent-color: var(--text-color);
+    margin: 0 5px;
+}
 
-.donor-search .blood-request-submit-button{
+.donor-search .blood-request-submit-button {
     display: flex;
     align-items: center;
     justify-content: center;
     padding-top: 30px;
 }
 
-.donor-search  button{
+.donor-search button {
     width: 35%;
     height: 45px;
-    background: #fff;
+    background: var(--button-background);
     border: none;
     outline: none;
     border-radius: 40px;
-    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    box-shadow: var(--button-shadow);
     cursor: pointer;
     font-size: 16px;
     font-weight: 700;
