@@ -60,7 +60,7 @@ fun ScheduleTime(navController: NavHostController, viewModel: SharedViewModel = 
     val scrollState = rememberScrollState()
 
     // Message to observe
-    val responseMessage by viewModel.responseMessage.collectAsState()
+//    val responseMessage by viewModel.responseMessage.collectAsState()
     val hospitals = listOf("KMC Hospital", "Civil Hospital", "Bir Hospital")
     val shifts = listOf("morning", "afternoon", "evening")
 

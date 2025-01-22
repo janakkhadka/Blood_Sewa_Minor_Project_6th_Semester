@@ -1,13 +1,16 @@
 package com.example.donation.ExtraItems
 
 import android.icu.util.Calendar
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -19,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ComposeCompilerApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,41 +32,37 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.donation.BottomNavBar.CustomTopBar
 import com.example.donation.BottomNavBar.TopBarTheme
+import com.example.donation.DataClasses.CreateEvent
+import com.example.donation.ViewModels.SharedViewModel
 import com.example.donation.ViewModels.dummyEvent
 import com.example.donation.ui.theme.RedThemeTop
 import com.example.donation.ui.theme.dRed
 
 
 @Composable
-fun CreateEvents(navController : NavHostController){
+fun CreateEvents(navController : NavHostController,viewModel: SharedViewModel = viewModel()){
     var eventName by remember { mutableStateOf("") }
     var eventTime by remember { mutableStateOf("") }
     var startTime by remember { mutableStateOf("") }
-    var endTime by remember { mutableStateOf("") }
     var collaboration_with by remember { mutableStateOf("") }
     var venue by remember { mutableStateOf("") }
-    val contact by remember { mutableStateOf("") }
-    val organized_by by remember { mutableStateOf("") }
-    val desc by remember { mutableStateOf("") }
+    var desc by remember { mutableStateOf("") }
 
     //dummy data
-    val hospitals = listOf("KMC Hospital","Civil Hospital","Bhaktapur Cancer Hospital")
+//    val hospitals = listOf("KMC Hospital","Civil Hospital","Bhaktapur Cancer Hospital")
     Box(modifier = Modifier.fillMaxSize()) {
         Column() {
             TopBarTheme()
             CustomTopBar(Icons.Default.ArrowBack, "", "", "Create Events",navController)
-//            Box(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .height(300.dp)
-//                    .clip(shape = RoundedCornerShape(bottomStart = 80.dp, bottomEnd = 80.dp))
-//                    .background(dRed)
-//            ) {}
+//
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -77,22 +77,28 @@ fun CreateEvents(navController : NavHostController){
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                OutlineTextField(eventName,"Event Name",{eventName = it})
-                OutlineTextField(eventTime,"Event Date",{eventTime = it})
-                OutlineTextField(collaboration_with,"Collaboration With") { }
-                OutlineTextField(startTime,"Start Time") {}
-                OutlineTextField(endTime,"End Time") { }
-                OutlineTextField(organized_by,"organized_by") { }
-                OutlineTextField(venue,"venue") { }
-                OutlineTextField(contact,"contact") { }
-                OutlineTextField(desc,"Description") { }
+                Spacer(modifier = Modifier.height(40.dp))
+                OutlineTextField(eventName,"Event Name", onValueChange = {eventName = it})
+                OutlineTextField(eventTime,"Event Date", onValueChange = {eventTime = it})
+                OutlineTextField(collaboration_with,"Collaboration With", onValueChange = {collaboration_with = it})
+                OutlineTextField(venue,"venue", onValueChange = {venue = it})
+                OutlineTextField(desc,"Description", onValueChange = {desc = it})
                 Button(
                     onClick = {
 
-                        if(eventName.isNotEmpty()||eventTime.isNotEmpty()||collaboration_with.isNotEmpty()||startTime.isNotEmpty()||venue.isNotEmpty())
-                        {
-                            val data = dummyEvent(eventName,organized_by,collaboration_with,contact,desc,startTime,endTime)
-                            //viewModel.addEvents(data)
+//                        val createData = CreateEvent(
+//                            name = "kiran",
+//                            collabrator = "Bir Hospital",
+//                            date = "2025-01-14",
+//                            description = "more to know",
+//                            location = "ncit"
+//                        )
+
+                        try {
+                            viewModel.createEvent(eventName, desc,venue,collaboration_with,eventTime)
+                        } catch (e: Exception) {
+                            Log.e("ScheduleTime", "Error scheduling time: ${e.message}")
+
                         }
 
                     },
@@ -118,38 +124,22 @@ fun CreateEvents(navController : NavHostController){
 }
 
 @Composable
-fun OutlineTextField(  text : String,label : String,onValueChange : (String) -> Unit){
+fun OutlineTextField( text : String,label : String,onValueChange: (String) -> Unit){
     OutlinedTextField(
         value = text,
-        onValueChange = {onValueChange},
+        onValueChange = onValueChange ,
         label = {Text(label)},
-        shape = RoundedCornerShape(10.dp)
+        shape = RoundedCornerShape(10.dp),
+        modifier = Modifier.fillMaxWidth(.8f)
+
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+
+
+@Preview(showBackground = true)
 @Composable
-fun DialExample(
-    onConfirm: () -> Unit,
-    onDismiss: () -> Unit,
-) {
-    val currentTime = Calendar.getInstance()
-
-    val timePickerState = rememberTimePickerState(
-        initialHour = currentTime.get(Calendar.HOUR_OF_DAY),
-        initialMinute = currentTime.get(Calendar.MINUTE),
-        is24Hour = true,
-    )
-
-    Column {
-        TimePicker(
-            state = timePickerState,
-        )
-        Button(onClick = onDismiss) {
-            Text("Dismiss picker")
-        }
-        Button(onClick = onConfirm) {
-            Text("Confirm selection")
-        }
-    }
+fun showData(){
+    val navController = rememberNavController()
+    CreateEvents(navController)
 }

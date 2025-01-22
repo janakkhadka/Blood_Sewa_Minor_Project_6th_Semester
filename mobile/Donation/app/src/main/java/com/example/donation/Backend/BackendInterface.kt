@@ -1,6 +1,8 @@
 package com.example.donation.backend
 
 
+import com.example.donation.DataClasses.BloodRequest
+import com.example.donation.DataClasses.CreateEvent
 import com.example.donation.DataClasses.ScheduleTime
 import com.example.donation.DataClasses.SeeBloodRequest
 import com.example.donation.backend.login.LoginRequest
@@ -40,6 +42,20 @@ interface BackendInterface {
    suspend fun createScheduleTime(
       @Header("Authorization") authorization: String,
       @Body scheduleTime: ScheduleTime
+   ): Response<Unit>
+
+
+   //blood request garna ko lagi
+   @POST("create/blood-request/")
+   suspend fun createBloodRequest(
+      @Header("Authorization") authorization: String,
+      @Body bloodRequest: BloodRequest
+   ): Response<Unit>
+
+   @POST("user/event/create/")
+   suspend fun createEvent(
+      @Header("Authorization") authorization: String,
+      @Body event: CreateEvent
    ): Response<Unit>
 
 
