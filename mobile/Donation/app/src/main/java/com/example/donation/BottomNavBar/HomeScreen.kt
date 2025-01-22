@@ -5,7 +5,7 @@ import android.net.Uri
 import android.os.Build
 import android.util.Log
 import android.widget.Toast
-import androidx.annotation.RequiresApi
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,6 +26,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddLocation
@@ -73,6 +74,7 @@ import com.example.donation.R
 import com.example.donation.ViewModels.SharedViewModel
 import com.example.donation.ViewModels.dummyEvent
 import com.example.donation.ViewModels.dummyUrgentData
+import com.example.donation.backend.RegViewModel
 import com.example.donation.datastore.DataStoreManager
 import com.example.donation.ui.theme.DarkGreen
 import com.example.donation.ui.theme.RedThemeTop
@@ -88,6 +90,8 @@ import java.time.LocalTime
 
 @Composable
 fun HomeScreen(navController : NavHostController) {
+
+
 
   //  val eventData by viewModel.event.collectAsState()
     var showDialogBox by remember { mutableStateOf(false) }
@@ -314,18 +318,19 @@ fun HomeScreen(navController : NavHostController) {
 
 
                 ) {
-                    LazyRow {
-//                        items(eventData) { eventItem ->
-//                            EventData(eventItem){
-//                                selectedEvent = eventItem
-//                                eventDialog = true
+
+//                    LazyRow {
+////                        items(eventData) { eventItem ->
+////                            EventData(eventItem){
+////                                selectedEvent = eventItem
+////                                eventDialog = true
+////
+////                            }
 //
-//                            }
-
-                       // }
-
-
-                    }
+//                       // }
+//
+//
+//                    }
                 }
                 Spacer(modifier = Modifier.height(100.dp))
             }
@@ -663,4 +668,11 @@ fun EventDialog(events : dummyEvent){
 
     }
 
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Review(){
+    val navController = rememberNavController()
+    HomeScreen(navController)
 }

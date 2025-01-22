@@ -1,6 +1,8 @@
 package com.example.donation.backend
 
 
+import com.example.donation.DataClasses.ScheduleTime
+import com.example.donation.DataClasses.SeeBloodRequest
 import com.example.donation.backend.login.LoginRequest
 import com.example.donation.backend.login.LoginResponse
 import com.example.donation.backend.registration.PostResponse
@@ -27,6 +29,18 @@ interface BackendInterface {
    suspend fun searchUser(
       @Header("Authorization") authorization: String
    ):List<SearchDonor>
+
+   @GET("blood-requests/")
+   suspend fun seeBloodRequest(
+      @Header("Authorization") authorization: String
+   ):List<SeeBloodRequest>
+
+   //scheduling time ko lagi
+   @POST("make-bookings/")
+   suspend fun createScheduleTime(
+      @Header("Authorization") authorization: String,
+      @Body scheduleTime: ScheduleTime
+   ): Response<Unit>
 
 
 }
