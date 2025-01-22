@@ -63,6 +63,58 @@ const RegistrationOrg = () => {
         e.preventDefault();
        
       };
+    const [error, setError] = useState('');
+
+    const handleSignup = async (e) => {
+    e.preventDefault();
+
+    // Client-side validation
+    if (!name || !email || !password || !confirmPassword || !contact || !selectedProvince || !selectedDistrict || !city || !location || !isTermsChecked) {
+        setError('Please fill out all required fields and accept the terms and conditions.');
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        setError('Passwords do not match.');
+        return;
+    }
+
+    const signupData = {
+        name: name,
+        email: email,
+        password: password,
+        contact: contact,
+        org_type: orgType,
+        province: selectedProvince.label,
+        district: selectedDistrict.label,
+        city: city,
+        location: location,
+    };
+
+    try {
+        const response = await fetch('http://172.16.12.229:8000/api/organization/register/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(signupData),
+        });
+        console.log(JSON.stringify(signupData))
+
+        if (!response.ok) {
+            const errorResponse = await response.json();
+            console.log('Signup failed:', errorResponse);
+            throw new Error(errorResponse.message || 'Signup failed!');
+        }
+
+        const data = await response.json();
+        console.log('Signup successful:', data);
+    } catch (err) {
+        console.error(err.message);
+        setError(err.message || 'An error occurred during signup.');
+    }
+};
+    
 
   return (
 

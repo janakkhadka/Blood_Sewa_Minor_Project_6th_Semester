@@ -54,7 +54,7 @@ const RegistrationUser = () => {
           ? selectedProvinceData.options
           : [];
     
-        setDistrictOptions(updatedDistrictOptions); // Update the district options
+        setDistrictOptions(updatedDistrictOptions);
       };
 
     const [selectedDistrict, setSelectedDistrict] = useState("")
@@ -69,13 +69,68 @@ const RegistrationUser = () => {
 
     const [isTermsChecked, setTerms] = useState(false)
     const handleTermsCheckboxChange = (event) => {
-        setTerms(event.target.checked); // Update state with checkbox status
+        setTerms(event.target.checked); 
       };
 
     const handleSubmit = (e) => {
         e.preventDefault();
        
       };
+
+    const [error, setError] = useState('');
+
+    const handleSignUp = async (e) => {
+        e.preventDefault();
+      
+        if (!name || !email || !password || !confirmPassword || !phone || !dob || !selectedBloodGroup || !selectedProvince || !selectedDistrict || !isTermsChecked) {
+          setError('Please fill out all required fields and accept the terms and conditions.');
+          return;
+        }
+      
+        if (password !== confirmPassword) {
+          setError('Passwords do not match.');
+          return;
+        }
+        try{
+      
+            const signupData = {
+                'name': name,
+                'gender': gender,
+                'email': email,
+                'phone_number': phone,
+                'DOB': dob,
+                'password': password,
+                'blood_group': selectedBloodGroup.label,
+                'province': selectedProvince.label,
+                'district': selectedDistrict.label,
+            };
+              
+            
+      
+          const response = await fetch('http://172.16.12.229:8000/api/user/register/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(signupData)
+          });
+          console.log(JSON.stringify(signupData));
+      
+          if (!response.ok) {
+            const errorResponse = await response.json();
+            console.log(errorResponse);
+            throw new Error(errorResponse.message || 'Signup failed!');
+          };
+      
+          const data = await response.json();
+          console.log('Signup successful:', data);
+      
+        } catch (err) {
+          console.error(err.message);
+          setError(err.message || 'An error occurred during signup.');
+        }
+      };
+      
 
 
   return (
@@ -108,7 +163,13 @@ const RegistrationUser = () => {
 
                     <div className='dob-box'>
                         <label htmlFor="" className='dob-label'>Date of Birth:</label>
-                        <DatePicker onChange={setDob} value={dob}  className='date-picker'
+                        <DatePicker 
+                        onChange={(date) => {
+                            const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+                            setDob(formattedDate);
+                          }}
+                        value={dob}  
+                        className='date-picker'
                         placeholderText="Date of Birth"
                         calendarIcon={null} 
                         clearIcon={null}/>
@@ -256,7 +317,7 @@ const RegistrationUser = () => {
                     </div>
 
                     <div className="button">
-                        <button type="submit" disabled={!isTermsChecked}>Sign Up</button>
+                        <button type="submit" onClick={handleSignUp} disabled={!isTermsChecked}>Sign Up</button>
                     </div>
 
                     <div className="login-link">

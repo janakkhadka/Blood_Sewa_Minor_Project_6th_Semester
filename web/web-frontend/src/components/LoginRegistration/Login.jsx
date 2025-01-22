@@ -24,6 +24,30 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault(); // Prevent page reload
       };
+    const [error, setError] = useState('');
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch('http://172.16.12.229:8000/api/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+            });
+
+            if (!response.ok) {
+            throw new Error('Login failed!');
+            }
+
+            const data = await response.json();
+            console.log('Login successful:', data);
+            // Handle successful login (e.g., save token, redirect)
+        } catch (err) {
+            console.error(err.message);
+            setError('Invalid email or password.');
+        }
+    };
   return (
     <div className="wrapper">
         <NavigationBar 
@@ -92,7 +116,7 @@ const Login = () => {
                         
                     </div>
 
-                    <button type="submit">Login</button>
+                    <button type="submit" onClick={handleLogin}>Login</button>
                     <div className="register-link">
                         <p> Don't have an account?
                             <Link to = {registerLink}>Register</Link>
