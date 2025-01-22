@@ -5,7 +5,7 @@ import { FaHome } from "react-icons/fa";
 import { MdNotificationsActive, MdNotifications, MdDashboard } from "react-icons/md";
 import { IoPersonCircle } from "react-icons/io5";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 
 //organization dashboard ko lagi
@@ -45,10 +45,16 @@ export const OrgDashboardNavbarRightLeft = () => {
 
 
 export const OrgDashboardNavbarRightRight = () => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem('orgAuthToken');
+    sessionStorage.removeItem('orgAuthToken');
+    navigate('/');
+  };
     return (
       <div className="navbar-right-right">
         Red Cross Nepal
-        <button className="logout-button">
+        <button className="logout-button" onClick={handleLogout}>
           Logout
         </button>
       </div>

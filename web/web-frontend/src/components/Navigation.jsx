@@ -25,39 +25,154 @@ import OrgOrganizeEvent from './OrgDashboard/Events/OrgOrganizeEvent.jsx';
 import CollabRequest from './OrgDashboard/Events/CollabRequest.jsx';
 import ScheduledDonation from './OrgDashboard/ScheduledDonation.jsx';
 import EventDetail from './OrgDashboard/Events/EventDetail.jsx';
+import UserPrivateRoute from './UserPrivateRoute.jsx';
+import OrgPrivateRoute from './OrgPrivateRoute.jsx';
 
 const Navigation = () => {
-    return (
-        <Router>
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/registrationorg" element={<RegistrationOrg />} />
-            <Route path="/registrationuser" element={<RegistrationUser />} />
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/registrationorg" element={<RegistrationOrg />} />
+        <Route path="/registrationuser" element={<RegistrationUser />} />
+        <Route path="/blood-request-form" element={<BloodRequestForm />} />
 
-            <Route path ="/user-dashboard" element={<UserDashboard/>}/>
-            <Route path ="/blood-request-form" element = {<BloodRequestForm/>}/>
-            <Route path ="/schedule-donation" element = {<ScheduleDonation/>}/>
-            <Route path ="/user-organize-event" element = {<UserOrganizeEvent/>}/>
-            <Route path ="/user-blood-availability" element = {<UserBloodAvailability/>}/>
-            <Route path ="/user-profile" element = {<UserProfile/>}/>
-            <Route path ="/user-profile-update" element = {<UserProfileUpdate/>}/>
-            <Route path ="/search-donor" element = {<SearchDonor/>}/>
-            
-            {/* organization route */}
-            <Route path ="/org-dashboard" element = {<OrgDashboard/>}/>
-            <Route path ="/events" element = {<Events/>}/>
-            <Route path ="/todays-event" element = {<TodaysEvent/>}/>
-            <Route path ="/org-organize-event" element = {<OrgOrganizeEvent/>}/>
-            <Route path ="/collab-request" element = {<CollabRequest/>}/>
-            <Route path ="/event-details" element = {<EventDetail/>}/>
+        {/* User Protected Routes */}
+        <Route
+          path="/user-dashboard"
+          element={
+            <UserPrivateRoute>
+              <UserDashboard />
+            </UserPrivateRoute>
+          }
+        />
+        <Route
+          path="/schedule-donation"
+          element={
+            <UserPrivateRoute>
+              <ScheduleDonation />
+            </UserPrivateRoute>
+          }
+        />
+        <Route
+          path="/user-organize-event"
+          element={
+            <UserPrivateRoute>
+              <UserOrganizeEvent />
+            </UserPrivateRoute>
+          }
+        />
+        <Route
+          path="/user-blood-availability"
+          element={
+            <UserPrivateRoute>
+              <UserBloodAvailability />
+            </UserPrivateRoute>
+          }
+        />
+        <Route
+          path="/user-profile"
+          element={
+            <UserPrivateRoute>
+              <UserProfile />
+            </UserPrivateRoute>
+          }
+        />
+        <Route
+          path="/user-profile-update"
+          element={
+            <UserPrivateRoute>
+              <UserProfileUpdate />
+            </UserPrivateRoute>
+          }
+        />
+        <Route
+          path="/search-donor"
+          element={
+            <UserPrivateRoute>
+              <SearchDonor />
+            </UserPrivateRoute>
+          }
+        />
 
-            <Route path ="/scheduled-donation" element = {<ScheduledDonation/>}/>
-            
-            
-          </Routes>
-        </Router>
-      );
-}
+        {/* Organization Protected Routes */}
+        <Route
+          path="/org-dashboard"
+          element={
+            <OrgPrivateRoute>
+              <OrgDashboard />
+            </OrgPrivateRoute>
+          }
+        />
+        <Route
+          path="/events"
+          element={
+            <OrgPrivateRoute>
+              <Events />
+            </OrgPrivateRoute>
+          }
+        />
+        <Route
+          path="/todays-event"
+          element={
+            <OrgPrivateRoute>
+              <TodaysEvent />
+            </OrgPrivateRoute>
+          }
+        />
+        <Route
+          path="/org-organize-event"
+          element={
+            <OrgPrivateRoute>
+              <OrgOrganizeEvent />
+            </OrgPrivateRoute>
+          }
+        />
+        <Route
+          path="/collab-request"
+          element={
+            <OrgPrivateRoute>
+              <CollabRequest />
+            </OrgPrivateRoute>
+          }
+        />
+        <Route
+          path="/event-details"
+          element={
+            <OrgPrivateRoute>
+              <EventDetail />
+            </OrgPrivateRoute>
+          }
+        />
+        <Route
+          path="/scheduled-donation"
+          element={
+            <OrgPrivateRoute>
+              <ScheduledDonation />
+            </OrgPrivateRoute>
+        }
+        />
+        <Route
+          path="/search-donor-org"
+          element={
+            <OrgPrivateRoute>
+              <SearchDonor />
+            </OrgPrivateRoute>
+          }
+        />
+        <Route
+          path="/user-blood-availability-org"
+          element={
+            <OrgPrivateRoute>
+              <UserBloodAvailability />
+            </OrgPrivateRoute>
+          }
+        />
+      
+      </Routes>
+    </Router>
+  );
+};
 
-export default Navigation
+export default Navigation;
