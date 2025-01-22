@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import './LoginRegistration.css';
 
 import { Link } from "react-router-dom";
@@ -15,16 +15,18 @@ import { IoIosArrowDropdownCircle } from "react-icons/io";
 import BackThreeD from './3d'
 
 import NavigationBar from '../Common/NavigationBar'
-import { NavbarRightLeft, NavbarRightRight } from '../Common/CommonNavBarComponent'
+import { NavbarRightLeft } from '../Common/CommonNavBarComponent'
 import {provinceList, ProvinceDistrictList } from './DropDownList';
 
 
 
 const RegistrationOrg = () => {
+    const [activateAccountModal, setActivateAccountModal] = useState(false);
     
     const [orgType, setOrgType] = useState("hospital")
     const handleChangeOrgType = (event) => {
         setOrgType(event.target.value);
+        console.log(event.target.value)
       };
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
@@ -53,67 +55,117 @@ const RegistrationOrg = () => {
         setSelectedDistrict(option);
     };
     const [city, setCity] = useState("")
-    const [location, setLocation] = useState("")
+    const [localAddress, setLocalAddress] = useState("")
     const [isTermsChecked, setTerms] = useState(false)
     const handleTermsCheckboxChange = (event) => {
-        setTerms(event.target.checked); // Update state with checkbox status
+        setTerms(event.target.checked);
       };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-       
-      };
-    const [error, setError] = useState('');
+
+    const [error, setError] = useState('* All fields must be filled.');
+    useEffect(() => {
+        if (error) {
+            console.log(error);
+        }
+    }, [error]);
 
     const handleSignup = async (e) => {
-    e.preventDefault();
-
-    // Client-side validation
-    if (!name || !email || !password || !confirmPassword || !contact || !selectedProvince || !selectedDistrict || !city || !location || !isTermsChecked) {
-        setError('Please fill out all required fields and accept the terms and conditions.');
+        e.preventDefault();
+        if (!name) {
+        setError('Organization name is required.');
         return;
-    }
-
-    if (password !== confirmPassword) {
-        setError('Passwords do not match.');
-        return;
-    }
-
-    const signupData = {
-        name: name,
-        email: email,
-        password: password,
-        contact: contact,
-        org_type: orgType,
-        province: selectedProvince.label,
-        district: selectedDistrict.label,
-        city: city,
-        location: location,
-    };
-
-    try {
-        const response = await fetch('http://172.16.12.229:8000/api/organization/register/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(signupData),
-        });
-        console.log(JSON.stringify(signupData))
-
-        if (!response.ok) {
-            const errorResponse = await response.json();
-            console.log('Signup failed:', errorResponse);
-            throw new Error(errorResponse.message || 'Signup failed!');
+        }
+        if (!email) {
+            setError('Email is required.');
+            return;
+        }
+        if (!password) {
+            setError('Password is required.');
+            return;
+        }
+        if (!confirmPassword) {
+            setError('Confirm password is required.');
+            return;
+        }
+        if (!contact) {
+            setError('Contact number is required.');
+            return;
+        }
+        if (!selectedProvince) {
+            setError('Province is required.');
+            return;
+        }
+        if (!selectedDistrict) {
+            setError('District is required.');
+            return;
+        }
+        if (!city) {
+            setError('City/Village is required.');
+            return;
+        }
+        if (!localAddress) {
+            setError('Local address is required.');
+            return;
+        }
+        if (!isTermsChecked) {
+            setError('You must accept the terms and conditions.');
+            return;
         }
 
-        const data = await response.json();
-        console.log('Signup successful:', data);
-    } catch (err) {
-        console.error(err.message);
-        setError(err.message || 'An error occurred during signup.');
-    }
-};
+
+        if (password !== confirmPassword) {
+            setError('Passwords do not match.');
+            return;
+        }
+
+        const signupData = {
+            name: name,
+            email: email,
+            password: password,
+            phone_number: contact,
+            org_type: orgType,
+            province: selectedProvince.label,
+            district: selectedDistrict.label,
+            city: city,
+            local_address: localAddress,
+        };
+
+        try {
+            const response = await fetch('http://172.16.12.229:8000/api/organization/register/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(signupData),
+            });
+            console.log(JSON.stringify(signupData))
+
+            if (!response.ok) {
+                const errorResponse = await response.json();
+                console.log('Signup failed:', errorResponse);
+                throw new Error(errorResponse.message || 'Signup failed!');
+            }
+            if(response.ok){
+                setActivateAccountModal(true);
+                setName("")
+                setEmail("")
+                setPassword("")
+                setConfirmPassword("")
+                setContact("")
+                setSelectedProvince("")
+                setSelectedDistrict("")
+                setCity("")
+                setLocalAddress("")
+                setTerms(false)
+            }
+
+            const data = await response.json();
+            console.log('Signup successful:', data);
+        } catch (err) {
+            console.error(err.message);
+            setError(err.message || 'An error occurred during signup.');
+        }
+    };
     
 
   return (
@@ -129,13 +181,27 @@ const RegistrationOrg = () => {
         <div className="background">
             <BackThreeD/>
         </div>
+        {activateAccountModal && (
+            <div className="modal">
+                <div className="modal-content">
+                    <div className="close-button">
+                        <button onClick={() => setActivateAccountModal(false)}>X</button>
+                    </div>
+                    <div className="activate-button">
+                    <button onClick={() => window.open('https://mail.google.com/mail/u/0/#inbox', '_blank')}>
+                        Activate your Account
+                    </button>
+                    </div>
+                </div>
+            </div>
+        )}
         <div className="form-box-registration registration">
             <div className="registration-form">
-                <form onSubmit={handleSubmit}>
+                <form>
                     <h1>Register your organization</h1>
                     <span style={{fontSize:"14px"}}>Fill up the form carefully to register Hospital/Blood Bank.</span>
                     <br/>
-                    <span style={{fontSize:"12px",marginLeft:"20px",marginTop:"22px"}}>* All fields must be filled.</span>
+                    <span style={{fontSize:"12px",marginLeft:"20px",marginTop:"22px"}}>{error}</span>
 
                     <div className="organization-type"  style={{marginTop:"2px"}}>
                         <label>
@@ -231,8 +297,8 @@ const RegistrationOrg = () => {
                     </div>
                     <div className="input-box">
                         <input type="text"
-                        value = {location}
-                        onChange={(e) => setLocation(e.target.value)}
+                        value = {localAddress}
+                        onChange={(e) => setLocalAddress(e.target.value)}
                         placeholder='Local Address'/>
                         <FaLocationDot className="icon"/>
                     </div>
@@ -255,7 +321,7 @@ const RegistrationOrg = () => {
                     </div>
 
                     <div className="button">
-                        <button type="submit" disabled={!isTermsChecked}>Sign Up</button>
+                        <button type="submit" onClick={handleSignup}>Sign Up</button>
                     </div>
 
                     <div className="login-link">
