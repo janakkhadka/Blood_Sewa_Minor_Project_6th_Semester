@@ -89,10 +89,16 @@ export const UserDashboardNavbarRightLeft = () => {
   }
   
 export const UserDashboardNavbarRightRight = () => {
+    const navigate = useNavigate();
+    const handleLogout = () => {
+      localStorage.removeItem('userAuthToken');
+      sessionStorage.removeItem('userAuthToken');
+      navigate('/');
+    };
     return (
       <div className="navbar-right-right">
         Welcome, Janak
-        <button className="logout-button">
+        <button className="logout-button" onClick={handleLogout}>
           Logout
         </button>
       </div>

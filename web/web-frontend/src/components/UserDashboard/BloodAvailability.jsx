@@ -13,9 +13,15 @@ import BackThreeD from '../LoginRegistration/3d'
 import MyBarChart from '../Utils/MyBarChart';
 import NavigationBar from '../Common/NavigationBar'
 import { UserComponentNavbarRightLeft, UserComponentNavbarRightRight } from './UserNavbarComponent';
+import { OrgDashboardNavbarRightLeft, OrgDashboardNavbarRightRight } from '../OrgDashboard/OrgNavbarComponent'
 
 
 function BloodAvailability() {
+    const userAuthToken1  = localStorage.getItem("userAuthToken");
+    const userAuthToken2 = sessionStorage.getItem("userAuthToken");
+    const orgAuthToken1 = localStorage.getItem("orgAuthToken");
+    const orgAuthToken2 = sessionStorage.getItem("orgAuthToken");
+
     const [hospitalOptions, setHospitalOptions] = useState([]);//list of hospital accordance to province hai
     const [selectedProvince, setSelectedProvince] = useState('')
     const handleProvinceChange = (selectedOption) => {
@@ -59,11 +65,21 @@ function BloodAvailability() {
         <div className="syringe">
             <BackThreeD/>
         </div>
-        <NavigationBar 
+        {userAuthToken1 || userAuthToken2 &&
+          <NavigationBar 
           titleNav = "Blood Sewa" 
           rightLeftNav = {<UserComponentNavbarRightLeft/>}
           rightRightNav = {<UserComponentNavbarRightRight/>} 
+          />
+        }
+        {orgAuthToken1 || orgAuthToken2 && 
+          <NavigationBar 
+          titleNav = "Blood Sewa" 
+          rightLeftNav = {<OrgDashboardNavbarRightLeft/>}
+          rightRightNav = {<OrgDashboardNavbarRightRight/>} 
         />
+      }
+        
         <div className="blood-availability">
             <form action="">
                 <h1>See Blood Availability</h1>
