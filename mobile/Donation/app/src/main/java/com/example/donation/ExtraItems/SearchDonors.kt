@@ -81,7 +81,6 @@ fun SearchDonors(navController : NavHostController) {
     var province by remember { mutableStateOf("") }
     var Districtexpanded by remember { mutableStateOf(false) }
     var district by remember { mutableStateOf("") }
-    var result by remember { mutableStateOf("") }
     var currentDistricts by remember { mutableStateOf(listOf<String>()) }
 
     //dummy data values
@@ -197,13 +196,15 @@ fun SearchDonors(navController : NavHostController) {
         "Kanchanpur"
     )
 
-        val filterData = if (selectedBloodType.isEmpty()) {
-            donorDatas
-        } else {
-            donorDatas.filter { it.blood_group == selectedBloodType }
-        }
+    val filterData = filterDonors(
+        donors = donorDatas,
+        selectedBloodGroup = selectedBloodType,
+        selectedProvince = province,
+        selectedDistrict = district
+    )
 
-        Column(
+
+    Column(
             modifier = Modifier.fillMaxSize()
         ) {
             TopBarTheme()
@@ -346,7 +347,7 @@ fun SearchDonors(navController : NavHostController) {
         ) {
 
             LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                items(donorDatas) { donors ->
+                items(filterData) { donors ->
                     ShowDataItems(donors)
 
 
@@ -449,3 +450,18 @@ fun ShowDataItems(donor : DonorsList){
 
 
 }
+
+//filter garna laii use hune function
+fun filterDonors(
+    donors: List<DonorsList>,
+    selectedBloodGroup: String,
+    selectedProvince: String,
+    selectedDistrict: String
+): List<DonorsList> {
+    return donors.filter { donor ->
+        (selectedBloodGroup.isEmpty() || donor.blood_group == selectedBloodGroup) &&
+                (selectedProvince.isEmpty() || donor.province == selectedProvince) &&
+                (selectedDistrict.isEmpty() || donor.district == selectedDistrict)
+    }
+}
+

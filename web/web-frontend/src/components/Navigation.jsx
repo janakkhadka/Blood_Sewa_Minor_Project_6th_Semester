@@ -21,8 +21,6 @@ import SearchDonor from './UserDashboard/SearchDonor.jsx';
 import OrgDashboard from './OrgDashboard/OrgDashboard.jsx';
 import Events from './OrgDashboard/Events/Events.jsx';
 import TodaysEvent from './OrgDashboard/Events/TodaysEvent.jsx';
-import PastEvents from './OrgDashboard/Events/PastEvents.jsx';
-import UpcomingEvents from './OrgDashboard/Events/UpcomingEvents.jsx';
 import OrgOrganizeEvent from './OrgDashboard/Events/OrgOrganizeEvent.jsx';
 import CollabRequest from './OrgDashboard/Events/CollabRequest.jsx';
 import ScheduledDonation from './OrgDashboard/ScheduledDonation.jsx';
@@ -50,8 +48,6 @@ const Navigation = () => {
             <Route path ="/org-dashboard" element = {<OrgDashboard/>}/>
             <Route path ="/events" element = {<Events/>}/>
             <Route path ="/todays-event" element = {<TodaysEvent/>}/>
-            <Route path ="/past-events" element = {<PastEvents/>}/>
-            <Route path ="/upcoming-events" element = {<UpcomingEvents/>}/>
             <Route path ="/org-organize-event" element = {<OrgOrganizeEvent/>}/>
             <Route path ="/collab-request" element = {<CollabRequest/>}/>
             <Route path ="/event-details" element = {<EventDetail/>}/>

@@ -2,12 +2,7 @@ import React from 'react'
 
 import './TodaysEvent.css'
 
-import { SlUserFemale, SlUser } from "react-icons/sl";
-import { MdOutlineDateRange, MdDateRange,MdCountertops,MdOutlineCountertops} from "react-icons/md";
-import { BsGenderAmbiguous } from "react-icons/bs";
-import { CiPhone } from "react-icons/ci";
-import { IoHomeOutline } from "react-icons/io5";
-import { FaLocationDot, FaDiamond } from "react-icons/fa6";
+import { MdDateRange,MdCountertops,MdOutlineCountertops} from "react-icons/md";
 import { IoMdTime } from "react-icons/io";
 import { MdEvent } from "react-icons/md";
 import { IoLocationOutline } from "react-icons/io5";
@@ -18,7 +13,6 @@ import BackThreeD from '../../LoginRegistration/3d'
 
 import {donorList} from '../../UserDashboard/DummyData'
 
-import { format } from "date-fns";
 
 function TodaysEvent() {
   return (

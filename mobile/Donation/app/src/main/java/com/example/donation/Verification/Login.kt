@@ -51,7 +51,7 @@ fun Login(navController : NavHostController){
     var isPasswordVisible by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
-//    val dataStoreManager = DataStoreManager(context)
+
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -116,9 +116,10 @@ fun Login(navController : NavHostController){
                 try{
                val response = UserRegistration.authService.loginUser(login)
                 if(response.isSuccessful){
+                    navController.navigate(Screens.BottomNavBar.route)
                     val loginResponse = response.body()
                     loginResponse?.let {
-                        Log.e("nameCheck", it.user_Details.name)
+
 
                     }
 
