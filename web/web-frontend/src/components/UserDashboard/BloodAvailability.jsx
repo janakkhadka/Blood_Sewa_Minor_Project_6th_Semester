@@ -65,14 +65,14 @@ function BloodAvailability() {
         <div className="syringe">
             <BackThreeD/>
         </div>
-        {userAuthToken1 || userAuthToken2 &&
+        {(userAuthToken1 || userAuthToken2) &&
           <NavigationBar 
           titleNav = "Blood Sewa" 
           rightLeftNav = {<UserComponentNavbarRightLeft/>}
           rightRightNav = {<UserComponentNavbarRightRight/>} 
           />
         }
-        {orgAuthToken1 || orgAuthToken2 && 
+        {(orgAuthToken1 || orgAuthToken2) && 
           <NavigationBar 
           titleNav = "Blood Sewa" 
           rightLeftNav = {<OrgDashboardNavbarRightLeft/>}

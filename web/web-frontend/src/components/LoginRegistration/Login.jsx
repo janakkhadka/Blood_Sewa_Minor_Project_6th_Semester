@@ -82,7 +82,7 @@ const Login = () => {
                 const data = await response.json();
                 if(response.ok){
                     const storage = rememberMe ? localStorage : sessionStorage;
-                    storage.setItem('userAuthToken', data.token);
+                    storage.setItem('orgAuthToken', data.token);
                     setError('* All fields must be filled.')
                     navigate('/org-dashboard');
                 }
