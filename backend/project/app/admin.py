@@ -5,11 +5,11 @@ from .models import User, BloodRequestModel , Event , UserEvent , BloodInventory
 
 class CustomUserAdmin(UserAdmin):
     model = User
-    list_display = ['email', 'name', 'phone_number', 'blood_group', 'district', 'province', 'is_active', 'is_staff', 'DOB', 'user_type' , 'gender']  # Ensure 'user_type' is correct
+    list_display = ['email', 'name', 'phone_number', 'blood_group', 'district', 'province', 'is_active', 'is_staff', 'DOB', 'user_type' , 'gender' ]  # Ensure 'user_type' is correct
     ordering = ['email']
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal Info', {'fields': ('name', 'phone_number', 'blood_group', 'district', 'province', 'DOB', 'user_type' , 'gender' , 'file')}),
+        ('Personal Info', {'fields': ('name', 'phone_number', 'blood_group', 'district', 'province', 'DOB', 'user_type' , 'gender' , 'file' , 'city' , 'local_address' , 'org_type')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login',)}),
     )

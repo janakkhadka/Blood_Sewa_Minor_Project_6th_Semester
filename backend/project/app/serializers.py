@@ -42,7 +42,7 @@ class UserSerializer(serializers.ModelSerializer):
 class OrganizationSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'name', 'phone_number', 'district', 'province', 'password']
+        fields = ['id', 'email', 'name', 'phone_number', 'district', 'province', 'password' , 'org_type' , 'city' , 'local_address']
         extra_kwargs = {
             'password': {'write_only': True},  # Ensure the password is not returned in API responses
                 }

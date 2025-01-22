@@ -147,12 +147,15 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
-CORS_ALLOW_ALL_ORIGIN = True
-
-#CORS_ALLOWED_ORIGINS =['*']
-
 ALLOWED_HOSTS = ['*']
 
+CORS_ALLOW_ALL_ORIGINS = True
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://192.168.23.6:3000",  # Your frontend origin
+    "http://localhost:3000",     # Add other relevant origins if necessary
+]
 
 
 

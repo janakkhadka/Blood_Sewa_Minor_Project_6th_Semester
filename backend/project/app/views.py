@@ -582,7 +582,8 @@ class OrganizationListView(APIView):
 
     def get(self , request, *args, **kwargs):
         organization = User.objects.filter(user_type='organization').values_list('name', flat=True)
-        return Response({"organizations":list(organization)}, status=status.HTTP_200_OK)
+        return Response({"organization": organization}, status=status.HTTP_200_OK)
+
 
 
 
