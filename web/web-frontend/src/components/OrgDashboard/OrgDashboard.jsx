@@ -31,8 +31,8 @@ function OrgDashboard() {
                     <button className="action-button" onClick={() => navigate("/blood-request-form",{ state: { identifier: 2 }} )}>Urgent Blood Request</button>
                     <button className="action-button" onClick={() => navigate("/scheduled-donation")}>Scheduled Donation</button>
                     <button className="action-button" onClick={() => navigate("/events")}>Manage Events</button>
-                    <button className="action-button" onClick={() => navigate("/user-blood-availability")}>Blood Inventory</button>
-                    <button className="action-button" onClick={() => navigate("/search-donor")}>Find Donor</button>
+                    <button className="action-button" onClick={() => navigate("/user-blood-availability-org")}>Blood Inventory</button>
+                    <button className="action-button" onClick={() => navigate("/search-donor-org")}>Find Donor</button>
                 </section>
 
                 <section className="blood-inventory-section">

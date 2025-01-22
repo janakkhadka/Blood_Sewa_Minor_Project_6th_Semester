@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.donation.DataClasses.SeeBloodRequest
 import com.example.donation.backend.login.LoginRequest
 import com.example.donation.backend.registration.Registration
 import com.example.donation.backend.searchDonor.SearchDonor
@@ -15,8 +16,17 @@ import kotlinx.coroutines.launch
 
 class RegViewModel(private val dataStore : DataStoreManager) : ViewModel() {
     private val responseMessage = mutableStateOf("")
+
+    //searching donors
     private val _donors = MutableStateFlow<List<SearchDonor>>(emptyList())
     val donors: StateFlow<List<SearchDonor>> = _donors
+
+    //to see blood request
+    private val _request = MutableStateFlow<List<SeeBloodRequest>>(emptyList())
+    val requests : StateFlow<List<SeeBloodRequest>> = _request
+
+    val bearerToken ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1OTExODQxLCJpYXQiOjE3MzcyNzE4NDEsImp0aSI6Ijk0Mzc4OTQ0NzFmOTQzMmY5MDY0NTAxMTcyMGI1YWQ3IiwidXNlcl9pZCI6Mn0.vEpTb-RklySyDYTszxHxzNjaNMY1DAkvLOtZVI7JwL8"
+
 
 
     fun registerUser(
@@ -85,28 +95,38 @@ class RegViewModel(private val dataStore : DataStoreManager) : ViewModel() {
         }
     }
 
-    init {
-    Searchdonors()
-    }
-
-    private fun Searchdonors(){
+    private fun Searchdonors() {
         viewModelScope.launch {
-            try{
-                val bearerToken ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ1OTExODQxLCJpYXQiOjE3MzcyNzE4NDEsImp0aSI6Ijk0Mzc4OTQ0NzFmOTQzMmY5MDY0NTAxMTcyMGI1YWQ3IiwidXNlcl9pZCI6Mn0.vEpTb-RklySyDYTszxHxzNjaNMY1DAkvLOtZVI7JwL8"
-
-                val response =UserRegistration.authService.searchUser("Bearer $bearerToken")
-                Log.d("FetchDonors", "Response: $response")
-
-            }catch (e:Exception){
+            try {
+                val response = UserRegistration.authService.searchUser("Bearer $bearerToken")
+                if (response.isNotEmpty()) {
+                    _donors.value = response
+                } else {
+                    Log.e("SearchDonors", "Empty donor list")
+                }
+            } catch (e: Exception) {
                 e.printStackTrace()
-                Log.e("FetchCriminals", "Error: ${e.message}")
-
+                Log.e("fetchDonors", "Error: ${e.message}")
             }
-
         }
-
-
     }
+
+    private fun SeeRequests() {
+        viewModelScope.launch {
+            try {
+                val response = UserRegistration.authService.seeBloodRequest("Bearer $bearerToken")
+                if (response.isNotEmpty()) {
+                    _request.value = response
+                } else {
+                    Log.e("SeeRequests", "Empty blood request list")
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("fetchRequests", "Error: ${e.message}")
+            }
+        }
+    }
+
 }
 
 

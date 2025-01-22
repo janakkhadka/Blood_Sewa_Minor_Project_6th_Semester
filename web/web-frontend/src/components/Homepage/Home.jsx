@@ -21,8 +21,7 @@ import { bloodInfoList, bloodTypeList, } from "../Utils/DataList";
 import LocalStorage from "../Common/LocalStorage";
 
 function Home() {
-  LocalStorage()
-  const value = localStorage.getItem('myData')
+
 
   const [bloodType, setBloodType] = useState("")
   const [bloodInfo, setBloodInfo] = useState("")

@@ -76,7 +76,7 @@
 }
 
 .org-dashboard .action-button:hover {
-  color: var(--secondary-background);
+  color: var(--text-color);
   backdrop-filter: blur(15px);
   background: transparent;
 }

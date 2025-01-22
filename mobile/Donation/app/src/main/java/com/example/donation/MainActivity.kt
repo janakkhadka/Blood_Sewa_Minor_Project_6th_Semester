@@ -4,9 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.material3.Button
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.donation.ExtraItems.ScheduleTime
 import com.example.donation.Navigation.SetUpNavigation
+import com.example.donation.TestingPurpose.ShowTestValue
 
 
 class MainActivity : ComponentActivity() {
@@ -16,12 +19,15 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             navController = rememberNavController()
-             SetUpNavigation(navController)
+             //SetUpNavigation(navController)
             //ViewEvents(navController)
             //BloodBanks(navController)
             //SearchDonors(navController)
             //CreateEvents()
           //  Events(navController)
+            ScheduleTime(navController)
+
+
 
 
 
