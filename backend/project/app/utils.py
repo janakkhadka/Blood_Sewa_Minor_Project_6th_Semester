@@ -44,7 +44,7 @@ def validate_age(value):
     today = timezone.now().date()
     age = today.year - value.year - ((today.month, today.day) < (value.month, value.day))
 
-    if age < 18:
+    if age < 17:
         raise ValidationError("User must be at least 18 years old.")
 
     return value

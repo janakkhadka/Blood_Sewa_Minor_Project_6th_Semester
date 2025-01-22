@@ -22,10 +22,13 @@ import { MdDateRange } from "react-icons/md";
 
 import BackThreeD from './3d'
 
+import NavigationBar from '../Common/NavigationBar'
+import { NavbarRightLeft, NavbarRightRight } from '../Common/CommonNavBarComponent'
+
 
 
 const RegistrationUser = () => {
-
+    const [activateAccountModal, setActivateAccountModal] = useState(false);
 
     const [gender, setGender] = useState("male")
     const handleChangeGender = (event) => {
@@ -51,7 +54,7 @@ const RegistrationUser = () => {
           ? selectedProvinceData.options
           : [];
     
-        setDistrictOptions(updatedDistrictOptions); // Update the district options
+        setDistrictOptions(updatedDistrictOptions);
       };
 
     const [selectedDistrict, setSelectedDistrict] = useState("")
@@ -66,7 +69,7 @@ const RegistrationUser = () => {
 
     const [isTermsChecked, setTerms] = useState(false)
     const handleTermsCheckboxChange = (event) => {
-        setTerms(event.target.checked); // Update state with checkbox status
+        setTerms(event.target.checked); 
       };
 
     const handleSubmit = (e) => {
@@ -74,12 +77,136 @@ const RegistrationUser = () => {
        
       };
 
+    const [error, setError] = useState('* All fields must be filled.');
+
+    const handleSignUp = async (e) => {
+        e.preventDefault();
+      
+        if (!name) {
+            setError('Organization name is required.');
+            return;
+        }
+        if (!email) {
+            setError('Email is required.');
+            return;
+        }
+        if (!password) {
+            setError('Password is required.');
+            return;
+        }
+        if (!confirmPassword) {
+            setError('Confirm password is required.');
+            return;
+        }
+        if (!phone) {
+            setError('Phone number is required.');
+            return;
+        }
+        if (!dob) {
+            setError('Date of birth is required.');
+            return;
+        }
+        if (!selectedBloodGroup) {
+            setError('Blood group is required.');
+            return;
+        }
+        if (!selectedProvince) {
+            setError('Province is required.');
+            return;
+        }
+        if (!selectedDistrict) {
+            setError('District is required.');
+            return;
+        }
+        if (!isTermsChecked) {
+            setError('You must accept the terms and conditions.');
+            return;
+        }
+      
+        if (password !== confirmPassword) {
+          setError('Passwords do not match.');
+          return;
+        }
+        try{
+      
+            const signupData = {
+                'name': name,
+                'gender': gender,
+                'email': email,
+                'phone_number': phone,
+                'DOB': dob,
+                'password': password,
+                'blood_group': selectedBloodGroup.label,
+                'province': selectedProvince.label,
+                'district': selectedDistrict.label,
+            };
+              
+            
+      
+          const response = await fetch('http://172.16.12.229:8000/api/user/register/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(signupData)
+          });
+          console.log(JSON.stringify(signupData));
+      
+          if (!response.ok) {
+            const errorResponse = await response.json();
+            console.log(errorResponse);
+            throw new Error(errorResponse.message || 'Signup failed!');
+          };
+
+          if (response.ok) {
+            setActivateAccountModal(true);
+            setName("");
+            setEmail("");
+            setPassword("");
+            setConfirmPassword("");
+            setPhone("");
+            setDob("");
+            setSelectedBloodGroup(null);
+            setSelectedProvince("");
+            setSelectedDistrict(""); 
+            setTerms(false);
+        }
+      
+          const data = await response.json();
+          console.log('Signup successful:', data);
+      
+        } catch (err) {
+          console.error(err.message);
+          setError(err.message || 'An error occurred during signup.');
+        }
+      };
+      
+
 
   return (
     <div className="wrapper">
+        <NavigationBar 
+          titleNav = "Blood Sewa" 
+          rightLeftNav = {<NavbarRightLeft/>}
+          rightRightNav = {null} 
+        />
         <div className="background">
             <BackThreeD/>
         </div>
+        {activateAccountModal && (
+            <div className="modal">
+                <div className="modal-content">
+                    <div className="close-button">
+                        <button onClick={() => setActivateAccountModal(false)}>X</button>
+                    </div>
+                    <div className="activate-button">
+                    <button onClick={() => window.open('https://mail.google.com/mail/u/0/#inbox', '_blank')}>
+                        Activate your Account
+                    </button>
+                    </div>
+                </div>
+            </div>
+        )}
         <div className="form-box-user-registration">
             <div className="user-form">
                 <form onSubmit={handleSubmit}>
@@ -87,7 +214,7 @@ const RegistrationUser = () => {
                     <span style={{fontSize:"14px"}}>Fill up the form carefully to register your account with Blood Sewa.</span>
                     <br/>
                     
-                    <span style={{fontSize:"12px",marginLeft:"20px"}}>* All fields must be filled.</span>
+                    <span style={{fontSize:"12px",marginLeft:"20px"}}>{error}</span>
 
                     <div className="input-box" style={{marginTop:"7px"}}>
                         <input type="text"
@@ -100,7 +227,13 @@ const RegistrationUser = () => {
 
                     <div className='dob-box'>
                         <label htmlFor="" className='dob-label'>Date of Birth:</label>
-                        <DatePicker onChange={setDob} value={dob}  className='date-picker'
+                        <DatePicker 
+                        onChange={(date) => {
+                            const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+                            setDob(formattedDate);
+                          }}
+                        value={dob}  
+                        className='date-picker'
                         placeholderText="Date of Birth"
                         calendarIcon={null} 
                         clearIcon={null}/>
@@ -248,7 +381,7 @@ const RegistrationUser = () => {
                     </div>
 
                     <div className="button">
-                        <button type="submit" disabled={!isTermsChecked}>Sign Up</button>
+                        <button type="submit" onClick={handleSignUp} disabled={!isTermsChecked}>Sign Up</button>
                     </div>
 
                     <div className="login-link">

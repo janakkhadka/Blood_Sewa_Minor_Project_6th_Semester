@@ -1,9 +1,4 @@
-:root{
-    --text: #d5c9c9;
-    --day: #1e90ff;
-    --neighbour-month-days: #999999;
 
-}
 
 /* Main Calendar Wrapper */
 .react-calendar {
@@ -28,7 +23,7 @@
   
   .react-calendar__navigation button:hover {
     background-color: white !important;
-    color: var(--button-color) !important;
+    color: var(--calender-day) !important;
     border-radius: 5px;
 
   }
