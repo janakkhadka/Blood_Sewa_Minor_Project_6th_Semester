@@ -1,10 +1,14 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { orgAuthToken } from '../Logic/AuthKey';
+import { useOrgAuthToken } from '../Logic/AuthKey';
 
 
 const OrgPrivateRoute = ({ children }) => {
-  console.log(orgAuthToken);
+  const orgAuthToken = useOrgAuthToken();
+  // console.log('orgroutetoken:'+orgAuthToken);
+  if (orgAuthToken === null) {
+    return <div></div>;
+  }
   return orgAuthToken ? children : <Navigate to="/" replace />;
 };
 

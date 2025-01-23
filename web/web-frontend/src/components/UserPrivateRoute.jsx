@@ -1,8 +1,13 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { userAuthToken } from '../Logic/AuthKey';
+import { useUserAuthToken } from '../Logic/AuthKey';
 
 const UserPrivateRoute = ({ children }) => {
+  const userAuthToken = useUserAuthToken();
+  if (userAuthToken === null) {
+    return null;
+  }
+  console.log('userroutetoken:'+userAuthToken);
   return userAuthToken ? children : <Navigate to="/" replace />;
 };
 

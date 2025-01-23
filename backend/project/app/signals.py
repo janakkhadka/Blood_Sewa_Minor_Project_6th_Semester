@@ -34,3 +34,30 @@ def notify_users(sender, instance, created, **kwargs):
                 },
             }
         )
+
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from .models import User, BloodInventory
+
+# Define default inventory values
+DEFAULT_INVENTORY = {
+    'A+': 0,
+    'A-': 0,
+    'B+': 0,
+    'B-': 0,
+    'AB+': 0,
+    'AB-': 0,
+    'O+': 0,
+    'O-': 0,
+}
+
+@receiver(post_save, sender=User)
+def create_blood_inventory(sender, instance, created, **kwargs):
+    # Check if the created user is an organization
+    if created and instance.user_type == 'organization':
+        BloodInventory.objects.create(
+            organization=instance,
+            inventory=DEFAULT_INVENTORY
+        )
+

@@ -58,7 +58,7 @@ const Login = () => {
                     storage.setItem('userAuthToken', data.access_token);
                     console.log(data.access_token);
                     setError('* All fields must be filled.')
-                    navigate('/');
+                    navigate("/"); 
                 }
                 console.log('Login successful:', data);
             } catch (err) {
@@ -85,7 +85,8 @@ const Login = () => {
                 if(response.ok){
                     const storage = rememberMe ? localStorage : sessionStorage;
                     storage.setItem('orgAuthToken', data.access_token);
-                    console.log(data.access_token);
+                    storage.setItem('orgDetails', JSON.stringify(data.user_detail));
+                    console.log(storage.getItem('orgDetails'));
                     setError('* All fields must be filled.');
                     navigate('/org-dashboard');
                 }
