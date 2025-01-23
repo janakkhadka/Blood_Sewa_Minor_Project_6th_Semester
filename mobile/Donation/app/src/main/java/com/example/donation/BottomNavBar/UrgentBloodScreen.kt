@@ -70,6 +70,7 @@ fun UrgentBloodScreen(navController : NavHostController, viewModel: SharedViewMo
     var address by remember { mutableStateOf("") }
     var patient_name by remember { mutableStateOf("") }
     val scrollState = rememberScrollState()
+
     //tala gayera data haru laii show garne kaam
     val request = remember { mutableStateListOf<String>() }
     val bloodOptions = listOf("A+", "B+", "A-", "B-", "O+", "O-", "AB+", "AB-")

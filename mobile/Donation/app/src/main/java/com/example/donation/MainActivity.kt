@@ -9,8 +9,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.donation.BottomNavBar.Route
 import com.example.donation.BottomNavBar.UrgentBloodScreen
+import com.example.donation.ExtraItems.BloodBanks
 import com.example.donation.ExtraItems.CreateEvents
 import com.example.donation.ExtraItems.ScheduleTime
+import com.example.donation.ExtraItems.ViewEvents
 import com.example.donation.Navigation.Screens
 import com.example.donation.Navigation.SetUpNavigation
 import com.example.donation.TestingPurpose.ShowTestValue
@@ -23,15 +25,17 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             navController = rememberNavController()
-             //SetUpNavigation(navController)
+            //SetUpNavigation(navController)
             //ViewEvents(navController)
             //BloodBanks(navController)
             //SearchDonors(navController)
             //CreateEvents()
           //  Events(navController)
             //ScheduleTime(navController)
-            UrgentBloodScreen(navController)
+           // UrgentBloodScreen(navController)
             //CreateEvents(navController)
+            ViewEvents(navController)
+
 
 
 

@@ -3,6 +3,8 @@ package com.example.donation.backend
 
 import com.example.donation.DataClasses.BloodRequest
 import com.example.donation.DataClasses.CreateEvent
+import com.example.donation.DataClasses.EventList
+import com.example.donation.DataClasses.OrganizationInventory
 import com.example.donation.DataClasses.ScheduleTime
 import com.example.donation.DataClasses.SeeBloodRequest
 import com.example.donation.backend.login.LoginRequest
@@ -57,6 +59,18 @@ interface BackendInterface {
       @Header("Authorization") authorization: String,
       @Body event: CreateEvent
    ): Response<Unit>
+
+   //blood inventory ko lagi
+   @GET("blood-inventory/")
+   suspend fun getOrganizationInventory(
+      @Header("Authorization") authorization: String
+   ): List<OrganizationInventory>
+
+   //evenst view garna laii
+   @GET("events/")
+   suspend fun getEventList(
+      @Header("Authorization") authorization: String
+   ): List<EventList>
 
 
 }
