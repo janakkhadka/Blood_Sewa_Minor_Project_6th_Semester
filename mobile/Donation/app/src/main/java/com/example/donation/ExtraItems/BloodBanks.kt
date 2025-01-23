@@ -29,40 +29,31 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.donation.BottomNavBar.CustomTopBar
 import com.example.donation.BottomNavBar.TopBarTheme
+import com.example.donation.ViewModels.SharedViewModel
 import com.example.donation.ui.theme.dRed
 import kotlin.math.round
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.donation.DataClasses.BloodRequest
+import com.example.donation.DataClasses.OrganizationInventory
 
-// dummy data
-data class HospitalAvailability(
-    val name: String,
-    val aPlus: Float,
-    val bPlus: Float,
-    val abPlus: Float,
-    val abMinus: Float,
-    val oPlus: Float,
-    val oMinus: Float,
-    val aMinus: Float,
-    val bMinus: Float
-)
 
 @Composable
-fun BloodBanks(navController: NavHostController) {
+fun BloodBanks(navController: NavHostController,viewModel: SharedViewModel = viewModel()) {
     // Hospital data list
-    val hospitalData = listOf(
-        HospitalAvailability("KMC Hospital", 5f, 3f, 12f, 21f, 29f, 42f, 43f, 56f),
-        HospitalAvailability("Civil Hospital", 35f, 13f, 11f, 24f, 9f, 44f, 11f, 6f),
-        HospitalAvailability("Cancer Hospital", 23f, 33f, 52f, 14f, 22f, 7f, 13f, 29f)
-    )
+    LaunchedEffect(Unit) {
+        viewModel.fetchOrgData()
+    }
+    val bloodRequests by viewModel.inventory.collectAsState()
 
     var bloodSelected by remember { mutableStateOf("") }
     var bloodExpanded by remember { mutableStateOf(false) }
-    var selectedHospital by remember { mutableStateOf<HospitalAvailability?>(null) }
+    var selectedHospital by remember { mutableStateOf<OrganizationInventory?>(null) }
 
 
     val handleDropDown = { name: String ->
         bloodSelected = name
         bloodExpanded = false
-        selectedHospital = hospitalData.find { it.name == name }
+        selectedHospital = bloodRequests.find { it.organization_name == name }
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -95,10 +86,10 @@ fun BloodBanks(navController: NavHostController) {
                 onDismissRequest = { bloodExpanded = false },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                hospitalData.forEach { option ->
+                bloodRequests.forEach { option ->
                     DropdownMenuItem(
-                        text = { Text(text = option.name) },
-                        onClick = { handleDropDown(option.name) }
+                        text = { Text(text = option.organization_name) },
+                        onClick = { handleDropDown(option.organization_name) }
                     )
                 }
             }
@@ -140,25 +131,26 @@ fun PreviewBloodBanks() {
 
 @SuppressLint("RememberReturnType")
 @Composable
-fun BarChart(hospitalData: HospitalAvailability) {
+fun BarChart(hospitalData: OrganizationInventory) {
     val lowThreshold = 10f
 
     val chartData = listOf(
-        Pair("A+", hospitalData.aPlus),
-        Pair("A-", hospitalData.aMinus),
-        Pair("B+", hospitalData.bPlus),
-        Pair("B-", hospitalData.bMinus),
-        Pair("AB+", hospitalData.abPlus),
-        Pair("AB-", hospitalData.abMinus),
-        Pair("O+", hospitalData.oPlus),
-        Pair("O-", hospitalData.oMinus)
+        Pair("A+", hospitalData.inventory.ABPlus),
+        Pair("A-", hospitalData.inventory.AMinus),
+        Pair("B+", hospitalData.inventory.BPlus),
+        Pair("B-", hospitalData.inventory.BMinus),
+        Pair("AB+", hospitalData.inventory.ABPlus),
+        Pair("AB-", hospitalData.inventory.ABMinus),
+        Pair("O+", hospitalData.inventory.OPlus),
+        Pair("O-", hospitalData.inventory.OMinus)
     )
 
 
 
     val spacingFromLeft = 100f
     val spacingFromBottom = 50f
-    val upperValue = remember { chartData.maxOfOrNull { it.second }?.plus(10) ?: 0f }
+    val upperValue = remember { chartData.maxOfOrNull { it.second }?.plus(10) ?: 0f }.toFloat()
+
     val lowerValue = remember { 0f }
 
 
@@ -182,7 +174,7 @@ fun BarChart(hospitalData: HospitalAvailability) {
         val canvasWidth = size.width
         val spacerData = (canvasWidth - spacingFromLeft) / chartData.size
 
-        // horizontal value
+        // Draw horizontal labels
         chartData.forEachIndexed { index, pair ->
             drawContext.canvas.nativeCanvas.apply {
                 drawText(
@@ -194,9 +186,9 @@ fun BarChart(hospitalData: HospitalAvailability) {
             }
         }
 
-        // vertical line
+        // Vertical lines
         val valueToShow = 8f
-        val eachStep = (upperValue - lowerValue) / valueToShow
+        val eachStep = (upperValue.toFloat() - lowerValue) / valueToShow
 
         (0 until valueToShow.toInt()).forEach { i ->
             val label = lowerValue + eachStep * i
@@ -204,21 +196,21 @@ fun BarChart(hospitalData: HospitalAvailability) {
                 drawText(
                     round(label).toString(),
                     20f,
-                    canvasHeight - 30f - i * canvasHeight / 8f,
+                    canvasHeight - spacingFromBottom - i * (canvasHeight / valueToShow),
                     textPaint
                 )
             }
 
-            // dash line haru
+            // Draw dash lines
             drawLine(
-                start = Offset(spacingFromLeft - 20f, canvasHeight - spacingFromBottom - i * canvasHeight / 8f),
-                end = Offset(spacingFromLeft, canvasHeight - spacingFromBottom - i * canvasHeight / 8f),
+                start = Offset(spacingFromLeft - 20f, canvasHeight - spacingFromBottom - i * (canvasHeight / valueToShow)),
+                end = Offset(spacingFromLeft, canvasHeight - spacingFromBottom - i * (canvasHeight / valueToShow)),
                 color = Color.Black,
                 strokeWidth = 3f
             )
         }
 
-        //  x rw y axis
+        // Draw x and y axes
         drawLine(
             start = Offset(spacingFromLeft, canvasHeight - spacingFromBottom),
             end = Offset(spacingFromLeft, 0f),
@@ -233,33 +225,39 @@ fun BarChart(hospitalData: HospitalAvailability) {
             strokeWidth = 3f
         )
 
-        // Draw bars
+        // Draw bars with correct positioning
         chartData.forEachIndexed { index, chartPair ->
+            val barHeight = (chartPair.second / upperValue.toFloat()) * canvasHeight - (spacingFromBottom + 5f)
+            val barTop = ((upperValue - chartPair.second)) / upperValue * canvasHeight
 
-            val barColor = when{
+            // Set bar color based on threshold
+            val barColor = when {
                 chartPair.second < lowThreshold -> Color.Red
                 else -> Color.Green
             }
+
+            // Draw the bar
             drawRoundRect(
                 color = barColor,
                 topLeft = Offset(
                     spacingFromLeft + 10f + index * spacerData,
-                    (upperValue - chartPair.second) / upperValue * canvasHeight
+                    barTop
                 ),
-                size = Size(55f, (chartPair.second / upperValue) * canvasHeight-(spacingFromBottom+5f)),
-                cornerRadius = CornerRadius(10f, 10f),
-
+                size = Size(55f, barHeight),
+                cornerRadius = CornerRadius(10f, 10f)
             )
 
-            //top ma value display garna laii
+            // Display value above the bar
             drawContext.canvas.nativeCanvas.apply {
                 drawText(
                     chartPair.second.toString(),
                     spacingFromLeft + 40f + index * spacerData,
-                    (upperValue - chartPair.second) / upperValue * canvasHeight - 10f,
+                    barTop - 10f,
                     textPaint
                 )
             }
         }
     }
+
 }
+

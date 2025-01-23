@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 
 import NavigationBar from '../Common/NavigationBar'
 import './OrgDashboard.css'
@@ -10,9 +10,60 @@ import { TbAxisX, TbAxisY } from "react-icons/tb";
 
 import { useNavigate } from 'react-router-dom';
 import MyBarChart from '../Utils/MyBarChart'
+import { orgAuthToken } from '../../Logic/AuthKey'
+import {api} from '../../Logic/api'
 
 function OrgDashboard() {
     const navigate = useNavigate();
+
+    const [data, setData] = useState(null); // State to store fetched data
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null); // Error state
+  console.log(orgAuthToken)
+
+  const [updateBloodInventory, setUpdateBloodInventory] = useState(null);
+  const handleUpdateBloodInventory = () => {
+    setUpdateBloodInventory(true);
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!orgAuthToken) {
+        setError('No auth token found. Please log in.');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch(api+'my-blood-inventory/', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${orgAuthToken}`, // Attach the token
+          },
+        });
+
+        if (!response.ok) {
+            const errorResponse = await response.json();
+            console.log(errorResponse);
+          throw new Error(`Error: ${response.status}`);
+        }
+
+        const result = await response.json(); // Parse JSON response
+        setData(result); // Store data in state
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false); // Stop loading
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
+// if (loading) return <p>Loading...</p>;
+// if (error) return <p>Error: {error}</p>;  
   return (
     <div className="org-dashboard-wrapper">
         <div className="syringe">
@@ -64,6 +115,9 @@ function OrgDashboard() {
                                 <IoMdSquare style={{color:"rgb(25, 160, 25)"}}/>
                                 <span>Pint value greater than 25</span>
                             </div>
+                            <div style={{marginTop:"20px"}}>
+                                <button className='action-button' onClick={handleUpdateBloodInventory}>Update Inventory</button>
+                            </div>
                         </div>
                         <MyBarChart className='bar-chart'/>
                     </div>
@@ -72,6 +126,25 @@ function OrgDashboard() {
             <div className="bottom-section">
                 
             </div> 
+        </div>
+        {updateBloodInventory && (
+            <div className="modal">
+                <div className="modal-content">
+                    <div className="close-button">
+                        <button onClick={() => setUpdateBloodInventory(false)}>X</button>
+                    </div>
+                    <div className="activate-button">
+                    <button>
+                        Update
+                    </button>
+                    </div>
+                </div>
+            </div>
+        )}
+        <div className="update-inventory-wrapper">
+            <div className="update-inventory">
+
+            </div>
         </div>
     </div>
   )

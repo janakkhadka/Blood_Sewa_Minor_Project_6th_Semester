@@ -1,6 +1,7 @@
 package com.example.donation.BottomNavBar
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,6 +25,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material3.Card
@@ -48,21 +50,27 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.donation.DataClasses.BloodRequest
+import com.example.donation.DataClasses.ScheduleTime
+import com.example.donation.ViewModels.SharedViewModel
 import com.example.donation.ui.theme.RedTop
 import com.example.donation.ui.theme.dRed
 import com.example.donation.ui.theme.white
 
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @Composable
-fun UrgentBloodScreen(navController : NavHostController) {
+fun UrgentBloodScreen(navController : NavHostController, viewModel: SharedViewModel = viewModel()) {
     var Bloodexpanded by remember { mutableStateOf(false) }
     var Bloodselected by remember { mutableStateOf("") }
     var contact by remember { mutableStateOf("") }
     var address by remember { mutableStateOf("") }
+    var patient_name by remember { mutableStateOf("") }
     val scrollState = rememberScrollState()
+
     //tala gayera data haru laii show garne kaam
     val request = remember { mutableStateListOf<String>() }
     val bloodOptions = listOf("A+", "B+", "A-", "B-", "O+", "O-", "AB+", "AB-")
@@ -83,9 +91,8 @@ fun UrgentBloodScreen(navController : NavHostController) {
         Box(
             modifier = Modifier
                 .padding(top = 130.dp)
-                .height(300.dp)
                 .shadow(elevation = 50.dp)
-                .fillMaxWidth(.8f)
+                .fillMaxWidth(.9f)
                 .align(Alignment.TopCenter)
                 .clip(shape = RoundedCornerShape(40.dp))
                 .background(Color.White),
@@ -144,9 +151,9 @@ fun UrgentBloodScreen(navController : NavHostController) {
 
                 )
                 OutlinedTextField(
-                    value = address,
-                    onValueChange = { address = it },
-                    label = { Text("Enter contact") },
+                    value = patient_name,
+                    onValueChange = { patient_name = it },
+                    label = { Text("Patient Name") },
                     shape = RoundedCornerShape(10.dp),
                     modifier = Modifier.fillMaxWidth(.8f),
                     leadingIcon = {
@@ -157,67 +164,51 @@ fun UrgentBloodScreen(navController : NavHostController) {
                     }
                 )
 
-
-            }
-        }
-        Button(
-            onClick = {
-                if (Bloodselected.isNotEmpty() && contact.isNotEmpty() && address.isNotEmpty()) {
-                    request.add("Blood Group: $Bloodselected\nContact: $contact\nAddress: $address")
-                }
-            },
-            modifier = Modifier
-                .align(Alignment.Center)
-                .padding(top = 40.dp)
-                .fillMaxWidth(.7f)
-                .height(50.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = dRed,
-                contentColor = Color.Gray
-            ),
-            shape = RoundedCornerShape(5.dp)
-
-        ) {
-            Text(text = "Update", color = Color.White, fontSize = 22.sp)
-
-        }
-        Text(
-            text = "Requests",
-            modifier = Modifier
-                .align(Alignment.CenterStart)
-                .padding(top = 150.dp, start = 30.dp)
-        )
-        Column(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(top = 160.dp)
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            request.forEach { request ->
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.White)
-                        .shadow(4.dp, RoundedCornerShape(12.dp)),
-                    shape = RoundedCornerShape(12.dp),
-                    elevation = CardDefaults.cardElevation(4.dp),
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
-                    ) {
-                        Text(
-                            text = request,
-                            fontSize = 16.sp,
-                            color = Color.Black
+                OutlinedTextField(
+                    value = address,
+                    onValueChange = { address = it },
+                    label = { Text("Enter contact") },
+                    shape = RoundedCornerShape(10.dp),
+                    modifier = Modifier.fillMaxWidth(.8f),
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = ""
                         )
                     }
+                )
+                Button(
+                    onClick = {
+
+
+
+                        try {
+                            viewModel.createBloodRequest(patient_name,contact,Bloodselected,address)
+                        } catch (e: Exception) {
+                            Log.e("ScheduleTime", "Error scheduling time: ${e.message}")
+
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(.8f)
+                        .padding(bottom = 30.dp,top = 20.dp)
+                        .height(50.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = dRed,
+                        contentColor = Color.Gray
+                    ),
+                    shape = RoundedCornerShape(5.dp)
+
+                ) {
+                    Text(text = "Request", color = Color.White, fontSize = 22.sp)
+
                 }
+
+
             }
 
         }
+
 
     }
 }
@@ -229,7 +220,6 @@ fun UrgentBloodScreen(navController : NavHostController) {
 
 
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun Show() {
