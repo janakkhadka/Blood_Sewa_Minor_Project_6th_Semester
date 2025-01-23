@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.Button
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.donation.ExtraItems.BloodRequestsScreen
 import com.example.donation.ExtraItems.ViewEvents
 import com.example.donation.Navigation.Screens
 import com.example.donation.Navigation.SetUpNavigation
@@ -32,7 +33,8 @@ class MainActivity : ComponentActivity() {
             //CreateEvents(navController)
             //ViewEvents(navController)
            // EventViewExtended(navController)
-            ViewEvents(navController)
+            //ViewEvents(navController)
+            BloodRequestsScreen(navController)
 
 
 
