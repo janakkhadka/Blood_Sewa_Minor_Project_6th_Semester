@@ -17,9 +17,11 @@ import BackThreeD from '../LoginRegistration/3d'
 import NavigationBar from '../Common/NavigationBar'
 import { UserComponentNavbarRightLeft, UserComponentNavbarRightRight } from './UserNavbarComponent';
 import { OrgDashboardNavbarRightLeft, OrgDashboardNavbarRightRight } from '../OrgDashboard/OrgNavbarComponent'
-import { userAuthToken, orgAuthToken } from '../../Logic/AuthKey';
+import { useUserAuthToken } from '../../Logic/AuthKey';
 
 function SearchDonor() {
+
+    const userAuthToken = useUserAuthToken();
 
     const [bloodType, setBloodType] = useState("")
     const handleBloodTypeChange = (option) => {

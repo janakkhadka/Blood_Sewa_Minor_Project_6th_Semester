@@ -58,7 +58,7 @@ const Login = () => {
                     storage.setItem('userAuthToken', data.access_token);
                     console.log(data.access_token);
                     setError('* All fields must be filled.')
-                    navigate('/');
+                    navigate("/"); 
                 }
                 console.log('Login successful:', data);
             } catch (err) {
