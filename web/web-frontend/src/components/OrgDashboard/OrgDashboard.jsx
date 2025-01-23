@@ -14,12 +14,13 @@ import { useOrgAuthToken } from '../../Logic/AuthKey';
 import {api} from '../../Logic/api'
 
 function OrgDashboard() {
+    //org details taneko
     const orgDetailsString = sessionStorage.getItem('orgDetails') || localStorage.getItem('orgDetails');
     let orgDetails = null;
     
     try {
       orgDetails = orgDetailsString ? JSON.parse(orgDetailsString) : null;
-      console.log(orgDetails);
+      //console.log(orgDetails);
     } catch (error) {
       console.error('Failed to parse orgDetails:', error);
     }
@@ -35,19 +36,21 @@ function OrgDashboard() {
   const orgAuthToken = useOrgAuthToken();
   const navigate = useNavigate();
 
-  const [data, setData] = useState(null);
+  const [data, setData] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const [updateBloodInventory, setUpdateBloodInventory] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (!orgAuthToken) {
-        setError('No auth token found. Please log in.');
+    if (!orgAuthToken) {
+        setError('No auth token found. Please log in');
         setLoading(false);
+        console.log('No auth token found. Please log in');
         return;
       }
+    const fetchData = async () => {
+        console.log(orgAuthToken)
 
       try {
         const response = await fetch(api+'my-blood-inventory/', {
@@ -64,21 +67,32 @@ function OrgDashboard() {
           throw new Error(`Error: ${response.status}`);
         }
 
-        const result = await response.json(); // Parse JSON response
-        setData(result); // Store data in state
+        
+
+        const result = await response.json();
+        console.log('Fetched Result:', JSON.stringify(result, null, 2));
+        setData(result);
+        console.log('result:', JSON.stringify(result, null, 2)); // Logs result in readable JSON format
+        console.log('data:', JSON.stringify(data, null, 2));
+
+        
       } catch (err) {
         setError(err.message);
       } finally {
         setLoading(false); // Stop loading
       }
     };
-
     fetchData();
-  }, []);
+  }, [orgAuthToken]);
+  useEffect(() => {
+    if (data) {
+      console.log('Updated data:', JSON.stringify(data, null, 2)); // Log data after state update
+    }
+  }, [data]);
 
 
-// if (loading) return <p>Loading...</p>;
-// if (error) return <p>Error: {error}</p>;  
+//  if (loading) return <p>Loading...</p>;
+//  if (error) return <p>Error: {error}</p>;  
   return (
     <div className="org-dashboard-wrapper">
         <div className="syringe">
