@@ -305,16 +305,16 @@ fun HomeScreen(navController : NavHostController) {
 
 
                 ) {
-
-//                    LazyRow {
-////                        items(eventData) { eventItem ->
-////                            EventData(eventItem){
-////                                selectedEvent = eventItem
-////                                eventDialog = true
-////
-////                            }
 //
-//                       // }
+//                    LazyRow {
+//                        items(eventData) { eventItem ->
+//                            EventData(eventItem){
+//                                selectedEvent = eventItem
+//                                eventDialog = true
+//
+//                            }
+//
+//                        }
 //
 //
 //                    }

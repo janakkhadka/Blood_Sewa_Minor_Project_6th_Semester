@@ -11,12 +11,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.donation.BottomNavBar.BottomNavBar
 import com.example.donation.ExtraItems.CreateEvents
 import com.example.donation.ExtraItems.BloodBanks
 import com.example.donation.ExtraItems.BloodRequestsScreen
+import com.example.donation.ExtraItems.EventViewExtended
 import com.example.donation.ExtraItems.Events
 import com.example.donation.ExtraItems.SearchDonors
 import com.example.donation.OnBoardingScreens.OnBoardingScreen
@@ -85,8 +88,9 @@ fun SetUpNavigation(navController : NavHostController) {
             }
 
             composable(route = Screens.ViewEvents.route) {
-                ViewEvents(navController)
+                ViewEvents(navController = navController)
             }
+
 
             composable(route = Screens.createEvents.route) {
                 CreateEvents(navController)
@@ -94,6 +98,9 @@ fun SetUpNavigation(navController : NavHostController) {
 
             composable(Screens.schedultTime.route) {
                 ScheduleTime(navController)
+            }
+            composable(Screens.eventViewExtended.route){
+                EventViewExtended(navController)
             }
 
 

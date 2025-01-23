@@ -1,17 +1,13 @@
 package com.example.donation
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.Button
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.donation.BottomNavBar.Route
-import com.example.donation.BottomNavBar.UrgentBloodScreen
-import com.example.donation.ExtraItems.BloodBanks
-import com.example.donation.ExtraItems.CreateEvents
-import com.example.donation.ExtraItems.ScheduleTime
 import com.example.donation.ExtraItems.ViewEvents
 import com.example.donation.Navigation.Screens
 import com.example.donation.Navigation.SetUpNavigation
@@ -34,6 +30,8 @@ class MainActivity : ComponentActivity() {
             //ScheduleTime(navController)
            // UrgentBloodScreen(navController)
             //CreateEvents(navController)
+            //ViewEvents(navController)
+           // EventViewExtended(navController)
             ViewEvents(navController)
 
 
