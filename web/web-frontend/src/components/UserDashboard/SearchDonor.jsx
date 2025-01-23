@@ -16,13 +16,10 @@ import { IoIosArrowDropdownCircle } from "react-icons/io";
 import BackThreeD from '../LoginRegistration/3d'
 import NavigationBar from '../Common/NavigationBar'
 import { UserComponentNavbarRightLeft, UserComponentNavbarRightRight } from './UserNavbarComponent';
-import { OrgDashboardNavbarRightLeft, OrgDashboardNavbarRightRight } from '../OrgDashboard/OrgNavbarComponent'  
+import { OrgDashboardNavbarRightLeft, OrgDashboardNavbarRightRight } from '../OrgDashboard/OrgNavbarComponent'
+import { userAuthToken, orgAuthToken } from '../../Logic/AuthKey';
 
 function SearchDonor() {
-    const userAuthToken1  = localStorage.getItem("userAuthToken");
-    const userAuthToken2 = sessionStorage.getItem("userAuthToken");
-    const orgAuthToken1 = localStorage.getItem("orgAuthToken");
-    const orgAuthToken2 = sessionStorage.getItem("orgAuthToken");
 
     const [bloodType, setBloodType] = useState("")
     const handleBloodTypeChange = (option) => {
@@ -61,14 +58,14 @@ function SearchDonor() {
         <div className="syringe">
             <BackThreeD/>
         </div>
-        {(userAuthToken1 || userAuthToken2) && 
+        {userAuthToken && 
           <NavigationBar 
           titleNav = "Blood Sewa" 
           rightLeftNav = {<UserComponentNavbarRightLeft/>}
           rightRightNav = {<UserComponentNavbarRightRight/>} 
           />
         }
-        {(orgAuthToken1 || orgAuthToken2) && 
+        {orgAuthToken && 
           <NavigationBar 
           titleNav = "Blood Sewa" 
           rightLeftNav = {<OrgDashboardNavbarRightLeft/>}

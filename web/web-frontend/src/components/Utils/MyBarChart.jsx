@@ -32,12 +32,24 @@ const MyBarChart = ({barList, width, height}) => {
       {/* <CartesianGrid strokeDasharray="1 1" /> */}
       <XAxis
         dataKey="type"
-        tick={{ fill: '#d5c9c9', fontSize: 14 }}
+        tick={{ fill: 'var(--text-color)', fontSize: 14 }}
       />
       <YAxis
-        tick={{ fill: '#d5c9c9', fontSize: 14 }}
+        tick={{ fill: 'var(--text-color)', fontSize: 14 }}
       />
-      <Tooltip />
+      <Tooltip
+        contentStyle={{
+          backgroundColor: 'var(--secondary-background)',
+          borderColor: 'var(--border-color)', 
+          color: 'var(--secondary-text-color)',
+        }}
+        itemStyle={{
+          color: 'var(--secondary-text-color)',
+        }}
+        labelStyle={{
+          color: 'var(--secondary-text-color)',
+        }}
+      />
       {/* <Legend /> */}
       <Bar dataKey="pint">
         {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 
 import './LandingPage.css'
 import '../Common/Variables.css'
@@ -8,18 +8,35 @@ import NavigationBar from '../Common/NavigationBar'
 import BackThreeD from '../LoginRegistration/3d'
 import { NavbarRightLeft, NavbarRightRight } from '../Common/CommonNavBarComponent'
 import { UserDashboardNavbarRightLeft, UserDashboardNavbarRightRight } from '../UserDashboard/UserNavbarComponent';
+import { userAuthToken } from '../../Logic/AuthKey'
 
 
 
 function LandingPage() {
-  const userAuthToken1 = localStorage.getItem('userAuthToken');
-  const userAuthToken2 = sessionStorage.getItem('userAuthToken');
+  const [authToken, setAuthToken] = useState('');
+  const [isLoading, setIsLoading] = useState(true); 
+
+  useEffect(() => {
+    const token = userAuthToken; 
+    setTimeout(() => {
+      setAuthToken(token);
+      setIsLoading(false); 
+    }, 1000);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="loading-screen">
+        <h2></h2>
+      </div>
+    );
+  }
   return (
     <div className='landing-page-wrapper'>
         <div className="syringe">
           <BackThreeD/>
         </div>
-        {userAuthToken1!==null || userAuthToken2!==null?
+        {authToken?
           <NavigationBar 
             titleNav = "Blood Sewa" 
             rightLeftNav = {<UserDashboardNavbarRightLeft/>}

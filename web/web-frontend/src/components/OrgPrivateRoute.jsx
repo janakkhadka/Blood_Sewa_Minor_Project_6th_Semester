@@ -1,12 +1,11 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
+import { orgAuthToken } from '../Logic/AuthKey';
 
 
 const OrgPrivateRoute = ({ children }) => {
-  const authToken = localStorage.getItem('orgAuthToken') || sessionStorage.getItem('orgAuthToken');
-
-  // Check if an auth token exists, if not, redirect to the homepage
-  return authToken ? children : <Navigate to="/" replace />;
+  console.log(orgAuthToken);
+  return orgAuthToken ? children : <Navigate to="/" replace />;
 };
 
 export default OrgPrivateRoute;

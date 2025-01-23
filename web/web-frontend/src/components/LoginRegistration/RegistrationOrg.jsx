@@ -17,7 +17,7 @@ import BackThreeD from './3d'
 import NavigationBar from '../Common/NavigationBar'
 import { NavbarRightLeft } from '../Common/CommonNavBarComponent'
 import {provinceList, ProvinceDistrictList } from './DropDownList';
-
+import {api} from '../../Logic/API.jsx'
 
 
 const RegistrationOrg = () => {
@@ -131,7 +131,7 @@ const RegistrationOrg = () => {
         };
 
         try {
-            const response = await fetch('http://172.16.12.229:8000/api/organization/register/', {
+            const response = await fetch(api+'organization/register/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

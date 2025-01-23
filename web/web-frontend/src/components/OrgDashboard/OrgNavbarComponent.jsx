@@ -49,8 +49,10 @@ export const OrgDashboardNavbarRightRight = () => {
   const handleLogout = () => {
     localStorage.removeItem('orgAuthToken');
     sessionStorage.removeItem('orgAuthToken');
-    navigate('/');
-  };
+    navigate("/login", {
+      state: { accountType: "organization" }
+    });
+  };    
     return (
       <div className="navbar-right-right">
         Red Cross Nepal
@@ -59,7 +61,7 @@ export const OrgDashboardNavbarRightRight = () => {
         </button>
       </div>
     );
-  };
+};
 
 
   //different component ko lagi rightleft hai ta

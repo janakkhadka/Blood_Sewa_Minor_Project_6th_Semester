@@ -24,6 +24,7 @@ import BackThreeD from './3d'
 
 import NavigationBar from '../Common/NavigationBar'
 import { NavbarRightLeft, NavbarRightRight } from '../Common/CommonNavBarComponent'
+import {api} from '../../Logic/API.jsx'
 
 
 
@@ -143,7 +144,7 @@ const RegistrationUser = () => {
               
             
       
-          const response = await fetch('http://172.16.12.229:8000/api/user/register/', {
+          const response = await fetch(api+'user/register/', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

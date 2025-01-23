@@ -1,10 +1,9 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
+import { userAuthToken } from '../Logic/AuthKey';
 
 const UserPrivateRoute = ({ children }) => {
-  const authToken = localStorage.getItem('userAuthToken') || sessionStorage.getItem('userAuthToken');
-
-  return authToken ? children : <Navigate to="/" replace />;
+  return userAuthToken ? children : <Navigate to="/" replace />;
 };
 
 export default UserPrivateRoute;
