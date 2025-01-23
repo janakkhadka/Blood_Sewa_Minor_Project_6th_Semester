@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 
 import './UserDashboardHome.css'
 
@@ -18,6 +18,46 @@ import {greetingMessage} from '../Utils/GreetingMessage'
 
 function UserDashboardHome() {
   const navigate = useNavigate();
+  const [data, setData] = useState(null); // State to store fetched data
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      const orgAuthToken = localStorage.getItem('orgAuthToken') || sessionStorage.getItem('orgAuthToken');
+
+      if (!orgAuthToken) {
+        setError('No auth token found. Please log in.');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch('https://api.example.com/org/data', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${orgAuthToken}`, // Attach the token
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+
+        const result = await response.json(); // Parse JSON response
+        setData(result); // Store data in state
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false); // Stop loading
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
   return (
     <div className='user-dashboard-home-wrapper'>
       <NavigationBar 

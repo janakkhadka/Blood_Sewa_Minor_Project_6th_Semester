@@ -10,6 +10,7 @@ import BackThreeD from './3d'
 
 import NavigationBar from '../Common/NavigationBar'
 import { NavbarRightLeft, NavbarRightRight } from '../Common/CommonNavBarComponent'
+import {api} from '../../Logic/API.jsx'
 
 
 
@@ -18,6 +19,7 @@ const Login = () => {
     const navigate = useNavigate();
     const accountType = location.state?.accountType;
     const registerLink = accountType === 'user' ? '/registrationuser' : '/registrationorg';
+
     console.log(accountType);
 
     const [email, setEmail] = useState("")
@@ -36,7 +38,7 @@ const Login = () => {
         e.preventDefault();
         if(accountType === 'user'){
             try {
-                const response = await fetch('http://172.16.12.229:8000/api/user/login/', {
+                const response = await fetch(api+'user/login/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -53,19 +55,19 @@ const Login = () => {
                 const data = await response.json();
                 if(response.ok){
                     const storage = rememberMe ? localStorage : sessionStorage;
-                    storage.setItem('userAuthToken', data.token);
+                    storage.setItem('userAuthToken', data.access_token);
+                    console.log(data.access_token);
                     setError('* All fields must be filled.')
-                    navigate('/user-dashboard');
+                    navigate('/');
                 }
                 console.log('Login successful:', data);
-                // Handle successful login (e.g., save token, redirect)
             } catch (err) {
                 console.error(err.message);
                 setError('Invalid email or password.');
             }
         }else if(accountType === 'organization'){
             try {
-                const response = await fetch('http://172.16.12.229:8000/api/organization/login/', {
+                const response = await fetch(api+'organization/login/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -82,8 +84,9 @@ const Login = () => {
                 const data = await response.json();
                 if(response.ok){
                     const storage = rememberMe ? localStorage : sessionStorage;
-                    storage.setItem('orgAuthToken', data.token);
-                    setError('* All fields must be filled.')
+                    storage.setItem('orgAuthToken', data.access_token);
+                    console.log(data.access_token);
+                    setError('* All fields must be filled.');
                     navigate('/org-dashboard');
                 }
                 console.log('Login successful:', data);
