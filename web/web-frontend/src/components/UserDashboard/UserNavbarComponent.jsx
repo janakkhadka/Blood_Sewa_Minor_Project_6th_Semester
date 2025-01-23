@@ -6,7 +6,6 @@ import { MdNotificationsActive, MdNotifications, MdDashboard } from "react-icons
 import { IoPersonCircle } from "react-icons/io5";
 
 import { Link, useNavigate } from "react-router-dom";
-import { userAuthToken } from '../../Logic/AuthKey';
 
 //user login vaye paxi homepage maa dekhine navbar ko lagi --kaam garnai baaki xa
 export const UserNavbarRightLeft = () => {

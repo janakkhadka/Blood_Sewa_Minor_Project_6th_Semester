@@ -10,10 +10,11 @@ import { TbAxisX, TbAxisY } from "react-icons/tb";
 
 import { useNavigate } from 'react-router-dom';
 import MyBarChart from '../Utils/MyBarChart'
-import { orgAuthToken } from '../../Logic/AuthKey'
+import { useOrgAuthToken } from '../../Logic/AuthKey';
 import {api} from '../../Logic/api'
 
 function OrgDashboard() {
+    const orgAuthToken = useOrgAuthToken();
     const navigate = useNavigate();
 
     const [data, setData] = useState(null); // State to store fetched data
