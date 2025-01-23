@@ -62,6 +62,7 @@ const RegistrationOrg = () => {
       };
 
 
+
     const [error, setError] = useState('* All fields must be filled.');
     useEffect(() => {
         if (error) {

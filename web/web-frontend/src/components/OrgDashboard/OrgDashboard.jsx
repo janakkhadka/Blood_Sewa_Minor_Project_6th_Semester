@@ -14,18 +14,32 @@ import { useOrgAuthToken } from '../../Logic/AuthKey';
 import {api} from '../../Logic/api'
 
 function OrgDashboard() {
-    const orgAuthToken = useOrgAuthToken();
-    const navigate = useNavigate();
+    const orgDetailsString = sessionStorage.getItem('orgDetails') || localStorage.getItem('orgDetails');
+    let orgDetails = null;
+    
+    try {
+      orgDetails = orgDetailsString ? JSON.parse(orgDetailsString) : null;
+      console.log(orgDetails);
+    } catch (error) {
+      console.error('Failed to parse orgDetails:', error);
+    }
 
-    const [data, setData] = useState(null); // State to store fetched data
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state
-  console.log(orgAuthToken)
+  const [aPositive, setAPositive] = useState("");
+  const [aNegative, setANegative] = useState("");
+  const [bPositive, setBPositive] = useState("");
+  const [bNegative, setBNegative] = useState("");
+  const [abPositive, setABPositive] = useState("");
+  const [abNegative, setABNegative] = useState("");
+  const [oPositive, setOPositive] = useState("");
+  const [oNegative, setONegative] = useState("");
+  const orgAuthToken = useOrgAuthToken();
+  const navigate = useNavigate();
 
-  const [updateBloodInventory, setUpdateBloodInventory] = useState(null);
-  const handleUpdateBloodInventory = () => {
-    setUpdateBloodInventory(true);
-  }
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const [updateBloodInventory, setUpdateBloodInventory] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -117,7 +131,7 @@ function OrgDashboard() {
                                 <span>Pint value greater than 25</span>
                             </div>
                             <div style={{marginTop:"20px"}}>
-                                <button className='action-button' onClick={handleUpdateBloodInventory}>Update Inventory</button>
+                                <button className='action-button' onClick={()=>setUpdateBloodInventory(true)}>Update Inventory</button>
                             </div>
                         </div>
                         <MyBarChart className='bar-chart'/>
@@ -129,24 +143,100 @@ function OrgDashboard() {
             </div> 
         </div>
         {updateBloodInventory && (
-            <div className="modal">
-                <div className="modal-content">
+            <div className="update-inventory-wrapper">
+                <div className="update-inventory">
                     <div className="close-button">
                         <button onClick={() => setUpdateBloodInventory(false)}>X</button>
                     </div>
-                    <div className="activate-button">
-                    <button>
-                        Update
-                    </button>
-                    </div>
+                    <h2 style={{color:"var(--secondary-text-color)"}}>Update Inventory</h2>
+                    <form>
+                        <div className="blood-group-wrapper">
+                            <div className="left-input-box">
+                                <div className="blood-group">
+                                    <label htmlFor="A+">A+</label>
+                                    <div className="input-box">
+                                        <input type="text"
+                                        value = {aPositive}
+                                        onChange={(e) => setAPositive(e.target.value)}
+                                        placeholder=''/>
+                                    </div>
+                                </div>
+                                <div className="blood-group">
+                                <label htmlFor="A-">A-</label>
+                                <div className="input-box">
+                                    <input type="text"
+                                    value = {aNegative}
+                                    onChange={(e) => setANegative(e.target.value)}
+                                    placeholder=''/>
+                                </div>
+                                </div>
+                                <div className="blood-group">
+                                    <label htmlFor="B+">B+</label>
+                                    <div className="input-box">
+                                        <input type="text"
+                                        value = {bPositive}
+                                        onChange={(e) => setBPositive(e.target.value)}
+                                        placeholder=''/>
+                                    </div>
+                                </div>
+                                <div className="blood-group">
+                                    <label htmlFor="B-">B-</label>
+                                    <div className="input-box">
+                                        <input type="text"
+                                        value = {bNegative}
+                                        onChange={(e) => setBNegative(e.target.value)}
+                                        placeholder=''/>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div className="right-input-box">
+                                <div className="blood-group">
+                                    <label htmlFor="AB+">AB+</label>
+                                    <div className="input-box">
+                                        <input type="text"
+                                        value = {abPositive}
+                                        onChange={(e) => setABPositive(e.target.value)}
+                                        placeholder=''/>
+                                    </div>
+                                </div>
+                                <div className="blood-group">
+                                <label htmlFor="AB-">AB-</label>
+                                <div className="input-box">
+                                    <input type="text"
+                                    value = {abNegative}
+                                    onChange={(e) => setABNegative(e.target.value)}
+                                    placeholder=''/>
+                                </div>
+                                </div>
+                                <div className="blood-group">
+                                    <label htmlFor="O+">O+</label>
+                                    <div className="input-box">
+                                        <input type="text"
+                                        value = {oPositive}
+                                        onChange={(e) => setOPositive(e.target.value)}
+                                        placeholder=''/>
+                                    </div>
+                                </div>
+                                <div className="blood-group">
+                                    <label htmlFor="O-">O-</label>
+                                    <div className="input-box">
+                                        <input type="text"
+                                        value = {oNegative}
+                                        onChange={(e) => setONegative(e.target.value)}
+                                        placeholder=''/>
+                                    </div>
+                                </div>
+                            </div>   
+                        </div>
+                        <div className='update-button-wrapper'>
+                            <button type='submit'  className="update-button">
+                                Update
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         )}
-        <div className="update-inventory-wrapper">
-            <div className="update-inventory">
-
-            </div>
-        </div>
     </div>
   )
 }

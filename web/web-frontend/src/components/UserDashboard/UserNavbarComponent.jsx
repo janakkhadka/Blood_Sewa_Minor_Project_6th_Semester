@@ -152,12 +152,20 @@ export const UserDashboardNavbarRightRight = () => {
   }
   
 export const UserComponentNavbarRightRight = () => {
-    return (
-      <div className="navbar-right-right">
-        Welcome, Janak
-        <button className="logout-button">
-          Logout
-        </button>
-      </div>
-    );
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem('userAuthToken');
+    sessionStorage.removeItem('userAuthToken');
+    navigate("/login", {
+      state: { accountType: "user" }
+    });   
+  };
+  return (
+    <div className="navbar-right-right">
+      <span>Welcome, Janak</span>
+      <button className="logout-button" onClick={handleLogout}>
+        Logout
+      </button>
+    </div>
+  );
   };

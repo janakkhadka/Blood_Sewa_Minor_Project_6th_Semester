@@ -5,7 +5,7 @@ import { useOrgAuthToken } from '../Logic/AuthKey';
 
 const OrgPrivateRoute = ({ children }) => {
   const orgAuthToken = useOrgAuthToken();
-  console.log('orgroutetoken:'+orgAuthToken);
+  // console.log('orgroutetoken:'+orgAuthToken);
   if (orgAuthToken === null) {
     return <div></div>;
   }

@@ -145,24 +145,29 @@
   align-items: center;
 }
 
-.org-dashboard .update-inventory-wrapper{
-  position: absolute;
+
+
+
+/* modal for inventory update */
+.org-dashboard-wrapper .update-inventory-wrapper{
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 130vh;
+    height: 100vh;
     background: transparent;
     backdrop-filter: var(--backdrop-filter);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 3;
+    color: var(--secondary-text-color);
 }
 
-.org-dashboard .update-inventory-wrapper .update-inventory{
+.org-dashboard-wrapper .update-inventory-wrapper .update-inventory{
     position: relative;
-    width: 800px;
-    height: 700px;
+    width: 700px;
+    height: 500px;
     background: var(--secondary-background);
     border-radius: 20px;
     box-shadow: var(--shadow);
@@ -170,16 +175,72 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    padding-top: 50px;
 }
 
-.wrapper .modal .modal-content .close-button{
+/* input box ko section suru */
+.org-dashboard-wrapper .update-inventory-wrapper .update-inventory form{
+  width: 100%;
+  height: 100%;
+  margin:20px;
+  padding:40px;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.org-dashboard-wrapper .update-inventory-wrapper .update-inventory form .update-button-wrapper{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.org-dashboard-wrapper .update-inventory-wrapper .update-inventory form .input-box{
+  height:40px;
+  width: 200px;
+}
+.org-dashboard-wrapper .update-inventory-wrapper .update-inventory form .blood-group-wrapper{
+  display: flex;
+  flex-direction: row;
+  gap: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.org-dashboard-wrapper .update-inventory-wrapper .update-inventory form .blood-group-wrapper
+.left-input-box{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.org-dashboard-wrapper .update-inventory-wrapper .update-inventory form .blood-group-wrapper
+.right-input-box{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.org-dashboard-wrapper .update-inventory-wrapper .update-inventory form .blood-group-wrapper .blood-group{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+
+
+
+
+
+
+.org-dashboard-wrapper .update-inventory-wrapper .update-inventory .close-button{
   position: absolute;
   top: 15px;
   right: 20px;
   color: var(--secondary-text-color);
 }
 
-.wrapper .modal .modal-content .close-button button{
+.org-dashboard-wrapper .update-inventory-wrapper .update-inventory .close-button button{
   background: transparent;
   border: none;
   outline: none;
@@ -190,24 +251,23 @@
 }
 
 
-.org-dashboard .update-inventory-wrapper .update-inventory .update-button{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
-
-.org-dashboard .update-inventory-wrapper .update-inventory .update-button button{
-  width: 70%;
-  height: 45px;
-  background: var(--button-background-color);
+.org-dashboard-wrapper .update-inventory-wrapper .update-inventory .update-button{
+  width: 30%;
+  padding: 10px 20px;
   border: none;
-  outline: none;
-  border-radius: 30px;
-  box-shadow: var(--button-shadow);
+  border-radius: 5px;
+  font-size: 18px;
   cursor: pointer;
-  font-size: 16px;
-  font-weight: 700;
+  z-index: 3;
+  box-shadow: var(--button-shadow);
+  border: 2px solid var(--border-color);
+  background-color: var(--button-background-color);
   color: var(--button-text-color);
 }
+
+.org-dashboard-wrapper .update-inventory-wrapper .update-inventory .update-button:hover {
+  color: var(--secondary-text-color);
+  backdrop-filter: blur(15px);
+  background: transparent;
+}
+

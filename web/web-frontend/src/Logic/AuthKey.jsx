@@ -11,11 +11,11 @@ export const useUserAuthToken = () => {
   }, []);
 
   if(isLoading) {
-    console.log('userTokenAuthKey.js:'+userAuthToken);
+    // console.log('userTokenAuthKey.js:'+userAuthToken);
     return null
   }
 
-    console.log('userToken:'+userAuthToken);
+    // console.log('userToken:'+userAuthToken);
     return userAuthToken;
 
 };
@@ -33,6 +33,6 @@ export const useOrgAuthToken = () => {
   if(isLoading) {
     return null;
   }
-    console.log('orgToken:'+orgAuthToken);
+    // console.log('orgToken:'+orgAuthToken);
     return orgAuthToken;
 };

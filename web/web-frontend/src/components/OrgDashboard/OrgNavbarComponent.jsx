@@ -46,16 +46,28 @@ export const OrgDashboardNavbarRightLeft = () => {
 
 export const OrgDashboardNavbarRightRight = () => {
   const navigate = useNavigate();
+  const orgDetailsString = sessionStorage.getItem('orgDetails') || localStorage.getItem('orgDetails');
+  let orgDetails = null;
+  let orgName = null;
+  
+  try {
+    orgDetails = orgDetailsString ? JSON.parse(orgDetailsString) : null;
+    orgName = orgDetails ? orgDetails.name : null;
+  } catch (error) {
+    console.error('Failed to parse orgDetails:', error);
+  }
   const handleLogout = () => {
     localStorage.removeItem('orgAuthToken');
     sessionStorage.removeItem('orgAuthToken');
+    localStorage.removeItem('orgDetails');
+    sessionStorage.removeItem('orgDetails');
     navigate("/login", {
       state: { accountType: "organization" }
     });
   };    
     return (
       <div className="navbar-right-right">
-        Red Cross Nepal
+        {orgName}
         <button className="logout-button" onClick={handleLogout}>
           Logout
         </button>
