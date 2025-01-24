@@ -49,6 +49,7 @@ function OrgDashboard() {
 
   //update inventory ko lagi modal
   const [updateBloodInventory, setUpdateBloodInventory] = useState(false);
+  
     //blood request ko lagi modal
   const [requestBlood, setRequestBlood] = useState(false);
   const [bloodType, setBloodType] = useState("")
@@ -57,7 +58,7 @@ function OrgDashboard() {
   };
   const [pintValue, setPintValue] = useState("");
 
-
+//inventory ko data taneko server bata
   useEffect(() => {
     if (!orgAuthToken) {
         setError('No auth token found. Please log in');
@@ -94,18 +95,22 @@ function OrgDashboard() {
         setBarList(newBarList);
         console.log('Fetched Result:', JSON.stringify(result, null, 2));
         setData(result);
-        console.log('result:', JSON.stringify(result, null, 2)); // Logs result in readable JSON format
+        console.log('result:', JSON.stringify(result, null, 2));
         console.log('data:', JSON.stringify(data, null, 2));
 
         
       } catch (err) {
         setError(err.message);
       } finally {
-        setLoading(false); // Stop loading
+        setLoading(false);
       }
     };
     fetchData();
   }, [orgAuthToken]);
+
+
+
+  //invetory ko data lyayesi teslai filter gareko
   useEffect(() => {
     if (data) {
       console.log('Updated data:', JSON.stringify(data, null, 2)); // Log data after state update
@@ -132,9 +137,9 @@ function OrgDashboard() {
 
   //inventory update ko lagi
   const handleUpdateFunction = async (e) => {
-    e.preventDefault(); // Prevent page refresh
+    e.preventDefault();
 
-    // Construct the inventory object with the blood types and their pint values
+
     const inventory = {
         "A+": parseInt(aPositive) || 0,
         "A-": parseInt(aNegative) || 0,
@@ -147,7 +152,6 @@ function OrgDashboard() {
     };
 
     try {
-        // server maa data pathauna lai update garda
         const response = await fetch(api + 'blood-inventory/update/', {
             method: 'PATCH',
             headers: {

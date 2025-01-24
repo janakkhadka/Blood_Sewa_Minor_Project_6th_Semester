@@ -187,3 +187,104 @@
   box-shadow: var(--shadow);
   backdrop-filter: var(--backdrop-filter);
 }
+
+
+/* modal for upcoming event detail */
+.events-wrapper .coming-event-wrapper{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: transparent;
+  backdrop-filter: var(--backdrop-filter);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+  color: var(--secondary-text-color);
+}
+
+.events-wrapper .coming-event-wrapper .coming-event{
+  position: relative;
+  width: 700px;
+  height: 380px;
+  background: var(--secondary-background);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 50px;
+}
+
+.events-wrapper .coming-event-wrapper .coming-event .event-info-wrapper{
+  width: 100%;
+  height: 100%;
+  margin:20px;
+  padding:40px;
+  padding-top:10px;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.events-wrapper .coming-event-wrapper .coming-event .event-info-wrapper .delete-button-wrapper{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.events-wrapper .coming-event-wrapper .coming-event .event-info-wrapper .info-list-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  align-items: center;
+}
+
+.events-wrapper .coming-event-wrapper .coming-event .event-info-wrapper .event-info{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+
+.events-wrapper .coming-event-wrapper .coming-event .close-button{
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  color: var(--secondary-text-color);
+}
+
+.events-wrapper .coming-event-wrapper .coming-event .close-button button{
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--secondary-text-color);
+  box-shadow: none;
+}
+
+
+.events-wrapper .coming-event-wrapper .coming-event .delete-button{
+  width: 30%;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 3;
+  box-shadow: var(--button-shadow);
+  border: 2px solid var(--border-color);
+  background-color: var(--button-background-color);
+  color: var(--button-text-color);
+}
+
+.events-wrapper .coming-event-wrapper .coming-event .delete-button:hover {
+  color: var(--secondary-text-color);
+  backdrop-filter: blur(15px);
+  background: transparent;
+}

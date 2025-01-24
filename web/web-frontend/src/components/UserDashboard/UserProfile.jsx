@@ -14,7 +14,7 @@ import { MdOutlineDateRange, MdDateRange,MdCountertops,MdHealthAndSafety } from 
 import { BsGenderAmbiguous } from "react-icons/bs";
 import { CiPhone } from "react-icons/ci";
 import { IoHomeOutline } from "react-icons/io5";
-import { FaLocationDot, FaDiamond } from "react-icons/fa6";
+import { FaDiamond } from "react-icons/fa6";
 import { GiChoice } from "react-icons/gi";
 import { MdEvent } from "react-icons/md";
 

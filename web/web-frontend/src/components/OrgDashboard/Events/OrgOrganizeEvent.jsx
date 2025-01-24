@@ -2,6 +2,7 @@ import React,{useState} from 'react'
 
 import './OrgOrganizeEvent.css'
 import '../../Common/Variables.css'
+import { useNavigate } from "react-router-dom";
 
 import Select from 'react-select';
 import customStyles from '../../LoginRegistration/ReactSelectStyle';
@@ -23,18 +24,65 @@ import BackThreeD from '../../LoginRegistration/3d'
 import NavigationBar from '../../Common/NavigationBar'
 import { OrgComponentNavbarRightLeft, OrgDashboardNavbarRightRight } from '../OrgNavbarComponent';
 
+import { useOrgAuthToken } from '../../../Logic/AuthKey';
+import {api} from '../../../Logic/api'
+
 function OrgOrganizeEvent() {
+    const orgAuthToken = useOrgAuthToken();
+    const navigate = useNavigate();
+
     const [eventName, setEventName] = useState("")
-  
     const [scheduleDate, setScheduleDate] = useState("")
     const [startTime, setStartTime] = useState("")
     const [endTime, setEndTime] = useState("")
     const [venue, setVenue] = useState("")
-    const [volunteer, setVolunteer] = useState("no")
-    const handleChangeVolunteer = (event) => {
-        setVolunteer(event.target.value);
-      };
-    const [volunteerNumber, setVolunteerNumber] = useState("")
+    const [description, setDescription] = useState("")
+    // const [volunteer, setVolunteer] = useState("no")
+    // const handleChangeVolunteer = (event) => {
+    //     setVolunteer(event.target.value);
+    //   };
+    // const [volunteerNumber, setVolunteerNumber] = useState("")
+
+
+      //create event garda ko lagi
+    const handleCreateEvent = async (e) => {
+        e.preventDefault(); 
+
+        const createEventData = {
+            "name":eventName,
+            "description":description,
+            "location":venue,
+            "date":scheduleDate,
+            "start_time":startTime,
+            "end_time":endTime
+        }
+
+        try {
+            // server maa data pathauna lai update garda
+            const response = await fetch(api + 'org/event/create/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${orgAuthToken}`,
+                },
+                body: JSON.stringify(createEventData),
+            });;
+            const responseData = await response.json();
+
+            if (response.ok) {
+                 alert('Event created successfully!');
+                 navigate('/events');
+                console.log('Server Response:', responseData);
+            } else {
+                console.log(response)
+                console.error(responseData);
+                alert('Failed to update inventory');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while updating inventory');
+        }
+    };
   return (
     <div className='org-organize-event-wrapper'>
         <div className="syringe">
@@ -60,7 +108,13 @@ function OrgOrganizeEvent() {
 
                 <div className='date-box'>
                         <label htmlFor="" className='date-label'>Event Date:</label>
-                        <DatePicker onChange={setScheduleDate} value={scheduleDate}  className='date-picker'
+                        <DatePicker
+                        onChange={(date) => {
+                            const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+                            setScheduleDate(formattedDate);
+                          }}
+                        value={scheduleDate}  
+                        className='date-picker'
                         placeholderText="Preferred Donation Date"
                         calendarIcon={null} 
                         clearIcon={null}/>
@@ -93,8 +147,15 @@ function OrgOrganizeEvent() {
                         placeholder='Venue'/>
                         <FaLocationDot className="icon"/>
                 </div>
+                <div className="input-box">
+                        <input type="text"
+                        value = {description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        placeholder='Description'/>
+                        <FaLocationDot className="icon"/>
+                </div>
 
-                <div className="volunteer-wrapper">
+                {/* <div className="volunteer-wrapper">
                     <div className="volunteer">
                         <label>
                             Volunteer Needed?
@@ -125,10 +186,10 @@ function OrgOrganizeEvent() {
                     </div>
                     )}
                     
-                </div>
+                </div> */}
                 
                 
-                <div className="org-organize-event-submit-button">
+                <div className="org-organize-event-submit-button" onClick={handleCreateEvent}>
                     <button type="submit" >Create Event</button>
                 </div>
                 

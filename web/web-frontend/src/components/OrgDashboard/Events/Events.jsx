@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState} from 'react'
 
 import './Events.css'
 
@@ -11,10 +11,19 @@ import { format } from "date-fns";
 import { useNavigate } from 'react-router-dom';
 
 import {events, pastEvents} from '../../UserDashboard/DummyData'
+import { FaDiamond } from "react-icons/fa6";
 
 
 function Events() {
   const navigate = useNavigate()
+  const [comingEvent, setComingEvent] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(events[0]);
+  const handleEventClick = (eventId) => {
+    const event = events.find(e => e.id === eventId);
+    setSelectedEvent(event);
+    setComingEvent(true);
+  };
+  
   return (
     <div className='events-wrapper'>
         <div className="syringe">
@@ -67,7 +76,7 @@ function Events() {
                                 <td>{format(event.date, "MMMM dd, yyyy")}</td> {/* Format date */}
                                 <td  className='table-data'>{event.title}</td>
                                 <td  className='table-data'>{event.location}</td>
-                                <td><button className="notify-button" onClick={() => navigate("/event-details")}>Detail</button></td>
+                                <td><button className="notify-button" onClick={()=>handleEventClick(event.id)}>Detail</button></td>
                               </tr>
                             ))}
                           </tbody>
@@ -77,42 +86,81 @@ function Events() {
                 </div>
 
                 <div className="bottom-section">
-              <section className='past-events'>
-              <div className="h1">
-                <h1>Past Events</h1>
-                </div>
-                <table border="0" style={{tableLayout: "fixed", width: "100%", borderCollapse: "collapse" }}>
-                  <colgroup>
-                    <col style={{ width: "20%" }} />
-                    <col style={{ width: "28%" }} /> 
-                    <col style={{ width: "15%" }} />
-                    <col style={{ width: "25%" }} /> 
-                    <col style={{ width: "12%" }} />
-                  </colgroup>
-                  <thead>
-                    <tr>
-                      <th>Date</th>
-                      <th>Event Name</th>
-                      <th>Donor Count</th>
-                      <th>Location</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {pastEvents.map((event, index) => (
-                      <tr key={index}>
-                        <td>{format(event.date, "MMMM dd, yyyy")}</td> {/* Format date */}
-                        <td  className='table-data'>{event.title}</td>
-                        <td style={{paddingLeft:"40px"}}>{event.donorNumber}</td>
-                        <td  className='table-data'>{event.location}</td>
-                        <td><button className="notify-button" onClick={() => navigate("/event-details")}>Detail</button></td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </section>
+                  <section className='past-events'>
+                    <div className="h1">
+                      <h1>Past Events</h1>
+                    </div>
+                    <table border="0" style={{tableLayout: "fixed", width: "100%", borderCollapse: "collapse" }}>
+                      <colgroup>
+                        <col style={{ width: "20%" }} />
+                        <col style={{ width: "28%" }} /> 
+                        <col style={{ width: "15%" }} />
+                        <col style={{ width: "25%" }} /> 
+                        <col style={{ width: "12%" }} />
+                      </colgroup>
+                      <thead>
+                        <tr>
+                          <th>Date</th>
+                          <th>Event Name</th>
+                          <th>Donor Count</th>
+                          <th>Location</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {pastEvents.map((event, index) => (
+                          <tr key={index}>
+                            <td>{format(event.date, "MMMM dd, yyyy")}</td> {/* Format date */}
+                            <td  className='table-data'>{event.title}</td>
+                            <td style={{paddingLeft:"40px"}}>{event.donorNumber}</td>
+                            <td  className='table-data'>{event.location}</td>
+                            <td><button className="notify-button" onClick={() => navigate("/event-details")}>Detail</button></td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </section>
             </div>
           </div>
         </div>
+        {comingEvent && (
+            <div className="coming-event-wrapper">
+                <div className="coming-event">
+                    <div className="close-button">
+                        <button onClick={() => setComingEvent(false)}>X</button>
+                    </div>
+                    <h2 style={{color:"var(--secondary-text-color)"}}>Event Detail</h2>
+                    <div className="event-info-wrapper">
+                      <div className="event-info">
+                        <div className="info-list-wrapper">
+                          <FaDiamond/>
+                          <span>Event Name: <span style={{fontWeight:"bold"}}>{selectedEvent.title}</span> </span>
+                        </div>
+                        <div className="info-list-wrapper">
+                          <FaDiamond/>
+                          <span>Date: <span style={{fontWeight:"bold"}}>{format(new Date(selectedEvent.date), "MMMM dd, yyyy")}</span></span>
+                        </div>
+                        <div className="info-list-wrapper">
+                          <FaDiamond/>
+                          <span>Location: <span style={{fontWeight:"bold"}}>{selectedEvent.location}</span></span>
+                        </div>
+                        <div className="info-list-wrapper">
+                          <FaDiamond/>
+                          <span>Expected Donor Number: <span style={{fontWeight:"bold"}}>{selectedEvent.donorNumber}</span></span>
+                        </div>
+                        <div className="info-list-wrapper">
+                          <FaDiamond/>
+                          <span>Expected Volunteer Number: <span style={{fontWeight:"bold"}}>{selectedEvent.volunteerNumber}</span></span>
+                        </div>
+                      </div>
+                      <div className='delete-button-wrapper'>
+                        <button type='submit'   className="delete-button">
+                            Delete Event
+                        </button>
+                      </div>
+                    </div>   
+                </div>
+            </div>
+        )}
     </div>
   )
 }
