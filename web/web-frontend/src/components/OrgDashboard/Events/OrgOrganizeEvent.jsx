@@ -51,14 +51,15 @@ function OrgOrganizeEvent() {
             alert('Please fill in all required fields.');
             return;
         } 
+        console.log(orgAuthToken)
 
         const createEventData = {
             "name":eventName,
             "description":description,
             "location":venue,
-            "date":scheduleDate
-            // "start_time":startTime,
-            // "end_time":endTime
+            "date":scheduleDate,
+            "start_time":startTime,
+            "end_time":endTime
         }
         console.log(JSON.stringify(createEventData))
 
