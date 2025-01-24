@@ -56,9 +56,9 @@ function OrgOrganizeEvent() {
             "name":eventName,
             "description":description,
             "location":venue,
-            "date":scheduleDate,
-            "start_time":startTime,
-            "end_time":endTime
+            "date":scheduleDate
+            // "start_time":startTime,
+            // "end_time":endTime
         }
         console.log(JSON.stringify(createEventData))
 
