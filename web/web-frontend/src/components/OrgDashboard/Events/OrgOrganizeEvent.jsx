@@ -60,6 +60,7 @@ function OrgOrganizeEvent() {
             "start_time":startTime,
             "end_time":endTime
         }
+        console.log(JSON.stringify(createEventData))
 
         try {
             // server maa data pathauna lai update garda
@@ -80,11 +81,11 @@ function OrgOrganizeEvent() {
             } else {
                 console.log(response)
                 console.error(responseData);
-                alert(responseData);
+                // alert(responseData);
             }
         } catch (error) {
             console.error('Catch:', error);
-            alert('catch: ' + error);
+            // alert('catch: ' + error);
         }
     };
   return (
