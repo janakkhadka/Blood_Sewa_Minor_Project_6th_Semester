@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 
 import './Events.css'
 
@@ -13,16 +13,99 @@ import { useNavigate } from 'react-router-dom';
 import {events, pastEvents} from '../../UserDashboard/DummyData'
 import { FaDiamond } from "react-icons/fa6";
 
+import { useOrgAuthToken } from '../../../Logic/AuthKey';
+import {api} from '../../../Logic/api'
+
 
 function Events() {
+  const orgAuthToken = useOrgAuthToken();
   const navigate = useNavigate()
   const [comingEvent, setComingEvent] = useState(false);
+
   const [selectedEvent, setSelectedEvent] = useState(events[0]);
   const handleEventClick = (eventId) => {
     const event = events.find(e => e.id === eventId);
     setSelectedEvent(event);
     setComingEvent(true);
   };
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const [dataUpcoming, setDataUpcoming] = useState();
+  const [upcomingEventList, setUpcomingEventList] = useState([]); 
+  //inventory ko data taneko server bata
+  useEffect(() => {
+    if (!orgAuthToken) {
+        setError('No auth token found. Please log in');
+        setLoading(false);
+        console.log('No auth token found. Please log in');
+        return;
+      }
+    const fetchData = async () => {
+        console.log(orgAuthToken)
+
+      try {
+        const response = await fetch(api+'upcomingevents/', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${orgAuthToken}`,
+          },
+        });
+
+        if (!response.ok) {
+            const errorResponse = await response.json();
+            console.log(errorResponse);
+          throw new Error(`Error: ${response.status}`);
+        }
+
+        
+
+        const result = await response.json();
+        const transformedEvents = dataUpcoming.map((event, index) => ({
+          id: (index + 1).toString(),
+          title: event.name,
+          date: new Date(event.date),
+          location: event.location,
+          description: event.description,
+        }));
+        setUpcomingEventList(transformedEvents);
+        console.log('Fetched Result:', JSON.stringify(result, null, 2));
+        setDataUpcoming(result);
+        console.log('result:', JSON.stringify(result, null, 2));
+        console.log('data:', JSON.stringify(dataUpcoming, null, 2));
+
+        
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [orgAuthToken]);
+
+
+
+  //aako data lai rakheko
+  useEffect(() => {
+    if (dataUpcoming) {
+      // Assuming `dataUpcoming` is the response
+      const transformedEvents = dataUpcoming.map((event, index) => ({
+        id: (index + 1).toString(),
+        title: event.name,
+        date: new Date(event.date),
+        location: event.location,
+        description: event.description,
+      }));
+  
+      setUpcomingEventList(transformedEvents);
+    }
+  }, [dataUpcoming]);
+
+
+
   
   return (
     <div className='events-wrapper'>

@@ -46,7 +46,11 @@ function OrgOrganizeEvent() {
 
       //create event garda ko lagi
     const handleCreateEvent = async (e) => {
-        e.preventDefault(); 
+        e.preventDefault();
+        if (!eventName || !description || !venue || !scheduleDate || !startTime || !endTime) {
+            alert('Please fill in all required fields.');
+            return;
+        } 
 
         const createEventData = {
             "name":eventName,
@@ -76,11 +80,11 @@ function OrgOrganizeEvent() {
             } else {
                 console.log(response)
                 console.error(responseData);
-                alert('Failed to update inventory');
+                alert(responseData);
             }
         } catch (error) {
-            console.error('Error:', error);
-            alert('An error occurred while updating inventory');
+            console.error('Catch:', error);
+            alert('catch: ' + error);
         }
     };
   return (

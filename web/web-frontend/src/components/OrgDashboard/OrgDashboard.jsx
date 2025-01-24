@@ -23,12 +23,14 @@ function OrgDashboard() {
     const orgDetailsString = sessionStorage.getItem('orgDetails') || localStorage.getItem('orgDetails');
     let orgDetails = null;
     
-    try {
-      orgDetails = orgDetailsString ? JSON.parse(orgDetailsString) : null;
-      //console.log(orgDetails);
-    } catch (error) {
-      console.error('Failed to parse orgDetails:', error);
-    }
+    // try {
+    //   orgDetails = orgDetailsString ? JSON.parse(orgDetailsString) : null;
+    //   //console.log(orgDetails);
+    // } catch (error) {
+    //   console.error('Failed to parse orgDetails:', error);
+    // }
+
+    
     const [data, setData] = useState();
     const [barList, setBarList] = useState([]); 
 
@@ -57,6 +59,8 @@ function OrgDashboard() {
     setBloodType(option);
   };
   const [pintValue, setPintValue] = useState("");
+
+
 
 //inventory ko data taneko server bata
   useEffect(() => {
