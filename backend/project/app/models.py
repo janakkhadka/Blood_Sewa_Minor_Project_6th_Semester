@@ -5,6 +5,7 @@ from django.db import models
 from django.core.files import File
 from io import BytesIO
 import qrcode
+import datetime
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager, UserManager
 
 
@@ -133,6 +134,8 @@ class Event(models.Model):
     organizer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="organized_events")
     qr_code = models.ImageField(upload_to="qrcodes/", blank=True, null=True)
     attendee_count = models.PositiveIntegerField(default=0)
+    start_time = models.TimeField(default=datetime.time(9, 0))
+    end_time = models.TimeField(default=datetime.time(9, 0))
 
     def save(self, *args, **kwargs):
         # Automatically generate a unique slug if not provided

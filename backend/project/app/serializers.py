@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import User, BloodRequestModel , Event , UserEvent , BloodInventory , Bookings
-from .utils import validate_password, validate_age , validate_phone_number
+from .utils import validate_password, validate_age , validate_phone_number , is_event_date_in_past
 from django.utils import timezone
 from datetime import date , timedelta
 from django.contrib.auth import get_user_model
@@ -147,7 +147,7 @@ class UserEventCreateSerializer(serializers.ModelSerializer):
     collabrator = serializers.CharField()
     class Meta:
         model = Event
-        fields = [ 'name', 'description', 'location', 'date', 'organizer', 'qr_code' , 'slug' , 'collabrator']
+        fields = [ 'name', 'description', 'location', 'date', 'organizer', 'qr_code' , 'slug' , 'collabrator' , 'start_time' , 'end_time']
         read_only_fields = ['organizer', 'qr_code' , 'collabrator']
 
     def get_organizer(self, obj):
@@ -172,16 +172,20 @@ class UserEventCreateSerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
     organizer = serializers.SerializerMethodField()
     collabrator_name = serializers.SerializerMethodField()
+
     class Meta:
         model = Event
-        fields = [ 'name', 'description', 'location', 'date', 'organizer', 'qr_code' , 'slug' , 'collabrator_name']
+        fields = [
+            'name', 'description', 'location', 'date', 'organizer', 
+            'qr_code', 'slug', 'collabrator_name', 'start_time', 'end_time'
+        ]
         read_only_fields = ['organizer', 'qr_code']
 
     def get_organizer(self, obj):
         try:
             organizer = User.objects.get(id=obj.organizer_id)
             return organizer.name
-        except Organizer.DoesNotExist:
+        except User.DoesNotExist:
             return None
     
     def get_collabrator_name(self, obj):
@@ -189,6 +193,14 @@ class EventSerializer(serializers.ModelSerializer):
             return obj.collabrator.name
         except AttributeError:
             return None
+
+    def validate_date(self, value):
+        if is_event_date_in_past(value):
+            raise serializers.ValidationError("The event date cannot be in the past.")
+        return value
+
+    def validate(self, data):
+        return data
 
 class MyEventSerializer(serializers.ModelSerializer):
     organizer = serializers.SerializerMethodField()
