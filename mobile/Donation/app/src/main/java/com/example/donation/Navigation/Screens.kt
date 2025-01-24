@@ -17,4 +17,5 @@ sealed class Screens(val route : String) {
     object ViewEvents : Screens(route = "ViewEvents")
     object createEvents : Screens(route = "create events")
     object schedultTime : Screens(route = "Schedule time")
+    object eventViewExtended : Screens(route = "EventViewExtended")
 }

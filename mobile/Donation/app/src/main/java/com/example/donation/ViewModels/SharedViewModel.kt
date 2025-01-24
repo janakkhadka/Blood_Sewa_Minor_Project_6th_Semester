@@ -11,6 +11,7 @@ import com.example.donation.DataClasses.CreateEvent
 import com.example.donation.DataClasses.EventList
 import com.example.donation.DataClasses.OrganizationInventory
 import com.example.donation.DataClasses.ScheduleTime
+import com.example.donation.DataClasses.SeeBloodRequest
 import com.example.donation.backend.UserRegistration
 import kotlinx.coroutines.launch
 
@@ -39,6 +40,10 @@ class SharedViewModel : ViewModel(){
     //event ko list haru herna laii
     private val _eventList = MutableStateFlow<List<EventList>>(emptyList())
     val eventList : StateFlow<List<EventList>> = _eventList
+
+    //blood request har herna laii
+    private val _bloodRequests = MutableStateFlow<List<SeeBloodRequest>>(emptyList())
+    val bloodRequests: StateFlow<List<SeeBloodRequest>> = _bloodRequests
 
 
     private val bearerToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ2MTgwNDgwLCJpYXQiOjE3Mzc1NDA0ODAsImp0aSI6Ijc4ODVkYzU4ZWM4ZjQ2NzZiNTBhNzVmZDA0MmFiZTViIiwidXNlcl9pZCI6MX0.EE4WysRQQisqCiCIZO2Aplr-VfWInThLEHcW02FBDSM"
@@ -189,6 +194,19 @@ fun fetchOrgData(){
                 Log.e("checkValue","${e.message}")
             }
 
+        }
+    }
+
+    //blood request fetrch garna laii
+    fun fetchBloodRequests() {
+        viewModelScope.launch {
+            try {
+                val response = UserRegistration.authService.seeBloodRequest("Bearer $bearerToken")
+                _bloodRequests.value = response
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("checkValue","${e.message}")
+            }
         }
     }
 
