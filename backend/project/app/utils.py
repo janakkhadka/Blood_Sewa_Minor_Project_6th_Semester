@@ -81,3 +81,8 @@ def is_date_in_past(booking_date):
     if booking_date < date.today():
         return True
     return False
+
+def is_event_date_in_past(event_date):
+    if event_date < date.today():
+        return True
+    return False

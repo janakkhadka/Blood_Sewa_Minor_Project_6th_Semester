@@ -20,6 +20,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .utils import UserFilter , DistrictFilter , OrganizationFilter , is_date_in_past
 from .models import User, BloodRequestModel , Event , UserEvent , BloodInventory , Bookings
 import os
+from django.utils.timezone import now
 from datetime import date , timedelta
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from .serializers import (UserSerializer,LoginSerializer, UserProfileUpdateSerializer, BloodRequestSerializer , LimitedUserSerializer , EventSerializer, MyEventSerializer , UserEventSerializer , OrganizationSerializer , BloodInventorySerializer , BookingSerializer , OrganizationBookingSerializer , UserEventCreateSerializer)
@@ -436,16 +437,17 @@ class UserJoinedEventHistoryView(APIView):
 
     def get(self, request):
         user_events = UserEvent.objects.filter(user=request.user)
+        
         data = [
             {
-                "event": {
-                    "name": ue.event.name,
-                    "description": ue.event.description,
-                    "location": ue.event.location,
+
+                    "event_name": ue.event.name,
                     "joined_on": ue.event.date,
-                },  
+                    "activity": "donated" if ue else ""
+                  
             }
             for ue in user_events
+        
         ]
         return Response(data, status=status.HTTP_200_OK)
 
