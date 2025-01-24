@@ -1,8 +1,8 @@
 package com.example.donation.BottomNavBar
 
-import android.os.Build
+
 import android.util.Log
-import androidx.annotation.RequiresApi
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,15 +27,12 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.WaterDrop
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -47,6 +43,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -70,6 +67,10 @@ fun UrgentBloodScreen(navController : NavHostController, viewModel: SharedViewMo
     var address by remember { mutableStateOf("") }
     var patient_name by remember { mutableStateOf("") }
     val scrollState = rememberScrollState()
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        viewModel.fetchDataBloodGroup()
+    }
 
     //tala gayera data haru laii show garne kaam
     val request = remember { mutableStateListOf<String>() }
@@ -137,8 +138,8 @@ fun UrgentBloodScreen(navController : NavHostController, viewModel: SharedViewMo
                     }
                 }
                 OutlinedTextField(
-                    value = contact,
-                    onValueChange = { contact = it },
+                    value = address,
+                    onValueChange = { address = it },
                     label = { Text("Enter address") },
                     shape = RoundedCornerShape(10.dp),
                     modifier = Modifier.fillMaxWidth(.8f),
@@ -165,8 +166,8 @@ fun UrgentBloodScreen(navController : NavHostController, viewModel: SharedViewMo
                 )
 
                 OutlinedTextField(
-                    value = address,
-                    onValueChange = { address = it },
+                    value = contact,
+                    onValueChange = { contact = it },
                     label = { Text("Enter contact") },
                     shape = RoundedCornerShape(10.dp),
                     modifier = Modifier.fillMaxWidth(.8f),
@@ -183,8 +184,10 @@ fun UrgentBloodScreen(navController : NavHostController, viewModel: SharedViewMo
 
 
                         try {
-                            viewModel.createBloodRequest(patient_name,contact,Bloodselected,address)
+                            viewModel.createBloodRequest(patient_name = patient_name,contact,Bloodselected,address)
+                            Toast.makeText(context,"Blood Requested Successfully",Toast.LENGTH_LONG).show()
                         } catch (e: Exception) {
+                            Toast.makeText(context,"Blood Requested Successfully",Toast.LENGTH_LONG).show()
                             Log.e("ScheduleTime", "Error scheduling time: ${e.message}")
 
                         }

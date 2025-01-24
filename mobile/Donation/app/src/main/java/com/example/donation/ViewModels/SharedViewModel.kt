@@ -1,19 +1,28 @@
 package com.example.donation.ViewModels
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import androidx.lifecycle.viewModelScope
+import com.example.donation.DataClasses.BloodGroupSearch
 import com.example.donation.DataClasses.BloodRequest
 import com.example.donation.DataClasses.CreateEvent
+import com.example.donation.DataClasses.EventDonationHistory
 import com.example.donation.DataClasses.EventList
+import com.example.donation.DataClasses.MyBookings
 import com.example.donation.DataClasses.OrganizationInventory
 import com.example.donation.DataClasses.ScheduleTime
 import com.example.donation.DataClasses.SeeBloodRequest
+import com.example.donation.DataClasses.TodaysEvent
+import com.example.donation.DataClasses.UpcomingEvents
 import com.example.donation.backend.UserRegistration
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
 
 
 sealed class ResponseState {
@@ -23,7 +32,10 @@ sealed class ResponseState {
 }
 
 
+@SuppressLint("StaticFieldLeak")
 class SharedViewModel : ViewModel(){
+    @SuppressLint("CompositionLocalNaming")
+    val context = LocalContext
 
 
     //scheduling time ko lagi
@@ -41,12 +53,37 @@ class SharedViewModel : ViewModel(){
     private val _eventList = MutableStateFlow<List<EventList>>(emptyList())
     val eventList : StateFlow<List<EventList>> = _eventList
 
+    //upcoming events ko lgai
+    private val _eventUpList = MutableStateFlow<List<UpcomingEvents>>(emptyList())
+    val eventUpList : StateFlow<List<UpcomingEvents>> = _eventUpList
+
     //blood request har herna laii
     private val _bloodRequests = MutableStateFlow<List<SeeBloodRequest>>(emptyList())
     val bloodRequests: StateFlow<List<SeeBloodRequest>> = _bloodRequests
 
+    //todays event ko lagi
+    private val _todayEvent = MutableStateFlow<List<TodaysEvent>>(emptyList())
+    val todayEvent: StateFlow<List<TodaysEvent>> = _todayEvent
+
+    //my bookings check garna laii
+    private val _myBookings = MutableStateFlow<List<MyBookings>>(emptyList())
+    val myBookings: StateFlow<List<MyBookings>> = _myBookings
+
+    //organization ko list haru herna laii
+    private val _organizations = MutableStateFlow<List<String>>(emptyList())
+    val organizations : StateFlow<List<String>> = _organizations
+
+    //eventHistory check grana ko lagi
+    private val _history = MutableStateFlow<List<EventDonationHistory>>(emptyList())
+    val history: StateFlow<List<EventDonationHistory>> get() = _history
+
+    //blood group anusar ko filter garna ko lagiii
+    private val _values = MutableStateFlow<List<BloodGroupSearch>>(emptyList())
+    val values : StateFlow<List<BloodGroupSearch>> = _values
+
 
     private val bearerToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ2MTgwNDgwLCJpYXQiOjE3Mzc1NDA0ODAsImp0aSI6Ijc4ODVkYzU4ZWM4ZjQ2NzZiNTBhNzVmZDA0MmFiZTViIiwidXNlcl9pZCI6MX0.EE4WysRQQisqCiCIZO2Aplr-VfWInThLEHcW02FBDSM"
+   // private val bearerToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ2MzQzNzE4LCJpYXQiOjE3Mzc3MDM3MTgsImp0aSI6ImU1Zjg1MTE5ZGU0NzRiMjk5YWVjMWM2Y2JjMTdiZmI1IiwidXNlcl9pZCI6MX0.iQ6cjbKbzw0S9-Z3BhqkX9-OZOxjU1ETAkck-FPzohA"
 
 
     fun createScheduleTime(
@@ -209,6 +246,106 @@ fun fetchOrgData(){
             }
         }
     }
+
+    fun fetchOrganizations() {
+        viewModelScope.launch {
+            try {
+                val response = UserRegistration.authService.getOrganizationList("Bearer $bearerToken")
+
+
+                if (response.organization.isEmpty()) {
+                    Log.e("checkValue", "No organizations found in response.")
+                    _organizations.value = emptyList()
+                } else {
+                    Log.d("Response", "Organizations: ${response.organization}")
+                    _organizations.value = response.organization
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("checkValue", "Error: ${e.message}")
+            }
+        }
+    }
+
+    //fetch donation history
+
+    fun fetchDonationHistory() {
+        viewModelScope.launch {
+            try {
+                Log.d("fetchDonationHistory", "Fetching donation history...")
+                val response = UserRegistration.authService.getMyDonationHistory("Bearer $bearerToken")
+                Log.d("fetchDonationHistory", "Received response: $response")
+                _history.value = response
+            } catch (e: HttpException) {
+                Log.e("fetchDonationHistory", "HTTP error: ${e.response()?.errorBody()?.string()}")
+            } catch (e: IOException) {
+                Log.e("fetchDonationHistory", "Network error: ${e.message}")
+            } catch (e: Exception) {
+                Log.e("fetchDonationHistory", "Unexpected error: ${e.message}", e)
+            }
+        }
+    }
+
+    fun fetchDataBloodGroup() {
+        viewModelScope.launch {
+            try {
+                Log.d("fetchDataBloodGroup", "Fetching blood group data...")
+                val response = UserRegistration.authService.getBloodGroupsData("Bearer $bearerToken")
+                Log.d("fetchDataBloodGroup", "Received response: $response")
+                _values.value = response
+            } catch (e: HttpException) {
+                Log.e("fetchDataBloodGroup", "HTTP error: ${e.response()?.errorBody()?.string()}")
+            } catch (e: IOException) {
+                Log.e("fetchDataBloodGroup", "Network error: ${e.message}")
+            } catch (e: Exception) {
+                Log.e("fetchDataBloodGroup", "Unexpected error: ${e.message}", e)
+            }
+        }
+    }
+
+    //fetch upcoming events
+    fun fetchUpcomingEventsList(){
+        viewModelScope.launch {
+            try {
+                val response = UserRegistration.authService.getUpcomingEvents("Bearer $bearerToken")
+                _eventUpList.value = response
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("checkValue","${e.message}")
+            }
+
+        }
+    }
+
+    //fetch upcoming events
+    fun fetchMyBookings(){
+        viewModelScope.launch {
+            try {
+                val response = UserRegistration.authService.getMyBookings("Bearer $bearerToken")
+                _myBookings.value = response
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("checkValue","${e.message}")
+            }
+
+        }
+    }
+
+    //fetch upcoming events
+    fun fetchTodaysEvent(){
+        viewModelScope.launch {
+            try {
+                val response = UserRegistration.authService.getTodaysEvent("Bearer $bearerToken")
+                _todayEvent.value = response
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("checkValue","${e.message}")
+            }
+
+        }
+    }
+
 
 
 

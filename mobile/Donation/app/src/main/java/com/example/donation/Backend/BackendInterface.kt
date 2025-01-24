@@ -1,12 +1,18 @@
 package com.example.donation.backend
 
 
+import com.example.donation.DataClasses.BloodGroupSearch
 import com.example.donation.DataClasses.BloodRequest
 import com.example.donation.DataClasses.CreateEvent
+import com.example.donation.DataClasses.EventDonationHistory
 import com.example.donation.DataClasses.EventList
+import com.example.donation.DataClasses.MyBookings
 import com.example.donation.DataClasses.OrganizationInventory
+import com.example.donation.DataClasses.OrganizationList
 import com.example.donation.DataClasses.ScheduleTime
 import com.example.donation.DataClasses.SeeBloodRequest
+import com.example.donation.DataClasses.TodaysEvent
+import com.example.donation.DataClasses.UpcomingEvents
 import com.example.donation.backend.login.LoginRequest
 import com.example.donation.backend.login.LoginResponse
 import com.example.donation.backend.registration.PostResponse
@@ -67,10 +73,44 @@ interface BackendInterface {
    ): List<OrganizationInventory>
 
    //evenst view garna laii
-   @GET("events/")
+   @GET("upcomingevents/")
    suspend fun getEventList(
       @Header("Authorization") authorization: String
    ): List<EventList>
+
+   //organization ko list check garna ko lagi
+   @GET("organization-list/")
+   suspend fun getOrganizationList(
+      @Header("Authorization") authorization: String
+   ): OrganizationList
+
+   //my donation history
+   @GET("my-events-history/")
+   suspend fun getMyDonationHistory(
+      @Header("Authorization") authorization: String
+   ): List<EventDonationHistory>
+
+   @GET("user/blood-group/")
+   suspend fun getBloodGroupsData(
+      @Header("Authorization") authorization: String
+   ): List<BloodGroupSearch>
+
+   //upcomming events ko lagi
+   @GET("upcommingevents/")
+   suspend fun getUpcomingEvents(
+      @Header("Authorization") authorization: String
+   ): List<UpcomingEvents>
+
+   //myBookings ko lagi
+   @GET("my-user-bookings/")
+   suspend fun getMyBookings(
+      @Header("Authorization") authorization: String
+   ): List<MyBookings>
+
+   @GET("todayevents/")
+   suspend fun getTodaysEvent(
+      @Header("Authorization") authorization: String
+   ): List<TodaysEvent>
 
 
 }

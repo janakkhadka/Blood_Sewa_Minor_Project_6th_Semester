@@ -38,6 +38,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -56,10 +57,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.donation.DataClasses.BloodRequest
+import com.example.donation.DataClasses.SeeBloodRequest
+import com.example.donation.DataClasses.UpcomingEvents
 import com.example.donation.Navigation.Screens
 import com.example.donation.R
+import com.example.donation.ViewModels.SharedViewModel
 import com.example.donation.ViewModels.dummyEvent
 import com.example.donation.ViewModels.dummyUrgentData
 import com.example.donation.datastore.DataStoreManager
@@ -68,7 +74,6 @@ import com.example.donation.ui.theme.RedThemeTop
 import com.example.donation.ui.theme.RedTop
 import com.example.donation.ui.theme.blue
 import com.example.donation.ui.theme.dRed
-import com.example.donation.ui.theme.lightGreen
 import java.time.LocalTime
 
 
@@ -76,15 +81,21 @@ import java.time.LocalTime
 
 
 @Composable
-fun HomeScreen(navController : NavHostController) {
+fun HomeScreen(navController : NavHostController,viewModel: SharedViewModel = viewModel()) {
 
+    LaunchedEffect(Unit) {
+        viewModel.fetchBloodRequests()
+    }
+    LaunchedEffect(Unit) {
+        viewModel.fetchUpcomingEventsList()
+    }
+    val bloodRequests by viewModel.bloodRequests.collectAsState()
+    val eventlists by viewModel.eventUpList.collectAsState()
 
-
-  //  val eventData by viewModel.event.collectAsState()
     var showDialogBox by remember { mutableStateOf(false) }
     var eventDialog by remember { mutableStateOf(false) }
-    var selectedPatient by remember { mutableStateOf<dummyUrgentData?>(null) }
-    var selectedEvent by remember { mutableStateOf<dummyEvent?>(null) }
+    var selectedPatient by remember { mutableStateOf<SeeBloodRequest?>(null) }
+    var selectedEvent by remember { mutableStateOf<UpcomingEvents?>(null) }
 
     if (showDialogBox && selectedPatient != null) {
         Dialog(onDismissRequest = { showDialogBox = false }) {
@@ -104,58 +115,11 @@ fun HomeScreen(navController : NavHostController) {
     val dataStoreManager = DataStoreManager(context)
 
 
-    //user information
-  // val userName  by dataStoreManager.getUserName.collectAsState(initial = null)
+
     val _username = dataStoreManager.getUserName
     val username by  dataStoreManager.getUserName.collectAsState(_username)
 
-    //dummy variables for the Urgent Requests and event happening
-    val persons = listOf(
-        dummyUrgentData(
-            "Janak Khadka",
-            "KMC Hospital",
-            "A+",
-            "9865445343",
-            "2081-09-9",
-            "Brain tumour",
-            "Dhankuta"
-        ),
-        dummyUrgentData(
-            "Bishal Parajuli",
-            "Civil Hospital",
-            "B-",
-            "9869985795",
-            "2081-09-9",
-            "mental",
-            "Kavre"
-        ),
-        dummyUrgentData(
-            "Kiran Acharya",
-            "Cancer Hospital",
-            "O-",
-            "9823366044",
-            "2081-09-9",
-            "Cancer",
-            "Kalikot"
-        )
-    )
 
-//    val event = listOf(
-//        dummyEvent(
-//            "NCIT College",
-//            "Red Cross Society",
-//            "KMC Hospital",
-//            "9865445343",
-//            "This is an event organized to make normal people engaged into donation campaign."
-//        ),
-//        dummyEvent(
-//            "Tinkune Ground",
-//            "Ram Daii ko Pasal",
-//            "Civil Hospital",
-//            "9823366044",
-//            "This is an event organized to donate the blood to the people into age group less than 10 years."
-//        )
-//    )
 
 
 
@@ -210,7 +174,7 @@ fun HomeScreen(navController : NavHostController) {
 
                 ) {
                     LazyRow {
-                        items(persons) { person ->
+                        items(bloodRequests) { person ->
                             PersonItem(person) {
                                 selectedPatient = person
                                 showDialogBox = true
@@ -251,7 +215,7 @@ fun HomeScreen(navController : NavHostController) {
                         ) {
                             IconWithLabel(Icons.Default.EventAvailable, "Events")
                             {
-                                navController.navigate(Screens.Events.route)
+                                navController.navigate(Screens.eventViewExtended.route)
                             }
                             IconWithLabel(Icons.Default.PersonAddAlt1, "Search Donor")
                             {
@@ -280,7 +244,7 @@ fun HomeScreen(navController : NavHostController) {
                             }
                             IconWithLabel(Icons.Default.Schedule, "Your Schedules")
                             {
-                                navController.navigate(Screens.schedultTime.route)
+                                navController.navigate(Screens.myBookings.route)
                             }
                         }
                     }
@@ -305,19 +269,19 @@ fun HomeScreen(navController : NavHostController) {
 
 
                 ) {
-//
-//                    LazyRow {
-//                        items(eventData) { eventItem ->
-//                            EventData(eventItem){
-//                                selectedEvent = eventItem
-//                                eventDialog = true
-//
-//                            }
-//
-//                        }
-//
-//
-//                    }
+
+                    LazyRow {
+                        items(eventlists) { eventItem ->
+                            EventData(eventItem){
+                                selectedEvent = eventItem
+                                eventDialog = true
+
+                            }
+
+                        }
+
+
+                    }
                 }
                 Spacer(modifier = Modifier.height(100.dp))
             }
@@ -330,7 +294,7 @@ fun HomeScreen(navController : NavHostController) {
 
 
 @Composable
-fun EventData(events: dummyEvent,onClick: () -> Unit) {
+fun EventData(events: UpcomingEvents,onClick: () -> Unit) {
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -351,10 +315,10 @@ fun EventData(events: dummyEvent,onClick: () -> Unit) {
                 .padding(start = 10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ){
-            Text(text = "Venue : ${events.venue}",color = RedTop)
-            Text(text = "Organized by : ${events.organized_by}")
-            Text(text = "Collaboration with : ${events.collaboration_with}")
-            Text(text = "Contact : ${events.contact}")
+            Text(text = "Venue : ${events.location}",color = RedTop)
+            Text(text = "Organized by : ${events.organizer}")
+            Text(text = "Collaboration with : ${events.collabrator_name}")
+            Text(text = "Date : ${events.date}")
 
 
         }
@@ -368,7 +332,7 @@ fun EventData(events: dummyEvent,onClick: () -> Unit) {
 
 
 @Composable
-fun PersonItem(person: dummyUrgentData,onClick : () -> Unit) {
+fun PersonItem(person: SeeBloodRequest, onClick : () -> Unit) {
     Box(
         modifier = Modifier
             .height(200.dp)
@@ -402,7 +366,7 @@ fun PersonItem(person: dummyUrgentData,onClick : () -> Unit) {
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
-                Text(text = " ${person.name}", fontSize = 22.sp)
+                Text(text = " ${person.patient_name}", fontSize = 22.sp)
                 Row(
                     modifier = Modifier.fillMaxWidth()
                         .padding(start = 10.dp),
@@ -425,7 +389,7 @@ fun PersonItem(person: dummyUrgentData,onClick : () -> Unit) {
                         imageVector = Icons.Default.Place,
                         contentDescription = ""
                     )
-                    Text(text = person.district)
+                    Text(text = person.contact)
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth()
@@ -437,19 +401,9 @@ fun PersonItem(person: dummyUrgentData,onClick : () -> Unit) {
                         imageVector = Icons.Default.CalendarMonth,
                         contentDescription = ""
                     )
-                    Text(text = person.time)
+                    Text(text = "2081-10-12")
                 }
-                Button(
-                    onClick = {},
-                    modifier = Modifier
-                        .shadow(elevation = 20.dp)
-                        .align(Alignment.End)
-                        .padding(top =20.dp,end = 10.dp,bottom = 2.dp),
-                    shape = RoundedCornerShape(10.dp),
-                    colors = ButtonDefaults.buttonColors(lightGreen)
-                ) {
-                    Text("Urgent Case",color = Color.Black)
-                }
+
 
             }
 
@@ -491,7 +445,9 @@ fun IconWithLabel(icon: ImageVector, label: String,onClick :() ->Unit) {
 
 
 @Composable
-fun DialogBox(persons :dummyUrgentData){
+fun DialogBox(persons :SeeBloodRequest){
+    val context = LocalContext.current
+    val contentToShare = "${persons.patient_name}\n${persons.contact}\n${persons.location}\n${persons.blood_group}"
     Box(
         modifier = Modifier.height(300.dp)
             .clip(RoundedCornerShape(20.dp))
@@ -527,10 +483,10 @@ fun DialogBox(persons :dummyUrgentData){
                     verticalArrangement = Arrangement.spacedBy(10.dp),
 
                 ) {
-                    Text(text = "Contact Person : ${persons.name}")
+                    Text(text = "Contact Person : ${persons.patient_name}")
                     Text(text = "Phone : ${persons.contact}")
                     Text(text = "Hospital : ${persons.location}")
-                    Text(text = "Case : ${persons.case}")
+                    Text(text = "Case : ${persons.blood_group}")
 
                 }
             }
@@ -543,7 +499,20 @@ fun DialogBox(persons :dummyUrgentData){
                     modifier = Modifier.padding(bottom = 10.dp, end = 10.dp)
                 ){
                     Button(
-                        onClick = {},
+                        onClick = {
+                            if(persons.contact.isNotEmpty()){
+                                val intent = Intent(Intent.ACTION_DIAL).apply {
+                                    data = Uri.parse("9865445343")
+                                }
+                                try {
+                                    context.startActivity(intent)
+                                }catch (e : Exception){
+                                    Log.e("Err","${e.message}")
+                                }
+                            }else{
+                                Toast.makeText(context, "Invalid phone number", Toast.LENGTH_SHORT).show()
+                            }
+                        },
                         modifier = Modifier
                             .shadow(elevation = 20.dp),
                         shape = RoundedCornerShape(10.dp),
@@ -552,7 +521,15 @@ fun DialogBox(persons :dummyUrgentData){
                         Text(text ="Call")
                     }
                     Button(
-                        onClick = {},
+                        onClick = {
+                            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                                type = "text/plain"
+                                putExtra(Intent.EXTRA_TEXT,contentToShare)
+
+                            }
+                            val chooserIntent = Intent.createChooser(shareIntent,"share via")
+                            context.startActivity(chooserIntent)
+                        },
                         modifier = Modifier
                             .shadow(elevation = 20.dp),
                         shape = RoundedCornerShape(10.dp),
@@ -572,9 +549,9 @@ fun DialogBox(persons :dummyUrgentData){
 
 
 @Composable
-fun EventDialog(events : dummyEvent){
+fun EventDialog(events : UpcomingEvents){
     val context = LocalContext.current
-    val contentToShare = "${events.venue}\n${events.contact}\n${events.organized_by}\n${events.collaboration_with}\n${events.desc}"
+    val contentToShare = "${events.location}\n${events.date}\n${events.name}\n${events.collabrator_name}\n${events.organizer}\n${events.description}"
     Box(
         modifier = Modifier.height(300.dp)
             .fillMaxWidth()
@@ -589,11 +566,11 @@ fun EventDialog(events : dummyEvent){
             verticalArrangement = Arrangement.spacedBy(10.dp),
 
         ){
-            Text(text ="Venue: ${events.venue}")
-            Text(text ="Organized by:${events.organized_by}")
-            Text(text ="Contact: ${events.contact}")
-            Text(text ="Collaboration with: ${events.collaboration_with}")
-            Text(text ="Description: ${events.desc}")
+            Text(text ="Venue: ${events.location}")
+            Text(text ="Organized by:${events.organizer}")
+            Text(text ="date: ${events.date}")
+            Text(text ="Collaboration with: ${events.collabrator_name}")
+            Text(text ="Description: ${events.description}")
             Box(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.BottomEnd
@@ -605,18 +582,18 @@ fun EventDialog(events : dummyEvent){
                 ) {
                     Button(
                         onClick = {
-                            if(events.contact.isNotEmpty()){
-                            val intent = Intent(Intent.ACTION_DIAL).apply {
-                                data = Uri.parse("9865445343")
-                                }
-                            try {
-                                context.startActivity(intent)
-                            }catch (e : Exception){
-                                Log.e("Err","${e.message}")
-                            }
-                        }else{
-                                Toast.makeText(context, "Invalid phone number", Toast.LENGTH_SHORT).show()
-                            }
+//                            if(events..isNotEmpty()){
+//                            val intent = Intent(Intent.ACTION_DIAL).apply {
+//                                data = Uri.parse("9865445343")
+//                                }
+//                            try {
+//                                context.startActivity(intent)
+//                            }catch (e : Exception){
+//                                Log.e("Err","${e.message}")
+//                            }
+//                        }else{
+//                                Toast.makeText(context, "Invalid phone number", Toast.LENGTH_SHORT).show()
+//                            }
                         },
                         modifier = Modifier
                             .shadow(elevation = 20.dp),
