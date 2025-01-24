@@ -47,15 +47,24 @@ export const OrgDashboardNavbarRightLeft = () => {
 export const OrgDashboardNavbarRightRight = () => {
   const navigate = useNavigate();
   const orgDetailsString = sessionStorage.getItem('orgDetails') || localStorage.getItem('orgDetails');
+  console.log('Raw orgDetailsString:', orgDetailsString);
+
   let orgDetails = null;
   let orgName = null;
   
   try {
-    orgDetails = orgDetailsString ? JSON.parse(orgDetailsString) : null;
-    orgName = orgDetails ? orgDetails.name : null;
-  } catch (error) {
+    if (orgDetailsString && orgDetailsString.trim().length > 0) {
+        orgDetails = JSON.parse(orgDetailsString);
+        orgName = orgDetails?.name || null;
+    } else {
+        orgDetails = null;
+        orgName = null;
+    }
+} catch (error) {
     console.error('Failed to parse orgDetails:', error);
-  }
+    orgDetails = null;
+    orgName = null; // Default to null if parsing fails
+}
   const handleLogout = () => {
     localStorage.removeItem('orgAuthToken');
     sessionStorage.removeItem('orgAuthToken');

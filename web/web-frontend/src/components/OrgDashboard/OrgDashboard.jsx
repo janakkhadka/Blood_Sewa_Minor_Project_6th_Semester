@@ -7,6 +7,11 @@ import BackThreeD from '../LoginRegistration/3d'
 
 import { IoMdSquare } from "react-icons/io";
 import { TbAxisX, TbAxisY } from "react-icons/tb";
+import { IoIosArrowDropdownCircle } from "react-icons/io";
+
+import Select from 'react-select';
+import customStyles from '../LoginRegistration/ReactSelectStyle';
+import {bloodTypeList, } from "../Utils/DataList";
 
 import { useNavigate } from 'react-router-dom';
 import MyBarChart from '../Utils/MyBarChart'
@@ -24,6 +29,8 @@ function OrgDashboard() {
     } catch (error) {
       console.error('Failed to parse orgDetails:', error);
     }
+    const [data, setData] = useState();
+    const [barList, setBarList] = useState([]); 
 
   const [aPositive, setAPositive] = useState("");
   const [aNegative, setANegative] = useState("");
@@ -36,11 +43,20 @@ function OrgDashboard() {
   const orgAuthToken = useOrgAuthToken();
   const navigate = useNavigate();
 
-  const [data, setData] = useState();
+    
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  //update inventory ko lagi modal
   const [updateBloodInventory, setUpdateBloodInventory] = useState(false);
+    //blood request ko lagi modal
+  const [requestBlood, setRequestBlood] = useState(false);
+  const [bloodType, setBloodType] = useState("")
+  const handleBloodTypeChange = (option) => {
+    setBloodType(option);
+  };
+  const [pintValue, setPintValue] = useState("");
+
 
   useEffect(() => {
     if (!orgAuthToken) {
@@ -70,6 +86,12 @@ function OrgDashboard() {
         
 
         const result = await response.json();
+        const newBarList = Object.entries(result.inventory)
+          .filter(([key]) =>
+            ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].includes(key)
+          )
+          .map(([type, pint]) => ({ type, pint }));
+        setBarList(newBarList);
         console.log('Fetched Result:', JSON.stringify(result, null, 2));
         setData(result);
         console.log('result:', JSON.stringify(result, null, 2)); // Logs result in readable JSON format
@@ -87,8 +109,74 @@ function OrgDashboard() {
   useEffect(() => {
     if (data) {
       console.log('Updated data:', JSON.stringify(data, null, 2)); // Log data after state update
+      const newBarList = Object.entries(data.inventory)
+          .filter(([key]) =>
+            ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].includes(key)
+          )
+          .map(([type, pint]) => ({ type, pint }));
+        setBarList(newBarList);
+
+        setAPositive(data.inventory["A+"]);
+        setANegative(data.inventory["A-"]);
+        setBPositive(data.inventory["B+"]);
+        setBNegative(data.inventory["B-"]);
+        setOPositive(data.inventory["O+"]);
+        setONegative(data.inventory["O-"]);
+        setABPositive(data.inventory["AB+"]);
+        setABNegative(data.inventory["AB-"]);
+
+        console.log('barList:', barList);
     }
   }, [data]);
+
+
+  //inventory update ko lagi
+  const handleUpdateFunction = async (e) => {
+    e.preventDefault(); // Prevent page refresh
+
+    // Construct the inventory object with the blood types and their pint values
+    const inventory = {
+        "A+": parseInt(aPositive) || 0,
+        "A-": parseInt(aNegative) || 0,
+        "B+": parseInt(bPositive) || 0,
+        "B-": parseInt(bNegative) || 0,
+        "AB+": parseInt(abPositive) || 0,
+        "AB-": parseInt(abNegative) || 0,
+        "O+": parseInt(oPositive) || 0,
+        "O-": parseInt(oNegative) || 0,
+    };
+
+    try {
+        // server maa data pathauna lai update garda
+        const response = await fetch(api + 'blood-inventory/update/', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${orgAuthToken}`,
+            },
+            body: JSON.stringify(inventory),
+        });;
+
+        if (response.ok) {
+            const responseData = await response.json();
+            // navigate('/org-dashboard');
+            // alert('Inventory updated successfully!');
+            window.location.reload();
+            // setUpdateBloodInventory(false);
+            console.log('Server Response:', responseData);
+        } else {
+            console.log(response)
+            console.error('Failed to update inventory');
+            alert('Failed to update inventory');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while updating inventory');
+    }
+};
+
+
+
 
 
 //  if (loading) return <p>Loading...</p>;
@@ -108,7 +196,7 @@ function OrgDashboard() {
             <div className="top-section">
                 <section className='quick-actions'>
                     <h1>Quick Actions!</h1>
-                    <button className="action-button" onClick={() => navigate("/blood-request-form",{ state: { identifier: 2 }} )}>Urgent Blood Request</button>
+                    <button className="action-button" onClick={() => setRequestBlood(true)}>Urgent Blood Request</button>
                     <button className="action-button" onClick={() => navigate("/scheduled-donation")}>Scheduled Donation</button>
                     <button className="action-button" onClick={() => navigate("/events")}>Manage Events</button>
                     <button className="action-button" onClick={() => navigate("/user-blood-availability-org")}>Blood Inventory</button>
@@ -148,7 +236,7 @@ function OrgDashboard() {
                                 <button className='action-button' onClick={()=>setUpdateBloodInventory(true)}>Update Inventory</button>
                             </div>
                         </div>
-                        <MyBarChart className='bar-chart'/>
+                        <MyBarChart className='bar-chart' barList={barList}/>
                     </div>
                 </section>
             </div>
@@ -243,8 +331,48 @@ function OrgDashboard() {
                             </div>   
                         </div>
                         <div className='update-button-wrapper'>
-                            <button type='submit'  className="update-button">
+                            <button type='submit' onClick={handleUpdateFunction}  className="update-button">
                                 Update
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        )}
+
+        {requestBlood && (
+            <div className="request-blood-wrapper">
+                <div className="request-blood">
+                    <div className="close-button">
+                        <button onClick={() => setRequestBlood(false)}>X</button>
+                    </div>
+                    <h2 style={{color:"var(--secondary-text-color)"}}>Request Blood</h2>
+                    <form>
+                        <div className="input-box-wrapper">
+                            <div className="drop-down-box">
+                                <Select
+                                value = {bloodType}
+                                onChange={handleBloodTypeChange}
+                                options={bloodTypeList}
+                                styles={customStyles()}
+                                placeholder="Select Blood Group"
+                                isSearchable={false}
+                                />
+                                <IoIosArrowDropdownCircle className='icon'/>
+                            </div>
+                            <div className="pint-value">
+                                <div className="input-box">
+                                    <input type="text"
+                                    value = {pintValue}
+                                    onChange={(e) => setPintValue(e.target.value)}
+                                    placeholder='Pint Value'/>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className='request-button-wrapper'>
+                            <button type='submit' onClick={handleUpdateFunction}  className="request-button">
+                                Request
                             </button>
                         </div>
                     </form>

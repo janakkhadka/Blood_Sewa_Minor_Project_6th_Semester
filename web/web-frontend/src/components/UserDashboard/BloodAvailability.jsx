@@ -14,12 +14,13 @@ import MyBarChart from '../Utils/MyBarChart';
 import NavigationBar from '../Common/NavigationBar'
 import { UserComponentNavbarRightLeft, UserComponentNavbarRightRight } from './UserNavbarComponent';
 import { OrgDashboardNavbarRightLeft, OrgDashboardNavbarRightRight } from '../OrgDashboard/OrgNavbarComponent'
-import { useUserAuthToken } from '../../Logic/AuthKey';
+import { useUserAuthToken, useOrgAuthToken } from '../../Logic/AuthKey';
 
 
 function BloodAvailability() {
 
     const userAuthToken = useUserAuthToken();
+    const orgAuthToken = useOrgAuthToken();
 
     const [hospitalOptions, setHospitalOptions] = useState([]);//list of hospital accordance to province hai
     const [selectedProvince, setSelectedProvince] = useState('')

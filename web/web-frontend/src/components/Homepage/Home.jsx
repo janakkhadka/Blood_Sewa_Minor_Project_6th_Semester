@@ -18,7 +18,6 @@ import customStyles from '../LoginRegistration/ReactSelectStyle';
 import CustomSlider from '../Utils/CustomImageSlider/CustomSlider'
 import { imageList } from "../Utils/CustomImageSlider/ImageList";
 import { bloodInfoList, bloodTypeList, } from "../Utils/DataList";
-import LocalStorage from "../Common/LocalStorage";
 
 function Home() {
 
@@ -61,7 +60,7 @@ function Home() {
                   value = {bloodType}
                   onChange={handleBloodTypeChange}
                   options={bloodTypeList}
-                  styles={customStyles({optionTextColor:'rgb(160, 25, 25)'})}
+                  styles={customStyles()}
                   placeholder="Select Blood Group"
                   isSearchable={false}
                 />
