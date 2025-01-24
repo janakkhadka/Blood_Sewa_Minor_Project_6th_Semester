@@ -375,18 +375,57 @@ class CheckInView(APIView):
 
 
 
-class ListEventsView(APIView):
+class ListPastEventsView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        events = Event.objects.all()
-        serializer = EventSerializer(events, many=True)
+        
+        past_events = Event.objects.filter(date__lt=now())
+        serializer = EventSerializer(past_events, many=True)
 
         # Modify serialized data to conditionally handle 'collabrator_name'
         serialized_data = serializer.data
         for event in serialized_data:
             if not event.get("collabrator_name"):  # If 'collabrator_name' is missing or None
                 event.pop("collabrator_name", None)  # Remove 'collabrator_name'
+
+        return Response(serialized_data, status=status.HTTP_200_OK)
+
+
+
+class ListTodayEventsView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        # Get today's date
+        today = now().date()
+
+        today_events = Event.objects.filter(date=today)
+
+        serializer = EventSerializer(today_events, many=True)
+
+        serialized_data = serializer.data
+        for event in serialized_data:
+            if not event.get("collabrator_name"):  
+                event.pop("collabrator_name", None)  
+
+        return Response(serialized_data, status=status.HTTP_200_OK)
+
+
+class ListUpcommingEventsView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        
+        today = now().date()
+        past_events = Event.objects.filter(date__gt=today)
+        serializer = EventSerializer(past_events, many=True)
+
+        
+        serialized_data = serializer.data
+        for event in serialized_data:
+            if not event.get("collabrator_name"):
+                event.pop("collabrator_name", None)  
 
         return Response(serialized_data, status=status.HTTP_200_OK)
 

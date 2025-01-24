@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import ( RegisterUserView, UserLoginView, UserProfileUpdateView, BloodRequestListView, BloodRequestCreateView , FilterUserBloodGroup , LogoutView , UserListView , CreateEventView , JoinEventView ,CheckInView , ListEventsView , ActivateAccountView , UserJoinedEventHistoryView , qr_code_view , PasswordResetRequestView , PasswordResetConfirmView , OrganizationLoginView , RegisterOrganizationView , BloodInventoryDetail ,BloodInventoryByOrganization , OrganizationListView , BookingCreateView,MyBookings , OrganizationBookings , UserEventCreateView , MyeventInfo , GetUserDetails)
+from .views import ( RegisterUserView, ListPastEventsView , ListTodayEventsView ,  ListUpcommingEventsView ,UserLoginView, UserProfileUpdateView, BloodRequestListView, BloodRequestCreateView , FilterUserBloodGroup , LogoutView , UserListView , CreateEventView , JoinEventView ,CheckInView  , ActivateAccountView , UserJoinedEventHistoryView , qr_code_view , PasswordResetRequestView , PasswordResetConfirmView , OrganizationLoginView , RegisterOrganizationView , BloodInventoryDetail ,BloodInventoryByOrganization , OrganizationListView , BookingCreateView,MyBookings , OrganizationBookings , UserEventCreateView , MyeventInfo , GetUserDetails)
 
 urlpatterns = [
     path('user/register/', RegisterUserView.as_view(), name='register_user'),    #user registration ko lagi
@@ -21,7 +21,9 @@ urlpatterns = [
     path("events/<slug:slug>/join/", JoinEventView.as_view(), name="join_event"),   #event join garna ko lagi
     path("my/event/info/",MyeventInfo.as_view(), name="my-event-info"),    #my event info
     path("events/<slug:slug>/checkin/", CheckInView.as_view(), name="checkin_event"),  #event checkin garna ko lagi
-    path("events/" , ListEventsView.as_view(), name="event-lists"),   # existing event haru listout garna ko lagi
+    path("pastevents/" , ListPastEventsView.as_view(), name="past-event-lists"),   # past event haru listout garna ko lagi
+    path("todayevents/" , ListTodayEventsView.as_view(), name="today-event-lists"),   # aaja ko event haru listout garna ko lagi
+    path("upcommingevents/" , ListUpcommingEventsView.as_view(), name="upcomming-event-lists"),   # aaunna lage ko event haru listout garna ko lagi    
     path('my-events-history/', UserJoinedEventHistoryView.as_view(), name="history"),  #aafnu event history haru check garna ko lagi 
     path('my-blood-inventory/', BloodInventoryDetail.as_view(), name='blood-inventory-list'),  # List and Create
     path('blood-inventory/update/', BloodInventoryDetail.as_view(), name='blood-inventory-detail'),  #update available blood inventory
