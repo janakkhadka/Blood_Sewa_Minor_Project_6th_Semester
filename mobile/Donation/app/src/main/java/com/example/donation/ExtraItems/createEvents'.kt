@@ -2,6 +2,7 @@ package com.example.donation.ExtraItems
 
 import android.icu.util.Calendar
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -55,6 +57,7 @@ fun CreateEvents(navController : NavHostController,viewModel: SharedViewModel = 
     var collaboration_with by remember { mutableStateOf("") }
     var venue by remember { mutableStateOf("") }
     var desc by remember { mutableStateOf("") }
+    val context = LocalContext.current
 
     //dummy data
 //    val hospitals = listOf("KMC Hospital","Civil Hospital","Bhaktapur Cancer Hospital")
@@ -86,16 +89,10 @@ fun CreateEvents(navController : NavHostController,viewModel: SharedViewModel = 
                 Button(
                     onClick = {
 
-//                        val createData = CreateEvent(
-//                            name = "kiran",
-//                            collabrator = "Bir Hospital",
-//                            date = "2025-01-14",
-//                            description = "more to know",
-//                            location = "ncit"
-//                        )
 
                         try {
                             viewModel.createEvent(eventName, desc,venue,collaboration_with,eventTime)
+                            Toast.makeText(context,"Event Created Successfully", Toast.LENGTH_LONG).show()
                         } catch (e: Exception) {
                             Log.e("ScheduleTime", "Error scheduling time: ${e.message}")
 

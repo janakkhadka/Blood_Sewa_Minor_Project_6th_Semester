@@ -35,6 +35,7 @@ import kotlin.math.round
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.donation.DataClasses.BloodRequest
 import com.example.donation.DataClasses.OrganizationInventory
+import com.example.donation.Navigation.Screens
 
 
 @Composable
@@ -110,8 +111,11 @@ fun BloodBanks(navController: NavHostController,viewModel: SharedViewModel = vie
 
         // Schedule button
         OutlinedButton(
-            onClick = {},
-            modifier = Modifier.shadow(elevation = 40.dp),
+            onClick = {
+                navController.navigate(Screens.schedultTime.route)
+            },
+            modifier = Modifier.shadow(elevation = 40.dp)
+                .padding(start = 10.dp),
             colors = ButtonDefaults.buttonColors(dRed),
             shape = RoundedCornerShape(10.dp)
         ) {

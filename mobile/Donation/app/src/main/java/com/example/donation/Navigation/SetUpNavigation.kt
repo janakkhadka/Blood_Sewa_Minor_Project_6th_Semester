@@ -21,6 +21,7 @@ import com.example.donation.ExtraItems.BloodBanks
 import com.example.donation.ExtraItems.BloodRequestsScreen
 import com.example.donation.ExtraItems.EventViewExtended
 import com.example.donation.ExtraItems.Events
+import com.example.donation.ExtraItems.MyBookings
 import com.example.donation.ExtraItems.SearchDonors
 import com.example.donation.OnBoardingScreens.OnBoardingScreen
 import com.example.donation.Verification.ChangePassword
@@ -101,6 +102,9 @@ fun SetUpNavigation(navController : NavHostController) {
             }
             composable(Screens.eventViewExtended.route){
                 EventViewExtended(navController)
+            }
+            composable(Screens.myBookings.route) {
+                MyBookings(navController)
             }
 
 

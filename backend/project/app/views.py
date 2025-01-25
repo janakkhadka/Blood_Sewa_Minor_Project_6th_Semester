@@ -720,7 +720,8 @@ class ViewBulkRequestsView(APIView):
         # Retrieve all bulk blood requests
         bulk_requests = BulkRequestmodel.objects.all()
         serializer = BulkBloodRequestSerializer(bulk_requests, many=True)
-        return Response( "data": serializer.data, status=status.HTTP_200_OK)
+        return Response({"data": serializer.data}, status=status.HTTP_200_OK)
+
 
 
 

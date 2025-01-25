@@ -35,6 +35,8 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -53,19 +55,17 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.donation.DataClasses.EventDonationHistory
 import com.example.donation.R
+import com.example.donation.ViewModels.SharedViewModel
 import com.example.donation.ui.theme.dRed
 
 
 
-//dummy data
-data class History(
-    val date : String,
-    val event : String,
-    val task : String
-)
+
 
 
 data class BadgeDetails(
@@ -79,8 +79,13 @@ data class Report(
     val value : String
 )
 @Composable
-fun ProfileScreen(navController : NavHostController) {
+fun ProfileScreen(navController : NavHostController,viewModel: SharedViewModel = viewModel()) {
     val context  = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchDonationHistory()
+    }
+    val myHistory by viewModel.history.collectAsState()
 
     //badge ko lagi
     val donationCount by remember { mutableIntStateOf(8) }
@@ -97,13 +102,6 @@ fun ProfileScreen(navController : NavHostController) {
     val progress = if(rangeMin == rangeMax) 1f
     else (donationCount-rangeMin).toFloat()/(rangeMax-rangeMin)
 
-    //dummy data
-    val historyData = listOf(
-        History("July 12,2024","Blood Donation Campaign","Donation") ,
-        History("July 12,2024","KMC Hospital","Donation"),
-        History("July 12,2024","Tinkune Programme","Donation")
-
-    )
     val report = listOf(
         Report("Blood Pressure","120/80 mmHg"),
         Report("Pulse rate","72 bpm"),
@@ -114,8 +112,15 @@ fun ProfileScreen(navController : NavHostController) {
 
     )
 
+    val dummyHistroy = listOf(
+        EventDonationHistory(
+            even_name = "campaign",
+            date = "jan-02,2024",
+            activity = "donated"
+        )
+    )
 
-    val scroll   = rememberScrollState()
+
     Scaffold(
         topBar = {
             Column() {
@@ -323,7 +328,6 @@ fun ProfileScreen(navController : NavHostController) {
 
 
 
-            //dummy data history ko
 
             Box(
                 modifier = Modifier
@@ -347,9 +351,18 @@ fun ProfileScreen(navController : NavHostController) {
 
                     DonationActivityHeading()
                     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                        historyData.forEach(){data ->
-                            DonationActivity(data)
+                        if(myHistory.isEmpty()) {
+                            dummyHistroy.forEach { data ->
+                                DonationActivity(data)
+
+                            }
                         }
+
+                    else {
+                    myHistory.forEach() { data ->
+                        DonationActivity(data)
+                    }
+                }
 
                     }
                     Spacer(modifier =  Modifier.height(10.dp))
@@ -439,15 +452,16 @@ fun DonationActivityHeading(){
 
 }
 @Composable
-fun DonationActivity(data: History){
+fun DonationActivity(data: EventDonationHistory){
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ){
         Text(text = data.date, fontSize = 14.sp, color = dRed)
-        Text(text = data.event,fontSize = 14.sp, color = dRed)
-        Text(text = data.task,fontSize = 14.sp, color = dRed)
+        Text(text = data.even_name,fontSize = 14.sp, color = dRed)
+        Text(text = data.activity,fontSize = 14.sp, color = dRed)
 
     }
 
