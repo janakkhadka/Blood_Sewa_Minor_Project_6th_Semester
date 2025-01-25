@@ -72,7 +72,7 @@ admin.site.register(BloodInventory, BloodInventoryAdmin)
 
 @admin.register(BulkRequestmodel)
 class BulkRequestmodelAdmin(admin.ModelAdmin):
-    list_display = ('organization',)
+    list_display = ('organization','date')
     search_fields = ('organization__name',)
     list_filter = ('organization__user_type',)
 

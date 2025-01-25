@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import ( AddBulkRequestView, ViewBulkRequestsView ,RegisterUserView, ListPastEventsView , ListTodayEventsView ,  ListUpcommingEventsView ,UserLoginView, UserProfileUpdateView, BloodRequestListView, BloodRequestCreateView , FilterUserBloodGroup , LogoutView , UserListView , CreateEventView , JoinEventView ,CheckInView  , ActivateAccountView , UserJoinedEventHistoryView , qr_code_view , PasswordResetRequestView , PasswordResetConfirmView , OrganizationLoginView , RegisterOrganizationView , BloodInventoryDetail ,BloodInventoryByOrganization , OrganizationListView , BookingCreateView,MyBookings , OrganizationBookings , UserEventCreateView , MyeventInfo , GetUserDetails)
+from .views import (CheckedInListView , AddBulkRequestView, ViewBulkRequestsView ,RegisterUserView, ListPastEventsView , ListTodayEventsView ,  ListUpcommingEventsView ,UserLoginView, UserProfileUpdateView, BloodRequestListView, BloodRequestCreateView , FilterUserBloodGroup , LogoutView , UserListView , CreateEventView , JoinEventView ,CheckInView  , ActivateAccountView , UserJoinedEventHistoryView , qr_code_view , PasswordResetRequestView , PasswordResetConfirmView , OrganizationLoginView , RegisterOrganizationView , BloodInventoryDetail ,BloodInventoryByOrganization , OrganizationListView , BookingCreateView,MyBookings , OrganizationBookings , UserEventCreateView , MyeventInfo , GetUserDetails)
 
 urlpatterns = [
     path('user/register/', RegisterUserView.as_view(), name='register_user'),    #user registration ko lagi
@@ -21,6 +21,8 @@ urlpatterns = [
     path("events/<slug:slug>/join/", JoinEventView.as_view(), name="join_event"),   #event join garna ko lagi
     path("my/event/info/",MyeventInfo.as_view(), name="my-event-info"),    #my event info
     path("events/<slug:slug>/checkin/", CheckInView.as_view(), name="checkin_event"),  #event checkin garna ko lagi
+    path('events/<slug:slug>/checkin/list/', CheckedInListView.as_view(), name='checked-in-list'),
+    #path('events/<slug:slug>/status/', CheckEventStatusView.as_view(), name='check-event-status'),
     path("pastevents/" , ListPastEventsView.as_view(), name="past-event-lists"),   # past event haru listout garna ko lagi
     path("todayevents/" , ListTodayEventsView.as_view(), name="today-event-lists"),   # aaja ko event haru listout garna ko lagi
     path("upcomingevents/" , ListUpcommingEventsView.as_view(), name="upcomming-event-lists"),   # aaunna lage ko event haru listout garna ko lagi    

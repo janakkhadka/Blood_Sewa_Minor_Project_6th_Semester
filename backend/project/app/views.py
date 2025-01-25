@@ -336,11 +336,26 @@ class JoinEventView(APIView):
 
     def post(self, request, slug):
         try:
+            # Fetch the event by slug
             event = Event.objects.get(slug=slug)
+            
+            # Create or fetch the UserEvent object for the current user
             UserEvent.objects.get_or_create(user=request.user, event=event)
-            return Response({"message": "Successfully joined the event."}, status=status.HTTP_200_OK)
+            
+            # Update the event's status to True if it isn't already
+            if not event.status:
+                event.status = True
+                event.save()
+
+            return Response({"message": "Successfully joined the event." , "status":event.status}, status=status.HTTP_200_OK)
+
         except Event.DoesNotExist:
             return Response({"error": "Event not found."}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+
+
 
 
 
@@ -351,8 +366,10 @@ class CheckInView(APIView):
 
     def post(self, request, slug):
         try:
+            # Fetch the event
             event = Event.objects.get(slug=slug)
-            print(event.slug, event.attendee_count)
+            
+            # Check if the user is registered for the event
             user_event = UserEvent.objects.filter(user=request.user, event=event).first()
             if not user_event:
                 return Response({"error": "Not registered for this event."}, status=status.HTTP_400_BAD_REQUEST)
@@ -360,16 +377,42 @@ class CheckInView(APIView):
             if user_event.checked_in:
                 return Response({"error": "Already checked in."}, status=status.HTTP_400_BAD_REQUEST)
 
-            # # Simulate QR code validation (can be replaced with actual QR scanning logic)
-            # scanned_slug = request.data.get("scanned_slug")
-            # if scanned_slug != event.slug:
-            #     return Response({"error": "Invalid QR code."}, status=status.HTTP_400_BAD_REQUEST)
-
+            # Mark the user as checked in
             user_event.checked_in = True
             user_event.save()
             event.attendee_count = event.attendee_count + 1
             event.save()
+
             return Response({"message": "Check-in successful."}, status=status.HTTP_200_OK)
+
+        except Event.DoesNotExist:
+            return Response({"error": "Event not found."}, status=status.HTTP_404_NOT_FOUND)
+
+
+class CheckedInListView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request , slug):
+        try:
+            # Fetch the event
+            event = Event.objects.get(slug=slug)
+
+            # Fetch all users who have checked in for this event
+            checked_in_users = UserEvent.objects.filter(event=event, checked_in=True).select_related('user')
+            
+            # Prepare the response data
+            users_with_blood_group = [
+                {
+                    "name": user_event.user.name,  
+                    "blood_group": user_event.user.blood_group  
+                }
+                for user_event in checked_in_users
+            ]
+
+            return Response(
+                {"checked_in_users": users_with_blood_group},
+                status=status.HTTP_200_OK
+            )
 
         except Event.DoesNotExist:
             return Response({"error": "Event not found."}, status=status.HTTP_404_NOT_FOUND)
@@ -384,11 +427,17 @@ class ListPastEventsView(APIView):
         past_events = Event.objects.filter(date__lt=now())
         serializer = EventSerializer(past_events, many=True)
 
-        # Modify serialized data to conditionally handle 'collabrator_name'
+        
         serialized_data = serializer.data
         for event in serialized_data:
-            if not event.get("collabrator_name"):  # If 'collabrator_name' is missing or None
-                event.pop("collabrator_name", None)  # Remove 'collabrator_name'
+            if not event.get("collabrator_name"):  
+                event.pop("collabrator_name", None)
+
+            if  event.get("qr_code"):
+                event.pop("qr_code",None)
+
+            if event.get("slug"):
+                event.pop("slug", None)
 
         return Response(serialized_data, status=status.HTTP_200_OK)
 
@@ -720,7 +769,7 @@ class ViewBulkRequestsView(APIView):
         # Retrieve all bulk blood requests
         bulk_requests = BulkRequestmodel.objects.all()
         serializer = BulkBloodRequestSerializer(bulk_requests, many=True)
-        return Response({"data": serializer.data}, status=status.HTTP_200_OK)
+        return Response( serializer.data, status=status.HTTP_200_OK)
 
 
 

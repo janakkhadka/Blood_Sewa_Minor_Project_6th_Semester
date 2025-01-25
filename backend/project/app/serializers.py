@@ -260,7 +260,7 @@ class BulkBloodRequestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BulkRequestmodel
-        fields = ['organization_name', 'blood_request']
+        fields = ['organization_name', 'blood_request' , 'date']
         read_only_fields = ['organization_name']
 
 

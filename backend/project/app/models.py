@@ -136,7 +136,7 @@ class Event(models.Model):
     attendee_count = models.PositiveIntegerField(default=0)
     start_time = models.TimeField(default=datetime.time(9, 0))
     end_time = models.TimeField(default=datetime.time(9, 0))
-
+    status = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         # Automatically generate a unique slug if not provided
@@ -212,6 +212,7 @@ class BulkRequestmodel(models.Model):
         limit_choices_to={'user_type': 'organization'}
     )
     blood_request = models.JSONField(default=dict)
+    date = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.organization.name}'s Bulk Blood Request"
