@@ -557,7 +557,7 @@ function OrgDashboard() {
         )}
 
         {/* yo chai org le blood donate garxa aru org lai, modal ho */}
-        {requestBlood && (
+        {donateBloodModal && (
             <div className="donate-blood-wrapper">
                 <div className="donate-blood">
                     <div className="close-button">
