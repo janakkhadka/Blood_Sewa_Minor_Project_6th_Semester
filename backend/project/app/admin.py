@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, BloodRequestModel , Event , UserEvent , BloodInventory , Bookings
+from .models import User, BulkRequestmodel ,BloodRequestModel , Event , UserEvent , BloodInventory , Bookings 
 
 
 class CustomUserAdmin(UserAdmin):
@@ -67,3 +67,15 @@ class BloodInventoryAdmin(admin.ModelAdmin):
     inventory_display.short_description = 'Blood Inventory'
 
 admin.site.register(BloodInventory, BloodInventoryAdmin)
+
+
+
+@admin.register(BulkRequestmodel)
+class BulkRequestmodelAdmin(admin.ModelAdmin):
+    list_display = ('organization',)
+    search_fields = ('organization__name',)
+    list_filter = ('organization__user_type',)
+
+
+
+

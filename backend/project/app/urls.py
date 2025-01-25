@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import ( RegisterUserView, ListPastEventsView , ListTodayEventsView ,  ListUpcommingEventsView ,UserLoginView, UserProfileUpdateView, BloodRequestListView, BloodRequestCreateView , FilterUserBloodGroup , LogoutView , UserListView , CreateEventView , JoinEventView ,CheckInView  , ActivateAccountView , UserJoinedEventHistoryView , qr_code_view , PasswordResetRequestView , PasswordResetConfirmView , OrganizationLoginView , RegisterOrganizationView , BloodInventoryDetail ,BloodInventoryByOrganization , OrganizationListView , BookingCreateView,MyBookings , OrganizationBookings , UserEventCreateView , MyeventInfo , GetUserDetails)
+from .views import ( AddBulkRequestView, ViewBulkRequestsView ,RegisterUserView, ListPastEventsView , ListTodayEventsView ,  ListUpcommingEventsView ,UserLoginView, UserProfileUpdateView, BloodRequestListView, BloodRequestCreateView , FilterUserBloodGroup , LogoutView , UserListView , CreateEventView , JoinEventView ,CheckInView  , ActivateAccountView , UserJoinedEventHistoryView , qr_code_view , PasswordResetRequestView , PasswordResetConfirmView , OrganizationLoginView , RegisterOrganizationView , BloodInventoryDetail ,BloodInventoryByOrganization , OrganizationListView , BookingCreateView,MyBookings , OrganizationBookings , UserEventCreateView , MyeventInfo , GetUserDetails)
 
 urlpatterns = [
     path('user/register/', RegisterUserView.as_view(), name='register_user'),    #user registration ko lagi
@@ -33,4 +33,7 @@ urlpatterns = [
     path('my-user-bookings/' , MyBookings.as_view(), name='my-bookings'),  #list of bookings
     path('my-organization-bookings/' , OrganizationBookings.as_view() , name='my-organization-bookings'),
     path("user/all/" , GetUserDetails.as_view() , name='user-details'),
+
+    path('bulk-request/add/', AddBulkRequestView.as_view(), name='add-bulk-request'),
+    path('bulk-requests/', ViewBulkRequestsView.as_view(), name='view-bulk-requests'),
     ]

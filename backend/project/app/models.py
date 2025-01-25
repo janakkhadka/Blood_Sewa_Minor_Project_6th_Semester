@@ -137,6 +137,7 @@ class Event(models.Model):
     start_time = models.TimeField(default=datetime.time(9, 0))
     end_time = models.TimeField(default=datetime.time(9, 0))
 
+
     def save(self, *args, **kwargs):
         # Automatically generate a unique slug if not provided
         if not self.slug:
@@ -203,6 +204,31 @@ class BloodInventory(models.Model):
         return f"{self.organization.name}'s Blood Inventory"
 
 
+class BulkRequestmodel(models.Model):
+    organization = models.ForeignKey(  # Changed from OneToOneField to ForeignKey
+        'User',
+        on_delete=models.CASCADE,
+        related_name='bulk_blood_requests',
+        limit_choices_to={'user_type': 'organization'}
+    )
+    blood_request = models.JSONField(default=dict)
+
+    def __str__(self):
+        return f"{self.organization.name}'s Bulk Blood Request"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 class Bookings(models.Model):
     SHIFT_CHOICES = [('morning' , 'morning') , ('afternoon' , 'afternoon') , ('evening' , 'evening')]
@@ -222,3 +248,7 @@ class Bookings(models.Model):
 
     def __str__(self):
         return f"Booking by {self.user.name} on {self.booking_date} for {self.user.name}"
+
+
+
+

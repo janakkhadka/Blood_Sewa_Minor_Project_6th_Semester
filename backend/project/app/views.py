@@ -691,3 +691,54 @@ class OrganizationBookings(APIView):
         serializer = OrganizationBookingSerializer(bookings, many=True)
         return Response(serializer.data)
 
+
+
+
+
+from .models import BulkRequestmodel
+from .serializers import BulkBloodRequestSerializer
+
+class AddBulkRequestView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        if request.user.user_type != 'organization':
+            return Response({"message": "Only organizations can make bulk requests."}, status=status.HTTP_403_FORBIDDEN)
+
+        # Pass the raw input to the serializer
+        serializer = BulkBloodRequestSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(organization=request.user)
+            return Response({"message": "Bulk blood request added successfully.", "data": serializer.data}, status=status.HTTP_201_CREATED)
+        return Response({"message": "Invalid data.", "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ViewBulkRequestsView(APIView):
+    permission_classes = [permissions.IsAuthenticated]  # Ensure the user is logged in
+
+    def get(self, request, *args, **kwargs):
+        # Retrieve all bulk blood requests
+        bulk_requests = BulkRequestmodel.objects.all()
+        serializer = BulkBloodRequestSerializer(bulk_requests, many=True)
+        return Response( "data": serializer.data, status=status.HTTP_200_OK)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

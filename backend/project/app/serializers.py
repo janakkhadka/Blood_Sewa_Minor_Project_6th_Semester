@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, BloodRequestModel , Event , UserEvent , BloodInventory , Bookings
+from .models import User, BulkRequestmodel ,BloodRequestModel , Event , UserEvent , BloodInventory , Bookings
 from .utils import validate_password, validate_age , validate_phone_number , is_event_date_in_past
 from django.utils import timezone
 from datetime import date , timedelta
@@ -156,6 +156,13 @@ class UserEventCreateSerializer(serializers.ModelSerializer):
             return organizer.name
         except Organizer.DoesNotExist:
             return None
+
+    def validate(self, data):
+        start_time = data.get('start_time')
+        end_time = data.get('end_time')
+        if start_time and end_time and end_time < start_time:
+            raise serializers.ValidationError("End time must be later than start time.")
+        return data
     
     def create(self, validated_data):
         collaborator_name = validated_data.pop('collabrator')  # Extract the name
@@ -187,6 +194,13 @@ class EventSerializer(serializers.ModelSerializer):
             return organizer.name
         except User.DoesNotExist:
             return None
+
+    def validate(self, data):
+        start_time = data.get('start_time')
+        end_time = data.get('end_time')
+        if start_time and end_time and end_time < start_time:
+            raise serializers.ValidationError("End time must be later than start time.")
+        return data
     
     def get_collabrator_name(self, obj):
         try:
@@ -199,8 +213,6 @@ class EventSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("The event date cannot be in the past.")
         return value
 
-    def validate(self, data):
-        return data
 
 class MyEventSerializer(serializers.ModelSerializer):
     organizer = serializers.SerializerMethodField()
@@ -238,6 +250,29 @@ class BloodInventorySerializer(serializers.ModelSerializer):
         model = BloodInventory
         fields = ['organization_name', 'inventory']
         read_only_fields = ['organization_name']
+
+
+
+
+
+class BulkBloodRequestSerializer(serializers.ModelSerializer):
+    organization_name = serializers.CharField(source='organization.name', read_only=True)
+
+    class Meta:
+        model = BulkRequestmodel
+        fields = ['organization_name', 'blood_request']
+        read_only_fields = ['organization_name']
+
+
+    def to_internal_value(self, data):
+        if isinstance(data, dict):
+            # Treat the entire payload as the `blood_request`
+            return {'blood_request': data}
+        return super().to_internal_value(data)
+
+
+
+
 
 
 
@@ -285,3 +320,9 @@ class OrganizationBookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bookings
         fields = ['user_name', 'booking_date', 'shift', 'user' ,   'user_phone_number','user_blood_group']  
+
+
+
+
+
+
