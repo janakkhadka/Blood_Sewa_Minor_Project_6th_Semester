@@ -47,7 +47,7 @@ export const OrgDashboardNavbarRightLeft = () => {
 export const OrgDashboardNavbarRightRight = () => {
   const navigate = useNavigate();
   const orgDetailsString = sessionStorage.getItem('orgDetails') || localStorage.getItem('orgDetails');
-  console.log('Raw orgDetailsString:', orgDetailsString);
+  // console.log('Raw orgDetailsString:', orgDetailsString);
 
   let orgDetails = null;
   let orgName = null;

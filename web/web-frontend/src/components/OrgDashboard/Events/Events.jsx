@@ -22,18 +22,20 @@ function Events() {
   const navigate = useNavigate()
   const [comingEvent, setComingEvent] = useState(false);
 
-  const [selectedEvent, setSelectedEvent] = useState(events[0]);
-  const handleEventClick = (eventId) => {
-    const event = events.find(e => e.id === eventId);
-    setSelectedEvent(event);
-    setComingEvent(true);
-  };
+  
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const [dataUpcoming, setDataUpcoming] = useState();
-  const [upcomingEventList, setUpcomingEventList] = useState([]); 
+  const [upcomingEventList, setUpcomingEventList] = useState([]);
+   
+  const [selectedEvent, setSelectedEvent] = useState(events[0]);
+  const handleEventClick = (eventId) => {
+    const event = upcomingEventList.find(e => e.id === eventId);
+    setSelectedEvent(event);
+    setComingEvent(true);
+  };
   //inventory ko data taneko server bata
   useEffect(() => {
     if (!orgAuthToken) {
@@ -162,6 +164,7 @@ function Events() {
                           </thead>
                           <tbody>
                             {upcomingEventList.map((event, index) => (
+                              // console.log('Event:', event.date),
                               <tr key={index}>
                                 <td>{format(event.date, "MMMM dd, yyyy")}</td> {/* Format date */}
                                 <td  className='table-data'>{event.title}</td>
