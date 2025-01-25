@@ -542,7 +542,7 @@ box-shadow: none;
 }
 
 
-.org-dashboard-wrapper .donate-blood-wrapper .donate-blood .request-button{
+.org-dashboard-wrapper .donate-blood-wrapper .donate-blood .donate-button{
 width: 30%;
 padding: 10px 20px;
 border: none;
@@ -556,7 +556,7 @@ background-color: var(--button-background-color);
 color: var(--button-text-color);
 }
 
-.org-dashboard-wrapper .request-blood-wrapper .request-blood .request-button:hover {
+.org-dashboard-wrapper .donate-blood-wrapper .donate-blood-wrapper .donate-button:hover {
 color: var(--secondary-text-color);
 backdrop-filter: blur(15px);
 background: transparent;
