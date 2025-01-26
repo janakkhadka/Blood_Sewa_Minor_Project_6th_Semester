@@ -566,17 +566,6 @@ function OrgDashboard() {
                     <h2 style={{color:"var(--secondary-text-color)"}}>Donate Blood</h2>
                     <form>
                         <div className="input-box-wrapper">
-                            {/* <div className="drop-down-box">
-                                <Select
-                                value = {bloodType}
-                                onChange={handleBloodTypeChange}
-                                options={bloodTypeList}
-                                styles={customStyles()}
-                                placeholder="Select Blood Group"
-                                isSearchable={false}
-                                />
-                                <IoIosArrowDropdownCircle className='icon'/>
-                            </div> */}
                             <div className="pint-value">
                                 <div className="input-box">
                                     <input type="text"
@@ -588,7 +577,7 @@ function OrgDashboard() {
                         </div>
                         
                         <div className='donate-button-wrapper'>
-                            <button type='submit'  className="donate-button">
+                            <button type='submit'  className="donate-button" onClick={()=>setDonateBloodModal(true)}>
                                 Donate
                             </button>
                         </div>
