@@ -33,7 +33,6 @@ function OrgDashboard() {
     } catch (error) {
       console.error('Failed to parse orgDetails:', error);
     }
-
     
 
     
@@ -50,6 +49,7 @@ function OrgDashboard() {
   const [oNegative, setONegative] = useState("");
   const orgAuthToken = useOrgAuthToken();
   const navigate = useNavigate();
+  console.log(orgAuthToken)
 
     
   const [loading, setLoading] = useState(true);
