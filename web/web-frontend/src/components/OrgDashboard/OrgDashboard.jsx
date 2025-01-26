@@ -18,7 +18,7 @@ import MyBarChart from '../Utils/MyBarChart'
 import { useOrgAuthToken } from '../../Logic/AuthKey';
 import {api} from '../../Logic/api'
 
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 
 function OrgDashboard() {
     //org details taneko
@@ -71,6 +71,14 @@ function OrgDashboard() {
 
   const [donateBloodModal, setDonateBloodModal] = useState(false);
   const [pintValueDonate, setPintValueDonate] = useState("");
+  const [orgNameToDonate, setOrgNameToDonate] = useState("");
+  const [bloodGroupToDonate, setBloodGroupToDonate] = useState("");
+
+  const [selectedRequestId, setSelectedRequestId] = useState(0);
+  const handleDonateClick = (requestId) => {
+    setSelectedRequestId(requestId)
+    setDonateBloodModal(true);
+  };
 
 
 
@@ -305,10 +313,14 @@ function OrgDashboard() {
 
     
         setBloodRequestList(transformedRequests);
-        setPintValueDonate(transformedRequests[0].pintValue);
+        
+        setPintValueDonate(transformedRequests[selectedRequestId].pintValue);
+        setOrgNameToDonate(transformedRequests[selectedRequestId].requestedBy);
+        setBloodGroupToDonate(transformedRequests[selectedRequestId].bloodGroup);
+        
         console.log('Fetched Result:', bloodRequestList);
         }
-    }, [bloodReqeuestData]);
+    }, [bloodReqeuestData, selectedRequestId]);
 
 
 
@@ -410,7 +422,7 @@ function OrgDashboard() {
                             <td>{data.pintValue}</td>
                             <td>
                                 <div className='donate-button-wrapper'>
-                                    <button className='donate-button' onClick={()=> setDonateBloodModal(true)}>Donate</button>
+                                    <button className='donate-button' onClick={()=>handleDonateClick(index)}>Donate</button>
                                 </div>
                             </td>
                             </tr>
@@ -566,6 +578,8 @@ function OrgDashboard() {
                     <h2 style={{color:"var(--secondary-text-color)"}}>Donate Blood</h2>
                     <form>
                         <div className="input-box-wrapper">
+                            <span>Donate To: <span style={{fontWeight:"bold"}}>{orgNameToDonate}</span> </span>
+                            <span>Blood Group: <span style={{fontWeight:"bold"}}>{bloodGroupToDonate}</span> </span>
                             <div className="pint-value">
                                 <div className="input-box">
                                     <input type="text"

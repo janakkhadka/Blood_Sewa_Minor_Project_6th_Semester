@@ -495,15 +495,23 @@ flex-direction: column;
 gap: 50px;
 }
 
-.org-dashboard-wrapper .donate-blood-wrapper .donate-blood form .request-button-wrapper{
+.org-dashboard-wrapper .donate-blood-wrapper .donate-blood form .input-box-wrapper{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.org-dashboard-wrapper .donate-blood-wrapper .donate-blood form .donate-button-wrapper{
 display: flex;
 justify-content: center;
 align-items: center;
+margin-top: 20px;
 }
 
 .org-dashboard-wrapper .donate-blood-wrapper .donate-blood form .input-box{
 height:40px;
 width: 100%;
+padding-top: 20px;
 }
 
 .org-dashboard-wrapper .donate-blood-wrapper .donate-blood form .drop-down-box{
@@ -512,6 +520,7 @@ width: 100%;
     width: 100%;
     margin: 30px 0;
     color: var(--text-color);
+
 }
 .org-dashboard-wrapper .donate-blood-wrapper .donate-blood form .drop-down-box .icon{
   position: absolute;
