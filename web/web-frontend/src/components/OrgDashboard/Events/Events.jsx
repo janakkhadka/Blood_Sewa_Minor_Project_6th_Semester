@@ -14,7 +14,7 @@ import {events, pastEvents} from '../../UserDashboard/DummyData'
 import { FaDiamond } from "react-icons/fa6";
 
 import { useOrgAuthToken } from '../../../Logic/AuthKey';
-import {api} from '../../../Logic/api'
+import {api} from '../../../Logic/api';
 
 
 function Events() {
@@ -22,18 +22,20 @@ function Events() {
   const navigate = useNavigate()
   const [comingEvent, setComingEvent] = useState(false);
 
-  const [selectedEvent, setSelectedEvent] = useState(events[0]);
-  const handleEventClick = (eventId) => {
-    const event = events.find(e => e.id === eventId);
-    setSelectedEvent(event);
-    setComingEvent(true);
-  };
+  
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const [dataUpcoming, setDataUpcoming] = useState();
-  const [upcomingEventList, setUpcomingEventList] = useState([]); 
+  const [upcomingEventList, setUpcomingEventList] = useState([]);
+   
+  const [selectedEvent, setSelectedEvent] = useState(events[0]);
+  const handleEventClick = (eventId) => {
+    const event = upcomingEventList.find(e => e.id === eventId);
+    setSelectedEvent(event);
+    setComingEvent(true);
+  };
   //inventory ko data taneko server bata
   useEffect(() => {
     if (!orgAuthToken) {
@@ -43,8 +45,6 @@ function Events() {
         return;
       }
     const fetchData = async () => {
-        console.log(orgAuthToken)
-
       try {
         const response = await fetch(api+'upcomingevents/', {
           method: 'GET',
@@ -63,18 +63,21 @@ function Events() {
         
 
         const result = await response.json();
-        const transformedEvents = dataUpcoming.map((event, index) => ({
+        console.log(result)
+        const transformedEvents = result.map((event, index) => ({
           id: (index + 1).toString(),
           title: event.name,
-          date: new Date(event.date),
+          date: event.date,
           location: event.location,
           description: event.description,
         }));
+        console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
         setUpcomingEventList(transformedEvents);
-        console.log('Fetched Result:', JSON.stringify(result, null, 2));
+        console.log('Fetched Result:', upcomingEventList);
         setDataUpcoming(result);
-        console.log('result:', JSON.stringify(result, null, 2));
-        console.log('data:', JSON.stringify(dataUpcoming, null, 2));
+        console.log('Data Upcoming:', dataUpcoming);
+        // console.log('result:', JSON.stringify(result, null, 2));
+        // console.log('data:', JSON.stringify(dataUpcoming, null, 2));
 
         
       } catch (err) {
@@ -84,7 +87,7 @@ function Events() {
       }
     };
     fetchData();
-  }, [orgAuthToken]);
+  },[orgAuthToken]);
 
 
 
@@ -95,14 +98,20 @@ function Events() {
       const transformedEvents = dataUpcoming.map((event, index) => ({
         id: (index + 1).toString(),
         title: event.name,
-        date: new Date(event.date),
+        date: event.date,
         location: event.location,
         description: event.description,
       }));
+      console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
+
   
       setUpcomingEventList(transformedEvents);
+      console.log('Fetched Result:', upcomingEventList);
     }
   }, [dataUpcoming]);
+
+  // if (loading) return <p>Loading...</p>;
+  // if (error) return <p>Error: {error}</p>;
 
 
 
@@ -154,7 +163,8 @@ function Events() {
                             </tr>
                           </thead>
                           <tbody>
-                            {events.map((event, index) => (
+                            {upcomingEventList.map((event, index) => (
+                              // console.log('Event:', event.date),
                               <tr key={index}>
                                 <td>{format(event.date, "MMMM dd, yyyy")}</td> {/* Format date */}
                                 <td  className='table-data'>{event.title}</td>

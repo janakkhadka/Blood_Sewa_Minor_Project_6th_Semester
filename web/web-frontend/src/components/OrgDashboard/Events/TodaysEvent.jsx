@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import './TodaysEvent.css'
 
@@ -13,8 +13,96 @@ import BackThreeD from '../../LoginRegistration/3d'
 
 import {donorList} from '../../UserDashboard/DummyData'
 
+import { useNavigate } from 'react-router-dom';
+
+import { useOrgAuthToken } from '../../../Logic/AuthKey';
+import {api} from '../../../Logic/api'
+
 
 function TodaysEvent() {
+  const orgAuthToken = useOrgAuthToken();
+  const navigate = useNavigate()
+
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const [todayEventData, setTodayEventData] = useState();
+  const [todayEventList, setTodayEventList] = useState([]); 
+  //inventory ko data taneko server bata
+  useEffect(() => {
+    if (!orgAuthToken) {
+        setError('No auth token found. Please log in');
+        setLoading(false);
+        console.log('No auth token found. Please log in');
+        return;
+      }
+    const fetchData = async () => {
+      try {
+        const response = await fetch(api+'pastevents/', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${orgAuthToken}`,
+          },
+        });
+
+        if (!response.ok) {
+            const errorResponse = await response.json();
+            console.log(errorResponse);
+          throw new Error(`Error: ${response.status}`);
+        }
+
+        
+
+        const result = await response.json();
+        console.log(result)
+        const transformedEvents = result.map((event, index) => ({
+          id: (index + 1).toString(),
+          title: event.name,
+          date: event.date,
+          location: event.location,
+          description: event.description,
+        }));
+        console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
+        setTodayEventList(transformedEvents);
+        console.log('Fetched Result:', todayEventList);
+        setTodayEventData(result);
+        console.log('Data Upcoming:', todayEventData);
+        // console.log('result:', JSON.stringify(result, null, 2));
+        // console.log('data:', JSON.stringify(dataUpcoming, null, 2));
+
+        
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  },[orgAuthToken]);
+
+
+
+  //aako data lai rakheko
+  useEffect(() => {
+    if (todayEventData) {
+      // Assuming `dataUpcoming` is the response
+      const transformedEvents = todayEventData.map((event, index) => ({
+        id: (index + 1).toString(),
+        title: event.name,
+        date: event.date,
+        location: event.location,
+        description: event.description,
+      }));
+      console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
+
+  
+      setTodayEventList(transformedEvents);
+      console.log('Fetched Result:', todayEventList);
+    }
+  }, [todayEventData]);
+
   return (
     <div className='todays-event-wrapper'>
       <div className="syringe">

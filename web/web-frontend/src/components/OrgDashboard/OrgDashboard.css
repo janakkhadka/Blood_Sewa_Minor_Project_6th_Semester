@@ -37,7 +37,7 @@
   color: var(--text-color);
   padding-top: 60px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 20px;
 }
 
@@ -144,6 +144,79 @@
   gap: 5px;
   align-items: center;
 }
+
+
+/* bottom section */
+/* organization request ko lagi */
+.org-dashboard .bottom-section .requested-blood-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  width: 1400px;
+  height: 300px;
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  backdrop-filter: var(--backdrop-filter);
+}
+
+.org-dashboard  .requested-blood-wrapper .h1 {
+  width: 100%;
+  position: sticky;
+  top: 0;
+  background-color: transparent;
+  backdrop-filter: var(--backdrop-filter);
+  padding: 7px 20px;
+  background-color: var(--h1-background);
+  color: var(--h1-text-color);
+  z-index: 3;
+}
+
+.org-dashboard .requested-blood-wrapper table {
+  margin: 0 20px 20px;
+}
+
+.org-dashboard .requested-blood-wrapper table th {
+  text-align: start;
+  font-size: 18px;
+}
+
+.org-dashboard .requested-blood-wrapper table td {
+  padding-top: 10px;
+  font-size: 17px;
+}
+
+.org-dashboard .requested-blood-wrapper table td .donate-button {
+  padding: 6px 30px;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 1;
+  box-shadow: var(--button-shadow);
+  border: 2px solid var(--border-color);
+  background-color: var(--button-background-color);
+  color: var(--button-text-color);
+}
+
+.org-dashboard .requested-blood-wrapper table td .donate-button:hover {
+  color: var(--secondary-text-color);
+  backdrop-filter: blur(15px);
+  background: transparent;
+}
+
+
+.org-dashboard .requested-blood-wrapper .table-data {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 
 
 
@@ -378,6 +451,119 @@ color: var(--secondary-text-color);
 backdrop-filter: blur(15px);
 background: transparent;
 }
+
+
+/* donate blood modal ko lagi */
+.org-dashboard-wrapper .donate-blood-wrapper{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: transparent;
+  backdrop-filter: var(--backdrop-filter);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+  color: var(--secondary-text-color);
+}
+
+.org-dashboard-wrapper .donate-blood-wrapper .donate-blood{
+  position: relative;
+  width: 600px;
+  height: 400px;
+  background: var(--secondary-background);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 50px;
+}
+
+/* input box ko section suru */
+.org-dashboard-wrapper .donate-blood-wrapper.donate-blood form{
+width: 100%;
+height: 100%;
+margin:20px;
+padding:40px;
+padding-top:10px;
+display: flex;
+flex-direction: column;
+gap: 50px;
+}
+
+.org-dashboard-wrapper .donate-blood-wrapper .donate-blood form .request-button-wrapper{
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.org-dashboard-wrapper .donate-blood-wrapper .donate-blood form .input-box{
+height:40px;
+width: 100%;
+}
+
+.org-dashboard-wrapper .donate-blood-wrapper .donate-blood form .drop-down-box{
+    position: relative;
+    height: 30px;
+    width: 100%;
+    margin: 30px 0;
+    color: var(--text-color);
+}
+.org-dashboard-wrapper .donate-blood-wrapper .donate-blood form .drop-down-box .icon{
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  translate: 0 -20%;
+  font-size: 16px;
+  pointer-events: none;
+}
+
+
+
+.org-dashboard-wrapper .donate-blood-wrapper .donate-blood .close-button{
+position: absolute;
+top: 15px;
+right: 20px;
+color: var(--secondary-text-color);
+}
+
+.org-dashboard-wrapper .donate-blood-wrapper .donate-blood .close-button button{
+background: transparent;
+border: none;
+outline: none;
+font-size: 20px;
+cursor: pointer;
+color: var(--secondary-text-color);
+box-shadow: none;
+}
+
+
+.org-dashboard-wrapper .donate-blood-wrapper .donate-blood .donate-button{
+width: 30%;
+padding: 10px 20px;
+border: none;
+border-radius: 5px;
+font-size: 18px;
+cursor: pointer;
+z-index: 3;
+box-shadow: var(--button-shadow);
+border: 2px solid var(--border-color);
+background-color: var(--button-background-color);
+color: var(--button-text-color);
+}
+
+.org-dashboard-wrapper .donate-blood-wrapper .donate-blood-wrapper .donate-button:hover {
+color: var(--secondary-text-color);
+backdrop-filter: blur(15px);
+background: transparent;
+}
+
+
+
 
 
 

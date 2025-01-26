@@ -18,17 +18,23 @@ import MyBarChart from '../Utils/MyBarChart'
 import { useOrgAuthToken } from '../../Logic/AuthKey';
 import {api} from '../../Logic/api'
 
+import { format } from "date-fns";
+
 function OrgDashboard() {
     //org details taneko
     const orgDetailsString = sessionStorage.getItem('orgDetails') || localStorage.getItem('orgDetails');
     let orgDetails = null;
+    let orgName = "";
     
-    // try {
-    //   orgDetails = orgDetailsString ? JSON.parse(orgDetailsString) : null;
-    //   //console.log(orgDetails);
-    // } catch (error) {
-    //   console.error('Failed to parse orgDetails:', error);
-    // }
+    try {
+      orgDetails = orgDetailsString ? JSON.parse(orgDetailsString) : null;
+    //   console.log(orgDetails);
+      orgName = orgDetails.name;
+    } catch (error) {
+      console.error('Failed to parse orgDetails:', error);
+    }
+
+    
 
     
     const [data, setData] = useState();
@@ -60,6 +66,12 @@ function OrgDashboard() {
   };
   const [pintValue, setPintValue] = useState("");
 
+  const [bloodReqeuestData, setBloodRequestData] = useState();
+  const [bloodRequestList, setBloodRequestList] = useState([]);
+
+  const [donateBloodModal, setDonateBloodModal] = useState(false);
+  const [pintValueDonate, setPintValueDonate] = useState("");
+
 
 
 //inventory ko data taneko server bata
@@ -71,7 +83,7 @@ function OrgDashboard() {
         return;
       }
     const fetchData = async () => {
-        console.log(orgAuthToken)
+        // console.log(orgAuthToken)
 
       try {
         const response = await fetch(api+'my-blood-inventory/', {
@@ -97,10 +109,10 @@ function OrgDashboard() {
           )
           .map(([type, pint]) => ({ type, pint }));
         setBarList(newBarList);
-        console.log('Fetched Result:', JSON.stringify(result, null, 2));
+        // console.log('Fetched Result:', JSON.stringify(result, null, 2));
         setData(result);
-        console.log('result:', JSON.stringify(result, null, 2));
-        console.log('data:', JSON.stringify(data, null, 2));
+        // console.log('result:', JSON.stringify(result, null, 2));
+        // console.log('data:', JSON.stringify(data, null, 2));
 
         
       } catch (err) {
@@ -114,10 +126,10 @@ function OrgDashboard() {
 
 
 
-  //invetory ko data lyayesi teslai filter gareko
+  //invetory ko data lyayesi teslai filter gareko ani varibale maa haleko
   useEffect(() => {
     if (data) {
-      console.log('Updated data:', JSON.stringify(data, null, 2)); // Log data after state update
+    //   console.log('Updated data:', JSON.stringify(data, null, 2)); // Log data after state update
       const newBarList = Object.entries(data.inventory)
           .filter(([key]) =>
             ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].includes(key)
@@ -134,7 +146,7 @@ function OrgDashboard() {
         setABPositive(data.inventory["AB+"]);
         setABNegative(data.inventory["AB-"]);
 
-        console.log('barList:', barList);
+        // console.log('barList:', barList);
     }
   }, [data]);
 
@@ -163,7 +175,7 @@ function OrgDashboard() {
                 Authorization: `Bearer ${orgAuthToken}`,
             },
             body: JSON.stringify(inventory),
-        });;
+        });
 
         if (response.ok) {
             const responseData = await response.json();
@@ -171,7 +183,7 @@ function OrgDashboard() {
             // alert('Inventory updated successfully!');
             window.location.reload();
             // setUpdateBloodInventory(false);
-            console.log('Server Response:', responseData);
+            // console.log('Server Response:', responseData);
         } else {
             console.log(response)
             console.error('Failed to update inventory');
@@ -182,6 +194,121 @@ function OrgDashboard() {
         alert('An error occurred while updating inventory');
     }
 };
+
+
+ //bulk request ko lagi post request
+ const handleBloodRequestFunction = async (e) => {
+    e.preventDefault();
+
+    const request = {
+            [bloodType.value]: parseInt(pintValue) || 0,
+    };
+    try {
+        console.log('Request:', request);
+        const response = await fetch(api + 'bulk-request/add/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${orgAuthToken}`,
+            },
+            body: JSON.stringify(request),
+        });;
+
+        if (response.ok) {
+            const responseData = await response.json();
+            // navigate('/org-dashboard');
+            // alert('Inventory updated successfully!');
+            window.location.reload();
+            // setUpdateBloodInventory(false);
+            // console.log('Server Response:', responseData);
+            // console.log('Blood Request:', bloodType, pintValue);
+        } else {
+            console.log(response)
+            console.error('Failed to request blood');
+            alert('Failed to request blood');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while requesting blood');
+    }
+};
+
+
+
+ //arule request gareko blood ko lagi get request
+ useEffect(() => {
+    if (!orgAuthToken) {
+        setError('No auth token found. Please log in');
+        setLoading(false);
+        console.log('No auth token found. Please log in');
+        return;
+      }
+    const fetchData = async () => {
+      try {
+        const response = await fetch(api+'bulk-requests', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${orgAuthToken}`,
+          },
+        });
+
+        if (!response.ok) {
+            const errorResponse = await response.json();
+            console.log(errorResponse);
+          throw new Error(`Error: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log(result)
+        const transformedRequests = Array.isArray(result)
+      ? result.map((data, index) => ({
+          id: (index + 1).toString(),
+          requestedBy: data.organization_name,
+          bloodGroup: Object.keys(data.blood_request)[0],
+          pintValue: data.blood_request[Object.keys(data.blood_request)[0]],
+          date: data.date
+        }))
+      : [];
+        // console.log('Transformed Events:', JSON.stringify(transformedRequests, null, 2));
+  
+    
+        setBloodRequestList(transformedRequests);
+        // console.log('Fetched Result:', bloodRequestList);
+        setBloodRequestData(result);
+        // console.log('result:', JSON.stringify(result, null, 2));
+        // console.log('data:', JSON.stringify(dataUpcoming, null, 2));
+
+        
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  },[orgAuthToken]);
+
+    useEffect(() => {
+        if (bloodReqeuestData) {
+        // Assuming `dataUpcoming` is the response
+        const transformedRequests = Array.isArray(bloodReqeuestData)
+        ? bloodReqeuestData.map((data, index) => ({
+            id: (index + 1).toString(),
+            requestedBy: data.organization_name,
+            bloodGroup: Object.keys(data.blood_request)[0],
+            pintValue: data.blood_request[Object.keys(data.blood_request)[0]],
+            date: data.date
+          }))
+        : [];
+        // console.log('Transformed Events:', JSON.stringify(transformedRequests, null, 2));
+
+    
+        setBloodRequestList(transformedRequests);
+        setPintValueDonate(transformedRequests[0].pintValue);
+        console.log('Fetched Result:', bloodRequestList);
+        }
+    }, [bloodReqeuestData]);
 
 
 
@@ -249,7 +376,48 @@ function OrgDashboard() {
                 </section>
             </div>
             <div className="bottom-section">
-                
+                <section className='requested-blood-wrapper'>
+                    <div className="h1">
+                        <h1>Blood Requested by Hospital/Blood Bank</h1>
+                    </div>
+                    <table border="0" style={{tableLayout: "fixed", width: "100%", borderCollapse: "collapse" }}>
+                        <colgroup>
+                        <col style={{ width: "16%" }} />
+                        <col style={{ width: "20%" }} />
+                        <col style={{ width: "16%" }} />  
+                        <col style={{ width: "18%" }} />
+                        <col style={{ width: "18%" }} />
+                        {/* <col style={{ width: "12%" }} /> */}
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Requested By</th>
+                            <th>Blood Group</th>
+                            <th>Pint Value</th>
+                            <th>Donate</th>
+                            {/* <th>Is Donated?</th> */}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {bloodRequestList.map((data, index) => (
+                            // console.log(data.date),
+
+                            <tr key={index}>
+                            <td>{format(data.date, "MMMM dd, yyyy")}</td>
+                            <td>{data.requestedBy}</td>
+                            <td>{data.bloodGroup}</td> {/* Format date */}
+                            <td>{data.pintValue}</td>
+                            <td>
+                                <div className='donate-button-wrapper'>
+                                    <button className='donate-button'>Donate</button>
+                                </div>
+                            </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </section>
             </div> 
         </div>
         {updateBloodInventory && (
@@ -379,8 +547,49 @@ function OrgDashboard() {
                         </div>
                         
                         <div className='request-button-wrapper'>
-                            <button type='submit' onClick={handleUpdateFunction}  className="request-button">
+                            <button type='submit' onClick={handleBloodRequestFunction}  className="request-button">
                                 Request
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        )}
+
+        {/* yo chai org le blood donate garxa aru org lai, modal ho */}
+        {donateBloodModal && (
+            <div className="donate-blood-wrapper">
+                <div className="donate-blood">
+                    <div className="close-button">
+                        <button onClick={() => setDonateBloodModal(false)}>X</button>
+                    </div>
+                    <h2 style={{color:"var(--secondary-text-color)"}}>Donate Blood</h2>
+                    <form>
+                        <div className="input-box-wrapper">
+                            {/* <div className="drop-down-box">
+                                <Select
+                                value = {bloodType}
+                                onChange={handleBloodTypeChange}
+                                options={bloodTypeList}
+                                styles={customStyles()}
+                                placeholder="Select Blood Group"
+                                isSearchable={false}
+                                />
+                                <IoIosArrowDropdownCircle className='icon'/>
+                            </div> */}
+                            <div className="pint-value">
+                                <div className="input-box">
+                                    <input type="text"
+                                    value = {pintValueDonate}
+                                    onChange={(e) => setPintValueDonate(e.target.value)}
+                                    placeholder='Pint Value'/>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className='donate-button-wrapper'>
+                            <button type='submit'  className="donate-button">
+                                Donate
                             </button>
                         </div>
                     </form>

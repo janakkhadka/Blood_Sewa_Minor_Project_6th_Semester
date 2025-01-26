@@ -51,7 +51,6 @@ function OrgOrganizeEvent() {
             alert('Please fill in all required fields.');
             return;
         } 
-        console.log(orgAuthToken)
 
         const createEventData = {
             "name":eventName,
