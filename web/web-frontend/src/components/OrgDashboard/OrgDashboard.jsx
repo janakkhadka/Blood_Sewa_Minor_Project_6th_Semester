@@ -410,7 +410,7 @@ function OrgDashboard() {
                             <td>{data.pintValue}</td>
                             <td>
                                 <div className='donate-button-wrapper'>
-                                    <button className='donate-button'>Donate</button>
+                                    <button className='donate-button' onClick={()=> setDonateBloodModal(true)}>Donate</button>
                                 </div>
                             </td>
                             </tr>
@@ -577,7 +577,7 @@ function OrgDashboard() {
                         </div>
                         
                         <div className='donate-button-wrapper'>
-                            <button type='submit'  className="donate-button" onClick={()=>setDonateBloodModal(true)}>
+                            <button type='submit'  className="donate-button">
                                 Donate
                             </button>
                         </div>
