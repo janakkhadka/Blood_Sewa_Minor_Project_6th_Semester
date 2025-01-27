@@ -39,7 +39,7 @@ function TodaysEvent() {
       }
     const fetchData = async () => {
       try {
-        const response = await fetch(api+'pastevents/', {
+        const response = await fetch(api+'todaysevent/', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
