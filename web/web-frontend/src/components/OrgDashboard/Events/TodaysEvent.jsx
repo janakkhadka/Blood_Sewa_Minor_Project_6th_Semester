@@ -39,7 +39,7 @@ function TodaysEvent() {
       }
     const fetchData = async () => {
       try {
-        const response = await fetch(api+'todaysevent/', {
+        const response = await fetch(api+'todayevents/', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -63,6 +63,11 @@ function TodaysEvent() {
           date: event.date,
           location: event.location,
           description: event.description,
+          organizer: event.organizer,
+          startTime: event.start_time,
+          endTime: event.end_time,
+          slug: event.slug,
+          qrCode: event.qr_code,
         }));
         console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
         setTodayEventList(transformedEvents);
@@ -94,6 +99,11 @@ function TodaysEvent() {
         date: event.date,
         location: event.location,
         description: event.description,
+        organizer: event.organizer,
+        startTime: event.start_time,
+        endTime: event.end_time,
+        slug: event.slug,
+        qrCode: event.qr_code,
       }));
       console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
 
@@ -177,7 +187,7 @@ function TodaysEvent() {
         <div className="right-section">
             <section className='scan-qr'>
               <div className="qr-wrapper" style={{width:"800px"}}>
-                <img className='qr-image' src="https://www.qrstuff.com/images/default_qrcode.png" alt="qr-code"/>
+                <img className='qr-image' src={todayEventList.qrCode} alt="qr-code"/>
               </div>
             </section>
           </div>
