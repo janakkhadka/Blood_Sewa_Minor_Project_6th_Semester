@@ -16,7 +16,7 @@ import {donorList} from '../../UserDashboard/DummyData'
 import { useNavigate } from 'react-router-dom';
 
 import { useOrgAuthToken } from '../../../Logic/AuthKey';
-import {api} from '../../../Logic/api'
+import {api, localhost} from '../../../Logic/api'
 
 
 function TodaysEvent() {
@@ -67,15 +67,14 @@ function TodaysEvent() {
           startTime: event.start_time,
           endTime: event.end_time,
           slug: event.slug,
-          qrCode: event.qr_code,
+          qrCode: localhost+event.qr_code,
         }));
+        
         console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
         setTodayEventList(transformedEvents);
         console.log('Fetched Result:', todayEventList);
         setTodayEventData(result);
         console.log('Data Upcoming:', todayEventData);
-        // console.log('result:', JSON.stringify(result, null, 2));
-        // console.log('data:', JSON.stringify(dataUpcoming, null, 2));
 
         
       } catch (err) {
@@ -103,11 +102,9 @@ function TodaysEvent() {
         startTime: event.start_time,
         endTime: event.end_time,
         slug: event.slug,
-        qrCode: event.qr_code,
+        qrCode: localhost+event.qr_code,
       }));
       console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
-
-  
       setTodayEventList(transformedEvents);
       console.log('Fetched Result:', todayEventList);
     }
