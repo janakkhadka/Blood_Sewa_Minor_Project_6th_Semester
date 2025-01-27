@@ -13,6 +13,8 @@ import BackThreeD from '../../LoginRegistration/3d'
 
 import {donorList} from '../../UserDashboard/DummyData'
 
+import { format } from "date-fns";
+
 import { useNavigate } from 'react-router-dom';
 
 import { useOrgAuthToken } from '../../../Logic/AuthKey';
@@ -28,7 +30,8 @@ function TodaysEvent() {
   const [error, setError] = useState(null);
 
   const [todayEventData, setTodayEventData] = useState();
-  const [todayEventList, setTodayEventList] = useState([]); 
+  const [todayEventList, setTodayEventList] = useState([]);
+  const [singleData, setSingleData] = useState('');
   //inventory ko data taneko server bata
   useEffect(() => {
     if (!orgAuthToken) {
@@ -71,9 +74,10 @@ function TodaysEvent() {
         }));
         
         console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
-        setTodayEventList(transformedEvents);
-        console.log('Fetched Result:', todayEventList);
+        // setTodayEventList(transformedEvents);
+        // console.log('Fetched Result:', todayEventList);
         setTodayEventData(result);
+        setSingleData(transformedEvents[0]);
         console.log('Data Upcoming:', todayEventData);
 
         
@@ -105,8 +109,10 @@ function TodaysEvent() {
         qrCode: localhost+event.qr_code,
       }));
       console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
-      setTodayEventList(transformedEvents);
-      console.log('Fetched Result:', todayEventList);
+      // setTodayEventList(transformedEvents);
+      // console.log('Fetched Result:', todayEventList);
+      setSingleData(transformedEvents[0]);
+      console.log(singleData)
     }
   }, [todayEventData]);
 
@@ -128,19 +134,19 @@ function TodaysEvent() {
               <h3>Event Details</h3>
               <div className="icon-info-wrapper">
                 <MdEvent/>
-                <span>Event: <span style={{fontWeight:"bold"}}>Bir Hospital Donation Event</span></span>
+                <span>Event: <span style={{fontWeight:"bold"}}>{singleData.title}</span></span>
               </div>
               <div className="icon-info-wrapper">
                 <MdDateRange/>
-                <span>Date: <span style={{fontWeight:"bold"}}>January 15, 2025</span></span>
+                <span>Date: <span style={{fontWeight:"bold"}}>{format(singleData.date || 2025-1-25, "MMMM dd, yyyy")}</span></span>
               </div>
               <div className="icon-info-wrapper">
                 <IoMdTime/>
-                <span>Time: <span style={{fontWeight:"bold"}}>09:00 AM - 05:00 PM</span></span>
+                <span>Time: <span style={{fontWeight:"bold"}}>{singleData.startTime+"-"+singleData.endTime}</span></span>
               </div>
               <div className="icon-info-wrapper">
                 <IoLocationOutline/>
-                <span>Location: <span style={{fontWeight:"bold"}}>Balkumari, Lalitpur</span></span>
+                <span>Location: <span style={{fontWeight:"bold"}}>{singleData.location}</span></span>
               </div>
               <div className="icon-info-wrapper">
                 <MdOutlineCountertops/>
@@ -184,7 +190,7 @@ function TodaysEvent() {
         <div className="right-section">
             <section className='scan-qr'>
               <div className="qr-wrapper" style={{width:"800px"}}>
-                <img className='qr-image' src={todayEventList.qrCode} alt="qr-code"/>
+                <img className='qr-image' src={singleData.qrCode} alt="qr-code"/>
               </div>
             </section>
           </div>
