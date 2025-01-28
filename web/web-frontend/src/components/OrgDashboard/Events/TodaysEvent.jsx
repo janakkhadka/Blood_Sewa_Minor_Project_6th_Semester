@@ -31,7 +31,18 @@ function TodaysEvent() {
 
   const [todayEventData, setTodayEventData] = useState();
   const [todayEventList, setTodayEventList] = useState([]);
-  const [singleData, setSingleData] = useState('');
+  const [singleData, setSingleData] = useState({
+    id: "1",
+    title: "Default Event Title",
+    date: "2025-01-01",
+    location: "Default Location",
+    description: "Default Description",
+    organizer: "Default Organizer",
+    startTime: "10:00 AM",
+    endTime: "5:00 PM",
+    slug: "default-slug",
+    qrCode: "default-qr-code-url",
+  });
   //inventory ko data taneko server bata
   useEffect(() => {
     if (!orgAuthToken) {
@@ -60,24 +71,26 @@ function TodaysEvent() {
 
         const result = await response.json();
         console.log(result)
-        const transformedEvents = result.map((event, index) => ({
-          id: (index + 1).toString() || 1,
-          title: event.name || 'Event Title',
-          date: event.date,
-          location: event.location || 'Event Location',
-          description: event.description || 'Event Description',
-          organizer: event.organizer || 'Event Organizer',
-          startTime: event.start_time || 'Event Start Time',
-          endTime: event.end_time || 'Event End Time',
-          slug: event.slug || 'Event Slug',
-          qrCode: localhost+event.qr_code || 'Event QR Code',
-        }));
+        const event = result[0] || {}; // Use the first event or an empty object
+
+      const transformedEvents = {
+        id: event.id ,
+        title: event.name,
+        date: event.date,
+        location: event.location,
+        description: event.description,
+        organizer: event.organizer,
+        startTime: event.start_time,
+        endTime: event.end_time,
+        slug: event.slug,
+        qrCode: localhost + (event.qr_code),
+      };
         
         console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
         // setTodayEventList(transformedEvents);
         // console.log('Fetched Result:', todayEventList);
         setTodayEventData(result);
-        setSingleData(transformedEvents[0]);
+        setSingleData(transformedEvents);
         console.log('Data Upcoming:', todayEventData);
 
         
@@ -96,22 +109,22 @@ function TodaysEvent() {
   useEffect(() => {
     if (todayEventData) {
       // Assuming `dataUpcoming` is the response
-      const transformedEvents = todayEventData.map((event, index) => ({
-        id: (index + 1).toString() || 1,
-        title: event.name || 'Event Title',
-        date: event.date,
-        location: event.location || 'Event Location',
-        description: event.description || 'Event Description',
-        organizer: event.organizer || 'Event Organizer',
-        startTime: event.start_time || 'Event Start Time',
-        endTime: event.end_time || 'Event End Time',
-        slug: event.slug || 'Event Slug',
-        qrCode: localhost+event.qr_code || 'Event QR Code',
-      }));
+      const transformedEvents = {
+        id: todayEventData.id,
+        title: todayEventData.name,
+        date: todayEventData.date,
+        location: todayEventData.location,
+        description: todayEventData.description,
+        organizer: todayEventData.organizer,
+        startTime: todayEventData.start_time,
+        endTime: todayEventData.end_time,
+        slug: todayEventData.slug,
+        qrCode: localhost + (todayEventData.qr_code),
+      };
       console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
       // setTodayEventList(transformedEvents);
       // console.log('Fetched Result:', todayEventList);
-      setSingleData(transformedEvents[0]);
+      setSingleData(transformedEvents);
       console.log(singleData)
     }
   }, [todayEventData]);
