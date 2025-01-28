@@ -42,18 +42,7 @@ function TodaysEvent() {
 
   const [todayEventData, setTodayEventData] = useState();
   const [todayEventList, setTodayEventList] = useState([]);
-  const [singleData, setSingleData] = useState({
-    id: "1",
-    title: "Default Event Title",
-    date: "2025-01-01",
-    location: "Default Location",
-    description: "Default Description",
-    organizer: "Default Organizer",
-    startTime: "10:00 AM",
-    endTime: "5:00 PM",
-    slug: "default-slug",
-    qrCode: "default-qr-code-url",
-  });
+  const [singleData, setSingleData] = useState({});
   //inventory ko data taneko server bata
   useEffect(() => {
     if (!orgAuthToken) {
@@ -91,8 +80,8 @@ function TodaysEvent() {
         location: event.location,
         description: event.description,
         organizer: event.organizer,
-        startTime: event.start_time,
-        endTime: event.end_time,  
+        startTime: event.start_time || "00:00",
+        endTime: event.end_time || "00:00",  
         slug: event.slug,
         qrCode: localhost + (event.qr_code),
       };
@@ -127,8 +116,8 @@ function TodaysEvent() {
         location: todayEventData.location,
         description: todayEventData.description,
         organizer: todayEventData.organizer,
-        startTime: todayEventData.start_time,
-        endTime: todayEventData.end_time,
+        startTime: todayEventData.start_time || "00:00",
+        endTime: todayEventData.end_time || "00:00",
         slug: todayEventData.slug,
         qrCode: localhost + (todayEventData.qr_code),
       };
@@ -166,7 +155,7 @@ function TodaysEvent() {
               </div>
               <div className="icon-info-wrapper">
                 <IoMdTime/>
-                <span>Time: <span style={{fontWeight:"bold"}}>{singleData.startTime || "00:00"+"-"+singleData.endTime || "00:00"}</span></span>
+                <span>Time: <span style={{fontWeight:"bold"}}>{singleData.startTime +"-"+singleData.endTime}</span></span>
               </div>
               <div className="icon-info-wrapper">
                 <IoLocationOutline/>
