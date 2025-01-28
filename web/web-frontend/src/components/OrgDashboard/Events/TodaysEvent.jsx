@@ -61,16 +61,16 @@ function TodaysEvent() {
         const result = await response.json();
         console.log(result)
         const transformedEvents = result.map((event, index) => ({
-          id: (index + 1).toString(),
-          title: event.name,
+          id: (index + 1).toString() || 1,
+          title: event.name || 'Event Title',
           date: event.date,
-          location: event.location,
-          description: event.description,
-          organizer: event.organizer,
-          startTime: event.start_time,
-          endTime: event.end_time,
-          slug: event.slug,
-          qrCode: localhost+event.qr_code,
+          location: event.location || 'Event Location',
+          description: event.description || 'Event Description',
+          organizer: event.organizer || 'Event Organizer',
+          startTime: event.start_time || 'Event Start Time',
+          endTime: event.end_time || 'Event End Time',
+          slug: event.slug || 'Event Slug',
+          qrCode: localhost+event.qr_code || 'Event QR Code',
         }));
         
         console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
@@ -97,16 +97,16 @@ function TodaysEvent() {
     if (todayEventData) {
       // Assuming `dataUpcoming` is the response
       const transformedEvents = todayEventData.map((event, index) => ({
-        id: (index + 1).toString(),
-        title: event.name,
+        id: (index + 1).toString() || 1,
+        title: event.name || 'Event Title',
         date: event.date,
-        location: event.location,
-        description: event.description,
-        organizer: event.organizer,
-        startTime: event.start_time,
-        endTime: event.end_time,
-        slug: event.slug,
-        qrCode: localhost+event.qr_code,
+        location: event.location || 'Event Location',
+        description: event.description || 'Event Description',
+        organizer: event.organizer || 'Event Organizer',
+        startTime: event.start_time || 'Event Start Time',
+        endTime: event.end_time || 'Event End Time',
+        slug: event.slug || 'Event Slug',
+        qrCode: localhost+event.qr_code || 'Event QR Code',
       }));
       console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
       // setTodayEventList(transformedEvents);
