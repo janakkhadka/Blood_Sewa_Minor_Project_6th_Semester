@@ -25,6 +25,17 @@ function TodaysEvent() {
   const orgAuthToken = useOrgAuthToken();
   const navigate = useNavigate()
 
+  const getTodayDate = () => {
+    const today = new Date();
+  
+    // Format date as YYYY-MM-DD
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Add 1 since months are 0-indexed
+    const day = String(today.getDate()).padStart(2, '0');
+  
+    return `${year}-${month}-${day}`; // Format: YYYY-MM-DD
+  };
+
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -81,7 +92,7 @@ function TodaysEvent() {
         description: event.description,
         organizer: event.organizer,
         startTime: event.start_time,
-        endTime: event.end_time,
+        endTime: event.end_time,  
         slug: event.slug,
         qrCode: localhost + (event.qr_code),
       };
@@ -151,11 +162,11 @@ function TodaysEvent() {
               </div>
               <div className="icon-info-wrapper">
                 <MdDateRange/>
-                <span>Date: <span style={{fontWeight:"bold"}}>{format(singleData.date || 2025-1-25, "MMMM dd, yyyy")}</span></span>
+                <span>Date: <span style={{fontWeight:"bold"}}>{format(getTodayDate(), "MMMM dd, yyyy")}</span></span>
               </div>
               <div className="icon-info-wrapper">
                 <IoMdTime/>
-                <span>Time: <span style={{fontWeight:"bold"}}>{singleData.startTime+"-"+singleData.endTime}</span></span>
+                <span>Time: <span style={{fontWeight:"bold"}}>{singleData.startTime || "00:00"+"-"+singleData.endTime || "00:00"}</span></span>
               </div>
               <div className="icon-info-wrapper">
                 <IoLocationOutline/>
