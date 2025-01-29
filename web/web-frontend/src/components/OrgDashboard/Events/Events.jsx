@@ -36,7 +36,7 @@ function Events() {
     setSelectedEvent(event);
     setComingEvent(true);
   };
-  //inventory ko data taneko server bata
+  //upcomming event ko data taneko server bata
   useEffect(() => {
     if (!orgAuthToken) {
         setError('No auth token found. Please log in');
