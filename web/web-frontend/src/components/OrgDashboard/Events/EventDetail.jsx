@@ -8,7 +8,7 @@ import BackThreeD from '../../LoginRegistration/3d'
 import { format } from "date-fns";
 import MyBarChart from '../../Utils/MyBarChart'
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import { IoMdSquare } from "react-icons/io";
 import { TbAxisX, TbAxisY } from "react-icons/tb";
@@ -19,6 +19,10 @@ import ScreeningResultModal from './ScreeningResultModal'
 
 function EventDetail() {
   const [toggleScreeningResultModal, setToggleScreeningResultModal] = useState(false);
+
+  const location = useLocation()
+  const eventId = location.state?.eventId;
+  console.log(eventId)
   return (
     <div className="event-details-wrapper">
         <div className="syringe">

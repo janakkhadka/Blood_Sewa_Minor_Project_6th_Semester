@@ -282,7 +282,7 @@ function Events() {
                                 <td  className='table-data'>{event.title}</td>
                                 <td style={{paddingLeft:"40px"}}>10</td>
                                 <td  className='table-data'>{event.location}</td>
-                                <td><button className="notify-button" onClick={() => navigate("/event-details")}>Detail</button></td>
+                                <td><button className="notify-button" onClick={() => navigate("/event-details", {state: {eventId:event.id}})}>Detail</button></td>
                               </tr>
                             ))}
                       </tbody>
