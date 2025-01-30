@@ -16,7 +16,8 @@ import UserOrganizeEvent from './UserDashboard/UserOrganizeEvent';
 import UserBloodAvailability from './UserDashboard/BloodAvailability';
 import UserProfile from './UserDashboard/UserProfile';
 import UserProfileUpdate from './UserDashboard/UserProfileUpdate';
-import SearchDonor from './UserDashboard/SearchDonor.jsx';
+
+import SearchDonor from './Common/SearchDonor.jsx';
 
 import OrgDashboard from './OrgDashboard/OrgDashboard.jsx';
 import Events from './OrgDashboard/Events/Events.jsx';
