@@ -38,8 +38,7 @@ const Navigation = () => {
         <Route path="/registrationorg" element={<RegistrationOrg />} />
         <Route path="/registrationuser" element={<RegistrationUser />} />
         <Route path="/blood-request-form" element={<BloodRequestForm />} />
-        <Route
-          path="/search-donor" element={ <SearchDonor />}/>
+        <Route path="/search-donor" element={ <SearchDonor />}/>
 
         {/* User Protected Routes */}
         <Route
