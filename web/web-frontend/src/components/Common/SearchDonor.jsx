@@ -8,7 +8,7 @@ import customStyles from '../LoginRegistration/ReactSelectStyle';
 import 'react-date-picker/dist/DatePicker.css';
 import '../LoginRegistration/Calender.css';
 
-import {provinceList, ProvinceDistrictList, bloodGroupList} from '../LoginRegistration/DropDownList';
+import {provinceList, ProvinceDistrictList, bloodGroupList1} from '../LoginRegistration/DropDownList';
 
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 
@@ -85,7 +85,7 @@ function SearchDonor() {
                 <Select
                   value = {bloodType}
                   onChange={handleBloodTypeChange}
-                  options={bloodGroupList}
+                  options={bloodGroupList1}
                   styles={customStyles()}
                   placeholder="Select Blood Group"
                   isSearchable={false}
