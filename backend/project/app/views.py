@@ -466,16 +466,28 @@ class ListUpcommingEventsView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        
         today = now().date()
-        past_events = Event.objects.filter(date__gt=today)
-        serializer = EventSerializer(past_events, many=True)
-
+        upcoming_events = Event.objects.filter(date__gt=today)
+        serializer = EventSerializer(upcoming_events, many=True)
         
+        user = request.user  # Get the authenticated user
+
         serialized_data = serializer.data
         for event in serialized_data:
+            event_obj = upcoming_events.get(name=event['name'])
+            
+            # Check if the user has joined the event
+            event["status"] = "Joined" if UserEvent.objects.filter(user=user, event=event_obj).exists() else "Not Joined"
+
+            # Remove collaborator name if it's empty
             if not event.get("collabrator_name"):
-                event.pop("collabrator_name", None)  
+                event.pop("collabrator_name", None)
+            
+            if event.get("qr_code"):
+                event.pop("qr_code", None)
+
+            if event.get("slug"):
+                event.pop("slug", None)
 
         return Response(serialized_data, status=status.HTTP_200_OK)
 
@@ -730,6 +742,9 @@ class MyBookings(APIView):
         bookings = Bookings.objects.filter(user=request.user)
         serializer = BookingSerializer(bookings, many=True)
         return Response(serializer.data)
+
+
+
 
 
 class OrganizationBookings(APIView):
