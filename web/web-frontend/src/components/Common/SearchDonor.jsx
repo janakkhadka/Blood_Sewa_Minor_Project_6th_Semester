@@ -14,8 +14,8 @@ import { IoIosArrowDropdownCircle } from "react-icons/io";
 
 
 import BackThreeD from '../LoginRegistration/3d'
-import NavigationBar from '../Common/NavigationBar'
-import { UserComponentNavbarRightLeft, UserComponentNavbarRightRight } from './UserNavbarComponent';
+import NavigationBar from './NavigationBar'
+import { UserComponentNavbarRightLeft, UserComponentNavbarRightRight } from '../UserDashboard/UserNavbarComponent';
 import { OrgDashboardNavbarRightLeft, OrgDashboardNavbarRightRight } from '../OrgDashboard/OrgNavbarComponent'
 
 import { useUserAuthToken, useOrgAuthToken } from '../../Logic/AuthKey';

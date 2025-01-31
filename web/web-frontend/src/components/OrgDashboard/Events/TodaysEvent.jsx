@@ -13,22 +13,36 @@ import BackThreeD from '../../LoginRegistration/3d'
 
 import {donorList} from '../../UserDashboard/DummyData'
 
+import { format } from "date-fns";
+
 import { useNavigate } from 'react-router-dom';
 
 import { useOrgAuthToken } from '../../../Logic/AuthKey';
-import {api} from '../../../Logic/api'
+import {api, localhost} from '../../../Logic/api'
 
 
 function TodaysEvent() {
   const orgAuthToken = useOrgAuthToken();
   const navigate = useNavigate()
 
+  const getTodayDate = () => {
+    const today = new Date();
+  
+    // Format date as YYYY-MM-DD
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Add 1 since months are 0-indexed
+    const day = String(today.getDate()).padStart(2, '0');
+  
+    return `${year}-${month}-${day}`; // Format: YYYY-MM-DD
+  };
+
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const [todayEventData, setTodayEventData] = useState();
-  const [todayEventList, setTodayEventList] = useState([]); 
+  const [todayEventList, setTodayEventList] = useState([]);
+  const [singleData, setSingleData] = useState({});
   //inventory ko data taneko server bata
   useEffect(() => {
     if (!orgAuthToken) {
@@ -39,7 +53,7 @@ function TodaysEvent() {
       }
     const fetchData = async () => {
       try {
-        const response = await fetch(api+'pastevents/', {
+        const response = await fetch(api+'todayevents/', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -57,20 +71,27 @@ function TodaysEvent() {
 
         const result = await response.json();
         console.log(result)
-        const transformedEvents = result.map((event, index) => ({
-          id: (index + 1).toString(),
-          title: event.name,
-          date: event.date,
-          location: event.location,
-          description: event.description,
-        }));
+        const event = result[0] || {}; // Use the first event or an empty object
+
+      const transformedEvents = {
+        id: event.id ,
+        title: event.name,
+        date: event.date,
+        location: event.location,
+        description: event.description,
+        organizer: event.organizer,
+        startTime: event.start_time || "00:00",
+        endTime: event.end_time || "00:00",  
+        slug: event.slug,
+        qrCode: localhost + (event.qr_code),
+      };
+        
         console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
-        setTodayEventList(transformedEvents);
-        console.log('Fetched Result:', todayEventList);
+        // setTodayEventList(transformedEvents);
+        // console.log('Fetched Result:', todayEventList);
         setTodayEventData(result);
+        setSingleData(transformedEvents);
         console.log('Data Upcoming:', todayEventData);
-        // console.log('result:', JSON.stringify(result, null, 2));
-        // console.log('data:', JSON.stringify(dataUpcoming, null, 2));
 
         
       } catch (err) {
@@ -88,18 +109,23 @@ function TodaysEvent() {
   useEffect(() => {
     if (todayEventData) {
       // Assuming `dataUpcoming` is the response
-      const transformedEvents = todayEventData.map((event, index) => ({
-        id: (index + 1).toString(),
-        title: event.name,
-        date: event.date,
-        location: event.location,
-        description: event.description,
-      }));
+      const transformedEvents = {
+        id: todayEventData.id,
+        title: todayEventData.name,
+        date: todayEventData.date,
+        location: todayEventData.location,
+        description: todayEventData.description,
+        organizer: todayEventData.organizer,
+        startTime: todayEventData.start_time || "00:00",
+        endTime: todayEventData.end_time || "00:00",
+        slug: todayEventData.slug,
+        qrCode: localhost + (todayEventData.qr_code),
+      };
       console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
-
-  
-      setTodayEventList(transformedEvents);
-      console.log('Fetched Result:', todayEventList);
+      // setTodayEventList(transformedEvents);
+      // console.log('Fetched Result:', todayEventList);
+      setSingleData(transformedEvents);
+      console.log(singleData)
     }
   }, [todayEventData]);
 
@@ -121,19 +147,19 @@ function TodaysEvent() {
               <h3>Event Details</h3>
               <div className="icon-info-wrapper">
                 <MdEvent/>
-                <span>Event: <span style={{fontWeight:"bold"}}>Bir Hospital Donation Event</span></span>
+                <span>Event: <span style={{fontWeight:"bold"}}>{singleData.title}</span></span>
               </div>
               <div className="icon-info-wrapper">
                 <MdDateRange/>
-                <span>Date: <span style={{fontWeight:"bold"}}>January 15, 2025</span></span>
+                <span>Date: <span style={{fontWeight:"bold"}}>{format(getTodayDate(), "MMMM dd, yyyy")}</span></span>
               </div>
               <div className="icon-info-wrapper">
                 <IoMdTime/>
-                <span>Time: <span style={{fontWeight:"bold"}}>09:00 AM - 05:00 PM</span></span>
+                <span>Time: <span style={{fontWeight:"bold"}}>{singleData.startTime +"-"+singleData.endTime}</span></span>
               </div>
               <div className="icon-info-wrapper">
                 <IoLocationOutline/>
-                <span>Location: <span style={{fontWeight:"bold"}}>Balkumari, Lalitpur</span></span>
+                <span>Location: <span style={{fontWeight:"bold"}}>{singleData.location}</span></span>
               </div>
               <div className="icon-info-wrapper">
                 <MdOutlineCountertops/>
@@ -177,7 +203,7 @@ function TodaysEvent() {
         <div className="right-section">
             <section className='scan-qr'>
               <div className="qr-wrapper" style={{width:"800px"}}>
-                <img className='qr-image' src="https://www.qrstuff.com/images/default_qrcode.png" alt="qr-code"/>
+                <img className='qr-image' src={singleData.qrCode} alt="qr-code"/>
               </div>
             </section>
           </div>

@@ -36,7 +36,12 @@ function Events() {
     setSelectedEvent(event);
     setComingEvent(true);
   };
-  //inventory ko data taneko server bata
+
+  const [pastEventData, setPastEventData] = useState();
+  const [pastEventList, setPastEventList] = useState([]);
+
+
+  //upcomming event ko data taneko server bata
   useEffect(() => {
     if (!orgAuthToken) {
         setError('No auth token found. Please log in');
@@ -71,11 +76,8 @@ function Events() {
           location: event.location,
           description: event.description,
         }));
-        console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
         setUpcomingEventList(transformedEvents);
-        console.log('Fetched Result:', upcomingEventList);
         setDataUpcoming(result);
-        console.log('Data Upcoming:', dataUpcoming);
         // console.log('result:', JSON.stringify(result, null, 2));
         // console.log('data:', JSON.stringify(dataUpcoming, null, 2));
 
@@ -102,13 +104,86 @@ function Events() {
         location: event.location,
         description: event.description,
       }));
+
+      setUpcomingEventList(transformedEvents);
+
+    }
+  }, [dataUpcoming]);
+
+
+//past event lai rakheko
+  useEffect(() => {
+    if (!orgAuthToken) {
+        setError('No auth token found. Please log in');
+        setLoading(false);
+        console.log('No auth token found. Please log in');
+        return;
+      }
+    const fetchData = async () => {
+      try {
+        const response = await fetch(api+'pastevents/', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${orgAuthToken}`,
+          },
+        });
+
+        if (!response.ok) {
+            const errorResponse = await response.json();
+            console.log(errorResponse);
+          throw new Error(`Error: ${response.status}`);
+        }
+
+        
+
+        const result = await response.json();
+        console.log(result)
+        const transformedEvents = result.map((event, index) => ({
+          id: (index + 1).toString(),
+          title: event.name,
+          date: event.date,
+          location: event.location,
+          description: event.description,
+        }));
+        console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
+        setPastEventList(transformedEvents);
+        console.log('Fetched Result:', pastEventList);
+        setPastEventData(result);
+        console.log('Data Upcoming:', pastEventData);
+        // console.log('result:', JSON.stringify(result, null, 2));
+        // console.log('data:', JSON.stringify(dataUpcoming, null, 2));
+
+        
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  },[orgAuthToken]);
+
+
+
+  //aako data lai rakheko
+  useEffect(() => {
+    if (pastEventData) {
+      // Assuming `dataUpcoming` is the response
+      const transformedEvents = pastEventData.map((event, index) => ({
+        id: (index + 1).toString(),
+        title: event.name,
+        date: event.date,
+        location: event.location,
+        description: event.description,
+      }));
       console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
 
   
-      setUpcomingEventList(transformedEvents);
+      setPastEventList(transformedEvents);
       console.log('Fetched Result:', upcomingEventList);
     }
-  }, [dataUpcoming]);
+  }, [pastEventData]);
 
   // if (loading) return <p>Loading...</p>;
   // if (error) return <p>Error: {error}</p>;
@@ -187,7 +262,7 @@ function Events() {
                       <colgroup>
                         <col style={{ width: "20%" }} />
                         <col style={{ width: "28%" }} /> 
-                        <col style={{ width: "15%" }} />
+                        <col style={{ width: "12%" }} />
                         <col style={{ width: "25%" }} /> 
                         <col style={{ width: "12%" }} />
                       </colgroup>
@@ -200,15 +275,16 @@ function Events() {
                         </tr>
                       </thead>
                       <tbody>
-                        {pastEvents.map((event, index) => (
-                          <tr key={index}>
-                            <td>{format(event.date, "MMMM dd, yyyy")}</td> {/* Format date */}
-                            <td  className='table-data'>{event.title}</td>
-                            <td style={{paddingLeft:"40px"}}>{event.donorNumber}</td>
-                            <td  className='table-data'>{event.location}</td>
-                            <td><button className="notify-button" onClick={() => navigate("/event-details")}>Detail</button></td>
-                          </tr>
-                        ))}
+                        {pastEventList.map((event, index) => (
+                              // console.log('Event:', event.date),
+                              <tr key={index}>
+                                <td>{format(event.date, "MMMM dd, yyyy")}</td> {/* Format date */}
+                                <td  className='table-data'>{event.title}</td>
+                                <td style={{paddingLeft:"40px"}}>10</td>
+                                <td  className='table-data'>{event.location}</td>
+                                <td><button className="notify-button" onClick={() => navigate("/event-details", {state: {eventId:event.id}})}>Detail</button></td>
+                              </tr>
+                            ))}
                       </tbody>
                     </table>
                   </section>

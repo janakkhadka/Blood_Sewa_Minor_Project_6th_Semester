@@ -18,7 +18,7 @@ import MyBarChart from '../Utils/MyBarChart'
 import { useOrgAuthToken } from '../../Logic/AuthKey';
 import {api} from '../../Logic/api'
 
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 
 function OrgDashboard() {
     //org details taneko
@@ -33,7 +33,6 @@ function OrgDashboard() {
     } catch (error) {
       console.error('Failed to parse orgDetails:', error);
     }
-
     
 
     
@@ -50,6 +49,7 @@ function OrgDashboard() {
   const [oNegative, setONegative] = useState("");
   const orgAuthToken = useOrgAuthToken();
   const navigate = useNavigate();
+  console.log(orgAuthToken)
 
     
   const [loading, setLoading] = useState(true);
@@ -71,6 +71,14 @@ function OrgDashboard() {
 
   const [donateBloodModal, setDonateBloodModal] = useState(false);
   const [pintValueDonate, setPintValueDonate] = useState("");
+  const [orgNameToDonate, setOrgNameToDonate] = useState("");
+  const [bloodGroupToDonate, setBloodGroupToDonate] = useState("");
+
+  const [selectedRequestId, setSelectedRequestId] = useState(0);
+  const handleDonateClick = (requestId) => {
+    setSelectedRequestId(requestId)
+    setDonateBloodModal(true);
+  };
 
 
 
@@ -305,10 +313,14 @@ function OrgDashboard() {
 
     
         setBloodRequestList(transformedRequests);
-        setPintValueDonate(transformedRequests[0].pintValue);
+        
+        setPintValueDonate(transformedRequests[selectedRequestId].pintValue);
+        setOrgNameToDonate(transformedRequests[selectedRequestId].requestedBy);
+        setBloodGroupToDonate(transformedRequests[selectedRequestId].bloodGroup);
+        
         console.log('Fetched Result:', bloodRequestList);
         }
-    }, [bloodReqeuestData]);
+    }, [bloodReqeuestData, selectedRequestId]);
 
 
 
@@ -335,7 +347,7 @@ function OrgDashboard() {
                     <button className="action-button" onClick={() => navigate("/scheduled-donation")}>Scheduled Donation</button>
                     <button className="action-button" onClick={() => navigate("/events")}>Manage Events</button>
                     <button className="action-button" onClick={() => navigate("/user-blood-availability-org")}>Blood Inventory</button>
-                    <button className="action-button" onClick={() => navigate("/search-donor-org")}>Find Donor</button>
+                    <button className="action-button" onClick={() => navigate("/search-donor")}>Find Donor</button>
                 </section>
 
                 <section className="blood-inventory-section">
@@ -410,7 +422,7 @@ function OrgDashboard() {
                             <td>{data.pintValue}</td>
                             <td>
                                 <div className='donate-button-wrapper'>
-                                    <button className='donate-button'>Donate</button>
+                                    <button className='donate-button' onClick={()=>handleDonateClick(index)}>Donate</button>
                                 </div>
                             </td>
                             </tr>
@@ -566,17 +578,8 @@ function OrgDashboard() {
                     <h2 style={{color:"var(--secondary-text-color)"}}>Donate Blood</h2>
                     <form>
                         <div className="input-box-wrapper">
-                            {/* <div className="drop-down-box">
-                                <Select
-                                value = {bloodType}
-                                onChange={handleBloodTypeChange}
-                                options={bloodTypeList}
-                                styles={customStyles()}
-                                placeholder="Select Blood Group"
-                                isSearchable={false}
-                                />
-                                <IoIosArrowDropdownCircle className='icon'/>
-                            </div> */}
+                            <span>Donate To: <span style={{fontWeight:"bold"}}>{orgNameToDonate}</span> </span>
+                            <span>Blood Group: <span style={{fontWeight:"bold"}}>{bloodGroupToDonate}</span> </span>
                             <div className="pint-value">
                                 <div className="input-box">
                                     <input type="text"

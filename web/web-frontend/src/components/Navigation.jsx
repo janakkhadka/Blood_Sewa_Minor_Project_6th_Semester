@@ -16,7 +16,8 @@ import UserOrganizeEvent from './UserDashboard/UserOrganizeEvent';
 import UserBloodAvailability from './UserDashboard/BloodAvailability';
 import UserProfile from './UserDashboard/UserProfile';
 import UserProfileUpdate from './UserDashboard/UserProfileUpdate';
-import SearchDonor from './UserDashboard/SearchDonor.jsx';
+
+import SearchDonor from './Common/SearchDonor.jsx';
 
 import OrgDashboard from './OrgDashboard/OrgDashboard.jsx';
 import Events from './OrgDashboard/Events/Events.jsx';
@@ -37,6 +38,7 @@ const Navigation = () => {
         <Route path="/registrationorg" element={<RegistrationOrg />} />
         <Route path="/registrationuser" element={<RegistrationUser />} />
         <Route path="/blood-request-form" element={<BloodRequestForm />} />
+        <Route path="/search-donor" element={ <SearchDonor />}/>
 
         {/* User Protected Routes */}
         <Route
@@ -87,14 +89,7 @@ const Navigation = () => {
             </UserPrivateRoute>
           }
         />
-        <Route
-          path="/search-donor"
-          element={
-            <UserPrivateRoute>
-              <SearchDonor />
-            </UserPrivateRoute>
-          }
-        />
+        
 
         {/* Organization Protected Routes */}
         <Route
@@ -153,14 +148,7 @@ const Navigation = () => {
             </OrgPrivateRoute>
         }
         />
-        <Route
-          path="/search-donor-org"
-          element={
-            <OrgPrivateRoute>
-              <SearchDonor />
-            </OrgPrivateRoute>
-          }
-        />
+        
         <Route
           path="/user-blood-availability-org"
           element={
