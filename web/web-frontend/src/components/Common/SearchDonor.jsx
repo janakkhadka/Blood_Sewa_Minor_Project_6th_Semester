@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 
 import './SearchDonor.css'
 
@@ -19,11 +19,17 @@ import { UserComponentNavbarRightLeft, UserComponentNavbarRightRight } from '../
 import { OrgDashboardNavbarRightLeft, OrgDashboardNavbarRightRight } from '../OrgDashboard/OrgNavbarComponent'
 
 import { useUserAuthToken, useOrgAuthToken } from '../../Logic/AuthKey';
+import {api} from '../../Logic/api';
 
 function SearchDonor() {
 
     const userAuthToken = useUserAuthToken();
     const orgAuthToken = useOrgAuthToken();
+
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [pastEventData, setPastEventData] = useState();
+    const [pastEventList, setPastEventList] = useState([]);
 
     const [bloodType, setBloodType] = useState("")
     const handleBloodTypeChange = (option) => {
@@ -56,6 +62,81 @@ function SearchDonor() {
     const handleChangeSearchBasis = (event) => {
         setSearchBasis(event.target.value);
       };
+
+
+  //past event lai rakheko
+  useEffect(() => {
+    if (!orgAuthToken) {
+        setError('No auth token found. Please log in');
+        setLoading(false);
+        console.log('No auth token found. Please log in');
+        return;
+      }
+    const fetchData = async () => {
+      try {
+        const response = await fetch(api+'user/blood-group/?blood_group=A%2B', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${orgAuthToken}`,
+          },
+        });
+
+        if (!response.ok) {
+            const errorResponse = await response.json();
+            console.log(errorResponse);
+          throw new Error(`Error: ${response.status}`);
+        }
+
+        
+
+        const result = await response.json();
+        console.log(result)
+        const transformedEvents = result.map((event, index) => ({
+          id: (index + 1).toString(),
+          title: event.name,
+          date: event.date,
+          location: event.location,
+          description: event.description,
+        }));
+        console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
+        setPastEventList(transformedEvents);
+        console.log('Fetched Result:', pastEventList);
+        setPastEventData(result);
+        console.log('Data Upcoming:', pastEventData);
+        // console.log('result:', JSON.stringify(result, null, 2));
+        // console.log('data:', JSON.stringify(dataUpcoming, null, 2));
+
+        
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  },[orgAuthToken]);
+
+
+
+  //aako data lai rakheko
+  useEffect(() => {
+    if (pastEventData) {
+      // Assuming `dataUpcoming` is the response
+      const transformedEvents = pastEventData.map((event, index) => ({
+        id: (index + 1).toString(),
+        title: event.name,
+        date: event.date,
+        location: event.location,
+        description: event.description,
+      }));
+      console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
+
+  
+      setPastEventList(transformedEvents);
+      console.log('Fetched Result:', pastEventList);
+    }
+  }, [pastEventData]);
 
   return (
     <div className='donor-search-wrapper'>
