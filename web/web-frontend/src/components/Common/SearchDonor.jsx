@@ -28,8 +28,8 @@ function SearchDonor() {
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [pastEventData, setPastEventData] = useState();
-    const [pastEventList, setPastEventList] = useState([]);
+    const [donorData, setDonorData] = useState();
+    const [donorList, setDonorList] = useState([]);
 
     const [bloodType, setBloodType] = useState("")
     const handleBloodTypeChange = (option) => {
@@ -72,6 +72,7 @@ function SearchDonor() {
         console.log('No auth token found. Please log in');
         return;
       }
+      console.log('Org Auth Token:', orgAuthToken);
     const fetchData = async () => {
       try {
         const response = await fetch(api+'user/blood-group/?blood_group=A%2B', {
@@ -92,18 +93,20 @@ function SearchDonor() {
 
         const result = await response.json();
         console.log(result)
-        const transformedEvents = result.map((event, index) => ({
+        const transformedDonorData = result.map((data, index) => ({
           id: (index + 1).toString(),
-          title: event.name,
-          date: event.date,
-          location: event.location,
-          description: event.description,
+          title: data.name,
+          phoneNumber: data.phone_number,
+          bloodGroup: data.blood_group,
+          district: data.district,
+          province: data.province,
+          age: data.age,
         }));
-        console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
-        setPastEventList(transformedEvents);
-        console.log('Fetched Result:', pastEventList);
-        setPastEventData(result);
-        console.log('Data Upcoming:', pastEventData);
+        console.log('Transformed Donor:', JSON.stringify(transformedDonorData, null, 2));
+        setDonorList(transformedDonorData);
+        console.log('Fetched Result:', donorData);
+        setDonorData(result);
+        console.log('Data Upcoming:', donorList);
         // console.log('result:', JSON.stringify(result, null, 2));
         // console.log('data:', JSON.stringify(dataUpcoming, null, 2));
 
@@ -121,22 +124,24 @@ function SearchDonor() {
 
   //aako data lai rakheko
   useEffect(() => {
-    if (pastEventData) {
+    if (donorData) {
       // Assuming `dataUpcoming` is the response
-      const transformedEvents = pastEventData.map((event, index) => ({
+      const transformedDonorData = donorData.map((data, index) => ({
         id: (index + 1).toString(),
-        title: event.name,
-        date: event.date,
-        location: event.location,
-        description: event.description,
+        title: data.name,
+        phoneNumber: data.phone_number,
+        bloodGroup: data.blood_group,
+        district: data.district,
+        province: data.province,
+        age: data.age,
       }));
-      console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
+      console.log('Transformed Events:', JSON.stringify(transformedDonorData, null, 2));
 
   
-      setPastEventList(transformedEvents);
-      console.log('Fetched Result:', pastEventList);
+      setDonorList(transformedDonorData);
+      console.log('Fetched Result:', donorList);
     }
-  }, [pastEventData]);
+  }, [donorData]);
 
   return (
     <div className='donor-search-wrapper'>
