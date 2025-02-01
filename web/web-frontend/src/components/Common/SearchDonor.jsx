@@ -31,9 +31,14 @@ function SearchDonor() {
     const [donorData, setDonorData] = useState();
     const [donorList, setDonorList] = useState([]);
 
+    const [isBloodGroupActive, setBloodGroupActive] = useState(false);
+    const [isDistrictActive, setDistrictActive] = useState(false);
+    const [isProvinceActive, setProvinceActive] = useState(false);
+
     const [bloodType, setBloodType] = useState("")
     const handleBloodTypeChange = (option) => {
       setBloodType(option);
+      setBloodGroupActive(true);
     }
 
     const [districtOptions, setDistrictOptions] = useState([]);
@@ -45,6 +50,8 @@ function SearchDonor() {
         const selectedProvinceData = ProvinceDistrictList.find(
           (province) => province.label === selectedOption.label
         );
+        setProvinceActive(true);
+        setDistrictActive(false);
     
         const updatedDistrictOptions = selectedProvinceData
           ? selectedProvinceData.options
@@ -56,6 +63,7 @@ function SearchDonor() {
       const [selectedDistrict, setSelectedDistrict] = useState("")
       const handleDistrictChange = (option) => {
           setSelectedDistrict(option);
+          setDistrictActive(true);
       };
 
     //   const [searchBasis, setSearchBasis] = useState("bloodGroup")
@@ -63,9 +71,7 @@ function SearchDonor() {
     //     setSearchBasis(event.target.value);
     //   };
 
-    const [isBloodGroupActive, setBloodGroupActive] = useState(false);
-    const [isDistrictActive, setDistrictActive] = useState(false);
-    const [isProvinceActive, setProvinceActive] = useState(false);
+    
 
 
   //donor list lai fetch gareko
@@ -220,18 +226,18 @@ function SearchDonor() {
 
                       <button
                         type="button"
-                        className={isDistrictActive ? "button active" : "button"}
-                        onClick={() => setDistrictActive(!isDistrictActive)}
-                      >
-                        District
-                      </button>
-
-                      <button
-                        type="button"
                         className={isProvinceActive ? "button active" : "button"}
                         onClick={() => setProvinceActive(!isProvinceActive)}
                       >
                         Province
+                      </button>
+
+                      <button
+                        type="button"
+                        className={isDistrictActive ? "button active" : "button"}
+                        onClick={() => setDistrictActive(!isDistrictActive)}
+                      >
+                        District
                       </button>
                     </div>
                     {/* <div className="search-basis-wrapper">

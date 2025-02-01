@@ -89,12 +89,13 @@
     background-color: transparent;
     border: 1px solid var(--border-color);
     box-shadow: var(--button-shadow);
-    color: var(--button-text-color);
+    color: var(--text-color);
     transition: background-color 0.3s;
   }
   
   .donor-search  .button.active {
     background-color: green;
+    color: var(--button-text-color)
   }
   
 
