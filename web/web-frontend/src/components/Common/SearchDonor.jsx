@@ -220,6 +220,7 @@ function SearchDonor() {
                         type="button"
                         className={isBloodGroupActive ? "button active" : "button"}
                         onClick={() => setBloodGroupActive(!isBloodGroupActive)}
+                        disabled={!bloodType}
                       >
                         Blood Group
                       </button>
@@ -228,6 +229,7 @@ function SearchDonor() {
                         type="button"
                         className={isProvinceActive ? "button active" : "button"}
                         onClick={() => setProvinceActive(!isProvinceActive)}
+                        disabled={!selectedProvince}
                       >
                         Province
                       </button>
@@ -236,6 +238,7 @@ function SearchDonor() {
                         type="button"
                         className={isDistrictActive ? "button active" : "button"}
                         onClick={() => setDistrictActive(!isDistrictActive)}
+                        disabled={!selectedDistrict}
                       >
                         District
                       </button>
