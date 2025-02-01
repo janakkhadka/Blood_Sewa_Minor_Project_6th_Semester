@@ -211,6 +211,7 @@ function SearchDonor() {
 
                     <div className="button-container">
                       <button
+                        type="button"
                         className={isBloodGroupActive ? "button active" : "button"}
                         onClick={() => setBloodGroupActive(!isBloodGroupActive)}
                       >
@@ -218,6 +219,7 @@ function SearchDonor() {
                       </button>
 
                       <button
+                        type="button"
                         className={isDistrictActive ? "button active" : "button"}
                         onClick={() => setDistrictActive(!isDistrictActive)}
                       >
@@ -225,6 +227,7 @@ function SearchDonor() {
                       </button>
 
                       <button
+                        type="button"
                         className={isProvinceActive ? "button active" : "button"}
                         onClick={() => setProvinceActive(!isProvinceActive)}
                       >

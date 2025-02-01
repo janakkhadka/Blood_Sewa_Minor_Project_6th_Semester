@@ -74,7 +74,31 @@
     font-size: 16px;
 }
 
-.donor-search .search-basis-wrapper {
+.donor-search .button-container {
+    display: flex;
+    gap: 15px;
+    padding: 20px;
+  }
+  
+  .donor-search  .button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--button-shadow);
+    color: var(--button-text-color);
+    transition: background-color 0.3s;
+  }
+  
+  .donor-search  .button.active {
+    background-color: green;
+  }
+  
+
+/* .donor-search .search-basis-wrapper {
     display: flex;
     flex-direction: row;
     gap: 10px;
@@ -90,7 +114,7 @@
 .search-basis-option input {
     accent-color: var(--text-color);
     margin: 0 5px;
-}
+} */
 
 .donor-search .blood-request-submit-button {
     display: flex;
