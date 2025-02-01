@@ -58,13 +58,17 @@ function SearchDonor() {
           setSelectedDistrict(option);
       };
 
-      const [searchBasis, setSearchBasis] = useState("bloodGroup")
-    const handleChangeSearchBasis = (event) => {
-        setSearchBasis(event.target.value);
-      };
+    //   const [searchBasis, setSearchBasis] = useState("bloodGroup")
+    // const handleChangeSearchBasis = (event) => {
+    //     setSearchBasis(event.target.value);
+    //   };
+
+    const [isBloodGroupActive, setBloodGroupActive] = useState(false);
+    const [isDistrictActive, setDistrictActive] = useState(false);
+    const [isProvinceActive, setProvinceActive] = useState(false);
 
 
-  //past event lai rakheko
+  //donor list lai fetch gareko
   useEffect(() => {
     if (!orgAuthToken) {
         setError('No auth token found. Please log in');
@@ -204,7 +208,30 @@ function SearchDonor() {
                         />
                         <IoIosArrowDropdownCircle className='icon'/>
                     </div>
-                    <div className="search-basis-wrapper">
+
+                    <div className="button-container">
+                      <button
+                        className={isBloodGroupActive ? "button active" : "button"}
+                        onClick={() => setBloodGroupActive(!isBloodGroupActive)}
+                      >
+                        Blood Group
+                      </button>
+
+                      <button
+                        className={isDistrictActive ? "button active" : "button"}
+                        onClick={() => setDistrictActive(!isDistrictActive)}
+                      >
+                        District
+                      </button>
+
+                      <button
+                        className={isProvinceActive ? "button active" : "button"}
+                        onClick={() => setProvinceActive(!isProvinceActive)}
+                      >
+                        Province
+                      </button>
+                    </div>
+                    {/* <div className="search-basis-wrapper">
                       Search on the basis of :
                       <div className="search-basis-option">
                       <div>
@@ -242,7 +269,7 @@ function SearchDonor() {
                         </div>
                       </div>
                       
-                    </div>
+                    </div> */}
                 <div className="blood-request-submit-button">
                     <button type="submit" >Search</button>
                 </div>
