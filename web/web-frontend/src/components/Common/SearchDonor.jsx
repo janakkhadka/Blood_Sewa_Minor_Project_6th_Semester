@@ -34,15 +34,23 @@ function SearchDonor() {
     const [isBloodGroupActive, setBloodGroupActive] = useState(false);
     const [isDistrictActive, setDistrictActive] = useState(false);
     const [isProvinceActive, setProvinceActive] = useState(false);
+    const handleSetBloodActive = () => {
+      setBloodGroupActive(!isBloodGroupActive);
+      setDistrictActive(false);
+      setProvinceActive(false);   
+    }
     const handleSetDistrictActive = () => {
-        setDistrictActive(!isDistrictActive)
-        setProvinceActive(true);
+      if(isBloodGroupActive && isProvinceActive){ 
+        setDistrictActive(!isDistrictActive);
+      }
         
     }
     const handleSetProvinceActive = () => {
-      setProvinceActive(!isProvinceActive);
-      setDistrictActive(false);   
-  }
+      if (isBloodGroupActive) {
+        setProvinceActive(!isProvinceActive);
+        setDistrictActive(false);
+      }  
+    }
 
     const [bloodType, setBloodType] = useState("")
     const handleBloodTypeChange = (option) => {
@@ -59,9 +67,10 @@ function SearchDonor() {
         const selectedProvinceData = ProvinceDistrictList.find(
           (province) => province.label === selectedOption.label
         );
-        setProvinceActive(true);
-        setDistrictActive(false);
-    
+        if (isBloodGroupActive) {
+          setProvinceActive(true);
+          setDistrictActive(false);
+        }
         const updatedDistrictOptions = selectedProvinceData
           ? selectedProvinceData.options
           : [];
@@ -72,7 +81,10 @@ function SearchDonor() {
       const [selectedDistrict, setSelectedDistrict] = useState("")
       const handleDistrictChange = (option) => {
           setSelectedDistrict(option);
-          setDistrictActive(true);
+          if(isBloodGroupActive){ 
+            setDistrictActive(true);
+            setProvinceActive(true);
+          }
       };
 
     //   const [searchBasis, setSearchBasis] = useState("bloodGroup")
@@ -228,7 +240,7 @@ function SearchDonor() {
                       <button
                         type="button"
                         className={isBloodGroupActive ? "button active" : "button"}
-                        onClick={() => setBloodGroupActive(!isBloodGroupActive)}
+                        onClick={handleSetBloodActive}
                         disabled={!bloodType}
                       >
                         Blood Group
