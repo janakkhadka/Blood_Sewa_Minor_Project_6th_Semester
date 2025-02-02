@@ -124,6 +124,7 @@ function SearchDonor() {
 
         const result = await response.json();
         console.log(result)
+        //same for all other
         const transformedDonorData = result
           .filter(data => bloodType.label === data.bloodGroup) // Filter only matching districts
           .map((data, index) => ({
