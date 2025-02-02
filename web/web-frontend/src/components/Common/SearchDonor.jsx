@@ -34,6 +34,15 @@ function SearchDonor() {
     const [isBloodGroupActive, setBloodGroupActive] = useState(false);
     const [isDistrictActive, setDistrictActive] = useState(false);
     const [isProvinceActive, setProvinceActive] = useState(false);
+    const handleSetDistrictActive = () => {
+        setDistrictActive(!isDistrictActive)
+        setProvinceActive(true);
+        
+    }
+    const handleSetProvinceActive = () => {
+      setProvinceActive(!isProvinceActive);
+      setDistrictActive(false);   
+  }
 
     const [bloodType, setBloodType] = useState("")
     const handleBloodTypeChange = (option) => {
@@ -228,7 +237,7 @@ function SearchDonor() {
                       <button
                         type="button"
                         className={isProvinceActive ? "button active" : "button"}
-                        onClick={() => setProvinceActive(!isProvinceActive)}
+                        onClick={handleSetProvinceActive}
                         disabled={!selectedProvince}
                       >
                         Province
@@ -237,7 +246,7 @@ function SearchDonor() {
                       <button
                         type="button"
                         className={isDistrictActive ? "button active" : "button"}
-                        onClick={() => setDistrictActive(!isDistrictActive)}
+                        onClick={handleSetDistrictActive}
                         disabled={!selectedDistrict}
                       >
                         District
