@@ -124,14 +124,16 @@ function SearchDonor() {
 
         const result = await response.json();
         console.log(result)
-        const transformedDonorData = result.map((data, index) => ({
-          id: (index + 1).toString(),
-          title: data.name,
-          phoneNumber: data.phone_number,
-          bloodGroup: data.blood_group,
-          district: data.district,
-          province: data.province,
-          age: data.age,
+        const transformedDonorData = result
+          .filter(data => bloodType.label === data.bloodGroup) // Filter only matching districts
+          .map((data, index) => ({
+            id: (index + 1).toString(),
+            title: data.name,
+            phoneNumber: data.phone_number,
+            bloodGroup: data.blood_group,
+            district: data.district,
+            province: data.province,
+            age: data.age,
         }));
         console.log('Transformed Donor:', JSON.stringify(transformedDonorData, null, 2));
         setDonorList(transformedDonorData);
@@ -149,7 +151,7 @@ function SearchDonor() {
       }
     };
     fetchData();
-  },[orgAuthToken]);
+  },[orgAuthToken, bloodType]);
 
 
 
@@ -157,22 +159,25 @@ function SearchDonor() {
   useEffect(() => {
     if (donorData) {
       // Assuming `dataUpcoming` is the response
-      const transformedDonorData = donorData.map((data, index) => ({
-        id: (index + 1).toString(),
-        title: data.name,
-        phoneNumber: data.phone_number,
-        bloodGroup: data.blood_group,
-        district: data.district,
-        province: data.province,
-        age: data.age,
-      }));
+      const transformedDonorData = donorData
+          .filter(data => bloodType.label === data.bloodGroup) // Filter only matching districts
+          .map((data, index) => ({
+            id: (index + 1).toString(),
+            title: data.name,
+            phoneNumber: data.phone_number,
+            bloodGroup: data.blood_group,
+            district: data.district,
+            province: data.province,
+            age: data.age,
+        }));
+        console.log(bloodType.label);
       console.log('Transformed Events:', JSON.stringify(transformedDonorData, null, 2));
 
   
       setDonorList(transformedDonorData);
       console.log('Fetched Result:', donorList);
     }
-  }, [donorData]);
+  }, [donorData,bloodType]);
 
   return (
     <div className='donor-search-wrapper'>
