@@ -139,6 +139,8 @@
     color: var(--button-text-color);
 }
 
+
+/* modal for searched donor result */
 .donor-search-wrapper .searched-modal-wrapper{
     position: absolute;
     top: 0;
@@ -156,23 +158,20 @@
 
 .donor-search-wrapper .searched-modal-wrapper .searched-modal{
     position: relative;
-    width: 700px;
-    height: 380px;
+    width: 1380px;
+    height: 680px;
     background: var(--secondary-background);
     border-radius: 20px;
     box-shadow: var(--shadow);
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
-    padding-top: 50px;
 }
 
 .donor-search-wrapper .searched-modal-wrapper .searched-modal .close-button{
     position: absolute;
     top: 15px;
     right: 20px;
-    color: var(--secondary-text-color);
+    z-index: 4;
   }
   
   .donor-search-wrapper .searched-modal-wrapper .searched-modal .close-button button{
@@ -181,7 +180,7 @@
     outline: none;
     font-size: 20px;
     cursor: pointer;
-    color: var(--secondary-text-color);
+    color: rgb(160, 25, 25);
     box-shadow: none;
   }
 
@@ -191,13 +190,14 @@
     top: 0;
     background-color: var(--h1-background);
     backdrop-filter: blur(15px);
-    padding: 7px 20px;
+    padding: 5px 20px;
     color: var(--h1-text-color);
+    border-radius: 10px 10px 0 0;
   }
   
   .donor-search-wrapper .searched-modal-wrapper .searched-modal table {
     margin: 0 20px 20px;
-    color: var(--text-color);
+    color: var(--secondary-text-color);
   }
   
   .donor-search-wrapper .searched-modal-wrapper .searched-modal table th {

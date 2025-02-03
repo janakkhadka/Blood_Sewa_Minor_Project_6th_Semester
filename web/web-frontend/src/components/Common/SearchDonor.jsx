@@ -155,7 +155,7 @@ function SearchDonor() {
       }
     };
     fetchData();
-  },[orgAuthToken, bloodType]);
+  },[orgAuthToken, bloodType, toggleSearchResultModal]);
 
 
 
@@ -181,7 +181,7 @@ function SearchDonor() {
       setDonorList(transformedDonorData);
       console.log('Fetched Result:', donorList);
     }
-  }, [donorData,bloodType]);
+  }, [donorData,bloodType, toggleSearchResultModal]);
 
   return (
     <div className='donor-search-wrapper'>
@@ -325,7 +325,7 @@ function SearchDonor() {
                       <button onClick={() => setToggleSearchResultModal(false)}>X</button>
                   </div>
                   <div className="h1">
-                    <h1>Upcomming Events!</h1>
+                    <h1>Available Donor</h1>
                   </div>
                   <table border="0" style={{tableLayout: "fixed", width: "100%", borderCollapse: "collapse" }}>
                     <colgroup>
