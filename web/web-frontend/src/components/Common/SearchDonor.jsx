@@ -87,6 +87,9 @@ function SearchDonor() {
           }
       };
 
+      //modal for showing result of bloood donor search
+      const [toggleSearchResultModal, setToggleSearchResultModal] = useState(false);
+
     //   const [searchBasis, setSearchBasis] = useState("bloodGroup")
     // const handleChangeSearchBasis = (event) => {
     //     setSearchBasis(event.target.value);
@@ -315,6 +318,45 @@ function SearchDonor() {
                 
             </form>
         </div>
+        {toggleSearchResultModal && (
+            <div className="coming-event-wrapper">
+                <div className="coming-event">
+                    <div className="close-button">
+                        <button onClick={() => setComingEvent(false)}>X</button>
+                    </div>
+                    <h2 style={{color:"var(--secondary-text-color)"}}>Event Detail</h2>
+                    <div className="event-info-wrapper">
+                      <div className="event-info">
+                        <div className="info-list-wrapper">
+                          <FaDiamond/>
+                          <span>Event Name: <span style={{fontWeight:"bold"}}>{selectedEvent.title}</span> </span>
+                        </div>
+                        <div className="info-list-wrapper">
+                          <FaDiamond/>
+                          <span>Date: <span style={{fontWeight:"bold"}}>{format(new Date(selectedEvent.date), "MMMM dd, yyyy")}</span></span>
+                        </div>
+                        <div className="info-list-wrapper">
+                          <FaDiamond/>
+                          <span>Location: <span style={{fontWeight:"bold"}}>{selectedEvent.location}</span></span>
+                        </div>
+                        <div className="info-list-wrapper">
+                          <FaDiamond/>
+                          <span>Expected Donor Number: <span style={{fontWeight:"bold"}}>{selectedEvent.donorNumber}</span></span>
+                        </div>
+                        <div className="info-list-wrapper">
+                          <FaDiamond/>
+                          <span>Expected Volunteer Number: <span style={{fontWeight:"bold"}}>{selectedEvent.volunteerNumber}</span></span>
+                        </div>
+                      </div>
+                      <div className='delete-button-wrapper'>
+                        <button type='submit'   className="delete-button">
+                            Delete Event
+                        </button>
+                      </div>
+                    </div>   
+                </div>
+            </div>
+        )}
     </div>
   )
 }
