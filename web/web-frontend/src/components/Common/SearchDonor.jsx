@@ -132,7 +132,7 @@ function SearchDonor() {
           .filter(data => bloodType.label === data.bloodGroup) // Filter only matching districts
           .map((data, index) => ({
             id: (index + 1).toString(),
-            title: data.name,
+            name: data.name,
             phoneNumber: data.phone_number,
             bloodGroup: data.blood_group,
             district: data.district,
@@ -167,7 +167,7 @@ function SearchDonor() {
           .filter(data => bloodType.label === data.bloodGroup) // Filter only matching districts
           .map((data, index) => ({
             id: (index + 1).toString(),
-            title: data.name,
+            name: data.name,
             phoneNumber: data.phone_number,
             bloodGroup: data.blood_group,
             district: data.district,
@@ -313,7 +313,7 @@ function SearchDonor() {
                       
                     </div> */}
                 <div className="blood-request-submit-button">
-                    <button type="submit" >Search</button>
+                    <button type="button" onClick={()=>setToggleSearchResultModal(true)} >Search</button>
                 </div>
                 
             </form>
@@ -321,39 +321,45 @@ function SearchDonor() {
         {toggleSearchResultModal && (
             <div className="coming-event-wrapper">
                 <div className="coming-event">
-                    <div className="close-button">
-                        <button onClick={() => setComingEvent(false)}>X</button>
-                    </div>
-                    <h2 style={{color:"var(--secondary-text-color)"}}>Event Detail</h2>
-                    <div className="event-info-wrapper">
-                      <div className="event-info">
-                        <div className="info-list-wrapper">
-                          <FaDiamond/>
-                          <span>Event Name: <span style={{fontWeight:"bold"}}>{selectedEvent.title}</span> </span>
-                        </div>
-                        <div className="info-list-wrapper">
-                          <FaDiamond/>
-                          <span>Date: <span style={{fontWeight:"bold"}}>{format(new Date(selectedEvent.date), "MMMM dd, yyyy")}</span></span>
-                        </div>
-                        <div className="info-list-wrapper">
-                          <FaDiamond/>
-                          <span>Location: <span style={{fontWeight:"bold"}}>{selectedEvent.location}</span></span>
-                        </div>
-                        <div className="info-list-wrapper">
-                          <FaDiamond/>
-                          <span>Expected Donor Number: <span style={{fontWeight:"bold"}}>{selectedEvent.donorNumber}</span></span>
-                        </div>
-                        <div className="info-list-wrapper">
-                          <FaDiamond/>
-                          <span>Expected Volunteer Number: <span style={{fontWeight:"bold"}}>{selectedEvent.volunteerNumber}</span></span>
-                        </div>
-                      </div>
-                      <div className='delete-button-wrapper'>
-                        <button type='submit'   className="delete-button">
-                            Delete Event
-                        </button>
-                      </div>
-                    </div>   
+                  <div className="close-button">
+                      <button onClick={() => setToggleSearchResultModal(false)}>X</button>
+                  </div>
+                  <div className="h1">
+                    <h1>Upcomming Events!</h1>
+                  </div>
+                  <table border="0" style={{tableLayout: "fixed", width: "100%", borderCollapse: "collapse" }}>
+                    <colgroup>
+                      <col style={{ width: "10%" }} />
+                      <col style={{ width: "20%" }} /> 
+                      <col style={{ width: "15%" }} />
+                      <col style={{ width: "15%" }} />
+                      <col style={{ width: "15%" }} />
+                      <col style={{ width: "15%" }} />
+                    </colgroup>
+                    <thead>
+                      <tr>
+                        <th>SN</th>
+                        <th>Donor Name</th>
+                        <th>Blood Group</th>
+                        <th>Province</th>
+                        <th>District</th>
+                        <th>Phone Number</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {donorList.map((data, index) => (
+                        // console.log('data:', data.date),
+                        <tr key={index}>
+                          <td  className='table-data'>{data.id}</td>
+                          <td  className='table-data'>{data.name}</td>
+                          <td  className='table-data'>{data.bloodGroup}</td>
+                          <td  className='table-data'>{data.province}</td>
+                          <td  className='table-data'>{data.district}</td>
+                          <td  className='table-data'>{data.phoneNumber}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>   
                 </div>
             </div>
         )}

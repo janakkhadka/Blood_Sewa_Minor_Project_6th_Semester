@@ -220,35 +220,35 @@ function Events() {
                     </div>
                     
                     <section className='upcoming-events'>
-                        <div className="h1">
-                          <h1>Upcomming Events!</h1>
-                        </div>
-                        <table border="0" style={{tableLayout: "fixed", width: "100%", borderCollapse: "collapse" }}>
-                          <colgroup>
-                            <col style={{ width: "20%" }} />
-                            <col style={{ width: "40%" }} /> 
-                            <col style={{ width: "25%" }} />
-                            <col style={{ width: "15%" }} />
-                          </colgroup>
-                          <thead>
-                            <tr>
-                              <th>Date</th>
-                              <th>Event Name</th>
-                              <th>Location</th>
+                      <div className="h1">
+                        <h1>Upcomming Events!</h1>
+                      </div>
+                      <table border="0" style={{tableLayout: "fixed", width: "100%", borderCollapse: "collapse" }}>
+                        <colgroup>
+                          <col style={{ width: "20%" }} />
+                          <col style={{ width: "40%" }} /> 
+                          <col style={{ width: "25%" }} />
+                          <col style={{ width: "15%" }} />
+                        </colgroup>
+                        <thead>
+                          <tr>
+                            <th>Date</th>
+                            <th>Event Name</th>
+                            <th>Location</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {upcomingEventList.map((event, index) => (
+                            // console.log('Event:', event.date),
+                            <tr key={index}>
+                              <td>{format(event.date, "MMMM dd, yyyy")}</td> {/* Format date */}
+                              <td  className='table-data'>{event.title}</td>
+                              <td  className='table-data'>{event.location}</td>
+                              <td><button className="notify-button" onClick={()=>handleEventClick(event.id)}>Detail</button></td>
                             </tr>
-                          </thead>
-                          <tbody>
-                            {upcomingEventList.map((event, index) => (
-                              // console.log('Event:', event.date),
-                              <tr key={index}>
-                                <td>{format(event.date, "MMMM dd, yyyy")}</td> {/* Format date */}
-                                <td  className='table-data'>{event.title}</td>
-                                <td  className='table-data'>{event.location}</td>
-                                <td><button className="notify-button" onClick={()=>handleEventClick(event.id)}>Detail</button></td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
+                          ))}
+                        </tbody>
+                      </table>
                     </section>
                     
                 </div>
