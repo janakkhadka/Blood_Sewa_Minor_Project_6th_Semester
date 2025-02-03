@@ -319,8 +319,8 @@ function SearchDonor() {
             </form>
         </div>
         {toggleSearchResultModal && (
-            <div className="coming-event-wrapper">
-                <div className="coming-event">
+            <div className="searched-modal-wrapper">
+                <div className="searched-modal">
                   <div className="close-button">
                       <button onClick={() => setToggleSearchResultModal(false)}>X</button>
                   </div>

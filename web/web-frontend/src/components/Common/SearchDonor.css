@@ -138,3 +138,100 @@
     margin: auto;
     color: var(--button-text-color);
 }
+
+.donor-search-wrapper .searched-modal-wrapper{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: transparent;
+    backdrop-filter: var(--backdrop-filter);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3;
+    color: var(--secondary-text-color);
+}
+
+.donor-search-wrapper .searched-modal-wrapper .searched-modal{
+    position: relative;
+    width: 700px;
+    height: 380px;
+    background: var(--secondary-background);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 50px;
+}
+
+.donor-search-wrapper .searched-modal-wrapper .searched-modal .close-button{
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    color: var(--secondary-text-color);
+  }
+  
+  .donor-search-wrapper .searched-modal-wrapper .searched-modal .close-button button{
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--secondary-text-color);
+    box-shadow: none;
+  }
+
+  .donor-search-wrapper .searched-modal-wrapper .searched-modal .h1 {
+    width: 100%;
+    position: sticky;
+    top: 0;
+    background-color: var(--h1-background);
+    backdrop-filter: blur(15px);
+    padding: 7px 20px;
+    color: var(--h1-text-color);
+  }
+  
+  .donor-search-wrapper .searched-modal-wrapper .searched-modal table {
+    margin: 0 20px 20px;
+    color: var(--text-color);
+  }
+  
+  .donor-search-wrapper .searched-modal-wrapper .searched-modal table th {
+    text-align: start;
+    font-size: 18px;
+  }
+  
+  .donor-search-wrapper .searched-modal-wrapper .searched-modal table td {
+    padding-top: 10px;
+    font-size: 17px;
+  }
+  
+  .donor-search-wrapper .searched-modal-wrapper .searched-modal table td button {
+    text-decoration: none;
+    padding: 2px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 3;
+    box-shadow: var(--button-shadow);
+    border: 2px solid var(--border-color);
+    background-color: var(--button-background-color);
+    color: var(--button-text-color);
+  }
+  
+  .donor-search-wrapper .searched-modal-wrapper .searched-modal table td button:hover {
+    color: var(--text-color);
+    backdrop-filter: blur(15px);
+    background: transparent;
+  }
+  
+  .donor-search-wrapper .searched-modal-wrapper .searched-modal .table-data {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
