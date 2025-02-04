@@ -186,10 +186,45 @@ function SearchDonor() {
 
   //filtering data
   useEffect(() => {
-    if (isBloodGroupActive) {
+    if (isBloodGroupActive && isDistrictActive && isProvinceActive) {
       // Assuming `dataUpcoming` is the response
       const filteredDonorData = donorList
-          .filter(data => bloodType.label === data.bloodGroup) // Filter only matching districts
+          .filter(data => bloodType.label === data.bloodGroup)
+          .filter(data => selectedProvince.label === data.province)
+          .filter(data => selectedDistrict.label === data.district)
+          .map((data, index) => ({
+            id: (index + 1).toString(),
+            name: data.name,
+            phoneNumber: data.phone_number,
+            bloodGroup: data.blood_group,
+            district: data.district,
+            province: data.province,
+            age: data.age,
+        }));
+        console.log(bloodType.label);
+      console.log('filtered:', JSON.stringify(filteredDonorData, null, 2));
+      setDonorFilteredList(filteredDonorData);
+      console.log('Filtered Result:', donorFilteredList);
+    }else if(isBloodGroupActive && isProvinceActive){
+      const filteredDonorData = donorList
+          .filter(data => bloodType.label === data.bloodGroup)
+          .filter(data => selectedProvince.label === data.province)
+          .map((data, index) => ({
+            id: (index + 1).toString(),
+            name: data.name,
+            phoneNumber: data.phone_number,
+            bloodGroup: data.blood_group,
+            district: data.district,
+            province: data.province,
+            age: data.age,
+        }));
+        console.log(bloodType.label);
+      console.log('filtered:', JSON.stringify(filteredDonorData, null, 2));
+      setDonorFilteredList(filteredDonorData);
+      console.log('Filtered Result:', donorFilteredList);
+    }else if(isBloodGroupActive){
+      const filteredDonorData = donorList
+          .filter(data => bloodType.label === data.bloodGroup)
           .map((data, index) => ({
             id: (index + 1).toString(),
             name: data.name,
@@ -204,6 +239,7 @@ function SearchDonor() {
       setDonorFilteredList(filteredDonorData);
       console.log('Filtered Result:', donorFilteredList);
     }
+    
   }, [isBloodGroupActive, isDistrictActive, isProvinceActive]);
 
   useEffect(() => {
