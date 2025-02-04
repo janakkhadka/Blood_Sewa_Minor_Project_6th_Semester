@@ -240,7 +240,7 @@ function SearchDonor() {
       console.log('Filtered Result:', donorFilteredList);
     }
     
-  }, [isBloodGroupActive, isDistrictActive, isProvinceActive]);
+  }, [isBloodGroupActive, isDistrictActive, isProvinceActive,bloodType, selectedProvince, selectedDistrict]);
 
   useEffect(() => {
     console.log('Updated Filtered Result:', donorFilteredList);
