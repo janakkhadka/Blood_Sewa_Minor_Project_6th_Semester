@@ -30,6 +30,7 @@ function SearchDonor() {
     const [error, setError] = useState(null);
     const [donorData, setDonorData] = useState();
     const [donorList, setDonorList] = useState([]);
+    const [donorFilteredList, setDonorFilteredList] = useState([]);
 
     const [isBloodGroupActive, setBloodGroupActive] = useState(false);
     const [isDistrictActive, setDistrictActive] = useState(false);
@@ -129,7 +130,7 @@ function SearchDonor() {
         console.log(result)
         //same for all other
         const transformedDonorData = result
-          .filter(data => bloodType.label === data.bloodGroup) // Filter only matching districts
+          //.filter(data => bloodType.label === data.bloodGroup) // Filter only matching districts
           .map((data, index) => ({
             id: (index + 1).toString(),
             name: data.name,
@@ -164,7 +165,7 @@ function SearchDonor() {
     if (donorData) {
       // Assuming `dataUpcoming` is the response
       const transformedDonorData = donorData
-          .filter(data => bloodType.label === data.bloodGroup) // Filter only matching districts
+          //.filter(data => bloodType.label === data.bloodGroup) // Filter only matching districts
           .map((data, index) => ({
             id: (index + 1).toString(),
             name: data.name,
@@ -182,6 +183,30 @@ function SearchDonor() {
       console.log('Fetched Result:', donorList);
     }
   }, [donorData,bloodType, toggleSearchResultModal]);
+
+  //filtering data
+  useEffect(() => {
+    if (isBloodGroupActive) {
+      // Assuming `dataUpcoming` is the response
+      const transformedDonorData = donorList
+          .filter(data => bloodType.label === data.bloodGroup) // Filter only matching districts
+          .map((data, index) => ({
+            id: (index + 1).toString(),
+            name: data.name,
+            phoneNumber: data.phone_number,
+            bloodGroup: data.blood_group,
+            district: data.district,
+            province: data.province,
+            age: data.age,
+        }));
+        console.log(bloodType.label);
+      console.log('Transformed Events:', JSON.stringify(transformedDonorData, null, 2));
+
+  
+      setDonorList(transformedDonorData);
+      console.log('Fetched Result:', donorList);
+    }
+  }, [isBloodGroupActive, isDistrictActive, isProvinceActive]);
 
   return (
     <div className='donor-search-wrapper'>
