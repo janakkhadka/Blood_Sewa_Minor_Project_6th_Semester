@@ -156,7 +156,7 @@ function SearchDonor() {
       }
     };
     fetchData();
-  },[orgAuthToken, bloodType, toggleSearchResultModal]);
+  },[orgAuthToken]);
 
 
 
@@ -182,13 +182,13 @@ function SearchDonor() {
       setDonorList(transformedDonorData);
       console.log('Fetched Result:', donorList);
     }
-  }, [donorData,bloodType, toggleSearchResultModal]);
+  }, [donorData]);
 
   //filtering data
   useEffect(() => {
     if (isBloodGroupActive) {
       // Assuming `dataUpcoming` is the response
-      const transformedDonorData = donorList
+      const filteredDonorData = donorList
           .filter(data => bloodType.label === data.bloodGroup) // Filter only matching districts
           .map((data, index) => ({
             id: (index + 1).toString(),
@@ -200,13 +200,15 @@ function SearchDonor() {
             age: data.age,
         }));
         console.log(bloodType.label);
-      console.log('Transformed Events:', JSON.stringify(transformedDonorData, null, 2));
-
-  
-      setDonorList(transformedDonorData);
-      console.log('Fetched Result:', donorList);
+      console.log('filtered:', JSON.stringify(filteredDonorData, null, 2));
+      setDonorFilteredList(filteredDonorData);
+      console.log('Filtered Result:', donorFilteredList);
     }
   }, [isBloodGroupActive, isDistrictActive, isProvinceActive]);
+
+  useEffect(() => {
+    console.log('Updated Filtered Result:', donorFilteredList);
+  }, [donorFilteredList]);
 
   return (
     <div className='donor-search-wrapper'>
