@@ -283,6 +283,9 @@ function OrgDashboard() {
   
     
         setFilteredBloodRequestList(transformedFilteredRequests);
+        setPintValueDonate(transformedFilteredRequests[selectedRequestId].pintValue);
+        setOrgNameToDonate(transformedFilteredRequests[selectedRequestId].requestedBy);
+        setBloodGroupToDonate(transformedFilteredRequests[selectedRequestId].bloodGroup);
 
         
       } catch (err) {
