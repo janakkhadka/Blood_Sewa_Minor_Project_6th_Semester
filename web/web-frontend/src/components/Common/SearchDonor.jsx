@@ -110,7 +110,7 @@ function SearchDonor() {
       console.log('Org Auth Token:', orgAuthToken);
     const fetchData = async () => {
       try {
-        const response = await fetch(api+'user/blood-group/?blood_group=A%2B', {
+        const response = await fetch(api+'user/blood-group/?blood_group='+bloodType.value, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -156,7 +156,7 @@ function SearchDonor() {
       }
     };
     fetchData();
-  },[orgAuthToken]);
+  },[orgAuthToken, bloodType]);
 
 
 
@@ -182,7 +182,7 @@ function SearchDonor() {
       setDonorList(transformedDonorData);
       console.log('Fetched Result:', donorList);
     }
-  }, [donorData]);
+  }, [donorData, bloodType]);
 
   //filtering data
   useEffect(() => {
@@ -195,8 +195,8 @@ function SearchDonor() {
           .map((data, index) => ({
             id: (index + 1).toString(),
             name: data.name,
-            phoneNumber: data.phone_number,
-            bloodGroup: data.blood_group,
+            phoneNumber: data.phoneNumber,
+            bloodGroup: data.bloodGroup,
             district: data.district,
             province: data.province,
             age: data.age,
@@ -212,8 +212,8 @@ function SearchDonor() {
           .map((data, index) => ({
             id: (index + 1).toString(),
             name: data.name,
-            phoneNumber: data.phone_number,
-            bloodGroup: data.blood_group,
+            phoneNumber: data.phoneNumber,
+            bloodGroup: data.bloodGroup,
             district: data.district,
             province: data.province,
             age: data.age,
@@ -228,8 +228,8 @@ function SearchDonor() {
           .map((data, index) => ({
             id: (index + 1).toString(),
             name: data.name,
-            phoneNumber: data.phone_number,
-            bloodGroup: data.blood_group,
+            phoneNumber: data.phoneNumber,
+            bloodGroup: data.bloodGroup,
             district: data.district,
             province: data.province,
             age: data.age,
@@ -243,8 +243,9 @@ function SearchDonor() {
   }, [isBloodGroupActive, isDistrictActive, isProvinceActive,bloodType, selectedProvince, selectedDistrict]);
 
   useEffect(() => {
+    console.log(donorList)
     console.log('Updated Filtered Result:', donorFilteredList);
-  }, [donorFilteredList]);
+  }, [donorFilteredList, donorList]);
 
   return (
     <div className='donor-search-wrapper'>
