@@ -66,8 +66,7 @@ function OrgDashboard() {
   };
   const [pintValue, setPintValue] = useState("");
 
-  const [bloodReqeuestData, setBloodRequestData] = useState();
-  const [bloodRequestList, setBloodRequestList] = useState([]);
+  const [filteredBloodRequestList, setFilteredBloodRequestList] = useState([]);
 
   const [donateBloodModal, setDonateBloodModal] = useState(false);
   const [pintValueDonate, setPintValueDonate] = useState("");
@@ -269,8 +268,10 @@ function OrgDashboard() {
 
         const result = await response.json();
         console.log(result)
-        const transformedRequests = Array.isArray(result)
-      ? result.map((data, index) => ({
+        const transformedFilteredRequests = Array.isArray(result)
+      ? result
+      .filter((data) => data.organization_name !== orgName)
+      .map((data, index) => ({
           id: (index + 1).toString(),
           requestedBy: data.organization_name,
           bloodGroup: Object.keys(data.blood_request)[0],
@@ -281,11 +282,7 @@ function OrgDashboard() {
         // console.log('Transformed Events:', JSON.stringify(transformedRequests, null, 2));
   
     
-        setBloodRequestList(transformedRequests);
-        // console.log('Fetched Result:', bloodRequestList);
-        setBloodRequestData(result);
-        // console.log('result:', JSON.stringify(result, null, 2));
-        // console.log('data:', JSON.stringify(dataUpcoming, null, 2));
+        setFilteredBloodRequestList(transformedFilteredRequests);
 
         
       } catch (err) {
@@ -297,30 +294,30 @@ function OrgDashboard() {
     fetchData();
   },[orgAuthToken]);
 
-    useEffect(() => {
-        if (bloodReqeuestData) {
-        // Assuming `dataUpcoming` is the response
-        const transformedRequests = Array.isArray(bloodReqeuestData)
-        ? bloodReqeuestData.map((data, index) => ({
-            id: (index + 1).toString(),
-            requestedBy: data.organization_name,
-            bloodGroup: Object.keys(data.blood_request)[0],
-            pintValue: data.blood_request[Object.keys(data.blood_request)[0]],
-            date: data.date
-          }))
-        : [];
-        // console.log('Transformed Events:', JSON.stringify(transformedRequests, null, 2));
+    // useEffect(() => {
+    //     if (bloodReqeuestData) {
+    //     // Assuming `dataUpcoming` is the response
+    //     const transformedRequests = Array.isArray(bloodReqeuestData)
+    //     ? bloodReqeuestData.map((data, index) => ({
+    //         id: (index + 1).toString(),
+    //         requestedBy: data.organization_name,
+    //         bloodGroup: Object.keys(data.blood_request)[0],
+    //         pintValue: data.blood_request[Object.keys(data.blood_request)[0]],
+    //         date: data.date
+    //       }))
+    //     : [];
+    //     // console.log('Transformed Events:', JSON.stringify(transformedRequests, null, 2));
 
     
-        setBloodRequestList(transformedRequests);
+    //     setBloodRequestList(transformedRequests);
         
-        setPintValueDonate(transformedRequests[selectedRequestId].pintValue);
-        setOrgNameToDonate(transformedRequests[selectedRequestId].requestedBy);
-        setBloodGroupToDonate(transformedRequests[selectedRequestId].bloodGroup);
+    //     setPintValueDonate(transformedRequests[selectedRequestId].pintValue);
+    //     setOrgNameToDonate(transformedRequests[selectedRequestId].requestedBy);
+    //     setBloodGroupToDonate(transformedRequests[selectedRequestId].bloodGroup);
         
-        console.log('Fetched Result:', bloodRequestList);
-        }
-    }, [bloodReqeuestData, selectedRequestId]);
+    //     console.log('Fetched Result:', bloodRequestList);
+    //     }
+    // }, [bloodReqeuestData, selectedRequestId]);
 
 
 
@@ -412,7 +409,7 @@ function OrgDashboard() {
                         </tr>
                         </thead>
                         <tbody>
-                        {bloodRequestList.map((data, index) => (
+                        {filteredBloodRequestList.map((data, index) => (
                             // console.log(data.date),
 
                             <tr key={index}>
@@ -432,6 +429,9 @@ function OrgDashboard() {
                 </section>
             </div> 
         </div>
+
+        {/* modal start for all */}
+        
         {updateBloodInventory && (
             <div className="update-inventory-wrapper">
                 <div className="update-inventory">
