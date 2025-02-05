@@ -161,28 +161,28 @@ function SearchDonor() {
 
 
   //aako data lai rakheko
-  useEffect(() => {
-    if (donorData) {
-      // Assuming `dataUpcoming` is the response
-      const transformedDonorData = donorData
-          //.filter(data => bloodType.label === data.bloodGroup) // Filter only matching districts
-          .map((data, index) => ({
-            id: (index + 1).toString(),
-            name: data.name,
-            phoneNumber: data.phone_number,
-            bloodGroup: data.blood_group,
-            district: data.district,
-            province: data.province,
-            age: data.age,
-        }));
-        console.log(bloodType.label);
-      console.log('Transformed Events:', JSON.stringify(transformedDonorData, null, 2));
+  // useEffect(() => {
+  //   if (donorData) {
+  //     // Assuming `dataUpcoming` is the response
+  //     const transformedDonorData = donorData
+  //         //.filter(data => bloodType.label === data.bloodGroup) // Filter only matching districts
+  //         .map((data, index) => ({
+  //           id: (index + 1).toString(),
+  //           name: data.name,
+  //           phoneNumber: data.phone_number,
+  //           bloodGroup: data.blood_group,
+  //           district: data.district,
+  //           province: data.province,
+  //           age: data.age,
+  //       }));
+  //       console.log(bloodType.label);
+  //     console.log('Transformed Events:', JSON.stringify(transformedDonorData, null, 2));
 
   
-      setDonorList(transformedDonorData);
-      console.log('Fetched Result:', donorList);
-    }
-  }, [donorData, bloodType]);
+  //     setDonorList(transformedDonorData);
+  //     console.log('Fetched Result:', donorList);
+  //   }
+  // }, [donorData, bloodType]);
 
   //filtering data
   useEffect(() => {
@@ -240,12 +240,12 @@ function SearchDonor() {
       console.log('Filtered Result:', donorFilteredList);
     }
     
-  }, [isBloodGroupActive, isDistrictActive, isProvinceActive,bloodType, selectedProvince, selectedDistrict]);
+  }, [isBloodGroupActive, isDistrictActive, isProvinceActive,bloodType, selectedProvince, selectedDistrict, toggleSearchResultModal]);
 
   useEffect(() => {
     console.log(donorList)
     console.log('Updated Filtered Result:', donorFilteredList);
-  }, [donorFilteredList, donorList]);
+  }, [donorFilteredList, toggleSearchResultModal]);
 
   return (
     <div className='donor-search-wrapper'>
@@ -411,7 +411,7 @@ function SearchDonor() {
                       </tr>
                     </thead>
                     <tbody>
-                      {donorList.map((data, index) => (
+                      {donorFilteredList.map((data, index) => (
                         // console.log('data:', data.date),
                         <tr key={index}>
                           <td  className='table-data'>{data.id}</td>
