@@ -323,10 +323,13 @@ function OrgDashboard() {
                 <section className="blood-inventory-section">
                     <div className="h1-wrapper">
                         <h1>Blood Inventory</h1>
-
-                        <div className="alert-wrapper">
-                            <h3 className='alert'>Alert!</h3>
-                        </div>
+                        {isOnAlertLevel && (
+                            <div className="alert-wrapper">
+                                <h3 style={{fontSize:"18px"}} className='alert'>Alert!</h3>
+                                <span>Blood Low on Stock: {}</span>
+                            </div>
+                        )}
+                        
                     </div>
                     <div className="bar-chart-wrapper">
                         <div className="chart-info-wrapper">
