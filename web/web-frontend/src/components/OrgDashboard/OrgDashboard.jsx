@@ -326,7 +326,7 @@ function OrgDashboard() {
                         {isOnAlertLevel && (
                             <div className="alert-wrapper">
                                 <h3 style={{fontSize:"18px"}} className='alert'>Alert!</h3>
-                                <span>Blood Low on Stock: {}</span>
+                                <span>Blood Low on Stock: {lowStockBlood.join(',')}</span>
                             </div>
                         )}
                         
