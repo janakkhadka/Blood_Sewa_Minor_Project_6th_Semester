@@ -35,8 +35,7 @@ function OrgDashboard() {
     }
     
 
-    
-    const [data, setData] = useState();
+
     const [barList, setBarList] = useState([]); 
 
   const [aPositive, setAPositive] = useState("");
@@ -116,10 +115,15 @@ function OrgDashboard() {
           )
           .map(([type, pint]) => ({ type, pint }));
         setBarList(newBarList);
-        // console.log('Fetched Result:', JSON.stringify(result, null, 2));
-        setData(result);
-        // console.log('result:', JSON.stringify(result, null, 2));
-        // console.log('data:', JSON.stringify(data, null, 2));
+        console.log("barList:"+newBarList);
+        setAPositive(result.inventory["A+"]);
+        setANegative(result.inventory["A-"]);
+        setBPositive(result.inventory["B+"]);
+        setBNegative(result.inventory["B-"]);
+        setOPositive(result.inventory["O+"]);
+        setONegative(result.inventory["O-"]);
+        setABPositive(result.inventory["AB+"]);
+        setABNegative(result.inventory["AB-"]);
 
         
       } catch (err) {
@@ -129,33 +133,7 @@ function OrgDashboard() {
       }
     };
     fetchData();
-  }, [orgAuthToken]);
-
-
-
-  //invetory ko data lyayesi teslai filter gareko ani varibale maa haleko
-  useEffect(() => {
-    if (data) {
-    //   console.log('Updated data:', JSON.stringify(data, null, 2)); // Log data after state update
-      const newBarList = Object.entries(data.inventory)
-          .filter(([key]) =>
-            ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].includes(key)
-          )
-          .map(([type, pint]) => ({ type, pint }));
-        setBarList(newBarList);
-
-        setAPositive(data.inventory["A+"]);
-        setANegative(data.inventory["A-"]);
-        setBPositive(data.inventory["B+"]);
-        setBNegative(data.inventory["B-"]);
-        setOPositive(data.inventory["O+"]);
-        setONegative(data.inventory["O-"]);
-        setABPositive(data.inventory["AB+"]);
-        setABNegative(data.inventory["AB-"]);
-
-        // console.log('barList:', barList);
-    }
-  }, [data]);
+  }, [orgAuthToken, updateBloodInventory]);
 
 
   //inventory update ko lagi
@@ -296,34 +274,6 @@ function OrgDashboard() {
     };
     fetchData();
   },[orgAuthToken]);
-
-    // useEffect(() => {
-    //     if (bloodReqeuestData) {
-    //     // Assuming `dataUpcoming` is the response
-    //     const transformedRequests = Array.isArray(bloodReqeuestData)
-    //     ? bloodReqeuestData.map((data, index) => ({
-    //         id: (index + 1).toString(),
-    //         requestedBy: data.organization_name,
-    //         bloodGroup: Object.keys(data.blood_request)[0],
-    //         pintValue: data.blood_request[Object.keys(data.blood_request)[0]],
-    //         date: data.date
-    //       }))
-    //     : [];
-    //     // console.log('Transformed Events:', JSON.stringify(transformedRequests, null, 2));
-
-    
-    //     setBloodRequestList(transformedRequests);
-        
-    //     setPintValueDonate(transformedRequests[selectedRequestId].pintValue);
-    //     setOrgNameToDonate(transformedRequests[selectedRequestId].requestedBy);
-    //     setBloodGroupToDonate(transformedRequests[selectedRequestId].bloodGroup);
-        
-    //     console.log('Fetched Result:', bloodRequestList);
-    //     }
-    // }, [bloodReqeuestData, selectedRequestId]);
-
-
-
 
 
 //  if (loading) return <p>Loading...</p>;
