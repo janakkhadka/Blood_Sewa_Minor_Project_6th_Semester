@@ -50,12 +50,18 @@ function OrgDashboard() {
   const navigate = useNavigate();
   console.log(orgAuthToken)
 
+  //alert message ko lagi
+  const [isOnAlertLevel, setIsOnAlertLevel] = useState(false);
+  const [lowStockBlood, setLowStockBlood] = useState([]);
+
+
+  //update inventory ko lagi modal
+  const [updateBloodInventory, setUpdateBloodInventory] = useState(false);
+
     
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  //update inventory ko lagi modal
-  const [updateBloodInventory, setUpdateBloodInventory] = useState(false);
   
     //blood request ko lagi modal
   const [requestBlood, setRequestBlood] = useState(false);
@@ -109,6 +115,7 @@ function OrgDashboard() {
         
 
         const result = await response.json();
+        console.log(result);
         const newBarList = Object.entries(result.inventory)
           .filter(([key]) =>
             ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].includes(key)
@@ -124,6 +131,19 @@ function OrgDashboard() {
         setONegative(result.inventory["O-"]);
         setABPositive(result.inventory["AB+"]);
         setABNegative(result.inventory["AB-"]);
+
+        const lowStockBloodTypes = Object.entries(result.inventory)
+            .filter(([bloodType, value]) => value <= 10)
+            .map(([bloodType]) => bloodType);
+
+            if (lowStockBloodTypes.length > 0) {
+                setLowStockBlood(lowStockBloodTypes);
+                setIsOnAlertLevel(true);
+                console.log(lowStockBlood)
+                console.log("Low stock blood types:", lowStockBloodTypes.join(", "));
+              } else {
+                console.log("All blood types have sufficient stock");
+              }
 
         
       } catch (err) {
@@ -303,6 +323,7 @@ function OrgDashboard() {
                 <section className="blood-inventory-section">
                     <div className="h1-wrapper">
                         <h1>Blood Inventory</h1>
+
                         <div className="alert-wrapper">
                             <h3 className='alert'>Alert!</h3>
                         </div>
