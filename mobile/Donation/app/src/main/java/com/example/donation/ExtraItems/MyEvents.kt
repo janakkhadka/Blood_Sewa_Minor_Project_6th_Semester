@@ -38,29 +38,17 @@ import com.example.donation.ui.theme.DarkGreen
 import com.example.donation.ui.theme.dRed
 
 @Composable
-fun MyEvents() {
-    var value by remember { mutableStateOf("") }
-
-//    LaunchedEffect(Unit) {
-//        viewModel.fetchUpcomingEventsList()
-//    }
-//    val eventlists by viewModel.eventUpList.collectAsState()
+fun MyEvents( navController : NavHostController) {
 
     // Tab state
     var selectedTabIndex by remember { mutableStateOf(0) }
-    val tabTitles = listOf("Today's Events", "Upcoming Events")
-
-    var isFabExpanded by remember { mutableStateOf(false) }
-    val fabTranslation by animateDpAsState(
-        targetValue = if (isFabExpanded) 80.dp else 0.dp
-    )
-    val navController = rememberNavController()
+    val tabTitles = listOf("My Events", "Joined Events")
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
             // Top bar
             Column {
                 TopBarTheme()
-                CustomTopBar(Icons.Default.ArrowBack, "", "", "Events", navController)
+                CustomTopBar(Icons.Default.ArrowBack, "", "", "My Events", navController)
             }
 
             // Tabs
@@ -100,41 +88,6 @@ fun MyEvents() {
 
         }
 
-
-        FloatingActionButton(
-            onClick = { isFabExpanded = !isFabExpanded },
-            backgroundColor = DarkGreen,
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(16.dp)
-        ) {
-            Icon(
-                imageVector = if (isFabExpanded) Icons.Default.ArrowDropDown else Icons.Default.ArrowDropUp,
-                contentDescription = "Toggle FABs",
-                tint = Color.White
-            )
-        }
-
-
-        if (isFabExpanded) {
-            FloatingActionButton(
-                onClick = {
-                    navController.navigate(Screens.createEvents.route)
-                },
-                backgroundColor = dRed,
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(bottom = 16.dp + fabTranslation, end = 16.dp)
-            ) {
-                Icon(
-                    Icons.Default.Add,
-                    contentDescription = "Create Event",
-                    tint = Color.White
-                )
-            }
-
-
-        }
     }
 
 
@@ -149,7 +102,7 @@ fun MyCreatedEvents() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Today's Events", style = MaterialTheme.typography.h6)
+        Text(text = "My Events", style = MaterialTheme.typography.h6)
 
     }
 }
@@ -184,6 +137,7 @@ fun MyJoinedEvents() {
             Column(
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
+                Text(text ="Joined Events")
             }
 
 

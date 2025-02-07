@@ -96,7 +96,7 @@ interface BackendInterface {
    ): List<BloodGroupSearch>
 
    //upcomming events ko lagi
-   @GET("upcommingevents/")
+   @GET("upcomingevents/")
    suspend fun getUpcomingEvents(
       @Header("Authorization") authorization: String
    ): List<UpcomingEvents>

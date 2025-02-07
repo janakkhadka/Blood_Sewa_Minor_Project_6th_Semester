@@ -41,6 +41,11 @@ import com.example.donation.Navigation.Screens
 @Composable
 fun BloodBanks(navController: NavHostController,viewModel: SharedViewModel = viewModel()) {
     // Hospital data list
+    //organization ko list haru ko lagi
+    LaunchedEffect(Unit) {
+        viewModel.fetchOrganizations()
+    }
+    val organizationList by viewModel.organizations.collectAsState()
     LaunchedEffect(Unit) {
         viewModel.fetchOrgData()
     }

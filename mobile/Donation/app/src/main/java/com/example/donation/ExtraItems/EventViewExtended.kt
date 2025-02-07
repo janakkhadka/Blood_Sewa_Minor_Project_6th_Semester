@@ -205,8 +205,6 @@ fun EventShow(data: UpcomingEvents) {
     var showDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val contentToShare = " Event Name:${data.name}\n Organized By :${data.organizer}\n Collaboration_with${data.collabrator_name}\n Date :${data.date}\n Description :${data.description}"
-    var status  by remember { mutableStateOf(false) }
-    var (text,color) = if(status) "Joined" to DarkGreen else "Not Joined" to Color.Red
 
     Box(
         modifier = Modifier
@@ -242,7 +240,7 @@ fun EventShow(data: UpcomingEvents) {
                     horizontalArrangement = Arrangement.spacedBy(5.dp)
                 ){
                     Text(text = "Status :")
-                    Text(text = text, color = color )
+                    Text(text = data.status, color = if(data.status=="Joined") DarkGreen else Color.Red )
                 }
             }
 
@@ -266,7 +264,6 @@ fun EventShow(data: UpcomingEvents) {
             },
             confirmButton = {
                 Button(onClick = {
-                    status = true
                     showDialog = false
 
                 }) {
