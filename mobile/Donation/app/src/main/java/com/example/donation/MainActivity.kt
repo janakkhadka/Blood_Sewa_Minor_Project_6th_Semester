@@ -6,12 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.donation.BottomNavBar.HomeScreen
-import com.example.donation.BottomNavBar.ProfileScreen
-import com.example.donation.ExtraItems.EventViewExtended
-import com.example.donation.ExtraItems.MyBookings
-import com.example.donation.ExtraItems.MyEvents
-import com.example.donation.ExtraItems.SearchDonors
 import com.example.donation.Navigation.SetUpNavigation
 
 
@@ -22,7 +16,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             navController = rememberNavController()
-            //SetUpNavigation(navController)
+            SetUpNavigation(navController)
             //ViewEvents(navController)
             //BloodBanks(navController)
             //SearchDonors(navController)

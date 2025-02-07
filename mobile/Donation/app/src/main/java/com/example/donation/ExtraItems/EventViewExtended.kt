@@ -59,8 +59,6 @@ fun EventViewExtended(navController: NavHostController,viewModel: SharedViewMode
     val instance = getBarcodeScannerInstance(gmsScannerOptions)
     var value by remember { mutableStateOf("") }
 
-    //event join ko lagi
-    val joinEventStatus by viewModel.joinEventStatus.observeAsState()
 
     LaunchedEffect(Unit) {
         viewModel.fetchUpcomingEventsList()
@@ -168,7 +166,7 @@ fun EventViewExtended(navController: NavHostController,viewModel: SharedViewMode
 
             FloatingActionButton(
                 onClick = {
-                    initiateScanner(instance) { scannedValue ->
+                    initiateScanner(instance, viewModel = viewModel) { scannedValue ->
                         value = scannedValue
                     }
                 },
@@ -313,11 +311,17 @@ private fun getBarcodeScannerInstance(gmsBarcodeScannerOptions: GmsBarcodeScanne
 
 private fun initiateScanner(
     gmsBarcodeScanner: GmsBarcodeScanner,
+    viewModel: SharedViewModel,
     onScanned: (String) -> Unit
+
 ) {
     gmsBarcodeScanner.startScan()
         .addOnSuccessListener { barcode ->
             barcode.rawValue?.let { onScanned(it) }
+            barcode.displayValue?.let {
+                viewModel.checkInEvent(it)
+                Log.d(TAG, "initiateScanner: Display slug ${it}")
+            }
             when (barcode.valueType) {
                 Barcode.TYPE_URL -> {
                     Log.d(TAG, "initiateScanner: ${barcode.valueType}")

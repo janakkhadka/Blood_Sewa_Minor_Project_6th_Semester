@@ -3,6 +3,7 @@ package com.example.donation.backend
 
 import com.example.donation.DataClasses.BloodGroupSearch
 import com.example.donation.DataClasses.BloodRequest
+import com.example.donation.DataClasses.CheckedInEvent
 import com.example.donation.DataClasses.CreateEvent
 import com.example.donation.DataClasses.EventDonationHistory
 import com.example.donation.DataClasses.EventList
@@ -120,6 +121,12 @@ interface BackendInterface {
       @Path("slug") slug: String,
       @Header("Authorization") token: String
    ): Response<JoinResponse>
+
+   @POST("events/{slug}/checkin/")
+   suspend fun confirmEvent(
+      @Path("slug") slug: String,
+      @Header("Authorization") token: String
+   ) : Response<CheckedInEvent>
 
 
 }
