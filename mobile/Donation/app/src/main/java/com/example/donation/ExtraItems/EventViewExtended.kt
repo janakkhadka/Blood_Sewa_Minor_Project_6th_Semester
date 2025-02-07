@@ -31,6 +31,7 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -57,6 +58,9 @@ fun EventViewExtended(navController: NavHostController,viewModel: SharedViewMode
     val gmsScannerOptions = configureScannerOption()
     val instance = getBarcodeScannerInstance(gmsScannerOptions)
     var value by remember { mutableStateOf("") }
+
+    //event join ko lagi
+    val joinEventStatus by viewModel.joinEventStatus.observeAsState()
 
     LaunchedEffect(Unit) {
         viewModel.fetchUpcomingEventsList()
@@ -118,7 +122,7 @@ fun EventViewExtended(navController: NavHostController,viewModel: SharedViewMode
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     items(eventlists){requests ->
-                        EventShow(requests)
+                        EventShow(requests,viewModel)
 
                     }
 
@@ -201,7 +205,7 @@ fun TodayEventsContent() {
 }
 
 @Composable
-fun EventShow(data: UpcomingEvents) {
+fun EventShow(data: UpcomingEvents, viewModel: SharedViewModel) {
     var showDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val contentToShare = " Event Name:${data.name}\n Organized By :${data.organizer}\n Collaboration_with${data.collabrator_name}\n Date :${data.date}\n Description :${data.description}"
@@ -264,6 +268,7 @@ fun EventShow(data: UpcomingEvents) {
             },
             confirmButton = {
                 Button(onClick = {
+                    viewModel.joinEvent(data.slug)
                     showDialog = false
 
                 }) {

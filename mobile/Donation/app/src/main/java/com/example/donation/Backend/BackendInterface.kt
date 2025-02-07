@@ -6,6 +6,7 @@ import com.example.donation.DataClasses.BloodRequest
 import com.example.donation.DataClasses.CreateEvent
 import com.example.donation.DataClasses.EventDonationHistory
 import com.example.donation.DataClasses.EventList
+import com.example.donation.DataClasses.JoinResponse
 import com.example.donation.DataClasses.MyBookings
 import com.example.donation.DataClasses.OrganizationInventory
 import com.example.donation.DataClasses.OrganizationList
@@ -24,6 +25,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface BackendInterface {
@@ -111,6 +113,13 @@ interface BackendInterface {
    suspend fun getTodaysEvent(
       @Header("Authorization") authorization: String
    ): List<TodaysEvent>
+
+   //event join garna ko lagi
+   @POST("events/{slug}/join/")
+   suspend fun joinEvent(
+      @Path("slug") slug: String,
+      @Header("Authorization") token: String
+   ): Response<JoinResponse>
 
 
 }

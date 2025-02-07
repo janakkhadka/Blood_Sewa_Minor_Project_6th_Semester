@@ -59,6 +59,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.donation.DataClasses.EventDonationHistory
+import com.example.donation.Navigation.Screens
 import com.example.donation.R
 import com.example.donation.ViewModels.SharedViewModel
 import com.example.donation.ui.theme.dRed
@@ -80,12 +81,7 @@ data class Report(
 )
 @Composable
 fun ProfileScreen(navController : NavHostController,viewModel: SharedViewModel = viewModel()) {
-    val context  = LocalContext.current
 
-    LaunchedEffect(Unit) {
-        viewModel.fetchDonationHistory()
-    }
-    val myHistory by viewModel.history.collectAsState()
 
     //badge ko lagi
     val donationCount by remember { mutableIntStateOf(8) }
@@ -183,7 +179,9 @@ fun ProfileScreen(navController : NavHostController,viewModel: SharedViewModel =
                         contentAlignment = Alignment.Center
                     ) {
                         Button(
-                            onClick = {},
+                            onClick = {
+                                navController.navigate(Screens.updateProfile.route)
+                            },
                             shape = RoundedCornerShape(10.dp),
                             colors = ButtonDefaults.buttonColors(dRed),
 
@@ -351,17 +349,7 @@ fun ProfileScreen(navController : NavHostController,viewModel: SharedViewModel =
 
                     DonationActivityHeading()
                     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                        if(myHistory.isEmpty()) {
-                            dummyHistroy.forEach { data ->
-                                DonationActivity(data)
 
-                            }
-                        }
-
-                    else {
-                    myHistory.forEach() { data ->
-                        DonationActivity(data)
-                    }
                 }
 
                     }
@@ -375,7 +363,7 @@ fun ProfileScreen(navController : NavHostController,viewModel: SharedViewModel =
 
     }
 
-}
+
 
 
 
