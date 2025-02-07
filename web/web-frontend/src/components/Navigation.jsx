@@ -25,7 +25,7 @@ import TodaysEvent from './OrgDashboard/Events/TodaysEvent.jsx';
 import OrgOrganizeEvent from './OrgDashboard/Events/OrgOrganizeEvent.jsx';
 import CollabRequest from './OrgDashboard/Events/CollabRequest.jsx';
 import ScheduledDonation from './OrgDashboard/ScheduledDonation.jsx';
-import EventDetail from './OrgDashboard/Events/EventDetail.jsx';
+import PastEventDetail from './OrgDashboard/Events/PastEventDetail.jsx';
 import UserPrivateRoute from './UserPrivateRoute.jsx';
 import OrgPrivateRoute from './OrgPrivateRoute.jsx';
 
@@ -133,10 +133,10 @@ const Navigation = () => {
           }
         />
         <Route
-          path="/event-details"
+          path="/past-event-detail"
           element={
             <OrgPrivateRoute>
-              <EventDetail />
+              <PastEventDetail />
             </OrgPrivateRoute>
           }
         />

@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import './EventDetail.css'
+import './PastEventDetail.css'
 
 import NavigationBar from '../../Common/NavigationBar'
 import { OrgComponentNavbarRightLeft, OrgDashboardNavbarRightRight } from '../OrgNavbarComponent'
@@ -19,6 +19,17 @@ import ScreeningResultModal from './ScreeningResultModal'
 
 function EventDetail() {
   const [toggleScreeningResultModal, setToggleScreeningResultModal] = useState(false);
+
+  const [bloodPressure, setBloodPressure] = useState("")
+  const [pulseRate, setPulseRate] = useState("")
+  const [temperature, setTemperature] = useState("")
+  const [hemoglobin, setHemoglobin] = useState("")
+  const [sugarLevel, setSugarLevel] = useState("")
+
+  const handleSubmit = (e) => {
+      e.preventDefault();
+      
+    };
 
   const location = useLocation()
   const eventId = location.state?.eventId;
@@ -131,8 +142,8 @@ function EventDetail() {
                 <tbody>
                   {donorList.map((donor, index) => (
                     <tr key={index}>
-                      <td>{donor.sn}</td> {/* Format date */}
-                      <td  className='table-data'>{donor.name}</td>
+                      <td>{donor.sn}</td>
+                      <td className='table-data'>{donor.name}</td>
                       <td>9840989641</td>
                     </tr>
                   ))}
@@ -143,7 +154,60 @@ function EventDetail() {
           
             {toggleScreeningResultModal && (
               <div className="screening-modal">
-                <ScreeningResultModal/>
+                <div className="screening-result-wrapper">
+                  <div className="screening-form">
+                      <div className="close-button">
+                        <button onClick={() => setToggleScreeningResultModal(false)}>X</button>
+                      </div>
+                      <form onSubmit={handleSubmit}>
+                          
+                          <h1>Screening Result</h1>
+                          <span style={{fontSize:"14px"}}>Enter the info carefully.</span>
+                          <br/>
+
+                          <div className="input-box" style={{marginTop:"7px"}}>
+                              <input type="text"
+                              value = {bloodPressure}
+                              onChange={(e) => setBloodPressure(e.target.value)}
+                              placeholder='Blood Pressure'/>
+                              <IoMdSquare className="icon"/>
+                          </div>
+                          <div className="input-box" style={{marginTop:"7px"}}>
+                              <input type="text"
+                              value = {pulseRate}
+                              onChange={(e) => setPulseRate(e.target.value)}
+                              placeholder='Pulse Rate'/>
+                              <IoMdSquare className="icon"/>
+                          </div>
+                          <div className="input-box" style={{marginTop:"7px"}}>
+                              <input type="text"
+                              value = {temperature}
+                              onChange={(e) => setTemperature(e.target.value)}
+                              placeholder='Body Temperature'/>
+                              <IoMdSquare className="icon"/>
+                          </div>
+                          <div className="input-box" style={{marginTop:"7px"}}>
+                              <input type="text"
+                              value = {hemoglobin}
+                              onChange={(e) => setHemoglobin(e.target.value)}
+                              placeholder='Hemoglobin'/>
+                              <IoMdSquare className="icon"/>
+                          </div>
+                          <div className="input-box" style={{marginTop:"7px"}}>
+                              <input type="text"
+                              value = {sugarLevel}
+                              onChange={(e) => setSugarLevel(e.target.value)}
+                              placeholder='Blood Sugar Level'/>
+                              <IoMdSquare className="icon"/>
+                          </div>
+
+
+                          <div className="button">
+                              <button type="submit">Add</button>
+                          </div>
+                      </form>
+                  </div>
+                </div>
               </div>
             )}
         </div>

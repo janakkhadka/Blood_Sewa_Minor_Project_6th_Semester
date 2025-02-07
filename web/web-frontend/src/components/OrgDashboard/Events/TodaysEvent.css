@@ -34,7 +34,7 @@
   gap: 20px;
 }
 
-.todays-event h1 {
+.todays-event .left-section .left-top-section h1 {
   color: var(--secondary-text-color);
 }
 
@@ -128,7 +128,7 @@
   backdrop-filter: var(--backdrop-filter);
 }
 
-.donor-details .h1 h1{
+.todays-event .left-bottom-section .donor-details  .h1{
   width: 100%;
   position: sticky;
   top: 0;
@@ -188,4 +188,123 @@
 .todays-event .qr-image {
   border-radius: 10px;
   width: 630px;
+}
+
+
+/* modal */
+
+.todays-event-wrapper .screening-modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: transparent;
+  backdrop-filter: var(--backdrop-filter);
+  z-index: 3;
+  color: var(--secondary-text-color);
+}
+
+.todays-event-wrapper .screening-modal .screening-result-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 850px;
+  height: 495px;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  background: var(--secondary-background);
+  backdrop-filter: var(--backdrop-filter);
+  z-index: 4;
+}
+
+.todays-event-wrapper .screening-modal .screening-result-wrapper .screening-form {
+  width: 100%;
+  padding: 20px 40px 0px 40px;
+}
+
+.todays-event-wrapper .screening-modal .screening-form .input-box {
+  position: relative;
+  width: 100%;
+  height: 30px;
+  margin: 30px 0;
+  color: var(--secondary-text-color);
+}
+
+.todays-event-wrapper .screening-modal .screening-form .input-box .icon {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  translate: 0 -20%;
+  font-size: 16px;
+  color: var(--secondary-text-color);
+}
+
+.todays-event-wrapper .screening-modal .screening-form span{
+  color: var(--secondary-text-color);
+}
+
+.todays-event-wrapper .screening-modal .screening-form .button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.todays-event-wrapper .screening-modal .screening-form form button {
+  width: 50%;
+  height: 45px;
+  background: var(--button-background-color);
+  border: none;
+  outline: none;
+  border-radius: 40px;
+  box-shadow: var(--button-shadow);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+  margin: auto;
+  color: var(--button-text-color);
+  margin-top: 20px;
+}
+
+/* Common */
+
+.todays-event-wrapper .screening-modal form h1 {
+  font-size: 36px;
+  text-align: center;
+  color: var(--secondary-text-color);
+}
+
+.todays-event-wrapper .screening-modal .input-box input {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  outline: none;
+  border-radius: 40px;
+  font-size: 16px;
+  padding: 20px 45px 20px 20px;
+  color: var(--secondary-text-color);
+}
+
+.todays-event-wrapper .screening-modal .input-box input::placeholder {
+  color: var(--secondary-text-color);
+}
+
+.todays-event-wrapper .screening-modal .close-button{
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  color: var(--secondary-text-color);
+  background:transparent;
+}
+
+.todays-event-wrapper .screening-modal .close-button button{
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--secondary-text-color);
+  box-shadow: none;
 }

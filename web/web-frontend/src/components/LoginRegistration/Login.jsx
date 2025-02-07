@@ -67,7 +67,7 @@ const Login = () => {
             }
         }else if(accountType === 'organization'){
             try {
-                const response = await fetch(api+'organization/login/', {
+                const response = await fetch(api+'org/login/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
