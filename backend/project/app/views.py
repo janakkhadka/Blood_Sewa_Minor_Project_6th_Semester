@@ -331,6 +331,39 @@ class CreateEventView(APIView):
 
 
 
+# class JoinEventView(APIView):
+#     permission_classes = [permissions.IsAuthenticated]
+
+#     def post(self, request, slug):
+#         try:
+#             # Fetch the event by slug
+#             event = Event.objects.get(slug=slug)
+            
+#             # Create or fetch the UserEvent object for the current user
+#             UserEvent.objects.get_or_create(user=request.user, event=event)
+            
+#             # Update the event's status to True if it isn't already
+#             if not event.status:
+#                 event.status = True
+#                 event.save()
+            
+#             if event.status == True:
+#                 event.expected_donor_count += 1
+#                 event.save()
+
+#             return Response({"message": "Successfully joined the event." , "status":event.status}, status=status.HTTP_200_OK)
+
+#         except Event.DoesNotExist:
+#             return Response({"error": "Event not found."}, status=status.HTTP_404_NOT_FOUND)
+
+
+from datetime import timedelta
+from django.utils.timezone import now
+from rest_framework.response import Response
+from rest_framework import status, permissions
+from rest_framework.views import APIView
+from .models import Event, UserEvent
+
 class JoinEventView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -339,22 +372,40 @@ class JoinEventView(APIView):
             # Fetch the event by slug
             event = Event.objects.get(slug=slug)
             
-            # Create or fetch the UserEvent object for the current user
-            UserEvent.objects.get_or_create(user=request.user, event=event)
-            
+            # Check if the user has already joined this event
+            if UserEvent.objects.filter(user=request.user, event=event).exists():
+                return Response({"error": "You have already joined this event."}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Get all events the user has joined in the last 90 days
+            ninety_days_ago = now() - timedelta(days=90)
+            recent_events = UserEvent.objects.filter(user=request.user, event__date__gte=ninety_days_ago)
+
+            if recent_events.exists():
+                return Response(
+                    {"error": "You cannot join this event as you have joined another event in the last 90 days."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            # Create a new UserEvent entry
+            UserEvent.objects.create(user=request.user, event=event)
+
             # Update the event's status to True if it isn't already
             if not event.status:
                 event.status = True
                 event.save()
-            
-            if event.status == True:
-                event.expected_donor_count += 1
-                event.save()
 
-            return Response({"message": "Successfully joined the event." , "status":event.status}, status=status.HTTP_200_OK)
+            # Increase the expected donor count
+            event.expected_donor_count += 1
+            event.save()
+
+            return Response({"message": "Successfully joined the event.", "status": event.status}, status=status.HTTP_200_OK)
 
         except Event.DoesNotExist:
             return Response({"error": "Event not found."}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+
 
 
 

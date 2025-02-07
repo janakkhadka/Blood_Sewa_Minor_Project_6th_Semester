@@ -138,6 +138,9 @@ class Event(models.Model):
     end_time = models.TimeField(default=datetime.time(9, 0))
     status = models.BooleanField(default=False)
     expected_donor_count = models.IntegerField(default=0)
+
+    
+
     def save(self, *args, **kwargs):
         # Automatically generate a unique slug if not provided
         if not self.slug:
