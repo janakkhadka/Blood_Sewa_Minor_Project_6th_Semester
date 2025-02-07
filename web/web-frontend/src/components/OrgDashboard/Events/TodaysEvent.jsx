@@ -40,20 +40,20 @@ function TodaysEvent() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [todayEventData, setTodayEventData] = useState();
+  const [todayEventData, setTodayEventData] = useState({});
   const [todayEventList, setTodayEventList] = useState([]);
-  const [singleData, setSingleData] = useState({});
-  //inventory ko data taneko server bata
+
+  //fetching all my events data from server and storing to specific states(today events)
   useEffect(() => {
-    if (!orgAuthToken) {
-        setError('No auth token found. Please log in');
-        setLoading(false);
-        console.log('No auth token found. Please log in');
-        return;
-      }
+    if(!orgAuthToken){
+      setError('No auth token found. Please log in');
+      setLoading(false);
+      return;
+    }
+
     const fetchData = async () => {
       try {
-        const response = await fetch(api+'todayevents/', {
+        const response = await fetch(api+'my-all-events/',{
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -62,39 +62,25 @@ function TodaysEvent() {
         });
 
         if (!response.ok) {
-            const errorResponse = await response.json();
-            console.log(errorResponse);
-          throw new Error(`Error: ${response.status}`);
+          const errorResponse = await response.json();
+          console.log(errorResponse);
+        throw new Error(`Error: ${response.status}`);
         }
 
-        
-
         const result = await response.json();
-        console.log(result)
-        const event = result[0] || {}; // Use the first event or an empty object
 
-      const transformedEvents = {
-        id: event.id ,
-        title: event.name,
-        date: event.date,
-        location: event.location,
-        description: event.description,
-        organizer: event.organizer,
-        startTime: event.start_time || "00:00",
-        endTime: event.end_time || "00:00",  
-        slug: event.slug,
-        qrCode: localhost + (event.qr_code),
-      };
-        
-        console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
-        // setTodayEventList(transformedEvents);
-        // console.log('Fetched Result:', todayEventList);
-        setTodayEventData(result);
-        setSingleData(transformedEvents);
-        console.log('Data Upcoming:', todayEventData);
+        const today = new Date().toISOString().split('T')[0];
 
-        
-      } catch (err) {
+        const filteredTodayEvents = result.filter(event => event.date = today);
+
+        const event = filteredTodayEvents[0] || {}; // Use the first event or an empty object
+
+        setTodayEventData(event);
+        console.log('Transformed Events:', JSON.stringify(todayEventData, null, 2));
+        console.log(todayEventData.qr_code)
+
+
+      }catch (err) {
         setError(err.message);
       } finally {
         setLoading(false);
@@ -103,31 +89,91 @@ function TodaysEvent() {
     fetchData();
   },[orgAuthToken]);
 
+  // //inventory ko data taneko server bata
+  // useEffect(() => {
+  //   if (!orgAuthToken) {
+  //       setError('No auth token found. Please log in');
+  //       setLoading(false);
+  //       console.log('No auth token found. Please log in');
+  //       return;
+  //     }
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch(api+'my-all-events/', {
+  //         method: 'GET',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           Authorization: `Bearer ${orgAuthToken}`,
+  //         },
+  //       });
+
+  //       if (!response.ok) {
+  //           const errorResponse = await response.json();
+  //           console.log(errorResponse);
+  //         throw new Error(`Error: ${response.status}`);
+  //       }
+
+        
+
+  //       const result = await response.json();
+  //       console.log(result)
+  //       const event = result[0] || {}; // Use the first event or an empty object
+
+  //     const transformedEvents = {
+  //       id: event.id ,
+  //       title: event.name,
+  //       date: event.date,
+  //       location: event.location,
+  //       description: event.description,
+  //       organizer: event.organizer,
+  //       startTime: event.start_time || "00:00",
+  //       endTime: event.end_time || "00:00",  
+  //       slug: event.slug,
+  //       qrCode: localhost + (event.qr_code),
+  //     };
+        
+  //       console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
+  //       // setTodayEventList(transformedEvents);
+  //       // console.log('Fetched Result:', todayEventList);
+  //       setTodayEventData(result);
+  //       setSingleData(transformedEvents);
+  //       console.log('Data Upcoming:', todayEventData);
+
+        
+  //     } catch (err) {
+  //       setError(err.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   fetchData();
+  // },[orgAuthToken]);
+
 
 
   //aako data lai rakheko
-  useEffect(() => {
-    if (todayEventData) {
-      // Assuming `dataUpcoming` is the response
-      const transformedEvents = {
-        id: todayEventData.id,
-        title: todayEventData.name,
-        date: todayEventData.date,
-        location: todayEventData.location,
-        description: todayEventData.description,
-        organizer: todayEventData.organizer,
-        startTime: todayEventData.start_time || "00:00",
-        endTime: todayEventData.end_time || "00:00",
-        slug: todayEventData.slug,
-        qrCode: localhost + (todayEventData.qr_code),
-      };
-      console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
-      // setTodayEventList(transformedEvents);
-      // console.log('Fetched Result:', todayEventList);
-      setSingleData(transformedEvents);
-      console.log(singleData)
-    }
-  }, [todayEventData]);
+  // useEffect(() => {
+  //   if (todayEventData) {
+  //     // Assuming `dataUpcoming` is the response
+  //     const transformedEvents = {
+  //       id: todayEventData.id,
+  //       title: todayEventData.name,
+  //       date: todayEventData.date,
+  //       location: todayEventData.location,
+  //       description: todayEventData.description,
+  //       organizer: todayEventData.organizer,
+  //       startTime: todayEventData.start_time || "00:00",
+  //       endTime: todayEventData.end_time || "00:00",
+  //       slug: todayEventData.slug,
+  //       qrCode: localhost + (todayEventData.qr_code),
+  //     };
+  //     console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
+  //     // setTodayEventList(transformedEvents);
+  //     // console.log('Fetched Result:', todayEventList);
+  //     setSingleData(transformedEvents);
+  //     console.log(singleData)
+  //   }
+  // }, [todayEventData]);
 
   return (
     <div className='todays-event-wrapper'>
@@ -147,7 +193,7 @@ function TodaysEvent() {
               <h3>Event Details</h3>
               <div className="icon-info-wrapper">
                 <MdEvent/>
-                <span>Event: <span style={{fontWeight:"bold"}}>{singleData.title}</span></span>
+                <span>Event: <span style={{fontWeight:"bold"}}>{todayEventData.name}</span></span>
               </div>
               <div className="icon-info-wrapper">
                 <MdDateRange/>
@@ -155,11 +201,11 @@ function TodaysEvent() {
               </div>
               <div className="icon-info-wrapper">
                 <IoMdTime/>
-                <span>Time: <span style={{fontWeight:"bold"}}>{singleData.startTime +"-"+singleData.endTime}</span></span>
+                <span>Time: <span style={{fontWeight:"bold"}}>{todayEventData.start_time +"-"+todayEventData.end_time}</span></span>
               </div>
               <div className="icon-info-wrapper">
                 <IoLocationOutline/>
-                <span>Location: <span style={{fontWeight:"bold"}}>{singleData.location}</span></span>
+                <span>Location: <span style={{fontWeight:"bold"}}>{todayEventData.location}</span></span>
               </div>
               <div className="icon-info-wrapper">
                 <MdOutlineCountertops/>
@@ -203,7 +249,7 @@ function TodaysEvent() {
         <div className="right-section">
             <section className='scan-qr'>
               <div className="qr-wrapper" style={{width:"800px"}}>
-                <img className='qr-image' src={singleData.qrCode} alt="qr-code"/>
+                <img className='qr-image' src={localhost+todayEventData.qr_code} alt="qr-code"/>
               </div>
             </section>
           </div>

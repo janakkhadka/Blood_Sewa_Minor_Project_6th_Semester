@@ -19,7 +19,8 @@ import {api} from '../../../Logic/api';
 
 function Events() {
   const orgAuthToken = useOrgAuthToken();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
   const [comingEvent, setComingEvent] = useState(false);
 
   
@@ -27,7 +28,6 @@ function Events() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [dataUpcoming, setDataUpcoming] = useState();
   const [upcomingEventList, setUpcomingEventList] = useState([]);
    
   const [selectedEvent, setSelectedEvent] = useState(events[0]);
@@ -40,88 +40,17 @@ function Events() {
   const [pastEventData, setPastEventData] = useState();
   const [pastEventList, setPastEventList] = useState([]);
 
-
-  //upcomming event ko data taneko server bata
+  //fetching all my events data from server and storing to specific states
   useEffect(() => {
-    if (!orgAuthToken) {
-        setError('No auth token found. Please log in');
-        setLoading(false);
-        console.log('No auth token found. Please log in');
-        return;
-      }
-    const fetchData = async () => {
-      try {
-        const response = await fetch(api+'upcomingevents/', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${orgAuthToken}`,
-          },
-        });
-
-        if (!response.ok) {
-            const errorResponse = await response.json();
-            console.log(errorResponse);
-          throw new Error(`Error: ${response.status}`);
-        }
-
-        
-
-        const result = await response.json();
-        console.log(result)
-        const transformedEvents = result.map((event, index) => ({
-          id: (index + 1).toString(),
-          title: event.name,
-          date: event.date,
-          location: event.location,
-          description: event.description,
-        }));
-        setUpcomingEventList(transformedEvents);
-        setDataUpcoming(result);
-        // console.log('result:', JSON.stringify(result, null, 2));
-        // console.log('data:', JSON.stringify(dataUpcoming, null, 2));
-
-        
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  },[orgAuthToken]);
-
-
-
-  //aako data lai rakheko
-  useEffect(() => {
-    if (dataUpcoming) {
-      // Assuming `dataUpcoming` is the response
-      const transformedEvents = dataUpcoming.map((event, index) => ({
-        id: (index + 1).toString(),
-        title: event.name,
-        date: event.date,
-        location: event.location,
-        description: event.description,
-      }));
-
-      setUpcomingEventList(transformedEvents);
-
+    if(!orgAuthToken){
+      setError('No auth token found. Please log in');
+      setLoading(false);
+      return;
     }
-  }, [dataUpcoming]);
 
-
-//past event lai rakheko
-  useEffect(() => {
-    if (!orgAuthToken) {
-        setError('No auth token found. Please log in');
-        setLoading(false);
-        console.log('No auth token found. Please log in');
-        return;
-      }
     const fetchData = async () => {
       try {
-        const response = await fetch(api+'pastevents/', {
+        const response = await fetch(api+'my-all-events/',{
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -130,32 +59,24 @@ function Events() {
         });
 
         if (!response.ok) {
-            const errorResponse = await response.json();
-            console.log(errorResponse);
-          throw new Error(`Error: ${response.status}`);
+          const errorResponse = await response.json();
+          console.log(errorResponse);
+        throw new Error(`Error: ${response.status}`);
         }
 
-        
-
         const result = await response.json();
-        console.log(result)
-        const transformedEvents = result.map((event, index) => ({
-          id: (index + 1).toString(),
-          title: event.name,
-          date: event.date,
-          location: event.location,
-          description: event.description,
-        }));
-        console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
-        setPastEventList(transformedEvents);
-        console.log('Fetched Result:', pastEventList);
-        setPastEventData(result);
-        console.log('Data Upcoming:', pastEventData);
-        // console.log('result:', JSON.stringify(result, null, 2));
-        // console.log('data:', JSON.stringify(dataUpcoming, null, 2));
 
-        
-      } catch (err) {
+        const today = new Date().toISOString().split('T')[0];
+
+        const filteredUpcomingEvents = result.filter(event => event.date > today);
+        setUpcomingEventList(filteredUpcomingEvents);
+        console.log("Upcoming Events:", filteredUpcomingEvents);
+
+        const filteredPastEvents = result.filter(event => event.date < today);
+        setPastEventList(filteredPastEvents);
+        console.log("Past Events:", filteredPastEvents);
+
+      }catch (err) {
         setError(err.message);
       } finally {
         setLoading(false);
@@ -163,28 +84,8 @@ function Events() {
     };
     fetchData();
   },[orgAuthToken]);
-
-
-
-  //aako data lai rakheko
-  useEffect(() => {
-    if (pastEventData) {
-      // Assuming `dataUpcoming` is the response
-      const transformedEvents = pastEventData.map((event, index) => ({
-        id: (index + 1).toString(),
-        title: event.name,
-        date: event.date,
-        location: event.location,
-        description: event.description,
-      }));
-      console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
 
   
-      setPastEventList(transformedEvents);
-      console.log('Fetched Result:', upcomingEventList);
-    }
-  }, [pastEventData]);
-
   // if (loading) return <p>Loading...</p>;
   // if (error) return <p>Error: {error}</p>;
 
@@ -242,7 +143,7 @@ function Events() {
                             // console.log('Event:', event.date),
                             <tr key={index}>
                               <td>{format(event.date, "MMMM dd, yyyy")}</td> {/* Format date */}
-                              <td  className='table-data'>{event.title}</td>
+                              <td  className='table-data'>{event.name}</td>
                               <td  className='table-data'>{event.location}</td>
                               <td><button className="notify-button" onClick={()=>handleEventClick(event.id)}>Detail</button></td>
                             </tr>
