@@ -9,5 +9,6 @@ data class UpcomingEvents(
     val organizer : String,
     val qr_code : String,
     val slug : String,
-    val collabrator_name : String
+    val collabrator_name : String,
+    val status : String
 )

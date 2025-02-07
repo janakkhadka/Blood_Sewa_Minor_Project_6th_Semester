@@ -20,8 +20,8 @@ import com.example.donation.ExtraItems.CreateEvents
 import com.example.donation.ExtraItems.BloodBanks
 import com.example.donation.ExtraItems.BloodRequestsScreen
 import com.example.donation.ExtraItems.EventViewExtended
-import com.example.donation.ExtraItems.Events
 import com.example.donation.ExtraItems.MyBookings
+import com.example.donation.ExtraItems.MyEvents
 import com.example.donation.ExtraItems.SearchDonors
 import com.example.donation.OnBoardingScreens.OnBoardingScreen
 import com.example.donation.Verification.ChangePassword
@@ -30,7 +30,6 @@ import com.example.donation.Verification.Login
 import com.example.donation.Verification.OtpVerification
 import com.example.donation.Verification.SignUp
 import com.example.donation.datastore.DataStoreManager
-import com.example.donation.ExtraItems.ViewEvents
 import com.example.donation.ExtraItems.ScheduleTime
 
 
@@ -48,7 +47,7 @@ fun SetUpNavigation(navController : NavHostController) {
 
         NavHost(
             navController = navController,
-            startDestination = Screens.OnBoarding.route
+            startDestination = Screens.BottomNavBar.route
         ) {
             composable(Screens.OnBoarding.route) {
                 OnBoardingScreen(navController)
@@ -76,10 +75,6 @@ fun SetUpNavigation(navController : NavHostController) {
                 BloodRequestsScreen(navController)
             }
 
-            composable(route = Screens.Events.route) {
-                Events(navController)
-            }
-
             composable(route = Screens.BloodBanks.route) {
                 BloodBanks(navController)
             }
@@ -88,9 +83,6 @@ fun SetUpNavigation(navController : NavHostController) {
                 SearchDonors(navController)
             }
 
-            composable(route = Screens.ViewEvents.route) {
-                ViewEvents(navController = navController)
-            }
 
 
             composable(route = Screens.createEvents.route) {
@@ -105,6 +97,10 @@ fun SetUpNavigation(navController : NavHostController) {
             }
             composable(Screens.myBookings.route) {
                 MyBookings(navController)
+            }
+
+            composable(Screens.MyEvents.route) {
+                MyEvents(navController)
             }
 
 

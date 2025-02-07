@@ -216,6 +216,7 @@ fun HomeScreen(navController : NavHostController,viewModel: SharedViewModel = vi
                         ) {
                             IconWithLabel(Icons.Default.Event, "My Events")
                             {
+                                navController.navigate(Screens.MyEvents.route)
 
                             }
                             IconWithLabel(Icons.Default.PersonAddAlt1, "Search Donor")
