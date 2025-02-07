@@ -19,10 +19,9 @@ urlpatterns = [
     path('user/event/create/' , UserEventCreateView.as_view() , name='user-event-create'), #api to create event for user
     path("org/event/create/", CreateEventView.as_view(), name="create_event"),    #event create garna ko lagi (organization)
     path("events/<slug:slug>/join/", JoinEventView.as_view(), name="join_event"),   #event join garna ko lagi
-    path("my/event/info/",MyeventInfo.as_view(), name="my-event-info"),    #my event info
+    path("my-all-events/",MyeventInfo.as_view(), name="my-event-info"),    #organization ko sabai event haru
     path("events/<slug:slug>/checkin/", CheckInView.as_view(), name="checkin_event"),  #event checkin garna ko lagi
     path('events/<slug:slug>/checkin/list/', CheckedInListView.as_view(), name='checked-in-list'),
-    
     path("pastevents/" , ListPastEventsView.as_view(), name="past-event-lists"),   # past event haru listout garna ko lagi
     path("todayevents/" , ListTodayEventsView.as_view(), name="today-event-lists"),   # aaja ko event haru listout garna ko lagi
     path("upcomingevents/" , ListUpcommingEventsView.as_view(), name="upcomming-event-lists"),   # aaunna lage ko event haru listout garna ko lagi    
