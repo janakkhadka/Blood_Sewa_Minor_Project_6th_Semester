@@ -219,7 +219,7 @@ class MyEventSerializer(serializers.ModelSerializer):
     collabrator_name = serializers.SerializerMethodField()
     class Meta:
         model = Event
-        fields = [ 'name','location', 'date', 'organizer', 'qr_code' , 'slug' , 'collabrator_name' , 'attendee_count' , 'start_time' , 'end_time']
+        fields = [ 'name','location', 'date', 'organizer', 'qr_code' , 'slug' , 'collabrator_name' , 'donor_attendee_count' , 'start_time' , 'end_time' , 'expected_donor_count']
         read_only_fields = ['organizer', 'qr_code']
 
     def get_organizer(self, obj):
