@@ -518,7 +518,7 @@ class UserJoinedEventHistoryView(APIView):
 
                     "event_name": ue.event.name,
                     "joined_on": ue.event.date,
-                    "activity": "donated" if ue else ""
+                    
                   
             }
             for ue in user_events
