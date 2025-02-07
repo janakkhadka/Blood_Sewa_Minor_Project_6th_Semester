@@ -7,9 +7,9 @@ from .views import (CheckedInListView , AddBulkRequestView, ViewBulkRequestsView
 urlpatterns = [
     path('user/register/', RegisterUserView.as_view(), name='register_user'),    #user registration ko lagi
     path('activate/<str:uidb64>/<str:token>/', ActivateAccountView.as_view(), name='activate_account'),   #registered user ko account activation ko lagi
-    path('organization/register/', RegisterOrganizationView.as_view(), name='register_organization'),    
+    path('org/register/', RegisterOrganizationView.as_view(), name='register_organization'),    
     path('user/login/', UserLoginView.as_view(), name='user-login'),       #user login ko lagi
-    path('organization/login/', OrganizationLoginView.as_view(), name='organization-login'),
+    path('org/login/', OrganizationLoginView.as_view(), name='organization-login'),
     path('user/profile/update/' , UserProfileUpdateView.as_view() , name="user-profile-update"),    #profile update garna ko lagi
     path('blood-requests/', BloodRequestListView.as_view(), name='blood-request-list'),         #blood request haru herna ko lagi
     path('create/blood-request/', BloodRequestCreateView.as_view(), name='blood-request-create'),         #blood request garna ko lagi
@@ -22,7 +22,7 @@ urlpatterns = [
     path("my/event/info/",MyeventInfo.as_view(), name="my-event-info"),    #my event info
     path("events/<slug:slug>/checkin/", CheckInView.as_view(), name="checkin_event"),  #event checkin garna ko lagi
     path('events/<slug:slug>/checkin/list/', CheckedInListView.as_view(), name='checked-in-list'),
-    #path('events/<slug:slug>/status/', CheckEventStatusView.as_view(), name='check-event-status'),
+    
     path("pastevents/" , ListPastEventsView.as_view(), name="past-event-lists"),   # past event haru listout garna ko lagi
     path("todayevents/" , ListTodayEventsView.as_view(), name="today-event-lists"),   # aaja ko event haru listout garna ko lagi
     path("upcomingevents/" , ListUpcommingEventsView.as_view(), name="upcomming-event-lists"),   # aaunna lage ko event haru listout garna ko lagi    
@@ -35,7 +35,6 @@ urlpatterns = [
     path('my-user-bookings/' , MyBookings.as_view(), name='my-bookings'),  #list of bookings
     path('my-organization-bookings/' , OrganizationBookings.as_view() , name='my-organization-bookings'),
     path("user/all/" , GetUserDetails.as_view() , name='user-details'),
-
     path('bulk-request/add/', AddBulkRequestView.as_view(), name='add-bulk-request'),
     path('bulk-requests/', ViewBulkRequestsView.as_view(), name='view-bulk-requests'),
     ]

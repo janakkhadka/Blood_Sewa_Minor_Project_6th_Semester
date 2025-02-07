@@ -431,8 +431,9 @@ class ListPastEventsView(APIView):
         for event in serialized_data:
             event_obj = past_events.get(name=event['name'])
             
-            # Check if the user has joined the event
-            event["status"] = "Joined" if UserEvent.objects.filter(user=user, event=event_obj).exists() else "Not Joined"
+            if user.user_type == 'user':  # Only check status for normal users
+                event["status"] = "Joined" if UserEvent.objects.filter(user=user, event=event_obj).exists() else "Not Joined"
+
 
             if not event.get("collabrator_name"):  
                 event.pop("collabrator_name", None)
@@ -459,8 +460,8 @@ class ListTodayEventsView(APIView):
         for event in serialized_data:
             event_obj = today_events.get(name=event['name'])
 
-            # Check if the user has joined the event
-            event["status"] = "Joined" if UserEvent.objects.filter(user=user, event=event_obj).exists() else "Not Joined"
+            if user.user_type == 'user':  # Only check status for normal users
+                event["status"] = "Joined" if UserEvent.objects.filter(user=user, event=event_obj).exists() else "Not Joined"
 
             if not event.get("collabrator_name"):  
                 event.pop("collabrator_name", None)  
@@ -489,8 +490,8 @@ class ListUpcommingEventsView(APIView):
         for event in serialized_data:
             event_obj = upcoming_events.get(name=event['name'])
             
-            # Check if the user has joined the event
-            event["status"] = "Joined" if UserEvent.objects.filter(user=user, event=event_obj).exists() else "Not Joined"
+            if user.user_type == 'user':  
+                event["status"] = "Joined" if UserEvent.objects.filter(user=user, event=event_obj).exists() else "Not Joined"
 
             # Remove collaborator name if it's empty
             if not event.get("collabrator_name"):
