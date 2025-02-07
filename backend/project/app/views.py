@@ -469,8 +469,8 @@ class ListTodayEventsView(APIView):
             if event.get("qr_code"):
                 event.pop("qr_code", None)
 
-            if event.get("slug"):
-                event.pop("slug", None)
+            # if event.get("slug"):
+            #     event.pop("slug", None)
 
         return Response(serialized_data, status=status.HTTP_200_OK)
 
@@ -500,8 +500,8 @@ class ListUpcommingEventsView(APIView):
             if event.get("qr_code"):
                 event.pop("qr_code", None)
 
-            if event.get("slug"):
-                event.pop("slug", None)
+            # if event.get("slug"):
+            #     event.pop("slug", None)
 
         return Response(serialized_data, status=status.HTTP_200_OK)
 
