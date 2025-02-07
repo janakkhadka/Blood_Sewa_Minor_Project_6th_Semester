@@ -9,6 +9,16 @@ export const bloodGroupList = [
     { value: 'AB-', label: 'AB-' }
   ];
 
+  export const bloodGroupList1 = [
+    { value: 'A%2B', label: 'A+' },
+    { value: 'B%2B', label: 'B+' },
+    { value: 'A-', label: 'A-' },
+    { value: 'B-', label: 'B-' },
+    { value: 'O%2B', label: 'O+' },
+    { value: 'O-', label: 'O-' },
+    { value: 'AB%2B', label: 'AB+' },
+    { value: 'AB-', label: 'AB-' }
+  ];
 
 export const provinceList = [
     { value: 'koshi', label: 'Koshi Province' },

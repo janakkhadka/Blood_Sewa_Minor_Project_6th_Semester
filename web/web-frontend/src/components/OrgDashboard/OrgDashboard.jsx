@@ -35,8 +35,7 @@ function OrgDashboard() {
     }
     
 
-    
-    const [data, setData] = useState();
+
     const [barList, setBarList] = useState([]); 
 
   const [aPositive, setAPositive] = useState("");
@@ -51,12 +50,18 @@ function OrgDashboard() {
   const navigate = useNavigate();
   console.log(orgAuthToken)
 
+  //alert message ko lagi
+  const [isOnAlertLevel, setIsOnAlertLevel] = useState(false);
+  const [lowStockBlood, setLowStockBlood] = useState([]);
+
+
+  //update inventory ko lagi modal
+  const [updateBloodInventory, setUpdateBloodInventory] = useState(false);
+
     
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  //update inventory ko lagi modal
-  const [updateBloodInventory, setUpdateBloodInventory] = useState(false);
   
     //blood request ko lagi modal
   const [requestBlood, setRequestBlood] = useState(false);
@@ -66,8 +71,7 @@ function OrgDashboard() {
   };
   const [pintValue, setPintValue] = useState("");
 
-  const [bloodReqeuestData, setBloodRequestData] = useState();
-  const [bloodRequestList, setBloodRequestList] = useState([]);
+  const [filteredBloodRequestList, setFilteredBloodRequestList] = useState([]);
 
   const [donateBloodModal, setDonateBloodModal] = useState(false);
   const [pintValueDonate, setPintValueDonate] = useState("");
@@ -111,16 +115,35 @@ function OrgDashboard() {
         
 
         const result = await response.json();
+        console.log(result);
         const newBarList = Object.entries(result.inventory)
           .filter(([key]) =>
             ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].includes(key)
           )
           .map(([type, pint]) => ({ type, pint }));
         setBarList(newBarList);
-        // console.log('Fetched Result:', JSON.stringify(result, null, 2));
-        setData(result);
-        // console.log('result:', JSON.stringify(result, null, 2));
-        // console.log('data:', JSON.stringify(data, null, 2));
+        console.log("barList:"+newBarList);
+        setAPositive(result.inventory["A+"]);
+        setANegative(result.inventory["A-"]);
+        setBPositive(result.inventory["B+"]);
+        setBNegative(result.inventory["B-"]);
+        setOPositive(result.inventory["O+"]);
+        setONegative(result.inventory["O-"]);
+        setABPositive(result.inventory["AB+"]);
+        setABNegative(result.inventory["AB-"]);
+
+        const lowStockBloodTypes = Object.entries(result.inventory)
+            .filter(([bloodType, value]) => value <= 10)
+            .map(([bloodType]) => bloodType);
+
+            if (lowStockBloodTypes.length > 0) {
+                setLowStockBlood(lowStockBloodTypes);
+                setIsOnAlertLevel(true);
+                console.log(lowStockBlood)
+                console.log("Low stock blood types:", lowStockBloodTypes.join(", "));
+              } else {
+                console.log("All blood types have sufficient stock");
+              }
 
         
       } catch (err) {
@@ -130,33 +153,7 @@ function OrgDashboard() {
       }
     };
     fetchData();
-  }, [orgAuthToken]);
-
-
-
-  //invetory ko data lyayesi teslai filter gareko ani varibale maa haleko
-  useEffect(() => {
-    if (data) {
-    //   console.log('Updated data:', JSON.stringify(data, null, 2)); // Log data after state update
-      const newBarList = Object.entries(data.inventory)
-          .filter(([key]) =>
-            ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].includes(key)
-          )
-          .map(([type, pint]) => ({ type, pint }));
-        setBarList(newBarList);
-
-        setAPositive(data.inventory["A+"]);
-        setANegative(data.inventory["A-"]);
-        setBPositive(data.inventory["B+"]);
-        setBNegative(data.inventory["B-"]);
-        setOPositive(data.inventory["O+"]);
-        setONegative(data.inventory["O-"]);
-        setABPositive(data.inventory["AB+"]);
-        setABNegative(data.inventory["AB-"]);
-
-        // console.log('barList:', barList);
-    }
-  }, [data]);
+  }, [orgAuthToken, updateBloodInventory]);
 
 
   //inventory update ko lagi
@@ -269,8 +266,10 @@ function OrgDashboard() {
 
         const result = await response.json();
         console.log(result)
-        const transformedRequests = Array.isArray(result)
-      ? result.map((data, index) => ({
+        const transformedFilteredRequests = Array.isArray(result)
+      ? result
+      .filter((data) => data.organization_name !== orgName)
+      .map((data, index) => ({
           id: (index + 1).toString(),
           requestedBy: data.organization_name,
           bloodGroup: Object.keys(data.blood_request)[0],
@@ -281,11 +280,10 @@ function OrgDashboard() {
         // console.log('Transformed Events:', JSON.stringify(transformedRequests, null, 2));
   
     
-        setBloodRequestList(transformedRequests);
-        // console.log('Fetched Result:', bloodRequestList);
-        setBloodRequestData(result);
-        // console.log('result:', JSON.stringify(result, null, 2));
-        // console.log('data:', JSON.stringify(dataUpcoming, null, 2));
+        setFilteredBloodRequestList(transformedFilteredRequests);
+        setPintValueDonate(transformedFilteredRequests[selectedRequestId].pintValue);
+        setOrgNameToDonate(transformedFilteredRequests[selectedRequestId].requestedBy);
+        setBloodGroupToDonate(transformedFilteredRequests[selectedRequestId].bloodGroup);
 
         
       } catch (err) {
@@ -296,34 +294,6 @@ function OrgDashboard() {
     };
     fetchData();
   },[orgAuthToken]);
-
-    useEffect(() => {
-        if (bloodReqeuestData) {
-        // Assuming `dataUpcoming` is the response
-        const transformedRequests = Array.isArray(bloodReqeuestData)
-        ? bloodReqeuestData.map((data, index) => ({
-            id: (index + 1).toString(),
-            requestedBy: data.organization_name,
-            bloodGroup: Object.keys(data.blood_request)[0],
-            pintValue: data.blood_request[Object.keys(data.blood_request)[0]],
-            date: data.date
-          }))
-        : [];
-        // console.log('Transformed Events:', JSON.stringify(transformedRequests, null, 2));
-
-    
-        setBloodRequestList(transformedRequests);
-        
-        setPintValueDonate(transformedRequests[selectedRequestId].pintValue);
-        setOrgNameToDonate(transformedRequests[selectedRequestId].requestedBy);
-        setBloodGroupToDonate(transformedRequests[selectedRequestId].bloodGroup);
-        
-        console.log('Fetched Result:', bloodRequestList);
-        }
-    }, [bloodReqeuestData, selectedRequestId]);
-
-
-
 
 
 //  if (loading) return <p>Loading...</p>;
@@ -353,9 +323,13 @@ function OrgDashboard() {
                 <section className="blood-inventory-section">
                     <div className="h1-wrapper">
                         <h1>Blood Inventory</h1>
-                        <div className="alert-wrapper">
-                            <h3 className='alert'>Alert!</h3>
-                        </div>
+                        {isOnAlertLevel && (
+                            <div className="alert-wrapper">
+                                <h3 style={{fontSize:"18px"}} className='alert'>Alert!</h3>
+                                <span>Blood Low on Stock: {lowStockBlood.join(',')}</span>
+                            </div>
+                        )}
+                        
                     </div>
                     <div className="bar-chart-wrapper">
                         <div className="chart-info-wrapper">
@@ -412,7 +386,7 @@ function OrgDashboard() {
                         </tr>
                         </thead>
                         <tbody>
-                        {bloodRequestList.map((data, index) => (
+                        {filteredBloodRequestList.map((data, index) => (
                             // console.log(data.date),
 
                             <tr key={index}>
@@ -432,6 +406,9 @@ function OrgDashboard() {
                 </section>
             </div> 
         </div>
+
+        {/* modal start for all */}
+        
         {updateBloodInventory && (
             <div className="update-inventory-wrapper">
                 <div className="update-inventory">

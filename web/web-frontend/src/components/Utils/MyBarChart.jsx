@@ -11,14 +11,14 @@ import {
 } from "recharts";
 
 const defaultBarList = [  //bpkish  ko data ho
-      { type: 'A+', pint: 45 },
-      { type: 'A-', pint: 20 },
-      { type: 'B+', pint: 60 },
-      { type: 'B-', pint: 15 },
-      { type: 'AB+', pint: 30 },
-      { type: 'AB-', pint: 10 },
-      { type: 'O+', pint: 50 },
-      { type: 'O-', pint: 25 }
+      { type: 'A+', pint: 0 },
+      { type: 'A-', pint: 0 },
+      { type: 'B+', pint: 0 },
+      { type: 'B-', pint: 0 },
+      { type: 'AB+', pint: 0 },
+      { type: 'AB-', pint: 0 },
+      { type: 'O+', pint: 0 },
+      { type: 'O-', pint: 0 }
 ];
 
 const MyBarChart = ({barList, width, height}) => {

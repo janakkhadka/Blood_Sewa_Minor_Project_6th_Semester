@@ -104,8 +104,12 @@
 }
 
 .blood-inventory-section .h1-wrapper .alert-wrapper {
-  color: var(--secondary-text-color);
-  background-color: var(--secondary-background);
+  color: var(--button-background-color);
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  align-items: center;
+  /* background-color: var(--secondary-background); */
   border-radius: 2px;
   padding: 0 4px;
 }
@@ -439,7 +443,6 @@ border: none;
 border-radius: 5px;
 font-size: 18px;
 cursor: pointer;
-z-index: 3;
 box-shadow: var(--button-shadow);
 border: 2px solid var(--border-color);
 background-color: var(--button-background-color);
