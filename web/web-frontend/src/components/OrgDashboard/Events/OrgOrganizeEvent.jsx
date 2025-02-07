@@ -37,6 +37,7 @@ function OrgOrganizeEvent() {
     const [endTime, setEndTime] = useState("")
     const [venue, setVenue] = useState("")
     const [description, setDescription] = useState("")
+    console.log(startTime)
     // const [volunteer, setVolunteer] = useState("no")
     // const handleChangeVolunteer = (event) => {
     //     setVolunteer(event.target.value);
