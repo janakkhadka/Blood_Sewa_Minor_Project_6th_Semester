@@ -26,6 +26,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.EventAvailable
 import androidx.compose.material.icons.filled.FindInPage
 import androidx.compose.material.icons.filled.LocalHospital
@@ -136,7 +137,7 @@ fun HomeScreen(navController : NavHostController,viewModel: SharedViewModel = vi
         CustomTopBar(
             Icons.Default.Person,
             greetingText,
-            "$username",
+            "",
             "Blood Sewa",
             navController
         )
@@ -213,9 +214,9 @@ fun HomeScreen(navController : NavHostController,viewModel: SharedViewModel = vi
                             horizontalArrangement = Arrangement.SpaceEvenly,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            IconWithLabel(Icons.Default.EventAvailable, "Events")
+                            IconWithLabel(Icons.Default.Event, "My Events")
                             {
-                                navController.navigate(Screens.eventViewExtended.route)
+
                             }
                             IconWithLabel(Icons.Default.PersonAddAlt1, "Search Donor")
                             {
@@ -238,9 +239,9 @@ fun HomeScreen(navController : NavHostController,viewModel: SharedViewModel = vi
                             {
                                 navController.navigate(Screens.RequestSection.route)
                             }
-                            IconWithLabel(Icons.Default.FindInPage, "Find Blood")
+                            IconWithLabel(Icons.Default.EventAvailable, "All Events")
                             {
-                                navController.navigate(Screens.Events.route)
+                                navController.navigate(Screens.eventViewExtended.route)
                             }
                             IconWithLabel(Icons.Default.Schedule, "Your Schedules")
                             {
