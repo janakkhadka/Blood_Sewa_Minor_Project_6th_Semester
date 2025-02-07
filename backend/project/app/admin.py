@@ -44,7 +44,7 @@ class BloodRequestAdmin(admin.ModelAdmin):
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     list_display = ("name", "organizer", "date", "location")
-    fields = ('name', 'slug', 'description', 'location', 'date', 'collabrator', 'organizer', 'qr_code', 'attendee_count' , 'start_time' , 'end_time')
+    fields = ('name', 'slug', 'description', 'location', 'date', 'collabrator', 'organizer', 'qr_code', 'donor_attendee_count' , 'start_time' , 'end_time' , 'expected_donor_count')
 
 @admin.register(UserEvent)
 class UserEventAdmin(admin.ModelAdmin):

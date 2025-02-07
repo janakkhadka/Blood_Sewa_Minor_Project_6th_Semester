@@ -133,11 +133,11 @@ class Event(models.Model):
     collabrator = models.ForeignKey(User , on_delete=models.CASCADE , related_name="collabrator" , limit_choices_to={'user_type':'organization'} , null=True , default=None,blank=True)
     organizer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="organized_events")
     qr_code = models.ImageField(upload_to="qrcodes/", blank=True, null=True)
-    attendee_count = models.PositiveIntegerField(default=0)
+    donor_attendee_count = models.PositiveIntegerField(default=0)
     start_time = models.TimeField(default=datetime.time(9, 0))
     end_time = models.TimeField(default=datetime.time(9, 0))
     status = models.BooleanField(default=False)
-
+    expected_donor_count = models.IntegerField(default=0)
     def save(self, *args, **kwargs):
         # Automatically generate a unique slug if not provided
         if not self.slug:
@@ -158,7 +158,7 @@ class Event(models.Model):
         # Generate QR code if not already generated
         if not self.qr_code:
             qr = qrcode.QRCode(version=1, box_size=10, border=5)
-            qr.add_data(f"event_slug:{self.slug}")  # QR code data contains the unique slug
+            qr.add_data(f"{self.slug}")  # QR code data contains the unique slug
             qr.make(fit=True)
             img = qr.make_image(fill="black", back_color="white")
             buffer = BytesIO()

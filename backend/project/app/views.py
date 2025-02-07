@@ -346,6 +346,10 @@ class JoinEventView(APIView):
             if not event.status:
                 event.status = True
                 event.save()
+            
+            if event.status == True:
+                event.expected_donor_count += 1
+                event.save()
 
             return Response({"message": "Successfully joined the event." , "status":event.status}, status=status.HTTP_200_OK)
 
@@ -380,7 +384,7 @@ class CheckInView(APIView):
             # Mark the user as checked in
             user_event.checked_in = True
             user_event.save()
-            event.attendee_count = event.attendee_count + 1
+            event.donor_attendee_count = event.donor_attendee_count + 1
             event.save()
 
             return Response({"message": "Check-in successful."}, status=status.HTTP_200_OK)
@@ -518,7 +522,7 @@ class UserJoinedEventHistoryView(APIView):
 
                     "event_name": ue.event.name,
                     "joined_on": ue.event.date,
-                    "activity": "donated" if ue else ""
+                    "Donated" : ue.checked_in
                   
             }
             for ue in user_events
@@ -533,6 +537,7 @@ class MyeventInfo(APIView):
     def get(self, request):
         my_events = Event.objects.filter(organizer=request.user)
         serializers = MyEventSerializer(my_events, many=True)
+        
         return Response(serializers.data , status=status.HTTP_200_OK)
 
 
