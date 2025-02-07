@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,6 +15,7 @@ import com.example.donation.DataClasses.BloodRequest
 import com.example.donation.DataClasses.CreateEvent
 import com.example.donation.DataClasses.EventDonationHistory
 import com.example.donation.DataClasses.EventList
+import com.example.donation.DataClasses.JoinResponse
 import com.example.donation.DataClasses.MyBookings
 import com.example.donation.DataClasses.OrganizationInventory
 import com.example.donation.DataClasses.ScheduleTime
@@ -36,6 +39,11 @@ sealed class ResponseState {
 class SharedViewModel : ViewModel(){
     @SuppressLint("CompositionLocalNaming")
     val context = LocalContext
+
+
+    //event join garna ko lagi
+    private val _joinEventStatus = MutableLiveData<Result<JoinResponse?>>()
+    val joinEventStatus: LiveData<Result<JoinResponse?>> = _joinEventStatus
 
 
     //scheduling time ko lagi
@@ -343,6 +351,22 @@ fun fetchOrgData(){
                 Log.e("checkValue","${e.message}")
             }
 
+        }
+    }
+
+
+    fun joinEvent(slug: String) {
+        viewModelScope.launch {
+            try {
+                val response = UserRegistration.authService.joinEvent(slug,"Bearer $bearerToken")
+                if (response.isSuccessful) {
+                    _joinEventStatus.value = Result.success(response.body())
+                } else {
+                    _joinEventStatus.value = Result.failure(Throwable("Error: ${response.message()}"))
+                }
+            } catch (e: Exception) {
+                _joinEventStatus.value = Result.failure(e)
+            }
         }
     }
 

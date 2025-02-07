@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.places)
     implementation(libs.androidx.espresso.core)
     implementation(libs.androidx.media3.common.ktx)
+    implementation(libs.androidx.runtime.livedata)
 
 
 
@@ -105,11 +106,14 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.lifecycle.viewmodel)
 
-
-
-
-
-
-
-
+    implementation(libs.androidx.runtime.livedata.v150)
+    implementation(libs.androidx.ui.v150)
 }
+
+
+
+
+
+
+
+
