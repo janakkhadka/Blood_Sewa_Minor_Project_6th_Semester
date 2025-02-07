@@ -41,6 +41,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.donation.DataClasses.EventList
+import com.example.donation.DataClasses.TodaysEvent
 import com.example.donation.DataClasses.UpcomingEvents
 import com.example.donation.Navigation.Screens
 import com.example.donation.R
@@ -59,13 +60,18 @@ fun EventViewExtended(navController: NavHostController,viewModel: SharedViewMode
     val instance = getBarcodeScannerInstance(gmsScannerOptions)
     var value by remember { mutableStateOf("") }
 
-    //event join ko lagi
-    val joinEventStatus by viewModel.joinEventStatus.observeAsState()
-
+    //upcomming events ko lagi
     LaunchedEffect(Unit) {
         viewModel.fetchUpcomingEventsList()
     }
     val eventlists by viewModel.eventUpList.collectAsState()
+
+    //today's events ko lagi
+    LaunchedEffect(Unit) {
+        viewModel.fetchTodaysEvent()
+    }
+
+    val todaysEvent  by viewModel.todayEvent.collectAsState()
 
     // Tab state
     var selectedTabIndex by remember { mutableStateOf(0) }
@@ -114,7 +120,18 @@ fun EventViewExtended(navController: NavHostController,viewModel: SharedViewMode
 
             // Tab content
             when (selectedTabIndex) {
-                0 -> TodayEventsContent()
+                0 -> LazyColumn(
+                    modifier = Modifier.fillMaxSize()
+                        .padding(bottom = 20.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    items(todaysEvent){requests ->
+                        TodayEventsContent(requests,viewModel)
+
+                    }
+
+                }
                 1 -> LazyColumn(
                     modifier = Modifier.fillMaxSize()
                         .padding(bottom = 20.dp),
@@ -168,7 +185,7 @@ fun EventViewExtended(navController: NavHostController,viewModel: SharedViewMode
 
             FloatingActionButton(
                 onClick = {
-                    initiateScanner(instance) { scannedValue ->
+                    initiateScanner(instance, viewModel = viewModel) { scannedValue ->
                         value = scannedValue
                     }
                 },
@@ -191,16 +208,94 @@ fun EventViewExtended(navController: NavHostController,viewModel: SharedViewMode
 }
 
 @Composable
-fun TodayEventsContent() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(text = "Today's Events", style = MaterialTheme.typography.h6)
+fun TodayEventsContent(data: TodaysEvent,viewModel: SharedViewModel) {
+    var showDialog by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    val contentToShare = " Event Name:${data.name}\n Organized By :${data.organizer}\n Collaboration_with${data.collabrator_name}\n Date :${data.date}\n Description :${data.description}"
 
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .shadow(elevation = 100.dp)
+            .padding(top = 20.dp, start = 10.dp, end = 10.dp, bottom = 20.dp)
+            .clip(shape = RoundedCornerShape(20.dp))
+            .background(White)
+            .clickable {
+                showDialog = true
+            },
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 15.dp, bottom = 15.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(R.drawable.donate),
+                contentDescription = "",
+                modifier = Modifier.size(60.dp)
+            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Text("Name: ${data.name}")
+                Text("Date: ${data.date}")
+                Text("Location: ${data.location}")
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(5.dp)
+                ){
+                    Text(text = "Status :")
+                    Text(text = data.status, color = if(data.status=="Joined") DarkGreen else Color.Red )
+                }
+            }
+
+        }
+    }
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = {
+                Text(text = "Event Details")
+            },
+            text = {
+                Column {
+                    Text("Name: ${data.name}")
+                    Text("Date: ${data.date}")
+                    Text("Location: ${data.location}")
+                    Text("Collaboration With: ${data.collabrator_name}")
+                    Text("Description : ${data.description}")
+                }
+            },
+            confirmButton = {
+                Button(onClick = {
+                    viewModel.joinEvent(data.slug)
+                    showDialog = false
+
+                }) {
+                    Text("Join")
+                }
+            },
+            dismissButton = {
+                Button(onClick = {
+                    val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_TEXT,contentToShare)
+
+                    }
+                    val chooserIntent = Intent.createChooser(shareIntent,"share via")
+                    context.startActivity(chooserIntent)
+
+
+                },
+                    colors = ButtonDefaults.buttonColors(DarkGreen),
+                ) {
+                    Text("Share", color = White)
+                }
+            }
+        )
     }
 }
 
@@ -313,11 +408,17 @@ private fun getBarcodeScannerInstance(gmsBarcodeScannerOptions: GmsBarcodeScanne
 
 private fun initiateScanner(
     gmsBarcodeScanner: GmsBarcodeScanner,
+    viewModel: SharedViewModel,
     onScanned: (String) -> Unit
+
 ) {
     gmsBarcodeScanner.startScan()
         .addOnSuccessListener { barcode ->
             barcode.rawValue?.let { onScanned(it) }
+            barcode.displayValue?.let {
+                viewModel.checkInEvent(it)
+                Log.d(TAG, "initiateScanner: Display slug ${it}")
+            }
             when (barcode.valueType) {
                 Barcode.TYPE_URL -> {
                     Log.d(TAG, "initiateScanner: ${barcode.valueType}")

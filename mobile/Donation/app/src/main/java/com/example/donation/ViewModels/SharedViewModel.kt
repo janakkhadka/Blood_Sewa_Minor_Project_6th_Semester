@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import androidx.lifecycle.viewModelScope
 import com.example.donation.DataClasses.BloodGroupSearch
 import com.example.donation.DataClasses.BloodRequest
+import com.example.donation.DataClasses.CheckedInEvent
 import com.example.donation.DataClasses.CreateEvent
 import com.example.donation.DataClasses.EventDonationHistory
 import com.example.donation.DataClasses.EventList
@@ -44,6 +45,10 @@ class SharedViewModel : ViewModel(){
     //event join garna ko lagi
     private val _joinEventStatus = MutableLiveData<Result<JoinResponse?>>()
     val joinEventStatus: LiveData<Result<JoinResponse?>> = _joinEventStatus
+
+    //checked in garna ko lagi event
+    private val _checkInStatus = MutableLiveData<Result<CheckedInEvent?>>()
+    val checkInStatus : LiveData<Result<CheckedInEvent?>> = _checkInStatus
 
 
     //scheduling time ko lagi
@@ -366,6 +371,22 @@ fun fetchOrgData(){
                 }
             } catch (e: Exception) {
                 _joinEventStatus.value = Result.failure(e)
+            }
+        }
+    }
+
+
+    fun checkInEvent(slug: String) {
+        viewModelScope.launch {
+            try {
+                val response = UserRegistration.authService.confirmEvent(slug,"Bearer $bearerToken")
+                if (response.isSuccessful) {
+                    _checkInStatus.value = Result.success(response.body())
+                } else {
+                    _checkInStatus.value = Result.failure(Throwable("Error: ${response.message()}"))
+                }
+            } catch (e: Exception) {
+                _checkInStatus.value = Result.failure(e)
             }
         }
     }
