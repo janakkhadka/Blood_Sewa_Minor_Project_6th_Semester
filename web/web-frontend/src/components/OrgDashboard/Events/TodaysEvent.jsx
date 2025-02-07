@@ -13,7 +13,7 @@ import BackThreeD from '../../LoginRegistration/3d'
 
 import {donorList} from '../../UserDashboard/DummyData'
 
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 
 import { useNavigate } from 'react-router-dom';
 
@@ -41,7 +41,7 @@ function TodaysEvent() {
   const [error, setError] = useState(null);
 
   const [todayEventData, setTodayEventData] = useState({});
-  const [todayEventList, setTodayEventList] = useState([]);
+  const [checkedInDonorList, setCheckedInDonorList] = useState([]);
 
   //fetching all my events data from server and storing to specific states(today events)
   useEffect(() => {
@@ -77,7 +77,6 @@ function TodaysEvent() {
 
         setTodayEventData(event);
         console.log('Transformed Events:', JSON.stringify(todayEventData, null, 2));
-        console.log(todayEventData.qr_code)
 
 
       }catch (err) {
@@ -89,91 +88,44 @@ function TodaysEvent() {
     fetchData();
   },[orgAuthToken]);
 
-  // //inventory ko data taneko server bata
-  // useEffect(() => {
-  //   if (!orgAuthToken) {
-  //       setError('No auth token found. Please log in');
-  //       setLoading(false);
-  //       console.log('No auth token found. Please log in');
-  //       return;
-  //     }
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch(api+'my-all-events/', {
-  //         method: 'GET',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           Authorization: `Bearer ${orgAuthToken}`,
-  //         },
-  //       });
 
-  //       if (!response.ok) {
-  //           const errorResponse = await response.json();
-  //           console.log(errorResponse);
-  //         throw new Error(`Error: ${response.status}`);
-  //       }
+  //fetching scan gareko user haru(checkedin user list)
+  useEffect(() => {
+    if(!orgAuthToken){
+      setError('No auth token found. Please log in');
+      setLoading(false);
+      return;
+    }
 
-        
+    const fetchData = async () => {
+      try {
+        const response = await fetch(api+'events/'+todayEventData.slug+'/checkin/list/',{
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${orgAuthToken}`,
+          },
+        });
 
-  //       const result = await response.json();
-  //       console.log(result)
-  //       const event = result[0] || {}; // Use the first event or an empty object
+        if (!response.ok) {
+          const errorResponse = await response.json();
+          console.log(errorResponse);
+        throw new Error(`Error: ${response.status}`);
+        }
 
-  //     const transformedEvents = {
-  //       id: event.id ,
-  //       title: event.name,
-  //       date: event.date,
-  //       location: event.location,
-  //       description: event.description,
-  //       organizer: event.organizer,
-  //       startTime: event.start_time || "00:00",
-  //       endTime: event.end_time || "00:00",  
-  //       slug: event.slug,
-  //       qrCode: localhost + (event.qr_code),
-  //     };
-        
-  //       console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
-  //       // setTodayEventList(transformedEvents);
-  //       // console.log('Fetched Result:', todayEventList);
-  //       setTodayEventData(result);
-  //       setSingleData(transformedEvents);
-  //       console.log('Data Upcoming:', todayEventData);
+        const result = await response.json();
+        console.log(result)
+        setCheckedInDonorList(Array.isArray(result) ? result : []);
 
-        
-  //     } catch (err) {
-  //       setError(err.message);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchData();
-  // },[orgAuthToken]);
+      }catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  },[todayEventData.slug, orgAuthToken]);
 
-
-
-  //aako data lai rakheko
-  // useEffect(() => {
-  //   if (todayEventData) {
-  //     // Assuming `dataUpcoming` is the response
-  //     const transformedEvents = {
-  //       id: todayEventData.id,
-  //       title: todayEventData.name,
-  //       date: todayEventData.date,
-  //       location: todayEventData.location,
-  //       description: todayEventData.description,
-  //       organizer: todayEventData.organizer,
-  //       startTime: todayEventData.start_time || "00:00",
-  //       endTime: todayEventData.end_time || "00:00",
-  //       slug: todayEventData.slug,
-  //       qrCode: localhost + (todayEventData.qr_code),
-  //     };
-  //     console.log('Transformed Events:', JSON.stringify(transformedEvents, null, 2));
-  //     // setTodayEventList(transformedEvents);
-  //     // console.log('Fetched Result:', todayEventList);
-  //     setSingleData(transformedEvents);
-  //     console.log(singleData)
-  //   }
-  // }, [todayEventData]);
 
   return (
     <div className='todays-event-wrapper'>
@@ -188,30 +140,41 @@ function TodaysEvent() {
       <div className="todays-event">
         <div className="left-section">
           <div className="left-top-section">
-            <h1>Ongoing Event</h1>
-            <section className='event-details'>
-              <h3>Event Details</h3>
-              <div className="icon-info-wrapper">
-                <MdEvent/>
-                <span>Event: <span style={{fontWeight:"bold"}}>{todayEventData.name}</span></span>
-              </div>
-              <div className="icon-info-wrapper">
-                <MdDateRange/>
-                <span>Date: <span style={{fontWeight:"bold"}}>{format(getTodayDate(), "MMMM dd, yyyy")}</span></span>
-              </div>
-              <div className="icon-info-wrapper">
-                <IoMdTime/>
-                <span>Time: <span style={{fontWeight:"bold"}}>{todayEventData.start_time +"-"+todayEventData.end_time}</span></span>
-              </div>
-              <div className="icon-info-wrapper">
-                <IoLocationOutline/>
-                <span>Location: <span style={{fontWeight:"bold"}}>{todayEventData.location}</span></span>
-              </div>
-              <div className="icon-info-wrapper">
-                <MdOutlineCountertops/>
-                <span>Expected Donor Count: <span style={{fontWeight:"bold"}}>35</span></span>
-              </div>
-            </section>
+            <div className="left-top-left-section">
+              <h1>Ongoing Event</h1>  
+              <section className='event-details'>
+                <h3>Event Details</h3>
+                <div className="icon-info-wrapper">
+                  <MdEvent/>
+                  <span>Event: <span style={{fontWeight:"bold"}}>{todayEventData.name}</span></span>
+                </div>
+                <div className="icon-info-wrapper">
+                  <MdDateRange/>
+                  <span>Date: <span style={{fontWeight:"bold"}}>{format(getTodayDate(), "MMMM dd, yyyy")}</span></span>
+                </div>
+                <div className="icon-info-wrapper">
+                  <IoMdTime/>
+                  <span>Time: <span style={{fontWeight:"bold"}}>{todayEventData.start_time +"-"+todayEventData.end_time}</span></span>
+                </div>
+                <div className="icon-info-wrapper">
+                  <IoLocationOutline/>
+                  <span>Location: <span style={{fontWeight:"bold"}}>{todayEventData.location}</span></span>
+                </div>
+                <div className="icon-info-wrapper">
+                  <MdOutlineCountertops/>
+                  <span>Expected Donor Count: <span style={{fontWeight:"bold"}}>35</span></span>
+                </div>
+              </section>
+            </div>
+            <div className="left-top-right-section">
+              <section className='scan-qr-volunteer'>
+                <span className='volunteer-qr'>Volunteer QR</span>
+                <div className="qr-wrapper-volunteer" style={{width:"100px"}}>
+                  <img className='qr-image-volunteer' src={localhost+todayEventData.qr_code} alt="qr-code"/>
+                </div>
+              </section>
+            </div>
+            
           </div>
           <div className="left-bottom-section">
             <section className='donor-details'>
@@ -233,9 +196,9 @@ function TodaysEvent() {
                   </tr>
                 </thead>
                 <tbody>
-                  {donorList.map((donor, index) => (
+                  {checkedInDonorList.map((donor, index) => (
                     <tr key={index}>
-                      <td>{donor.sn}</td> {/* Format date */}
+                      <td>{donor.sn}</td>
                       <td  className='table-data'>{donor.name}</td>
                       <td  className='table-data'>{donor.bloodGroup}</td>
                       <td><button className="notify-button" onClick={() => navigate("/")}>Add</button></td>
@@ -248,6 +211,7 @@ function TodaysEvent() {
         </div>
         <div className="right-section">
             <section className='scan-qr'>
+              <span className='donor-qr'>Donor QR</span>
               <div className="qr-wrapper" style={{width:"800px"}}>
                 <img className='qr-image' src={localhost+todayEventData.qr_code} alt="qr-code"/>
               </div>
