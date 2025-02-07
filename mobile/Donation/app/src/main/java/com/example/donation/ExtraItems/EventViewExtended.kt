@@ -41,6 +41,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.donation.DataClasses.EventList
+import com.example.donation.DataClasses.TodaysEvent
 import com.example.donation.DataClasses.UpcomingEvents
 import com.example.donation.Navigation.Screens
 import com.example.donation.R
@@ -125,7 +126,7 @@ fun EventViewExtended(navController: NavHostController,viewModel: SharedViewMode
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    items(eventlists){requests ->
+                    items(todaysEvent){requests ->
                         TodayEventsContent(requests,viewModel)
 
                     }
@@ -207,7 +208,7 @@ fun EventViewExtended(navController: NavHostController,viewModel: SharedViewMode
 }
 
 @Composable
-fun TodayEventsContent(data: UpcomingEvents,viewModel: SharedViewModel) {
+fun TodayEventsContent(data: TodaysEvent,viewModel: SharedViewModel) {
     var showDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val contentToShare = " Event Name:${data.name}\n Organized By :${data.organizer}\n Collaboration_with${data.collabrator_name}\n Date :${data.date}\n Description :${data.description}"
