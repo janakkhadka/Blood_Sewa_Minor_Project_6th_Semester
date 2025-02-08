@@ -134,12 +134,14 @@ class Event(models.Model):
     organizer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="organized_events")
     qr_code = models.ImageField(upload_to="qrcodes/", blank=True, null=True)
     donor_attendee_count = models.PositiveIntegerField(default=0)
+    volunteer_required_count = models.PositiveIntegerField(default=0)  # New field to define required volunteer count
+    volunteer_attendee_count = models.PositiveIntegerField(default=0)
     start_time = models.TimeField(default=datetime.time(9, 0))
     end_time = models.TimeField(default=datetime.time(9, 0))
     status = models.BooleanField(default=False)
     expected_donor_count = models.IntegerField(default=0)
 
-    
+
 
     def save(self, *args, **kwargs):
         # Automatically generate a unique slug if not provided
@@ -190,6 +192,16 @@ class UserEvent(models.Model):
 
     def __str__(self):
         return f"{self.user.name} - {self.event.name}"
+
+
+class Volunteer(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    event = models.ForeignKey('Event', on_delete=models.CASCADE, related_name='volunteers')
+    confirmed = models.BooleanField(default=False)  # Tracks whether the volunteer has confirmed by checking in
+
+    def __str__(self):
+        return f"{self.user.name} for {self.event.name} - Confirmed: {self.confirmed}"
+
 
 
 
@@ -252,6 +264,9 @@ class Bookings(models.Model):
 
     def __str__(self):
         return f"Booking by {self.user.name} on {self.booking_date} for {self.user.name}"
+
+
+
 
 
 

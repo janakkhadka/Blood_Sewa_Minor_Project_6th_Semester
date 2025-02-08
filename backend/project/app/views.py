@@ -18,7 +18,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from .utils import UserFilter , DistrictFilter , OrganizationFilter , is_date_in_past
-from .models import User, BloodRequestModel , Event , UserEvent , BloodInventory , Bookings
+from .models import User, Volunteer ,BloodRequestModel , Event , UserEvent , BloodInventory , Bookings 
 import os
 from django.utils.timezone import now
 from datetime import date , timedelta
@@ -582,6 +582,29 @@ class UserJoinedEventHistoryView(APIView):
         return Response(data, status=status.HTTP_200_OK)
 
 
+
+
+# class UserVolunteredEventHistoryView(APIView):
+#     permission_classes = [permissions.IsAuthenticated]
+
+#     def get(self, request):
+#         user_events = UserEvent.objects.filter(user=request.user)
+        
+#         data = [
+#             {
+
+#                     "event_name": ue.event.name,
+#                     "joined_on": ue.event.date,
+#                     "Donated" : ue.checked_in
+                  
+#             }
+#             for ue in user_events
+        
+#         ]
+#         return Response(data, status=status.HTTP_200_OK)
+
+
+
 class MyeventInfo(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -859,6 +882,63 @@ class ViewBulkRequestsView(APIView):
 
 
 
+
+
+
+class VolunteerJoinAPIView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, slug):
+        try:
+            event = Event.objects.get(slug=slug)
+            
+            # Check if the volunteer count has been reached
+            if event.volunteer_attendee_count >= event.volunteer_required_count:
+                return Response(
+                    {"error": "Volunteer spots are full."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            # Check if the user has already joined as a volunteer
+            if Volunteer.objects.filter(user=request.user, event=event).exists():
+                return Response(
+                    {"error": "You have already joined as a volunteer."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            # Register user as volunteer
+            volunteer = Volunteer.objects.create(user=request.user, event=event)
+            event.volunteer_attendee_count += 1
+            event.save()
+
+            return Response({"message": "Successfully joined as volunteer."}, status=status.HTTP_201_CREATED)
+        
+        except Event.DoesNotExist:
+            return Response({"error": "Event not found."}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+class VolunteerConfirmAPIView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, slug):
+        try:
+            event = Event.objects.get(slug=slug)
+            volunteer = Volunteer.objects.get(user=request.user, event=event)
+            
+            if volunteer.confirmed:
+                return Response({"message": "You are already confirmed."}, status=status.HTTP_200_OK)
+
+            # Mark volunteer as confirmed
+            volunteer.confirmed = True
+            volunteer.save()
+
+            return Response({"message": "Volunteer confirmed."}, status=status.HTTP_200_OK)
+
+        except Event.DoesNotExist:
+            return Response({"error": "Event not found."}, status=status.HTTP_404_NOT_FOUND)
+        except Volunteer.DoesNotExist:
+            return Response({"error": "You are not a volunteer for this event."}, status=status.HTTP_400_BAD_REQUEST)
 
 
 

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, BulkRequestmodel ,BloodRequestModel , Event , UserEvent , BloodInventory , Bookings
+from .models import User, BulkRequestmodel ,BloodRequestModel , Event , UserEvent , BloodInventory , Bookings 
 from .utils import validate_password, validate_age , validate_phone_number , is_event_date_in_past
 from django.utils import timezone
 from datetime import date , timedelta
@@ -179,12 +179,16 @@ class UserEventCreateSerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
     organizer = serializers.SerializerMethodField()
     collabrator_name = serializers.SerializerMethodField()
+    volunteer_required_count = serializers.IntegerField()  # Added field for required volunteer count
+    volunteer_attendee_count = serializers.IntegerField()  # Added field for confirmed volunteer count
+    is_volunteer = serializers.SerializerMethodField()  # To check if the user is a volunteer
 
     class Meta:
         model = Event
         fields = [
             'name', 'description', 'location', 'date', 'organizer', 
-            'qr_code', 'slug', 'collabrator_name', 'start_time', 'end_time'
+            'qr_code', 'slug', 'collabrator_name', 'start_time', 
+            'end_time', 'volunteer_required_count', 'volunteer_attendee_count', 'is_volunteer'
         ]
         read_only_fields = ['organizer', 'qr_code']
 
@@ -195,6 +199,17 @@ class EventSerializer(serializers.ModelSerializer):
         except User.DoesNotExist:
             return None
 
+    def get_collabrator_name(self, obj):
+        try:
+            return obj.collabrator.name
+        except AttributeError:
+            return None
+
+    def get_is_volunteer(self, obj):
+        # Check if the current user is a volunteer for this event
+        user = self.context.get('request').user
+        return Volunteer.objects.filter(user=user, event=obj).exists()
+
     def validate(self, data):
         start_time = data.get('start_time')
         end_time = data.get('end_time')
@@ -202,16 +217,11 @@ class EventSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("End time must be later than start time.")
         return data
     
-    def get_collabrator_name(self, obj):
-        try:
-            return obj.collabrator.name
-        except AttributeError:
-            return None
-
     def validate_date(self, value):
         if is_event_date_in_past(value):
             raise serializers.ValidationError("The event date cannot be in the past.")
         return value
+
 
 
 class MyEventSerializer(serializers.ModelSerializer):
@@ -219,7 +229,7 @@ class MyEventSerializer(serializers.ModelSerializer):
     collabrator_name = serializers.SerializerMethodField()
     class Meta:
         model = Event
-        fields = [ 'name','location', 'date', 'organizer', 'qr_code' , 'slug' , 'collabrator_name' , 'donor_attendee_count' , 'start_time' , 'end_time' , 'expected_donor_count']
+        fields = [ 'name','location', 'date', 'organizer', 'qr_code' , 'slug' , 'collabrator_name' , 'donor_attendee_count' , 'start_time' , 'end_time' , 'expected_donor_count' , 'volunteer_required_count', 'volunteer_attendee_count']
         read_only_fields = ['organizer', 'qr_code']
 
     def get_organizer(self, obj):
@@ -320,8 +330,6 @@ class OrganizationBookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bookings
         fields = ['user_name', 'booking_date', 'shift', 'user' ,   'user_phone_number','user_blood_group']  
-
-
 
 
 
