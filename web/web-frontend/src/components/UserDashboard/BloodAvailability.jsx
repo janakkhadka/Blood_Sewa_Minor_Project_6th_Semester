@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 
 import './BloodAvailability.css'
 
@@ -22,22 +22,11 @@ function BloodAvailability() {
     const userAuthToken = useUserAuthToken();
     const orgAuthToken = useOrgAuthToken();
 
+
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
     const [hospitalOptions, setHospitalOptions] = useState([]);//list of hospital accordance to province hai
-    const [selectedProvince, setSelectedProvince] = useState('')
-    const handleProvinceChange = (selectedOption) => {
-        setSelectedProvince(selectedOption);
-        setSelectedHospital(null);
-    
-        const selectedProvinceData = provinceHospitalList.find(
-          (province) => province.label === selectedOption.label
-        );
-    
-        const updatedHospitalOptions = selectedProvinceData
-          ? selectedProvinceData.options
-          : [];
-    
-        setHospitalOptions(updatedHospitalOptions); // Update the district options
-      };
 
     const [hospitalBloodDataOptions, setHospitalBloodDataOptions] = useState([]); //hospital blood data ko lagi, hospital choose garesi tesko data halna lai
 
@@ -56,6 +45,47 @@ function BloodAvailability() {
     
         setHospitalBloodDataOptions(updatedHospitalBloodDataOptions); // Update the district options
       };
+
+      //fetching scan gareko user haru(checkedin user list)
+  useEffect(() => {
+    if(!orgAuthToken){
+      setError('No auth token found. Please log in');
+      setLoading(false);
+      return;
+    }
+
+    const fetchData = async () => {
+      try {
+        const response = await fetch(api+'events/'+todayEventData.slug+'/checkin/list/',{
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${orgAuthToken}`,
+          },
+        });
+
+        if (!response.ok) {
+          const errorResponse = await response.json();
+          console.log(errorResponse);
+        throw new Error(`Error: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log(result)
+        setCheckedInDonorList(Array.isArray(result.checked_in_users ) ? result.checked_in_users  : []);
+        console.log(todayEventData.slug)
+
+      }catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  },[todayEventData.slug, orgAuthToken]);
+
+
+    
 
     
 
@@ -104,9 +134,8 @@ function BloodAvailability() {
                         options={hospitalOptions}
                         styles={customStyles()}
                         placeholder={
-                        selectedProvince ? "Select a Hospital/Blood Bank" : "BPKIHS Dharan"
+                       "Select a Hospital/Blood Bank"
                         }
-                        isDisabled={!selectedProvince}
                         isSearchable={false}
                     />
                     <IoIosArrowDropdownCircle className='icon'/>
