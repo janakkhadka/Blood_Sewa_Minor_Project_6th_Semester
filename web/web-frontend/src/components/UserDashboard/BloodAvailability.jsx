@@ -82,10 +82,10 @@ function BloodAvailability() {
         
         <div className="blood-availability">
             <form action="">
-                <h1>See Blood Availability</h1>
-                <span>Please choose the Hospital to see Blood Availability.</span>
+                <h1>Blood Inventory</h1>
+                <span>Please choose the Hospital to see Blood Availability in the respective.</span>
 
-                <div className="drop-down-box" style={{marginTop:"18px"}}>
+                {/* <div className="drop-down-box" style={{marginTop:"18px"}}>
                     <Select
                         value = {selectedProvince}
                         onChange={handleProvinceChange}
@@ -95,7 +95,7 @@ function BloodAvailability() {
                         isSearchable={false}
                     />
                     <IoIosArrowDropdownCircle className='icon'/>
-                </div>
+                </div> */}
 
                 <div className="drop-down-box">
                     <Select
