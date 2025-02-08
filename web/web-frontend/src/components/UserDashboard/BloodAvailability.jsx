@@ -15,6 +15,7 @@ import NavigationBar from '../Common/NavigationBar'
 import { UserComponentNavbarRightLeft, UserComponentNavbarRightRight } from './UserNavbarComponent';
 import { OrgDashboardNavbarRightLeft, OrgDashboardNavbarRightRight } from '../OrgDashboard/OrgNavbarComponent'
 import { useUserAuthToken, useOrgAuthToken } from '../../Logic/AuthKey';
+import {api} from '../../Logic/api'
 
 
 function BloodAvailability() {
@@ -29,13 +30,14 @@ function BloodAvailability() {
     const [hospitalOptions, setHospitalOptions] = useState([]);//list of hospital accordance to province hai
 
     const [hospitalBloodDataOptions, setHospitalBloodDataOptions] = useState([]); //hospital blood data ko lagi, hospital choose garesi tesko data halna lai
+    const [fetchedBloodData, setFetchedBloodData] = useState([]); //hospital blood data ko lagi, hospital choose garesi tesko data halna lai
 
     const [selectedHospital, setSelectedHospital] = useState("")
     const handleHospitalChange = (selectedOption) => {
         setSelectedHospital(selectedOption);
         // setSelectedHospital(null);
     
-        const selectedHospitalData = hospitalBloodDataList.find(
+        const selectedHospitalData = fetchedBloodData.find(
           (hospital) => hospital.name === selectedOption.label
         );
     
@@ -43,12 +45,12 @@ function BloodAvailability() {
           ? selectedHospitalData.bloodType
           : [];
     
-        setHospitalBloodDataOptions(updatedHospitalBloodDataOptions); // Update the district options
+        setHospitalBloodDataOptions(updatedHospitalBloodDataOptions); 
       };
 
-      //fetching scan gareko user haru(checkedin user list)
+  //fetching inventory of hospitals/blood banks
   useEffect(() => {
-    if(!orgAuthToken){
+    if(!orgAuthToken && !userAuthToken){
       setError('No auth token found. Please log in');
       setLoading(false);
       return;
@@ -56,11 +58,11 @@ function BloodAvailability() {
 
     const fetchData = async () => {
       try {
-        const response = await fetch(api+'events/'+todayEventData.slug+'/checkin/list/',{
+        const response = await fetch(api+'blood-inventory/',{
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${orgAuthToken}`,
+            Authorization: `Bearer ${orgAuthToken || userAuthToken}`,
           },
         });
 
@@ -71,9 +73,25 @@ function BloodAvailability() {
         }
 
         const result = await response.json();
-        console.log(result)
-        setCheckedInDonorList(Array.isArray(result.checked_in_users ) ? result.checked_in_users  : []);
-        console.log(todayEventData.slug)
+        //console.log(result)
+        setHospitalOptions(
+          Array.isArray(result)
+            ? result.map(hospital => ({
+                value: hospital.organization_name,
+                label: hospital.organization_name
+              }))
+            : []
+        );
+        console.log(hospitalOptions)
+
+        setFetchedBloodData(result.map(hospital => ({
+          name: hospital.organization_name,
+          bloodType: Object.entries(hospital.inventory).map(([type, pint]) => ({
+              type,
+              pint
+          }))
+        })));
+        console.log(fetchedBloodData)
 
       }catch (err) {
         setError(err.message);
@@ -82,7 +100,7 @@ function BloodAvailability() {
       }
     };
     fetchData();
-  },[todayEventData.slug, orgAuthToken]);
+  },[userAuthToken, orgAuthToken]);
 
 
     
