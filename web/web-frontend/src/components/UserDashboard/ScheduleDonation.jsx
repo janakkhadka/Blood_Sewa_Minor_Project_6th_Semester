@@ -62,7 +62,7 @@ function ScheduleDonation() {
         <div className="schedule-donation">
             <form action="">
                 <h1>Schedule Donation Form</h1>
-                <span>Please choose the Hospital to see Blood Availability.</span>
+                <span>Please choose the Hospital and your preferred time shift.</span>
 
                 <div className="drop-down-box" style={{marginTop:"18px"}}>
                     <Select
