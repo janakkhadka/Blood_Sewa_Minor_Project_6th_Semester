@@ -21,7 +21,7 @@ import { useUserAuthToken } from '../../Logic/AuthKey';
 
 function UserDashboardHome() {
   const userAuthToken = useUserAuthToken();
-  console.log(userAuthToken)
+  //console.log(userAuthToken)
 
 
   const navigate = useNavigate();
@@ -40,7 +40,7 @@ function UserDashboardHome() {
       }
 
       try {
-        const response = await fetch(api+'', {
+        const response = await fetch(api+'user/all/', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -54,6 +54,7 @@ function UserDashboardHome() {
 
         const result = await response.json(); // Parse JSON response
         setData(result); // Store data in state
+        console.log(result)
       } catch (err) {
         setError(err.message);
       } finally {
