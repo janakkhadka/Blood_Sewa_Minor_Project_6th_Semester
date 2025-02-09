@@ -28,22 +28,23 @@ function UserDashboardHome() {
   const [data, setData] = useState(null); // State to store fetched data
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null);
+
+
   useEffect(() => {
     const fetchData = async () => {
-      const orgAuthToken = localStorage.getItem('orgAuthToken') || sessionStorage.getItem('orgAuthToken');
 
-      if (!orgAuthToken) {
+      if (!userAuthToken) {
         setError('No auth token found. Please log in.');
         setLoading(false);
         return;
       }
 
       try {
-        const response = await fetch('https://api.example.com/org/data', {
+        const response = await fetch(api+'', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${orgAuthToken}`, // Attach the token
+            Authorization: `Bearer ${userAuthToken}`, // Attach the token
           },
         });
 
@@ -61,10 +62,10 @@ function UserDashboardHome() {
     };
 
     fetchData();
-  }, []);
+  }, [userAuthToken]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  // if (loading) return <p>Loading...</p>;
+  // if (error) return <p>Error: {error}</p>;
   return (
     <div className='user-dashboard-home-wrapper'>
       <NavigationBar 
