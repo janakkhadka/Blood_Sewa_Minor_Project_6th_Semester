@@ -16,7 +16,14 @@ import NavigationBar from '../Common/NavigationBar'
 import { UserDashboardNavbarRightLeft, UserDashboardNavbarRightRight } from './UserNavbarComponent';
 import {greetingMessage} from '../Utils/GreetingMessage'
 
+import {api} from '../../Logic/api'
+import { useUserAuthToken } from '../../Logic/AuthKey';
+
 function UserDashboardHome() {
+  const userAuthToken = useUserAuthToken();
+  console.log(userAuthToken)
+
+
   const navigate = useNavigate();
   const [data, setData] = useState(null); // State to store fetched data
   const [loading, setLoading] = useState(true); // Loading state
