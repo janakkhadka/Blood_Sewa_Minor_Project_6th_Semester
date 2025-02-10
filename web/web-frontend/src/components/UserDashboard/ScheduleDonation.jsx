@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 
 import './ScheduleDonation.css'
 
@@ -20,34 +20,170 @@ import UserNavigationBar from './UserNavigationBar'
 import NavigationBar from '../Common/NavigationBar'
 import { UserComponentNavbarRightLeft, UserComponentNavbarRightRight } from './UserNavbarComponent';
 
+import {api} from '../../Logic/api'
+import { useUserAuthToken } from '../../Logic/AuthKey';
+
 
 function ScheduleDonation() {
+    const userAuthToken = useUserAuthToken();
+
+    const [data, setData] = useState(null); // State to store fetched data
+    const [loading, setLoading] = useState(true); // Loading state
+    const [error, setError] = useState(null);
+
     const [hospitalOptions, setHospitalOptions] = useState([]);//list of hospital accordance to province hai
-    const [selectedProvince, setSelectedProvince] = useState('')
-    const handleProvinceChange = (selectedOption) => {
-        setSelectedProvince(selectedOption);
-        setSelectedHospital(null);
-    
-        const selectedProvinceData = provinceHospitalList.find(
-          (province) => province.label === selectedOption.label
-        );
-    
-        const updatedHospitalOptions = selectedProvinceData
-          ? selectedProvinceData.options
-          : [];
-    
-        setHospitalOptions(updatedHospitalOptions); // Update the district options
-      };
 
     const [selectedHospital, setSelectedHospital] = useState("")
     const handleHospitalChange = (selectedOption) => {
         setSelectedHospital(selectedOption);
+        // setSelectedHospital(null);
       };
     const [scheduleDate, setScheduleDate] = useState("")
     const [timeShift, setTimeShift] = useState("")
     const handleTimeShiftChange = (selectedOption) => {
       setTimeShift(selectedOption)
     }
+
+  //fetching available hospitals/blood banks
+  useEffect(() => {
+    if(!userAuthToken){
+      setError('No auth token found. Please log in');
+      setLoading(false);
+      return;
+    }
+
+    const fetchData = async () => {
+      try {
+        const response = await fetch(api+'organization-list/',{
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${userAuthToken}`,
+          },
+        });
+
+        if (!response.ok) {
+          const errorResponse = await response.json();
+          console.log(errorResponse);
+        throw new Error(`Error: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log(result)
+        setHospitalOptions(
+          Array.isArray(result)
+            ? result.organization
+            : []
+        );
+        console.log(hospitalOptions)
+
+      }catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  },[userAuthToken]);
+
+  //   const handleSubmit = async (e) => {
+  //     e.preventDefault();
+  //     if (!name) {
+  //     setError('Organization name is required.');
+  //     return;
+  //     }
+  //     if (!email) {
+  //         setError('Email is required.');
+  //         return;
+  //     }
+  //     if (!password) {
+  //         setError('Password is required.');
+  //         return;
+  //     }
+  //     if (!confirmPassword) {
+  //         setError('Confirm password is required.');
+  //         return;
+  //     }
+  //     if (!contact) {
+  //         setError('Contact number is required.');
+  //         return;
+  //     }
+  //     if (!selectedProvince) {
+  //         setError('Province is required.');
+  //         return;
+  //     }
+  //     if (!selectedDistrict) {
+  //         setError('District is required.');
+  //         return;
+  //     }
+  //     if (!city) {
+  //         setError('City/Village is required.');
+  //         return;
+  //     }
+  //     if (!localAddress) {
+  //         setError('Local address is required.');
+  //         return;
+  //     }
+  //     if (!isTermsChecked) {
+  //         setError('You must accept the terms and conditions.');
+  //         return;
+  //     }
+
+
+  //     if (password !== confirmPassword) {
+  //         setError('Passwords do not match.');
+  //         return;
+  //     }
+
+  //     const signupData = {
+  //         name: name,
+  //         email: email,
+  //         password: password,
+  //         phone_number: contact,
+  //         org_type: orgType,
+  //         province: selectedProvince.label,
+  //         district: selectedDistrict.label,
+  //         city: city,
+  //         local_address: localAddress,
+  //     };
+
+  //     try {
+  //         const response = await fetch(api+'organization/register/', {
+  //             method: 'POST',
+  //             headers: {
+  //                 'Content-Type': 'application/json',
+  //             },
+  //             body: JSON.stringify(signupData),
+  //         });
+  //         console.log(JSON.stringify(signupData))
+
+  //         if (!response.ok) {
+  //             const errorResponse = await response.json();
+  //             console.log('Signup failed:', errorResponse);
+  //             throw new Error(errorResponse.message || 'Signup failed!');
+  //         }
+  //         if(response.ok){
+  //             setActivateAccountModal(true);
+  //             setName("")
+  //             setEmail("")
+  //             setPassword("")
+  //             setConfirmPassword("")
+  //             setContact("")
+  //             setSelectedProvince("")
+  //             setSelectedDistrict("")
+  //             setCity("")
+  //             setLocalAddress("")
+  //             setTerms(false)
+  //         }
+
+  //         const data = await response.json();
+  //         console.log('Signup successful:', data);
+  //     } catch (err) {
+  //         console.error(err.message);
+  //         setError(err.message || 'An error occurred during signup.');
+  //     }
+  // };
+  
 
   return (
     <div className='schedule-donation-wrapper'>
@@ -64,7 +200,7 @@ function ScheduleDonation() {
                 <h1>Schedule Donation Form</h1>
                 <span>Please choose the Hospital and your preferred time shift.</span>
 
-                <div className="drop-down-box" style={{marginTop:"18px"}}>
+                {/* <div className="drop-down-box" style={{marginTop:"18px"}}>
                     <Select
                         value = {selectedProvince}
                         onChange={handleProvinceChange}
@@ -74,7 +210,7 @@ function ScheduleDonation() {
                         isSearchable={false}
                     />
                     <IoIosArrowDropdownCircle className='icon'/>
-                </div>
+                </div> */}
 
                 <div className="drop-down-box">
                     <Select
@@ -83,7 +219,6 @@ function ScheduleDonation() {
                         options={hospitalOptions}
                         styles={customStyles()}
                         placeholder={"Select a Hospital/Blood Bank"}
-                        isDisabled={!selectedProvince}
                         isSearchable={false}
                     />
                     <IoIosArrowDropdownCircle className='icon'/>

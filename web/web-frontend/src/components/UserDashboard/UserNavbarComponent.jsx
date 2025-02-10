@@ -110,7 +110,8 @@ export const UserDashboardNavbarRightRight = () => {
     }
     return (
       <div className="navbar-right-right">
-        <span>Welcome, {userName}</span>
+        {/* name matrai linako lagi split gareko ho */}
+        <span>Welcome, {userName.split(" ")[0]}</span>
         <button className="logout-button" onClick={handleLogout}>
           Logout
         </button>

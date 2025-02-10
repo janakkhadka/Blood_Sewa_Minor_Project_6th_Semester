@@ -42,7 +42,7 @@ function UserDashboardHome() {
     console.error('Failed to parse userDetails:', error);
   }
 
-
+  //test aile lai
   useEffect(() => {
     const fetchData = async () => {
 
@@ -57,7 +57,7 @@ function UserDashboardHome() {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${userAuthToken}`, // Attach the token
+            Authorization: `Bearer ${userAuthToken}`,
           },
         });
 
@@ -78,6 +78,7 @@ function UserDashboardHome() {
     fetchData();
   }, [userAuthToken]);
 
+
   // if (loading) return <p>Loading...</p>;
   // if (error) return <p>Error: {error}</p>;
   return (
@@ -90,7 +91,7 @@ function UserDashboardHome() {
       <div className="user-dashboard-top-section">
         <div className="left-section">
           <section className="user-greeting-message">
-                <h1>{greetingMessage()+", Janak Khadka!"}</h1>
+                <h1>{greetingMessage()+", "+userName}</h1>
                 <div className="user-typing-effect">
                   <span>Happy to see you.</span>
                 </div>
