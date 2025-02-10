@@ -29,6 +29,19 @@ function UserDashboardHome() {
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null);
 
+  //user details taneko
+  const userDetailsString = sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails');
+  let userDetails = null;
+  let userName = "";
+  
+  try {
+    userDetails = userDetailsString ? JSON.parse(userDetailsString) : null;
+    console.log(userDetails);
+    userName = userDetails.name;
+  } catch (error) {
+    console.error('Failed to parse userDetails:', error);
+  }
+
 
   useEffect(() => {
     const fetchData = async () => {
