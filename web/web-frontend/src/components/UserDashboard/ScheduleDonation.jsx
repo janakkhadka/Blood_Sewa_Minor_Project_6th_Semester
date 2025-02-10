@@ -71,10 +71,13 @@ function ScheduleDonation() {
         const result = await response.json();
         console.log(result)
         setHospitalOptions(
-          Array.isArray(result)
-            ? result.organization
-            : []
-        );
+          Array.isArray(result.organization) 
+              ? result.organization.map(org => ({
+                  value: org,
+                  label: org
+                }))
+              : []
+      );
         console.log(hospitalOptions)
 
       }catch (err) {
