@@ -36,6 +36,7 @@ function ScheduleDonation() {
     const [selectedHospital, setSelectedHospital] = useState("")
     const handleHospitalChange = (selectedOption) => {
         setSelectedHospital(selectedOption);
+        console.log(selectedHospital)
         // setSelectedHospital(null);
       };
     const [scheduleDate, setScheduleDate] = useState("")
@@ -69,7 +70,7 @@ function ScheduleDonation() {
         }
 
         const result = await response.json();
-        console.log(result)
+        //console.log(result)
         setHospitalOptions(
           Array.isArray(result.organization) 
               ? result.organization.map(org => ({
@@ -78,7 +79,6 @@ function ScheduleDonation() {
                 }))
               : []
       );
-        console.log(hospitalOptions)
 
       }catch (err) {
         setError(err.message);
@@ -89,103 +89,59 @@ function ScheduleDonation() {
     fetchData();
   },[userAuthToken]);
 
-  //   const handleSubmit = async (e) => {
-  //     e.preventDefault();
-  //     if (!name) {
-  //     setError('Organization name is required.');
-  //     return;
-  //     }
-  //     if (!email) {
-  //         setError('Email is required.');
-  //         return;
-  //     }
-  //     if (!password) {
-  //         setError('Password is required.');
-  //         return;
-  //     }
-  //     if (!confirmPassword) {
-  //         setError('Confirm password is required.');
-  //         return;
-  //     }
-  //     if (!contact) {
-  //         setError('Contact number is required.');
-  //         return;
-  //     }
-  //     if (!selectedProvince) {
-  //         setError('Province is required.');
-  //         return;
-  //     }
-  //     if (!selectedDistrict) {
-  //         setError('District is required.');
-  //         return;
-  //     }
-  //     if (!city) {
-  //         setError('City/Village is required.');
-  //         return;
-  //     }
-  //     if (!localAddress) {
-  //         setError('Local address is required.');
-  //         return;
-  //     }
-  //     if (!isTermsChecked) {
-  //         setError('You must accept the terms and conditions.');
-  //         return;
-  //     }
 
+  //submit garda schedule garko lagi
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      if (!selectedHospital.value) {
+      setError('select hospital.');
+      return;
+      }
+      if (!timeShift.value) {
+          setError('select shift');
+          return;
+      }
+      if (!scheduleDate) {
+          setError('Password is required.');
+          return;
+      }
+    
+      const schedulingData = {
+          organization: selectedHospital.value,
+          booking_date: scheduleDate.toISOString().split('T')[0], //formatting date
+          shift: timeShift.value,
+      };
 
-  //     if (password !== confirmPassword) {
-  //         setError('Passwords do not match.');
-  //         return;
-  //     }
+      try {
+          const response = await fetch(api+'make-bookings/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${userAuthToken}`,
+              },
+              body: JSON.stringify(schedulingData),
+          });
+          console.log(JSON.stringify(schedulingData))
 
-  //     const signupData = {
-  //         name: name,
-  //         email: email,
-  //         password: password,
-  //         phone_number: contact,
-  //         org_type: orgType,
-  //         province: selectedProvince.label,
-  //         district: selectedDistrict.label,
-  //         city: city,
-  //         local_address: localAddress,
-  //     };
+          if (!response.ok) {
+              const errorResponse = await response.json();
+              console.log('schedule failed:', errorResponse);
+              throw new Error(errorResponse.message || 'Schedule failed!');
+          }
+          if(response.ok){
+              //setActivateAccountModal(true);
+              setSelectedHospital("")
+              setTimeShift("")
+              setScheduleDate("")
+          }
 
-  //     try {
-  //         const response = await fetch(api+'organization/register/', {
-  //             method: 'POST',
-  //             headers: {
-  //                 'Content-Type': 'application/json',
-  //             },
-  //             body: JSON.stringify(signupData),
-  //         });
-  //         console.log(JSON.stringify(signupData))
-
-  //         if (!response.ok) {
-  //             const errorResponse = await response.json();
-  //             console.log('Signup failed:', errorResponse);
-  //             throw new Error(errorResponse.message || 'Signup failed!');
-  //         }
-  //         if(response.ok){
-  //             setActivateAccountModal(true);
-  //             setName("")
-  //             setEmail("")
-  //             setPassword("")
-  //             setConfirmPassword("")
-  //             setContact("")
-  //             setSelectedProvince("")
-  //             setSelectedDistrict("")
-  //             setCity("")
-  //             setLocalAddress("")
-  //             setTerms(false)
-  //         }
-
-  //         const data = await response.json();
-  //         console.log('Signup successful:', data);
-  //     } catch (err) {
-  //         console.error(err.message);
-  //         setError(err.message || 'An error occurred during signup.');
-  //     }
-  // };
+          const data = await response.json();
+          console.log('scheduled successfully:', data);
+      } catch (err) {
+          console.error(err.message);
+          setError(err.message || 'An error occurred during scheduling.');
+      }
+  };
   
 
   return (
@@ -250,7 +206,7 @@ function ScheduleDonation() {
                 </div>
 
                 <div className="schedule-donation-submit-button">
-                    <button type="submit" >Schedule</button>
+                    <button type="submit" onClick={handleSubmit} >Schedule</button>
                 </div>
             </form>
         </div>
