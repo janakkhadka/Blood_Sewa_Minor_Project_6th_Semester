@@ -158,14 +158,7 @@ function BloodRequestForm() {
             rightRightNav = {<UserComponentNavbarRightRight/>} 
           />
         )}
-        {/* orgle login gareko bela */}
-        {identifier == 2 && (  
-            <NavigationBar 
-            titleNav = "Blood Sewa" 
-            rightLeftNav = {<OrgComponentNavbarRightLeft/>}
-            rightRightNav = {<OrgDashboardNavbarRightRight/>} 
-          />
-        )}
+
 
 
         <div className="syringe">
