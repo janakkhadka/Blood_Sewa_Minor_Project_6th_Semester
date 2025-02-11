@@ -167,7 +167,7 @@ function BloodRequestForm() {
         
         <div className="blood-request">
             <form action="">
-                <h1>Blood Request Form</h1>
+                <h1>Blood Request</h1>
                 <span>Please fill out the details.</span>
 
                 <div className="input-box">
@@ -188,61 +188,56 @@ function BloodRequestForm() {
                 />
                 <IoIosArrowDropdownCircle className='icon'/>
               </div>
-                <div className="drop-down-box">
-                        <Select
-                            value = {selectedProvince}
-                            onChange={handleProvinceChange}
-                            options={provinceList}
-                            styles={customStyles()}
-                            placeholder="Province"
-                            isSearchable={false}
-                        />
-                        <IoIosArrowDropdownCircle className='icon'/>
-                    </div>
+              <div className="drop-down-box">
+                <Select
+                    value = {selectedProvince}
+                    onChange={handleProvinceChange}
+                    options={provinceList}
+                    styles={customStyles()}
+                    placeholder="Province"
+                    isSearchable={false}
+                />
+                <IoIosArrowDropdownCircle className='icon'/>
+            </div>
 
-                    <div className="drop-down-box">
-                        <Select
-                            value = {selectedDistrict}
-                            onChange={handleDistrictChange}
-                            options={districtOptions}
-                            styles={customStyles()}
-                            placeholder={
-                            selectedProvince ? "Select a District" : "Select a Province first"
-                            }
-                            isDisabled={!selectedProvince}
-                            isSearchable={false}
-                        />
-                        <IoIosArrowDropdownCircle className='icon'/>
-                    </div>
-                    <div className="input-box">
-                        <input type="text"
-                        value = {city}
-                        onChange={(e) => setCity(e.target.value)}
-                        placeholder='City/Village'/>
-                        <FaLocationDot className="icon"/>
-                    </div>
-                    <div className="input-box">
-                        <input type="text"
-                        value = {location}
-                        onChange={(e) => setLocation(e.target.value)}
-                        placeholder='Local Address'/>
-                        <FaLocationDot className="icon"/>
-                    </div>
-                    <div className="input-box">
-                        <input type="text"
-                        value = {contact}
-                        onChange={(e) => setContact(e.target.value)}
-                        placeholder='Contact no'/>
-                        <RiContactsBook3Fill className="icon"/>
-                    </div>
-                
-
-                
-                
-                <div className="blood-request-submit-button">
-                    <button type="submit" onClick={handleSubmit} >Request Blood</button>
-                </div>
-                
+            <div className="drop-down-box">
+                <Select
+                    value = {selectedDistrict}
+                    onChange={handleDistrictChange}
+                    options={districtOptions}
+                    styles={customStyles()}
+                    placeholder={
+                    selectedProvince ? "Select a District" : "Select a Province first"
+                    }
+                    isDisabled={!selectedProvince}
+                    isSearchable={false}
+                />
+                <IoIosArrowDropdownCircle className='icon'/>
+            </div>
+            <div className="input-box">
+                <input type="text"
+                value = {city}
+                onChange={(e) => setCity(e.target.value)}
+                placeholder='City/Village'/>
+                <FaLocationDot className="icon"/>
+            </div>
+            <div className="input-box">
+                <input type="text"
+                value = {location}
+                onChange={(e) => setLocation(e.target.value)}
+                placeholder='Local Address'/>
+                <FaLocationDot className="icon"/>
+            </div>
+            <div className="input-box">
+                <input type="text"
+                value = {contact}
+                onChange={(e) => setContact(e.target.value)}
+                placeholder='Contact no'/>
+                <RiContactsBook3Fill className="icon"/>
+            </div>   
+            <div className="blood-request-submit-button">
+                <button type="submit" onClick={handleSubmit} >Request Blood</button>
+            </div> 
             </form>
         </div>
     </div>
