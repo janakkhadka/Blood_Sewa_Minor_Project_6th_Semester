@@ -110,7 +110,7 @@ function BloodRequestForm() {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
-                  //Authorization: `Bearer ${userAuthToken}`,
+                  Authorization: `Bearer ${userAuthToken}`,
               },
               body: JSON.stringify(schedulingData),
           });
