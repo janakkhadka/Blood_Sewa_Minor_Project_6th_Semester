@@ -16,27 +16,48 @@ import NavigationBar from '../Common/NavigationBar'
 import { UserDashboardNavbarRightLeft, UserDashboardNavbarRightRight } from './UserNavbarComponent';
 import {greetingMessage} from '../Utils/GreetingMessage'
 
+import {api} from '../../Logic/api'
+import { useUserAuthToken } from '../../Logic/AuthKey';
+
 function UserDashboardHome() {
+  const userAuthToken = useUserAuthToken();
+  //console.log(userAuthToken)
+
+
   const navigate = useNavigate();
   const [data, setData] = useState(null); // State to store fetched data
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null);
+
+  //user details taneko
+  const userDetailsString = sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails');
+  let userDetails = null;
+  let userName = "";
+  
+  try {
+    userDetails = userDetailsString ? JSON.parse(userDetailsString) : null;
+    console.log(userDetails);
+    userName = userDetails.name;
+  } catch (error) {
+    console.error('Failed to parse userDetails:', error);
+  }
+
+  //test aile lai
   useEffect(() => {
     const fetchData = async () => {
-      const orgAuthToken = localStorage.getItem('orgAuthToken') || sessionStorage.getItem('orgAuthToken');
 
-      if (!orgAuthToken) {
+      if (!userAuthToken) {
         setError('No auth token found. Please log in.');
         setLoading(false);
         return;
       }
 
       try {
-        const response = await fetch('https://api.example.com/org/data', {
+        const response = await fetch(api+'user/all/', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${orgAuthToken}`, // Attach the token
+            Authorization: `Bearer ${userAuthToken}`,
           },
         });
 
@@ -46,6 +67,7 @@ function UserDashboardHome() {
 
         const result = await response.json(); // Parse JSON response
         setData(result); // Store data in state
+        console.log(result)
       } catch (err) {
         setError(err.message);
       } finally {
@@ -54,10 +76,11 @@ function UserDashboardHome() {
     };
 
     fetchData();
-  }, []);
+  }, [userAuthToken]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+
+  // if (loading) return <p>Loading...</p>;
+  // if (error) return <p>Error: {error}</p>;
   return (
     <div className='user-dashboard-home-wrapper'>
       <NavigationBar 
@@ -68,7 +91,7 @@ function UserDashboardHome() {
       <div className="user-dashboard-top-section">
         <div className="left-section">
           <section className="user-greeting-message">
-                <h1>{greetingMessage()+", Janak Khadka!"}</h1>
+                <h1>{greetingMessage()+", "+userName}</h1>
                 <div className="user-typing-effect">
                   <span>Happy to see you.</span>
                 </div>

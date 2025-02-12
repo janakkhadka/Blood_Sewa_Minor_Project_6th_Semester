@@ -97,9 +97,21 @@ export const UserDashboardNavbarRightRight = () => {
         state: { accountType: "user" }
       });   
     };
+    const userDetailsString = sessionStorage.getItem('userDetails') || localStorage.getItem('userDetails');
+    let userDetails = null;
+    let userName = "";
+    
+    try {
+      userDetails = userDetailsString ? JSON.parse(userDetailsString) : null;
+      console.log(userDetails);
+      userName = userDetails.name;
+    } catch (error) {
+      console.error('Failed to parse userDetails:', error);
+    }
     return (
       <div className="navbar-right-right">
-        <span>Welcome, Janak</span>
+        {/* name matrai linako lagi split gareko ho */}
+        <span>Welcome, {userName.split(" ")[0]}</span>
         <button className="logout-button" onClick={handleLogout}>
           Logout
         </button>

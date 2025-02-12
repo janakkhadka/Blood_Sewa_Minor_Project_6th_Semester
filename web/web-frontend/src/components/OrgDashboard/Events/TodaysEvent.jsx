@@ -91,6 +91,7 @@ function TodaysEvent() {
 
         setTodayEventData(event);
         console.log('Transformed Events:', JSON.stringify(todayEventData, null, 2));
+        console.log(todayEventData)
 
 
       }catch (err) {

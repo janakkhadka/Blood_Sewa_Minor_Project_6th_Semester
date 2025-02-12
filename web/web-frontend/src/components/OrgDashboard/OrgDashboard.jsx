@@ -46,6 +46,7 @@ function OrgDashboard() {
   const [abNegative, setABNegative] = useState("");
   const [oPositive, setOPositive] = useState("");
   const [oNegative, setONegative] = useState("");
+  
   const orgAuthToken = useOrgAuthToken();
   const navigate = useNavigate();
   console.log(orgAuthToken)

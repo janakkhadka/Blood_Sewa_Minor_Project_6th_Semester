@@ -56,7 +56,8 @@ const Login = () => {
                 if(response.ok){
                     const storage = rememberMe ? localStorage : sessionStorage;
                     storage.setItem('userAuthToken', data.access_token);
-                    console.log(data.access_token);
+                    storage.setItem('userDetails', JSON.stringify(data.user_detail));
+                    console.log(data.user_detail);
                     setError('* All fields must be filled.')
                     navigate("/"); 
                 }
