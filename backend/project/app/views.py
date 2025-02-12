@@ -23,7 +23,7 @@ import os
 from django.utils.timezone import now
 from datetime import date , timedelta
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
-from .serializers import (UserSerializer,LoginSerializer, UserProfileUpdateSerializer, BloodRequestSerializer , LimitedUserSerializer , EventSerializer, MyEventSerializer , UserEventSerializer , OrganizationSerializer , BloodInventorySerializer , BookingSerializer , OrganizationBookingSerializer , UserEventCreateSerializer)
+from .serializers import (PublicBloodRequestSerializer,UserSerializer,LoginSerializer, UserProfileUpdateSerializer, BloodRequestSerializer , LimitedUserSerializer , EventSerializer, MyEventSerializer , UserEventSerializer , OrganizationSerializer , BloodInventorySerializer , BookingSerializer , OrganizationBookingSerializer , UserEventCreateSerializer)
 
 
 class RegisterUserView(APIView):
@@ -233,6 +233,18 @@ class BloodRequestCreateView(APIView):
         if serializer.is_valid():
             # Associate the current user with the blood request
             serializer.save(user=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PublicBloodRequestCreateView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        serializer = PublicBloodRequestSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            # Associate the current user with the blood request
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

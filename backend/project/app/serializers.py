@@ -121,7 +121,7 @@ class BloodRequestSerializer(serializers.ModelSerializer):
     def get_user_name(self, obj):
         if obj.user:
             return obj.user.name
-        return 'No user associated'
+        return 'Anonymous'
 
 
     def create(self, validated_data):
@@ -130,6 +130,24 @@ class BloodRequestSerializer(serializers.ModelSerializer):
         return super().create(validated_data)
 
 
+class PublicBloodRequestSerializer(serializers.ModelSerializer):
+    user_name = serializers.CharField(read_only=True)  # Display name of the user or Anonymous
+
+    class Meta:
+        model = BloodRequestModel
+        fields = ['user_name', 'patient_name', 'contact', 'blood_group', 'district', 'province']
+        read_only_fields = ['user_name']
+
+    def get_user_name(self, obj):
+        return obj.user.name if obj.user else "Anonymous"
+
+    def create(self, validated_data):
+        # Handle authenticated users
+        if self.context['request'].user.is_authenticated:
+            validated_data['user'] = self.context['request'].user
+        else:
+            validated_data['user'] = None  
+        return super().create(validated_data)
 
 
 
