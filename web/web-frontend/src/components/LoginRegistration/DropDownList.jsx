@@ -150,73 +150,73 @@ export const ProvinceDistrictList = [
 
 
 
-  export const provinceHospitalList = [
-    { 
-      label: 'Koshi Province', 
-      options: [
-        { value: 'BPKIHS Dharan', label: 'BPKIHS Dharan' },
-        { value: 'Koshi Zonal Hospital', label: 'Koshi Zonal Hospital' },
-        { value: 'Mechi Hospital', label: 'Mechi Hospital' },
-        { value: 'Udayapur District Hospital', label: 'Udayapur District Hospital' },
-        { value: 'Taplejung District Hospital', label: 'Taplejung District Hospital' },
-      ]
-    },
-    { 
-      label: 'Madhesh Province', 
-      options: [
-        { value: 'Janakpur Zonal Hospital', label: 'Janakpur Zonal Hospital' },
-        { value: 'Gaur District Hospital', label: 'Gaur District Hospital' },
-        { value: 'Rajbiraj Hospital', label: 'Rajbiraj Hospital' },
-        { value: 'Birgunj Blood Bank', label: 'Birgunj Blood Bank' },
-      ]
-    },
-    { 
-      label: 'Bagmati Province', 
-      options: [
-        { value: 'Patan Hospital', label: 'Patan Hospital' },
-        { value: 'Tribhuvan University Teaching Hospital', label: 'Tribhuvan University Teaching Hospital' },
-        { value: 'Bhaktapur Cancer Hospital', label: 'Bhaktapur Cancer Hospital' },
-        { value: 'HAMS Hospital', label: 'HAMS Hospital' },
-        { value: 'Chitwan Medical College', label: 'Chitwan Medical College' },
-      ]
-    },
-    { 
-      label: 'Gandaki Province', 
-      options: [
-        { value: 'Manipal Teaching Hospital', label: 'Manipal Teaching Hospital' },
-        { value: 'Gandaki Medical College', label: 'Gandaki Medical College' },
-        { value: 'Pokhara Regional Hospital', label: 'Pokhara Regional Hospital' },
-        { value: 'Myagdi District Hospital', label: 'Myagdi District Hospital' },
-      ]
-    },
-    { 
-      label: 'Lumbini Province', 
-      options: [
-        { value: 'Bhairahawa Medical College', label: 'Bhairahawa Medical College' },
-        { value: 'Rapti Sub-Regional Hospital', label: 'Rapti Sub-Regional Hospital' },
-        { value: 'Palpa Mission Hospital', label: 'Palpa Mission Hospital' },
-        { value: 'Dang District Hospital', label: 'Dang District Hospital' },
-      ]
-    },
-    { 
-      label: 'Karnali Province', 
-      options: [
-        { value: 'Karnali Provincial Hospital', label: 'Karnali Provincial Hospital' },
-        { value: 'Jumla District Hospital', label: 'Jumla District Hospital' },
-        { value: 'Mugu District Hospital', label: 'Mugu District Hospital' },
-        { value: 'Dolpa District Hospital', label: 'Dolpa District Hospital' },
-      ]
-    },
-    { 
-      label: 'Sudurpashchim Province', 
-      options: [
-        { value: 'Seti Zonal Hospital', label: 'Seti Zonal Hospital' },
-        { value: 'Dhangadhi Blood Bank', label: 'Dhangadhi Blood Bank' },
-        { value: 'Dadeldhura Hospital', label: 'Dadeldhura Hospital' },
-        { value: 'Bajura District Hospital', label: 'Bajura District Hospital' },
-      ]
-    }
-  ];
+  // export const provinceHospitalList = [
+  //   { 
+  //     label: 'Koshi Province', 
+  //     options: [
+  //       { value: 'BPKIHS Dharan', label: 'BPKIHS Dharan' },
+  //       { value: 'Koshi Zonal Hospital', label: 'Koshi Zonal Hospital' },
+  //       { value: 'Mechi Hospital', label: 'Mechi Hospital' },
+  //       { value: 'Udayapur District Hospital', label: 'Udayapur District Hospital' },
+  //       { value: 'Taplejung District Hospital', label: 'Taplejung District Hospital' },
+  //     ]
+  //   },
+  //   { 
+  //     label: 'Madhesh Province', 
+  //     options: [
+  //       { value: 'Janakpur Zonal Hospital', label: 'Janakpur Zonal Hospital' },
+  //       { value: 'Gaur District Hospital', label: 'Gaur District Hospital' },
+  //       { value: 'Rajbiraj Hospital', label: 'Rajbiraj Hospital' },
+  //       { value: 'Birgunj Blood Bank', label: 'Birgunj Blood Bank' },
+  //     ]
+  //   },
+  //   { 
+  //     label: 'Bagmati Province', 
+  //     options: [
+  //       { value: 'Patan Hospital', label: 'Patan Hospital' },
+  //       { value: 'Tribhuvan University Teaching Hospital', label: 'Tribhuvan University Teaching Hospital' },
+  //       { value: 'Bhaktapur Cancer Hospital', label: 'Bhaktapur Cancer Hospital' },
+  //       { value: 'HAMS Hospital', label: 'HAMS Hospital' },
+  //       { value: 'Chitwan Medical College', label: 'Chitwan Medical College' },
+  //     ]
+  //   },
+  //   { 
+  //     label: 'Gandaki Province', 
+  //     options: [
+  //       { value: 'Manipal Teaching Hospital', label: 'Manipal Teaching Hospital' },
+  //       { value: 'Gandaki Medical College', label: 'Gandaki Medical College' },
+  //       { value: 'Pokhara Regional Hospital', label: 'Pokhara Regional Hospital' },
+  //       { value: 'Myagdi District Hospital', label: 'Myagdi District Hospital' },
+  //     ]
+  //   },
+  //   { 
+  //     label: 'Lumbini Province', 
+  //     options: [
+  //       { value: 'Bhairahawa Medical College', label: 'Bhairahawa Medical College' },
+  //       { value: 'Rapti Sub-Regional Hospital', label: 'Rapti Sub-Regional Hospital' },
+  //       { value: 'Palpa Mission Hospital', label: 'Palpa Mission Hospital' },
+  //       { value: 'Dang District Hospital', label: 'Dang District Hospital' },
+  //     ]
+  //   },
+  //   { 
+  //     label: 'Karnali Province', 
+  //     options: [
+  //       { value: 'Karnali Provincial Hospital', label: 'Karnali Provincial Hospital' },
+  //       { value: 'Jumla District Hospital', label: 'Jumla District Hospital' },
+  //       { value: 'Mugu District Hospital', label: 'Mugu District Hospital' },
+  //       { value: 'Dolpa District Hospital', label: 'Dolpa District Hospital' },
+  //     ]
+  //   },
+  //   { 
+  //     label: 'Sudurpashchim Province', 
+  //     options: [
+  //       { value: 'Seti Zonal Hospital', label: 'Seti Zonal Hospital' },
+  //       { value: 'Dhangadhi Blood Bank', label: 'Dhangadhi Blood Bank' },
+  //       { value: 'Dadeldhura Hospital', label: 'Dadeldhura Hospital' },
+  //       { value: 'Bajura District Hospital', label: 'Bajura District Hospital' },
+  //     ]
+  //   }
+  // ];
 
 
   export const timeShiftOptions = [
