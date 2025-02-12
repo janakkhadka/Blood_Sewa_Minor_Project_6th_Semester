@@ -115,16 +115,23 @@ class BloodRequestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BloodRequestModel
-        fields = ['user_name', 'patient_name', 'contact', 'blood_group', 'location' ]
+        fields = ['user_name', 'patient_name', 'contact', 'blood_group', 'district', 'province' ]
         read_only_fields = ['user_name']
 
     def get_user_name(self, obj):
-        return obj.user.name
+        if obj.user:
+            return obj.user.name
+        return 'No user associated'
+
 
     def create(self, validated_data):
         # Automatically set the user to the currently logged-in user
         validated_data['user'] = self.context['request'].user
         return super().create(validated_data)
+
+
+
+
 
 
 class LimitedUserSerializer(serializers.ModelSerializer):

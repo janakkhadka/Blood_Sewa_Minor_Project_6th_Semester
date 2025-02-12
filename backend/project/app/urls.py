@@ -14,6 +14,7 @@ urlpatterns = [
     path('user/profile/update/' , UserProfileUpdateView.as_view() , name="user-profile-update"),    #profile update garna ko lagi
     path('blood-requests/', BloodRequestListView.as_view(), name='blood-request-list'),         #blood request haru herna ko lagi
     path('create/blood-request/', BloodRequestCreateView.as_view(), name='blood-request-create'),         #blood request garna ko lagi
+    #path('public/blood-request/', PublicBloodRequestCreateView.as_view(), name='blood-request-create'),         #blood request garna ko lagi
     path('user/blood-group/' , FilterUserBloodGroup.as_view() , name="filter-user-blood-group"),            #get user according to blood group
     path('user/logout/', LogoutView.as_view(), name='auth_logout'),     #logout garna ko lagi
     path('user/district/' , UserListView.as_view() , name="search"),    #get user according to blood group and district

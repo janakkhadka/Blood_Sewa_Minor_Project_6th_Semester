@@ -112,11 +112,12 @@ class BloodRequestModel(models.Model):
         ('O-', 'O-'),
     ]
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='blood_requests')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='blood_requests',null=True,blank=True)
     patient_name = models.CharField(max_length=30)
     contact = models.CharField(max_length=15)
     blood_group = models.CharField(max_length=3, choices=BLOOD_GROUP_CHOICES)
-    location = models.CharField(max_length=40)
+    province = models.CharField(max_length=30 , default='')
+    district = models.CharField(max_length=30 , default='')
 
     def __str__(self):
         return f"Blood request for {self.patient_name} - {self.blood_group}"
