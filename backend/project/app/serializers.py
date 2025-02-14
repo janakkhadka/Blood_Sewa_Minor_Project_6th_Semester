@@ -115,7 +115,7 @@ class BloodRequestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BloodRequestModel
-        fields = ['user_name', 'patient_name', 'contact', 'blood_group', 'district', 'province' ]
+        fields = ['user_name', 'patient_name', 'contact', 'blood_group', 'district', 'province', 'city' ]
         read_only_fields = ['user_name']
 
     def get_user_name(self, obj):
@@ -135,7 +135,7 @@ class PublicBloodRequestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BloodRequestModel
-        fields = ['user_name', 'patient_name', 'contact', 'blood_group', 'district', 'province']
+        fields = ['user_name', 'patient_name', 'contact', 'blood_group', 'district', 'province' , 'city']
         read_only_fields = ['user_name']
 
     def get_user_name(self, obj):

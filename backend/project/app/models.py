@@ -116,8 +116,9 @@ class BloodRequestModel(models.Model):
     patient_name = models.CharField(max_length=30)
     contact = models.CharField(max_length=15)
     blood_group = models.CharField(max_length=3, choices=BLOOD_GROUP_CHOICES)
-    province = models.CharField(max_length=30 , default='')
-    district = models.CharField(max_length=30 , default='')
+    province = models.CharField(max_length=30 , blank=False, null=False)
+    district = models.CharField(max_length=30 , blank=False, null=False)
+    city = models.CharField(max_length=30 , blank=False, null=False)
 
     def __str__(self):
         return f"Blood request for {self.patient_name} - {self.blood_group}"
