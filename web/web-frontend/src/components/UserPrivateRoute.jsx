@@ -7,7 +7,6 @@ const UserPrivateRoute = ({ children }) => {
   if (userAuthToken === null) {
     return null;
   }
-  console.log('userroutetoken:'+userAuthToken);
   return userAuthToken ? children : <Navigate to="/" replace />;
 };
 

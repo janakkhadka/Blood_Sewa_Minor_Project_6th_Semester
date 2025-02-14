@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=SUSE:wght@100..800&family=Sevillana&display=swap');
 
+/*theme for light mode  */
 :root {
   --button-background-color: rgb(160, 25, 25);
   --button-text-color: #fdfdfd;
