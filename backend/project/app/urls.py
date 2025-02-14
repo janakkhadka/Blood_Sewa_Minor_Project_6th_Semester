@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import (PublicBloodRequestCreateView,VolunteerJoinAPIView , VolunteerConfirmAPIView ,CheckedInListView , AddBulkRequestView, ViewBulkRequestsView ,RegisterUserView, ListPastEventsView , ListTodayEventsView ,  ListUpcommingEventsView ,UserLoginView, UserProfileUpdateView, BloodRequestListView, BloodRequestCreateView , FilterUserBloodGroup , LogoutView , UserListView , CreateEventView , JoinEventView ,CheckInView  , ActivateAccountView , UserJoinedEventHistoryView , qr_code_view , PasswordResetRequestView , PasswordResetConfirmView , OrganizationLoginView , RegisterOrganizationView , BloodInventoryDetail ,BloodInventoryByOrganization , OrganizationListView , BookingCreateView,MyBookings , OrganizationBookings , UserEventCreateView , MyeventInfo , GetUserDetails)
+from .views import (MyDonationProfile,PublicBloodRequestCreateView,VolunteerJoinAPIView , VolunteerConfirmAPIView ,CheckedInListView , AddBulkRequestView, ViewBulkRequestsView ,RegisterUserView, ListPastEventsView , ListTodayEventsView ,  ListUpcommingEventsView ,UserLoginView, UserProfileUpdateView, BloodRequestListView, BloodRequestCreateView , FilterUserBloodGroup , LogoutView , UserListView , CreateEventView , JoinEventView ,CheckInView  , ActivateAccountView , UserJoinedEventHistoryView , qr_code_view , PasswordResetRequestView , PasswordResetConfirmView , OrganizationLoginView , RegisterOrganizationView , BloodInventoryDetail ,BloodInventoryByOrganization , OrganizationListView , BookingCreateView,MyBookings , OrganizationBookings , UserEventCreateView , MyeventInfo , GetUserDetails)
 
 urlpatterns = [
     
@@ -30,6 +30,7 @@ urlpatterns = [
     path("todayevents/" , ListTodayEventsView.as_view(), name="today-event-lists"),   # aaja ko event haru listout garna ko lagi
     path("upcomingevents/" , ListUpcommingEventsView.as_view(), name="upcomming-event-lists"),   # aaunna lage ko event haru listout garna ko lagi    
     path('my-events-history/', UserJoinedEventHistoryView.as_view(), name="history"),  #aafnu event history haru check garna ko lagi 
+    path('my-donation-info/' , MyDonationProfile.as_view(),name='doantion-info'),  #about my last donation info and other info
     path('my-blood-inventory/', BloodInventoryDetail.as_view(), name='blood-inventory-list'),  # List and Create
     path('blood-inventory/update/', BloodInventoryDetail.as_view(), name='blood-inventory-detail'),  #update available blood inventory
     path('blood-inventory/', BloodInventoryByOrganization.as_view(), name='blood-inventory-by-organization'), #list organization by blood group

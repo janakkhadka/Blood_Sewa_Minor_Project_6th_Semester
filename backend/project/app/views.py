@@ -21,7 +21,7 @@ from .utils import UserFilter , DistrictFilter , OrganizationFilter , is_date_in
 from .models import User, Volunteer ,BloodRequestModel , Event , UserEvent , BloodInventory , Bookings 
 import os
 from django.utils.timezone import now
-from datetime import date , timedelta
+from datetime import date , timedelta , datetime
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from .serializers import (PublicBloodRequestSerializer,UserSerializer,LoginSerializer, UserProfileUpdateSerializer, BloodRequestSerializer , LimitedUserSerializer , EventSerializer, MyEventSerializer , UserEventSerializer , OrganizationSerializer , BloodInventorySerializer , BookingSerializer , OrganizationBookingSerializer , UserEventCreateSerializer)
 
@@ -958,6 +958,47 @@ class VolunteerConfirmAPIView(APIView):
 
 
 
+
+
+class MyDonationProfile(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self , request):
+        user_events = UserEvent.objects.filter(user=request.user)
+
+        donations = [ue for ue in user_events if ue.checked_in]
+
+        donation_count = len(donations)
+
+        last_donation_date = None
+        last_doantion_event = None
+        eligibility_date = None
+        days_left = None
+
+        if donations:
+            last_donation = max(donations , key= lambda ue: ue.event.date)
+            last_donation_date = last_donation.event.date
+            last_donation_event = last_donation.event.name
+            
+
+            eligibility_date = last_donation_date + timedelta(days=90)
+
+            days_left = (eligibility_date - datetime.today().date()).days
+            days_left = max(days_left , 0)
+        else:
+            last_donation_date = None
+            last_donation_event = None
+            days_left = None
+
+        return Response(
+            {
+                "last_donation_event":last_donation_event,
+                "last_donation_date":last_donation_date,
+                "donation_count":donation_count,
+                "eligibility_date":eligibility_date,
+                "days_left":days_left
+            },status = status.HTTP_200_OK
+        )
 
 
 
