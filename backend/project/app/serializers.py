@@ -231,9 +231,11 @@ class EventSerializer(serializers.ModelSerializer):
             return None
 
     def get_is_volunteer(self, obj):
-        # Check if the current user is a volunteer for this event
-        user = self.context.get('request').user
-        return Volunteer.objects.filter(user=user, event=obj).exists()
+        # Ensure this method is defined
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            return obj.volunteers.filter(id=request.user.id).exists()
+        return False
 
     def validate(self, data):
         start_time = data.get('start_time')
