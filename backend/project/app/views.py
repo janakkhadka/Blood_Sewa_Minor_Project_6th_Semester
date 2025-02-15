@@ -599,26 +599,6 @@ class UserJoinedEventHistoryView(APIView):
 
 
 
-# class UserVolunteredEventHistoryView(APIView):
-#     permission_classes = [permissions.IsAuthenticated]
-
-#     def get(self, request):
-#         user_events = UserEvent.objects.filter(user=request.user)
-        
-#         data = [
-#             {
-
-#                     "event_name": ue.event.name,
-#                     "joined_on": ue.event.date,
-#                     "Donated" : ue.checked_in
-                  
-#             }
-#             for ue in user_events
-        
-#         ]
-#         return Response(data, status=status.HTTP_200_OK)
-
-
 
 class MyeventInfo(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -1000,6 +980,21 @@ class MyDonationProfile(APIView):
             },status = status.HTTP_200_OK
         )
 
+
+class MyVolunteeringHistory(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self , request):
+        user_volunteering = Volunteer.objects.filter(user=request.user)
+        data = [
+            {
+                "event_name":ue.event.name,
+                "event_date": ue.event.date,
+                "Voluntered": ue.confirmed
+            }
+            for ue in user_volunteering
+        ]
+        return Response(data, status=status.HTTP_200_OK)
 
 
 
