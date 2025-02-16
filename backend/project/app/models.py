@@ -137,7 +137,7 @@ class Event(models.Model):
     qr_code = models.ImageField(upload_to="qrcodes/", blank=True, null=True)
     donor_attendee_count = models.PositiveIntegerField(default=0)
     volunteer_required_count = models.PositiveIntegerField(default=0)  # New field to define required volunteer count
-    volunteer_attendee_count = models.PositiveIntegerField(default=0)
+    volunteer_attendee_count = models.PositiveIntegerField(default=0) 
     start_time = models.TimeField(default=datetime.time(9, 0))
     end_time = models.TimeField(default=datetime.time(9, 0))
     status = models.BooleanField(default=False)

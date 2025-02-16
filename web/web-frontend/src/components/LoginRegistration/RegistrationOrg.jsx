@@ -132,7 +132,7 @@ const RegistrationOrg = () => {
         };
 
         try {
-            const response = await fetch(api+'organization/register/', {
+            const response = await fetch(api+'org/register/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
