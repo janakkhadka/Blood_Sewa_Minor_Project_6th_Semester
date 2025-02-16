@@ -10,7 +10,7 @@ import '../LoginRegistration/Calender.css';
 import Select from 'react-select';
 import customStyles from '../LoginRegistration/ReactSelectStyle';
 
-import {provinceList, provinceHospitalList, timeShiftOptions} from '../LoginRegistration/DropDownList';
+import {timeShiftOptions} from '../LoginRegistration/DropDownList';
 
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 import { MdDateRange } from "react-icons/md";

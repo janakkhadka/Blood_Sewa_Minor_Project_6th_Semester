@@ -5,7 +5,7 @@ import './BloodAvailability.css'
 import Select from 'react-select';
 import customStyles from '../LoginRegistration/ReactSelectStyle';
 
-import {provinceList, provinceHospitalList, hospitalBloodDataList} from '../LoginRegistration/DropDownList';
+
 
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 
