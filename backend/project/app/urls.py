@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import (VolunteerCheckinList , MyVolunteeringHistory , MyDonationProfile,PublicBloodRequestCreateView,VolunteerJoinAPIView , VolunteerConfirmAPIView ,CheckedInListView , AddBulkRequestView, ViewBulkRequestsView ,RegisterUserView, ListPastEventsView , ListTodayEventsView ,  ListUpcommingEventsView ,UserLoginView, UserProfileUpdateView, BloodRequestListView, BloodRequestCreateView , FilterUserBloodGroup , LogoutView , UserListView , CreateEventView , JoinEventView ,CheckInView  , ActivateAccountView , UserJoinedEventHistoryView , qr_code_view , PasswordResetRequestView , PasswordResetConfirmView , OrganizationLoginView , RegisterOrganizationView , BloodInventoryDetail ,BloodInventoryByOrganization , OrganizationListView , BookingCreateView,MyBookings , OrganizationBookings , UserEventCreateView , MyeventInfo , GetUserDetails)
+from .views import (ManageCollaborationView , PendingCollaborationListView ,VolunteerCheckinList , MyVolunteeringHistory , MyDonationProfile,PublicBloodRequestCreateView,VolunteerJoinAPIView , VolunteerConfirmAPIView ,CheckedInListView , AddBulkRequestView, ViewBulkRequestsView ,RegisterUserView, ListPastEventsView , ListTodayEventsView ,  ListUpcommingEventsView ,UserLoginView, UserProfileUpdateView, BloodRequestListView, BloodRequestCreateView , FilterUserBloodGroup , LogoutView , UserListView , CreateEventView , JoinEventView ,CheckInView  , ActivateAccountView , UserJoinedEventHistoryView , qr_code_view , PasswordResetRequestView , PasswordResetConfirmView , OrganizationLoginView , RegisterOrganizationView , BloodInventoryDetail ,BloodInventoryByOrganization , OrganizationListView , BookingCreateView,MyBookings , OrganizationBookings , UserEventCreateView , MyeventInfo , GetUserDetails)
 
 urlpatterns = [
     path('user/register/', RegisterUserView.as_view(), name='register_user'),    #user registration ko lagi
@@ -26,6 +26,8 @@ urlpatterns = [
     path('events/<slug:slug>/volunteer/checkin/list/' , VolunteerCheckinList.as_view() , name='volunteer-checkin'),
     path('events/<slug:slug>/volunteer/', VolunteerJoinAPIView.as_view(), name='join_volunteer'),
     path('events/<slug:slug>/confirm-volunteer/', VolunteerConfirmAPIView.as_view(), name='confirm_volunteer'),
+    path('event/<slug:slug>/manage/' , ManageCollaborationView.as_view(), name = 'manage_request'),
+    path('pending/request/' , PendingCollaborationListView.as_view(), name = 'pending_request'),   #pending request ko 
     path("pastevents/" , ListPastEventsView.as_view(), name="past-event-lists"),   # past event haru listout garna ko lagi
     path("todayevents/" , ListTodayEventsView.as_view(), name="today-event-lists"),   # aaja ko event haru listout garna ko lagi
     path("upcomingevents/" , ListUpcommingEventsView.as_view(), name="upcomming-event-lists"),   # aaunna lage ko event haru listout garna ko lagi 

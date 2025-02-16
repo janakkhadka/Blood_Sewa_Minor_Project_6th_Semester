@@ -167,20 +167,51 @@ class LimitedUserSerializer(serializers.ModelSerializer):
 
 
 #Event Creation serializer For User
+# class UserEventCreateSerializer(serializers.ModelSerializer):
+#     organizer = serializers.SerializerMethodField()
+#     collabrator = serializers.CharField()
+#     class Meta:
+#         model = Event
+#         fields = [ 'name', 'description', 'location', 'date', 'organizer', 'qr_code' , 'slug' , 'collabrator' , 'start_time' , 'end_time']
+#         read_only_fields = ['organizer', 'qr_code' , 'collabrator']
+
+#     def get_organizer(self, obj):
+#         try:
+#             organizer = User.objects.get(id=obj.organizer_id)
+#             return organizer.name
+#         except Organizer.DoesNotExist:
+#             return None
+
+#     def validate(self, data):
+#         start_time = data.get('start_time')
+#         end_time = data.get('end_time')
+#         if start_time and end_time and end_time < start_time:
+#             raise serializers.ValidationError("End time must be later than start time.")
+#         return data
+    
+#     def create(self, validated_data):
+#         collaborator_name = validated_data.pop('collabrator')  # Extract the name
+#         # Attempt to find a single collaborator with this name
+#         collaborator = get_object_or_404(User, name=collaborator_name)
+
+#         # Create the event with the resolved collaborator
+#         event = Event.objects.create(collabrator=collaborator, **validated_data)
+#         return event
 class UserEventCreateSerializer(serializers.ModelSerializer):
     organizer = serializers.SerializerMethodField()
-    collabrator = serializers.CharField()
+    collabrator = serializers.CharField(write_only=True)  # Accepts name as input
+    collaboration_status = serializers.CharField(read_only=True)  # Show status in response
+
     class Meta:
         model = Event
-        fields = [ 'name', 'description', 'location', 'date', 'organizer', 'qr_code' , 'slug' , 'collabrator' , 'start_time' , 'end_time']
-        read_only_fields = ['organizer', 'qr_code' , 'collabrator']
+        fields = [
+            'name', 'description', 'location', 'date', 'organizer', 'qr_code', 'slug',
+            'collabrator', 'start_time', 'end_time', 'collaboration_status'
+        ]
+        read_only_fields = ['organizer', 'qr_code', 'collaboration_status']
 
     def get_organizer(self, obj):
-        try:
-            organizer = User.objects.get(id=obj.organizer_id)
-            return organizer.name
-        except Organizer.DoesNotExist:
-            return None
+        return obj.organizer.name if obj.organizer else None
 
     def validate(self, data):
         start_time = data.get('start_time')
@@ -188,14 +219,28 @@ class UserEventCreateSerializer(serializers.ModelSerializer):
         if start_time and end_time and end_time < start_time:
             raise serializers.ValidationError("End time must be later than start time.")
         return data
-    
+
     def create(self, validated_data):
-        collaborator_name = validated_data.pop('collabrator')  # Extract the name
-        # Attempt to find a single collaborator with this name
+        """Create an event with a pending collaboration request."""
+        request = self.context.get('request')
+        if not request:
+            raise serializers.ValidationError("Request context is required.")
+
+        # Get the authenticated user (event creator)
+        organizer = request.user
+
+        # Get the collaborator (organization) from input
+        collaborator_name = validated_data.pop('collabrator', None)
         collaborator = get_object_or_404(User, name=collaborator_name)
 
-        # Create the event with the resolved collaborator
-        event = Event.objects.create(collabrator=collaborator, **validated_data)
+        # Create the event with `pending` status
+        event = Event.objects.create(
+            organizer=organizer,
+            collabrator=collaborator,
+            collaboration_status='pending',  # Awaiting approval
+            **validated_data
+        )
+
         return event
 
 

@@ -20,6 +20,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .utils import UserFilter , DistrictFilter , OrganizationFilter , is_date_in_past
 from .models import User, Volunteer ,BloodRequestModel , Event , UserEvent , BloodInventory , Bookings 
 import os
+from django.shortcuts import get_object_or_404
 from django.utils.timezone import now
 from datetime import date , timedelta , datetime
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
@@ -320,15 +321,94 @@ class LogoutView(APIView):
 
 
 #Event Create View For User
+# class UserEventCreateView(APIView):
+#     permission_classes = [permissions.IsAuthenticated]
+
+#     def post(self, request):
+#         serializer = UserEventCreateSerializer(data=request.data)
+#         if serializer.is_valid():
+#             event = serializer.save(organizer=request.user)
+#             return Response(EventSerializer(event).data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class UserEventCreateView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
-        serializer = UserEventCreateSerializer(data=request.data)
+        serializer = UserEventCreateSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
-            event = serializer.save(organizer=request.user)
-            return Response(EventSerializer(event).data, status=status.HTTP_201_CREATED)
+            event = serializer.save()
+            return Response({"message": "Collaboration request sent.", "event": EventSerializer(event).data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# Colabration Request Management
+class ManageCollaborationView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, slug):
+        """Approve or reject a collaboration request for a given event"""
+
+        # Ensure the user is the organizer of the event
+        event = get_object_or_404(Event, slug=slug)
+
+
+        # Extract data from request
+        action = request.data.get("action")  # Action should be 'approve' or 'reject'
+        
+        # Only proceed if the action is valid
+        if action not in ["approve", "reject"]:
+            return Response({"error": "Invalid action. Use 'approve' or 'reject'."}, 
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        # Ensure the event has a pending collaboration
+        if event.collaboration_status != "pending":
+            return Response({"error": "No pending collaboration request for this event."}, 
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        # Perform action
+        if action == "approve":
+            event.collaboration_status = "approved"
+            # You might want to set the `collaborator` here as well
+            event.collaborator = request.user
+        else:  # action == "reject"
+            event.collaboration_status = "rejected"
+
+        # Save the updated event
+        event.save()
+
+        return Response({"message": f"Collaboration request {action}d successfully."}, 
+                        status=status.HTTP_200_OK)
+
+
+
+
+#pending Colabration request
+class PendingCollaborationListView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        """Fetch events where the logged-in user is the requested collaborator and status is pending"""
+        
+        # Fetch events where the user is a collaborator and the collaboration status is pending
+        pending_events = Event.objects.filter(collabrator=request.user, collaboration_status="pending")
+
+        # Prepare the response data, including approval status (collaboration_status)
+        response_data = [
+            {
+                "event_name": event.name,
+                "event_date": event.date,
+                "event_location": event.location,
+                "collaboration_status": event.collaboration_status  # Add the status of the collaboration request
+            }
+            for event in pending_events
+        ]
+
+        return Response({"pending_requests": response_data}, status=status.HTTP_200_OK)
+
+
+
+
 
 
 
