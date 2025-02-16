@@ -160,7 +160,7 @@ fun EventViewExtended(navController: NavHostController,viewModel: SharedViewMode
             Icon(
                 imageVector = if (isFabExpanded) Icons.Default.ArrowDropDown else Icons.Default.ArrowDropUp,
                 contentDescription = "Toggle FABs",
-                tint = Color.White
+                tint = White
             )
         }
 
@@ -197,7 +197,7 @@ fun EventViewExtended(navController: NavHostController,viewModel: SharedViewMode
                 Icon(
                     Icons.Default.QrCodeScanner,
                     contentDescription = "Scan QR Code",
-                    tint = Color.White
+                    tint = White
                 )
             }
 
@@ -280,19 +280,16 @@ fun TodayEventsContent(data: TodaysEvent,viewModel: SharedViewModel) {
             },
             dismissButton = {
                 Button(onClick = {
-                    val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                        type = "text/plain"
-                        putExtra(Intent.EXTRA_TEXT,contentToShare)
 
-                    }
-                    val chooserIntent = Intent.createChooser(shareIntent,"share via")
-                    context.startActivity(chooserIntent)
+                    viewModel.doVolunteering(data.slug)
+                    showDialog = false
+
 
 
                 },
                     colors = ButtonDefaults.buttonColors(DarkGreen),
                 ) {
-                    Text("Share", color = White)
+                    Text("Volunteering?", color = White)
                 }
             }
         )
@@ -372,19 +369,14 @@ fun EventShow(data: UpcomingEvents, viewModel: SharedViewModel) {
             },
             dismissButton = {
                 Button(onClick = {
-                    val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                        type = "text/plain"
-                        putExtra(Intent.EXTRA_TEXT,contentToShare)
-
-                    }
-                    val chooserIntent = Intent.createChooser(shareIntent,"share via")
-                    context.startActivity(chooserIntent)
+                    viewModel.doVolunteering(data.slug)
+                    showDialog = false
 
 
                 },
                     colors = ButtonDefaults.buttonColors(DarkGreen),
                 ) {
-                    Text("Share", color = White)
+                    Text("Volunteering?", color = White)
                 }
             }
         )
@@ -417,6 +409,7 @@ private fun initiateScanner(
             barcode.rawValue?.let { onScanned(it) }
             barcode.displayValue?.let {
                 viewModel.checkInEvent(it)
+                viewModel.checkInVolunteer(it)
                 Log.d(TAG, "initiateScanner: Display slug ${it}")
             }
             when (barcode.valueType) {

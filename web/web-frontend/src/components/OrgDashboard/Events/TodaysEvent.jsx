@@ -56,6 +56,7 @@ function TodaysEvent() {
 
   const [todayEventData, setTodayEventData] = useState({});
   const [checkedInDonorList, setCheckedInDonorList] = useState([]);
+  const [checkedInVolunteerList, setCheckedInVolunteerList] = useState([]);
 
   //fetching all my events data from server and storing to specific states(today events)
   useEffect(() => {
@@ -129,9 +130,9 @@ function TodaysEvent() {
         }
 
         const result = await response.json();
-        console.log(result)
+        //console.log(result)
         setCheckedInDonorList(Array.isArray(result.checked_in_users ) ? result.checked_in_users  : []);
-        console.log(todayEventData.slug)
+        //console.log(todayEventData.slug)
 
       }catch (err) {
         setError(err.message);
@@ -140,7 +141,55 @@ function TodaysEvent() {
       }
     };
     fetchData();
+
+   // const intervalId = setInterval(fetchData, 3000);
+
+    //return () => clearInterval(intervalId);
   },[todayEventData.slug, orgAuthToken]);
+
+
+   //fetching scan gareko volunteer haru(checkedin volunteer list)
+   useEffect(() => {
+    if(!orgAuthToken){
+      setError('No auth token found. Please log in');
+      setLoading(false);
+      return;
+    }
+
+    const fetchData = async () => {
+      try {
+        const response = await fetch(api+'events/'+todayEventData.slug+'/volunteer/checkin/list/',{
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${orgAuthToken}`,
+          },
+        });
+
+        if (!response.ok) {
+          const errorResponse = await response.json();
+          console.log(errorResponse);
+        throw new Error(`Error: ${response.status}`);
+        }
+
+        const result = await response.json();
+        //console.log(result)
+        setCheckedInVolunteerList(Array.isArray(result.checked_in_users ) ? result.checked_in_users  : []);
+        //console.log(todayEventData.slug)
+
+      }catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+
+   // const intervalId = setInterval(fetchData, 3000);
+
+    //return () => clearInterval(intervalId);
+  },[todayEventData.slug, orgAuthToken]);
+
 
 
   return (
@@ -178,17 +227,39 @@ function TodaysEvent() {
                 </div>
                 <div className="icon-info-wrapper">
                   <MdOutlineCountertops/>
-                  <span>Expected Number of Donor: <span style={{fontWeight:"bold"}}>35</span></span>
+                  <span>Expected Donor: <span style={{fontWeight:"bold"}}>{todayEventData.expected_donor_count}</span></span> 
                 </div>
               </section>
             </div>
             <div className="left-top-right-section">
-              <section className='scan-qr-volunteer'>
-                <span className='volunteer-qr'>Volunteer QR</span>
-                <div className="qr-wrapper-volunteer" style={{width:"100px"}}>
-                  <img className='qr-image-volunteer' src={localhost+todayEventData.qr_code} alt="qr-code"/>
-                </div>
-              </section>
+            <section className='volunteer-details'>
+              <div className="h1">
+                <h1>Volunteer List</h1>
+              </div>
+              <table border="0" style={{tableLayout: "fixed", width: "100%", borderCollapse: "collapse" }}>
+                <colgroup>
+                  <col style={{ width: "20%" }} />
+                  <col style={{ width: "45%" }} /> 
+                  <col style={{ width: "35%" }} />
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th>SN</th>
+                    <th>Name</th>
+                    <th>Contact</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {checkedInVolunteerList.map((donor, index) => (
+                    <tr key={index}>
+                      <td>{index+1}</td>
+                      <td  className='table-data'>{donor.name}</td>
+                      <td  className='table-data'>{donor.contact}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </section>
             </div>
             
           </div>
@@ -231,7 +302,7 @@ function TodaysEvent() {
         </div>
         <div className="right-section">
             <section className='scan-qr'>
-              <span className='donor-qr'>Donor QR</span>
+              <span className='donor-qr'>Donor/Volunteer QR</span>
               <div className="qr-wrapper" style={{width:"800px"}}>
                 <img className='qr-image' src={localhost+todayEventData.qr_code} alt="qr-code"/>
               </div>

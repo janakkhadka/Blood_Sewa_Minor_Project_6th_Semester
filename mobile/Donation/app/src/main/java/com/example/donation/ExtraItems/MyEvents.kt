@@ -137,7 +137,16 @@ fun MyJoinedEvents() {
             Column(
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                Text(text ="Joined Events")
+                Text("Name: ")
+                Text("Date: ")
+                Text("Location: ")
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(5.dp)
+                ){
+                    Text(text = "Status :")
+                    Text(text = "t", color = DarkGreen )
+                }
             }
 
 

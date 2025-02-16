@@ -12,13 +12,12 @@ import DatePicker from 'react-date-picker';
 import 'react-date-picker/dist/DatePicker.css';
 import '../../LoginRegistration/Calender.css';
 
-import {venueList} from '../../LoginRegistration/DropDownList';
-
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 import { MdDateRange,MdVolunteerActivism  } from "react-icons/md";
 import { IoTime } from "react-icons/io5";
 import { TbTimelineEventPlus } from "react-icons/tb";
 import {FaLocationDot} from "react-icons/fa6";
+import { GoNote } from "react-icons/go";
 
 import BackThreeD from '../../LoginRegistration/3d'
 import NavigationBar from '../../Common/NavigationBar'
@@ -38,11 +37,11 @@ function OrgOrganizeEvent() {
     const [venue, setVenue] = useState("")
     const [description, setDescription] = useState("")
     console.log(startTime)
-    // const [volunteer, setVolunteer] = useState("no")
-    // const handleChangeVolunteer = (event) => {
-    //     setVolunteer(event.target.value);
-    //   };
-    // const [volunteerNumber, setVolunteerNumber] = useState("")
+    const [volunteer, setVolunteer] = useState("no")
+    const handleChangeVolunteer = (event) => {
+        setVolunteer(event.target.value);
+      };
+    const [volunteerNumber, setVolunteerNumber] = useState("")
 
 
       //create event garda ko lagi
@@ -59,7 +58,8 @@ function OrgOrganizeEvent() {
             "location":venue,
             "date":scheduleDate,
             "start_time":startTime,
-            "end_time":endTime
+            "end_time":endTime,
+            "volunteer_required_count": volunteerNumber? volunteerNumber: 0
         }
         console.log(JSON.stringify(createEventData))
 
@@ -158,10 +158,10 @@ function OrgOrganizeEvent() {
                         value = {description}
                         onChange={(e) => setDescription(e.target.value)}
                         placeholder='Description'/>
-                        <FaLocationDot className="icon"/>
+                        <GoNote className="icon"/>
                 </div>
 
-                {/* <div className="volunteer-wrapper">
+                <div className="volunteer-wrapper">
                     <div className="volunteer">
                         <label>
                             Volunteer Needed?
@@ -192,7 +192,7 @@ function OrgOrganizeEvent() {
                     </div>
                     )}
                     
-                </div> */}
+                </div>
                 
                 
                 <div className="org-organize-event-submit-button" onClick={handleCreateEvent}>

@@ -4,11 +4,14 @@ package com.example.donation.backend
 import com.example.donation.DataClasses.BloodGroupSearch
 import com.example.donation.DataClasses.BloodRequest
 import com.example.donation.DataClasses.CheckedInEvent
+import com.example.donation.DataClasses.CheckedInVolunteer
 import com.example.donation.DataClasses.CreateEvent
+import com.example.donation.DataClasses.DoVolunteer
 import com.example.donation.DataClasses.EventDonationHistory
 import com.example.donation.DataClasses.EventList
 import com.example.donation.DataClasses.JoinResponse
 import com.example.donation.DataClasses.MyBookings
+import com.example.donation.DataClasses.MyEventHistory
 import com.example.donation.DataClasses.OrganizationInventory
 import com.example.donation.DataClasses.OrganizationList
 import com.example.donation.DataClasses.ScheduleTime
@@ -127,6 +130,31 @@ interface BackendInterface {
       @Path("slug") slug: String,
       @Header("Authorization") token: String
    ) : Response<CheckedInEvent>
+
+   //event join garna ko lagi
+   @POST("events/{slug}/volunteer/")
+   suspend fun doVolunteering(
+      @Path("slug") slug: String,
+      @Header("Authorization") token: String
+   ): Response<DoVolunteer>
+
+   //volunteer checkin
+   @POST("events/{slug}/confirm-volunteer/")
+   suspend fun confirmVolunteer(
+      @Path("slug") slug: String,
+      @Header("Authorization") token: String
+   ) : Response<CheckedInVolunteer>
+
+
+   //my-event history
+   //myBookings ko lagi
+   @GET("my-event-history/")
+   suspend fun getMyHistory(
+      @Header("Authorization") authorization: String
+   ): List<MyEventHistory>
+
+
+
 
 
 }
