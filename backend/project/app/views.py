@@ -489,6 +489,49 @@ class CheckedInListView(APIView):
 
 
 
+
+class VolunteerCheckinList(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, slug):
+        try:                  
+            event = Event.objects.get(slug=slug)
+
+            # Fetch all users who have checked in for this event
+            checked_in_users = Volunteer.objects.filter(event=event, confirmed=True).select_related('user')
+            
+            # Prepare the response data
+            volunteers_with_contact = [
+                {
+                    "name": us.user.name,  
+                    "contact": us.user.phone_number 
+                }
+                for us in checked_in_users
+            ]
+
+            return Response(
+                {"checked_in_users": volunteers_with_contact},
+                status=status.HTTP_200_OK
+            )
+
+        except Event.DoesNotExist:
+            return Response({"error": "Event not found."}, status=status.HTTP_404_NOT_FOUND)  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class ListPastEventsView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 

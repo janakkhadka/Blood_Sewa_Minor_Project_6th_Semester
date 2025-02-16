@@ -204,16 +204,16 @@ class UserEventCreateSerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
     organizer = serializers.SerializerMethodField()
     collabrator_name = serializers.SerializerMethodField()
-    volunteer_required_count = serializers.IntegerField()  # Added field for required volunteer count
-    volunteer_attendee_count = serializers.IntegerField()  # Added field for confirmed volunteer count
-    is_volunteer = serializers.SerializerMethodField()  # To check if the user is a volunteer
+    volunteer_required_count = serializers.IntegerField() 
+    volunteer_attendee_count = serializers.IntegerField(read_only=True, required=False, default=0)  
+    is_volunteer = serializers.SerializerMethodField()  
 
     class Meta:
         model = Event
         fields = [
             'name', 'description', 'location', 'date', 'organizer', 
             'qr_code', 'slug', 'collabrator_name', 'start_time', 
-            'end_time', 'volunteer_required_count', 'volunteer_attendee_count', 'is_volunteer'
+            'end_time', 'volunteer_required_count', 'is_volunteer' ,'volunteer_attendee_count'
         ]
         read_only_fields = ['organizer', 'qr_code']
 
@@ -248,6 +248,10 @@ class EventSerializer(serializers.ModelSerializer):
         if is_event_date_in_past(value):
             raise serializers.ValidationError("The event date cannot be in the past.")
         return value
+
+    def create(self, validated_data):
+        validated_data.pop('volunteer_attendee_count', None)
+        return super().create(validated_data)
 
 
 
