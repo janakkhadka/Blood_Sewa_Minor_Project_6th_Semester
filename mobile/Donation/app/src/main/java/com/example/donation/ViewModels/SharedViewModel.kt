@@ -13,11 +13,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.donation.DataClasses.BloodGroupSearch
 import com.example.donation.DataClasses.BloodRequest
 import com.example.donation.DataClasses.CheckedInEvent
+import com.example.donation.DataClasses.CheckedInVolunteer
 import com.example.donation.DataClasses.CreateEvent
+import com.example.donation.DataClasses.DoVolunteer
 import com.example.donation.DataClasses.EventDonationHistory
 import com.example.donation.DataClasses.EventList
 import com.example.donation.DataClasses.JoinResponse
 import com.example.donation.DataClasses.MyBookings
+import com.example.donation.DataClasses.MyEventHistory
 import com.example.donation.DataClasses.OrganizationInventory
 import com.example.donation.DataClasses.ScheduleTime
 import com.example.donation.DataClasses.SeeBloodRequest
@@ -46,9 +49,17 @@ class SharedViewModel : ViewModel(){
     private val _joinEventStatus = MutableLiveData<Result<JoinResponse?>>()
     val joinEventStatus: LiveData<Result<JoinResponse?>> = _joinEventStatus
 
+    //volunteering ko lagi
+    private val _doVolunteerStatus = MutableLiveData<Result<DoVolunteer?>>()
+    val doVolunteerStatus : LiveData<Result<DoVolunteer?>> = _doVolunteerStatus
+
     //checked in garna ko lagi event
     private val _checkInStatus = MutableLiveData<Result<CheckedInEvent?>>()
     val checkInStatus : LiveData<Result<CheckedInEvent?>> = _checkInStatus
+
+    //checked in garna ko lagi volunteer
+    private val _checkInStatusVolunteer = MutableLiveData<Result<CheckedInVolunteer?>>()
+    val checkInStatusVolunteer : LiveData<Result<CheckedInVolunteer?>> = _checkInStatusVolunteer
 
 
     //scheduling time ko lagi
@@ -61,6 +72,11 @@ class SharedViewModel : ViewModel(){
     //blood inventory ko lagi
     private val _inventory = MutableStateFlow<List<OrganizationInventory>>(emptyList())
     val inventory : StateFlow<List<OrganizationInventory>> = _inventory
+
+
+    //event history ko lagi
+    private val _historyList = MutableStateFlow<List<MyEventHistory>>(emptyList())
+    val historyList: StateFlow<List<MyEventHistory>> = _historyList
 
     //event ko list haru herna laii
     private val _eventList = MutableStateFlow<List<EventList>>(emptyList())
@@ -391,6 +407,53 @@ fun fetchOrgData(){
         }
     }
 
+
+//    volunteering ko lagi
+    fun doVolunteering(slug: String) {
+        viewModelScope.launch {
+            try {
+                val response = UserRegistration.authService.doVolunteering(slug,"Bearer $bearerToken")
+                if (response.isSuccessful) {
+                    _doVolunteerStatus.value = Result.success(response.body())
+                } else {
+                    _doVolunteerStatus.value = Result.failure(Throwable("Error: ${response.message()}"))
+                }
+            } catch (e: Exception) {
+                _doVolunteerStatus.value = Result.failure(e)
+            }
+        }
+    }
+
+    //volunteer checkin
+    fun checkInVolunteer(slug: String) {
+        viewModelScope.launch {
+            try {
+                val response = UserRegistration.authService.confirmVolunteer(slug,"Bearer $bearerToken")
+                if (response.isSuccessful) {
+                    _checkInStatusVolunteer.value = Result.success(response.body())
+                } else {
+                    _checkInStatusVolunteer.value = Result.failure(Throwable("Error: ${response.message()}"))
+                }
+            } catch (e: Exception) {
+                _checkInStatusVolunteer.value = Result.failure(e)
+            }
+        }
+    }
+
+    //fetch my eveny history
+    //blood inventory ko lagi
+    fun fetchEventHistory(){
+        viewModelScope.launch {
+            try {
+                val response = UserRegistration.authService.getMyHistory("Bearer $bearerToken")
+                _historyList.value = response
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("checkValue","${e.message}")
+            }
+
+        }
+    }
 
 
 

@@ -84,12 +84,12 @@ import java.time.LocalTime
 @Composable
 fun HomeScreen(navController : NavHostController,viewModel: SharedViewModel = viewModel()) {
 
-    LaunchedEffect(Unit) {
-        viewModel.fetchBloodRequests()
-    }
-    LaunchedEffect(Unit) {
-        viewModel.fetchUpcomingEventsList()
-    }
+//    LaunchedEffect(Unit) {
+//        viewModel.fetchBloodRequests()
+//    }
+//    LaunchedEffect(Unit) {
+//        viewModel.fetchUpcomingEventsList()
+//    }
     val bloodRequests by viewModel.bloodRequests.collectAsState()
     val eventlists by viewModel.eventUpList.collectAsState()
 

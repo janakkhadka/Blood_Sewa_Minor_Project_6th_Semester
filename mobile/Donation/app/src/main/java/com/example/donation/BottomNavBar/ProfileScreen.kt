@@ -59,6 +59,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.donation.DataClasses.EventDonationHistory
+import com.example.donation.DataClasses.MyEventHistory
 import com.example.donation.Navigation.Screens
 import com.example.donation.R
 import com.example.donation.ViewModels.SharedViewModel
@@ -81,6 +82,11 @@ data class Report(
 )
 @Composable
 fun ProfileScreen(navController : NavHostController,viewModel: SharedViewModel = viewModel()) {
+
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchEventHistory()
+    }
 
 
     //badge ko lagi
@@ -440,16 +446,16 @@ fun DonationActivityHeading(){
 
 }
 @Composable
-fun DonationActivity(data: EventDonationHistory){
+fun DonationActivity(data: MyEventHistory){
 
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ){
-        Text(text = data.date, fontSize = 14.sp, color = dRed)
-        Text(text = data.even_name,fontSize = 14.sp, color = dRed)
-        Text(text = data.activity,fontSize = 14.sp, color = dRed)
+        Text(text = data.joined_on, fontSize = 14.sp, color = dRed)
+        Text(text = data.event_name,fontSize = 14.sp, color = dRed)
+       // Text(text = data.Donated,fontSize = 14.sp, color = dRed)
 
     }
 
