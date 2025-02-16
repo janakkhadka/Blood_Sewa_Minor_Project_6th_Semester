@@ -227,7 +227,7 @@ function TodaysEvent() {
                 </div>
                 <div className="icon-info-wrapper">
                   <MdOutlineCountertops/>
-                  <span>Expected Donor: <span style={{fontWeight:"bold"}}>35</span></span>
+                  <span>Expected Donor: <span style={{fontWeight:"bold"}}>{todayEventData.expected_donor_count}</span></span> 
                 </div>
               </section>
             </div>
