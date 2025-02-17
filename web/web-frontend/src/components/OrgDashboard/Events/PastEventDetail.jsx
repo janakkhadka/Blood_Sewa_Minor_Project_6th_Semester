@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import './PastEventDetail.css'
 
 import NavigationBar from '../../Common/NavigationBar'
@@ -13,11 +13,14 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { IoMdSquare } from "react-icons/io";
 import { TbAxisX, TbAxisY } from "react-icons/tb";
 
-import {events, pastEvents} from '../../UserDashboard/DummyData'
 import {donorList} from '../../UserDashboard/DummyData'
-import ScreeningResultModal from './ScreeningResultModal'
+
+import { useOrgAuthToken } from '../../../Logic/AuthKey';
+import {api, localhost} from '../../../Logic/api'
 
 function EventDetail() {
+  const orgAuthToken = useOrgAuthToken();
+
   const [toggleScreeningResultModal, setToggleScreeningResultModal] = useState(false);
 
   const [bloodPressure, setBloodPressure] = useState("")
@@ -31,9 +34,109 @@ function EventDetail() {
       
     };
 
-  const location = useLocation()
-  const eventId = location.state?.eventId;
-  console.log(eventId)
+  const loc = useLocation()
+  const eventId = loc.state?.eventId
+  const eventName = loc.state?.name
+  const eventDate = loc.state?.date
+  const donorNumber = loc.state?.donorNumber
+  const volunteerNumber = loc.state?.volunteerNumber
+  const organizer = loc.state?.organizer
+  const location = loc.state?.location
+  const slug = loc.state?.slug
+  console.log(slug)
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const [checkedInDonorList, setCheckedInDonorList] = useState([]);
+  const [checkedInVolunteerList, setCheckedInVolunteerList] = useState([]);
+  
+
+  //fetching scan gareko user haru(checkedin user list)
+    useEffect(() => {
+      if(!orgAuthToken){
+        setError('No auth token found. Please log in');
+        setLoading(false);
+        return;
+      }
+  
+      const fetchData = async () => {
+        try {
+          const response = await fetch(api+'events/'+slug+'/checkin/list/',{
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${orgAuthToken}`,
+            },
+          });
+  
+          if (!response.ok) {
+            const errorResponse = await response.json();
+            console.log(errorResponse);
+          throw new Error(`Error: ${response.status}`);
+          }
+  
+          const result = await response.json();
+          console.log(result)
+          setCheckedInDonorList(Array.isArray(result.checked_in_users ) ? result.checked_in_users  : []);
+          //console.log(todayEventData.slug)
+  
+        }catch (err) {
+          setError(err.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchData();
+  
+     // const intervalId = setInterval(fetchData, 3000);
+  
+      //return () => clearInterval(intervalId);
+    },[slug, orgAuthToken]);
+  
+  
+     //fetching scan gareko volunteer haru(checkedin volunteer list)
+     useEffect(() => {
+      if(!orgAuthToken){
+        setError('No auth token found. Please log in');
+        setLoading(false);
+        return;
+      }
+  
+      const fetchData = async () => {
+        try {
+          const response = await fetch(api+'events/'+slug+'/volunteer/checkin/list/',{
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${orgAuthToken}`,
+            },
+          });
+  
+          if (!response.ok) {
+            const errorResponse = await response.json();
+            console.log(errorResponse);
+          throw new Error(`Error: ${response.status}`);
+          }
+  
+          const result = await response.json();
+          //console.log(result)
+          setCheckedInVolunteerList(Array.isArray(result.checked_in_users ) ? result.checked_in_users  : []);
+          //console.log(todayEventData.slug)
+  
+        }catch (err) {
+          setError(err.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchData();
+  
+     // const intervalId = setInterval(fetchData, 3000);
+  
+      //return () => clearInterval(intervalId);
+    },[slug, orgAuthToken]);
+  
   return (
     <div className="event-details-wrapper">
         <div className="syringe">
@@ -48,10 +151,10 @@ function EventDetail() {
           <div className="top-section">
             <section className='top-left'>
               <h3>Event Details</h3>
-              <span>Event Name: <span style={{fontWeight:"bold"}}>Bir Hospital Donation Event</span></span>
-              <span>Event Date: <span style={{fontWeight:"bold"}}>12 June, 2024</span></span>
-              <span>Donor Count: <span style={{fontWeight:"bold"}}>79</span></span>
-              <span>Volunteer Count: <span style={{fontWeight:"bold"}}>18</span></span>
+              <span>Event Name: <span style={{fontWeight:"bold"}}>{eventName}</span></span>
+              <span>Event Date: <span style={{fontWeight:"bold"}}>{format(eventDate, "MMMM dd, yyyy")}</span></span>
+              <span>Donor Count: <span style={{fontWeight:"bold"}}>{donorNumber}</span></span>
+              <span>Volunteer Count: <span style={{fontWeight:"bold"}}>{volunteerNumber}</span></span>
             </section>
             <section className='top-right'>
               <div className="h1-wrapper">
@@ -107,12 +210,12 @@ function EventDetail() {
                   </tr>
                 </thead>
                 <tbody>
-                  {donorList.map((donor, index) => (
+                  {checkedInDonorList.map((donor, index) => (
                     <tr key={index}>
-                      <td>{donor.sn}</td> {/* Format date */}
+                      <td>{index+1}</td> {/* Format date */}
                       <td  className='table-data'>{donor.name}</td>
-                      <td  className='table-data'>{donor.bloodGroup}</td>
-                      <td>9840989641</td>
+                      <td  className='table-data'>{donor.blood_group}</td>
+                      <td>{donor.contact}</td>
                       <td style={{textAlign:"center"}}><button className="notify-button" onClick={
                         () => setToggleScreeningResultModal(true)
                         }>Add</button>
@@ -140,11 +243,11 @@ function EventDetail() {
                   </tr>
                 </thead>
                 <tbody>
-                  {donorList.map((donor, index) => (
+                  {checkedInVolunteerList.map((donor, index) => (
                     <tr key={index}>
-                      <td>{donor.sn}</td>
-                      <td className='table-data'>{donor.name}</td>
-                      <td>9840989641</td>
+                      <td>{index+1}</td>
+                      <td  className='table-data'>{donor.name}</td>
+                      <td  className='table-data'>{donor.contact}</td>
                     </tr>
                   ))}
                 </tbody>

@@ -119,6 +119,7 @@ class BloodRequestModel(models.Model):
     province = models.CharField(max_length=30 , blank=False, null=False)
     district = models.CharField(max_length=30 , blank=False, null=False)
     city = models.CharField(max_length=30 , blank=False, null=False)
+    date = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return f"Blood request for {self.patient_name} - {self.blood_group}"
@@ -127,6 +128,11 @@ class BloodRequestModel(models.Model):
 
 
 class Event(models.Model):
+    COLLABORATION_STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+    ]
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True, blank=True, null=True)
     description = models.TextField()
@@ -142,6 +148,7 @@ class Event(models.Model):
     end_time = models.TimeField(default=datetime.time(9, 0))
     status = models.BooleanField(default=False)
     expected_donor_count = models.IntegerField(default=0)
+    collaboration_status = models.CharField(max_length=10, choices=COLLABORATION_STATUS_CHOICES, default='pending')
 
 
 

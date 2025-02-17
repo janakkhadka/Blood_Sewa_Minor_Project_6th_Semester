@@ -37,14 +37,14 @@ class BookingsAdmin(admin.ModelAdmin):
 @admin.register(BloodRequestModel)
 class BloodRequestAdmin(admin.ModelAdmin):
     list_display = ['patient_name', 'blood_group', 'district', 'province' ,  'user' , 'city']
-    search_fields = ['patient_name', 'blood_group', 'district', 'province' , 'user__email']
+    search_fields = ['patient_name', 'blood_group', 'district', 'province' , 'user__email' , 'date']
 
 
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     list_display = ("name", "organizer", "date", "location")
-    fields = ('name', 'slug', 'description', 'location', 'date', 'collabrator', 'organizer', 'qr_code', 'donor_attendee_count' , 'start_time' , 'end_time' , 'expected_donor_count','volunteer_attendee_count','volunteer_required_count')
+    fields = ('name', 'slug', 'description', 'location', 'date', 'collabrator', 'organizer', 'qr_code', 'donor_attendee_count' , 'start_time' , 'end_time' , 'expected_donor_count','volunteer_attendee_count','volunteer_required_count' , 'collaboration_status')
 
 @admin.register(UserEvent)
 class UserEventAdmin(admin.ModelAdmin):

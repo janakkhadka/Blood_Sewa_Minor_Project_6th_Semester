@@ -112,10 +112,10 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
 
 class BloodRequestSerializer(serializers.ModelSerializer):
     user_name = serializers.SerializerMethodField()  # Custom field to get the user's name
-
+    # date = serializers.DateField()
     class Meta:
         model = BloodRequestModel
-        fields = ['user_name', 'patient_name', 'contact', 'blood_group', 'district', 'province', 'city' ]
+        fields = ['user_name', 'patient_name', 'contact', 'blood_group', 'district', 'province', 'city' , 'date']
         read_only_fields = ['user_name']
 
     def get_user_name(self, obj):
@@ -135,7 +135,7 @@ class PublicBloodRequestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BloodRequestModel
-        fields = ['user_name', 'patient_name', 'contact', 'blood_group', 'district', 'province' , 'city']
+        fields = ['user_name', 'patient_name', 'contact', 'blood_group', 'district', 'province' , 'city' , 'date']
         read_only_fields = ['user_name']
 
     def get_user_name(self, obj):
@@ -167,20 +167,54 @@ class LimitedUserSerializer(serializers.ModelSerializer):
 
 
 #Event Creation serializer For User
+# class UserEventCreateSerializer(serializers.ModelSerializer):
+#     organizer = serializers.SerializerMethodField()
+#     collabrator = serializers.CharField()
+#     class Meta:
+#         model = Event
+#         fields = [ 'name', 'description', 'location', 'date', 'organizer', 'qr_code' , 'slug' , 'collabrator' , 'start_time' , 'end_time']
+#         read_only_fields = ['organizer', 'qr_code' , 'collabrator']
+
+#     def get_organizer(self, obj):
+#         try:
+#             organizer = User.objects.get(id=obj.organizer_id)
+#             return organizer.name
+#         except Organizer.DoesNotExist:
+#             return None
+
+#     def validate(self, data):
+#         start_time = data.get('start_time')
+#         end_time = data.get('end_time')
+#         if start_time and end_time and end_time < start_time:
+#             raise serializers.ValidationError("End time must be later than start time.")
+#         return data
+    
+#     def create(self, validated_data):
+#         collaborator_name = validated_data.pop('collabrator')  # Extract the name
+#         # Attempt to find a single collaborator with this name
+#         collaborator = get_object_or_404(User, name=collaborator_name)
+
+#         # Create the event with the resolved collaborator
+#         event = Event.objects.create(collabrator=collaborator, **validated_data)
+#         return event
 class UserEventCreateSerializer(serializers.ModelSerializer):
     organizer = serializers.SerializerMethodField()
-    collabrator = serializers.CharField()
+    collabrator = serializers.CharField(write_only=True)  # Accepts name as input
+    collaboration_status = serializers.CharField(read_only=True)  # Show status in response
+    volunteer_required_count = serializers.IntegerField() 
+    volunteer_attendee_count = serializers.IntegerField(read_only=True, required=False, default=0)  
+    is_volunteer = serializers.SerializerMethodField()
+
     class Meta:
         model = Event
-        fields = [ 'name', 'description', 'location', 'date', 'organizer', 'qr_code' , 'slug' , 'collabrator' , 'start_time' , 'end_time']
-        read_only_fields = ['organizer', 'qr_code' , 'collabrator']
+        fields = [
+            'name', 'description', 'location', 'date', 'organizer', 'qr_code', 'slug',
+            'collabrator', 'start_time', 'end_time', 'collaboration_status' , 'volunteer_required_count', 'is_volunteer' ,'volunteer_attendee_count'
+        ]
+        read_only_fields = ['organizer', 'qr_code', 'collaboration_status']
 
     def get_organizer(self, obj):
-        try:
-            organizer = User.objects.get(id=obj.organizer_id)
-            return organizer.name
-        except Organizer.DoesNotExist:
-            return None
+        return obj.organizer.name if obj.organizer else None
 
     def validate(self, data):
         start_time = data.get('start_time')
@@ -188,15 +222,31 @@ class UserEventCreateSerializer(serializers.ModelSerializer):
         if start_time and end_time and end_time < start_time:
             raise serializers.ValidationError("End time must be later than start time.")
         return data
-    
+
     def create(self, validated_data):
-        collaborator_name = validated_data.pop('collabrator')  # Extract the name
-        # Attempt to find a single collaborator with this name
+        request = self.context.get('request')
+        if not request:
+            raise serializers.ValidationError("Request context is required.")
+
+        # Get the authenticated user (event creator)
+        organizer = request.user
+
+        # Get the collaborator (organization) from input
+        collaborator_name = validated_data.pop('collabrator', None)
         collaborator = get_object_or_404(User, name=collaborator_name)
 
-        # Create the event with the resolved collaborator
-        event = Event.objects.create(collabrator=collaborator, **validated_data)
+        validated_data.pop('volunteer_attendee_count', None)
+
+        # Create the event with `pending` status
+        event = Event.objects.create(
+            organizer=organizer,
+            collabrator=collaborator,
+            collaboration_status='pending',  # Awaiting approval
+            **validated_data
+        )
+
         return event
+    
 
 
 
@@ -258,9 +308,10 @@ class EventSerializer(serializers.ModelSerializer):
 class MyEventSerializer(serializers.ModelSerializer):
     organizer = serializers.SerializerMethodField()
     collabrator_name = serializers.SerializerMethodField()
+    #collabrator_status = serializers.SerializerMethodField()
     class Meta:
         model = Event
-        fields = [ 'name','location', 'date', 'organizer', 'qr_code' , 'slug' , 'collabrator_name' , 'donor_attendee_count' , 'start_time' , 'end_time' , 'expected_donor_count' , 'volunteer_required_count', 'volunteer_attendee_count']
+        fields = [ 'name','location', 'date', 'organizer', 'qr_code' , 'slug' , 'collabrator_name' , 'donor_attendee_count' , 'start_time' , 'end_time' , 'expected_donor_count' , 'volunteer_required_count', 'volunteer_attendee_count' , 'collaboration_status']
         read_only_fields = ['organizer', 'qr_code']
 
     def get_organizer(self, obj):
@@ -275,6 +326,17 @@ class MyEventSerializer(serializers.ModelSerializer):
             return obj.collabrator.name
         except AttributeError:
             return None
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        
+        # Remove `collaboration_status` and `collabrator_name` if no collaborator
+        if not instance.collabrator:
+            data.pop('collaboration_status', None)
+            data.pop('collabrator_name', None)
+        
+        return data
+ 
 
 
 class UserEventSerializer(serializers.ModelSerializer):
