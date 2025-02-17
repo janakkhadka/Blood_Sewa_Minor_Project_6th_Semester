@@ -112,10 +112,10 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
 
 class BloodRequestSerializer(serializers.ModelSerializer):
     user_name = serializers.SerializerMethodField()  # Custom field to get the user's name
-
+    # date = serializers.DateField()
     class Meta:
         model = BloodRequestModel
-        fields = ['user_name', 'patient_name', 'contact', 'blood_group', 'district', 'province', 'city' ]
+        fields = ['user_name', 'patient_name', 'contact', 'blood_group', 'district', 'province', 'city' , 'date']
         read_only_fields = ['user_name']
 
     def get_user_name(self, obj):
@@ -135,7 +135,7 @@ class PublicBloodRequestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BloodRequestModel
-        fields = ['user_name', 'patient_name', 'contact', 'blood_group', 'district', 'province' , 'city']
+        fields = ['user_name', 'patient_name', 'contact', 'blood_group', 'district', 'province' , 'city' , 'date']
         read_only_fields = ['user_name']
 
     def get_user_name(self, obj):
@@ -201,12 +201,15 @@ class UserEventCreateSerializer(serializers.ModelSerializer):
     organizer = serializers.SerializerMethodField()
     collabrator = serializers.CharField(write_only=True)  # Accepts name as input
     collaboration_status = serializers.CharField(read_only=True)  # Show status in response
+    volunteer_required_count = serializers.IntegerField() 
+    volunteer_attendee_count = serializers.IntegerField(read_only=True, required=False, default=0)  
+    is_volunteer = serializers.SerializerMethodField()
 
     class Meta:
         model = Event
         fields = [
             'name', 'description', 'location', 'date', 'organizer', 'qr_code', 'slug',
-            'collabrator', 'start_time', 'end_time', 'collaboration_status'
+            'collabrator', 'start_time', 'end_time', 'collaboration_status' , 'volunteer_required_count', 'is_volunteer' ,'volunteer_attendee_count'
         ]
         read_only_fields = ['organizer', 'qr_code', 'collaboration_status']
 
@@ -221,7 +224,6 @@ class UserEventCreateSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        """Create an event with a pending collaboration request."""
         request = self.context.get('request')
         if not request:
             raise serializers.ValidationError("Request context is required.")
@@ -233,6 +235,8 @@ class UserEventCreateSerializer(serializers.ModelSerializer):
         collaborator_name = validated_data.pop('collabrator', None)
         collaborator = get_object_or_404(User, name=collaborator_name)
 
+        validated_data.pop('volunteer_attendee_count', None)
+
         # Create the event with `pending` status
         event = Event.objects.create(
             organizer=organizer,
@@ -242,6 +246,7 @@ class UserEventCreateSerializer(serializers.ModelSerializer):
         )
 
         return event
+    
 
 
 

@@ -338,7 +338,7 @@ class UserEventCreateView(APIView):
         serializer = UserEventCreateSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             event = serializer.save()
-            return Response({"message": "Collaboration request sent.", "event": EventSerializer(event).data}, status=status.HTTP_201_CREATED)
+            return Response({"message": "Collaboration request sent.", "event": "Event Created Successfully"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -347,7 +347,6 @@ class ManageCollaborationView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, slug):
-        """Approve or reject a collaboration request for a given event"""
 
         # Ensure the user is the organizer of the event
         event = get_object_or_404(Event, slug=slug)
@@ -599,6 +598,32 @@ class VolunteerCheckinList(APIView):
 
 
 
+# class ListPastEventsView(APIView):
+#     permission_classes = [permissions.IsAuthenticated]
+
+#     def get(self, request):
+#         user = request.user  # Get the authenticated user
+#         past_events = Event.objects.filter(date__lt=now().date())
+#         serializer = EventSerializer(past_events, many=True)
+
+#         serialized_data = serializer.data
+#         for event in serialized_data:
+#             event_obj = past_events.get(name=event['name'])
+            
+#             if user.user_type == 'user':  # Only check status for normal users
+#                 event["status"] = "Joined" if UserEvent.objects.filter(user=user, event=event_obj).exists() else "Not Joined"
+
+
+#             if not event.get("collabrator_name"):  
+#                 event.pop("collabrator_name", None)
+
+#             if event.get("qr_code"):
+#                 event.pop("qr_code", None)
+
+#             if event.get("slug"):
+#                 event.pop("slug", None)
+
+#         return Response(serialized_data, status=status.HTTP_200_OK)
 
 
 
@@ -611,62 +636,66 @@ class VolunteerCheckinList(APIView):
 
 
 
+from django.db.models import Q
 
 class ListPastEventsView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        user = request.user  # Get the authenticated user
-        past_events = Event.objects.filter(date__lt=now().date())
+        user = request.user
+
+        past_events = Event.objects.filter(
+            date__lt=now().date()
+        ).filter(
+            Q(organizer__user_type="organization") | Q(collaboration_status="approved")
+        )
+
         serializer = EventSerializer(past_events, many=True)
 
         serialized_data = serializer.data
         for event in serialized_data:
             event_obj = past_events.get(name=event['name'])
-            
-            if user.user_type == 'user':  # Only check status for normal users
+
+            if user.user_type == 'user':  
                 event["status"] = "Joined" if UserEvent.objects.filter(user=user, event=event_obj).exists() else "Not Joined"
 
-
-            if not event.get("collabrator_name"):  
-                event.pop("collabrator_name", None)
-
-            if event.get("qr_code"):
-                event.pop("qr_code", None)
-
-            if event.get("slug"):
-                event.pop("slug", None)
+            # Remove unnecessary fields
+            event.pop("collabrator_name", None)  
+            event.pop("qr_code", None)
+            event.pop("slug", None)
 
         return Response(serialized_data, status=status.HTTP_200_OK)
+
+
 
 
 class ListTodayEventsView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        user = request.user  # Get the authenticated user
+        user = request.user  
         today = now().date()
-        today_events = Event.objects.filter(date=today)
-        serializer = EventSerializer(today_events, many=True)
 
+        # Show events by organizations OR user events that are approved
+        today_events = Event.objects.filter(
+            date=today
+        ).filter(
+            Q(organizer__user_type="organization") | Q(collaboration_status="approved")
+        )
+
+        serializer = EventSerializer(today_events, many=True)
         serialized_data = serializer.data
+
         for event in serialized_data:
             event_obj = today_events.get(name=event['name'])
 
-            if user.user_type == 'user':  # Only check status for normal users
+            if user.user_type == 'user':  
                 event["status"] = "Joined" if UserEvent.objects.filter(user=user, event=event_obj).exists() else "Not Joined"
 
-            if not event.get("collabrator_name"):  
-                event.pop("collabrator_name", None)  
-
-            if event.get("qr_code"):
-                event.pop("qr_code", None)
-
-            # if event.get("slug"):
-            #     event.pop("slug", None)
+            event.pop("collabrator_name", None)  
+            event.pop("qr_code", None)
 
         return Response(serialized_data, status=status.HTTP_200_OK)
-
 
 
 class ListUpcommingEventsView(APIView):
@@ -674,29 +703,29 @@ class ListUpcommingEventsView(APIView):
 
     def get(self, request):
         today = now().date()
-        upcoming_events = Event.objects.filter(date__gt=today)
+
+        # Show events by organizations OR user events that are approved
+        upcoming_events = Event.objects.filter(
+            date__gt=today
+        ).filter(
+            Q(organizer__user_type="organization") | Q(collaboration_status="approved")
+        )
+
         serializer = EventSerializer(upcoming_events, many=True)
-        
-        user = request.user  # Get the authenticated user
+        user = request.user  
 
         serialized_data = serializer.data
         for event in serialized_data:
             event_obj = upcoming_events.get(name=event['name'])
-            
+
             if user.user_type == 'user':  
                 event["status"] = "Joined" if UserEvent.objects.filter(user=user, event=event_obj).exists() else "Not Joined"
 
-            # Remove collaborator name if it's empty
-            if not event.get("collabrator_name"):
-                event.pop("collabrator_name", None)
-            
-            if event.get("qr_code"):
-                event.pop("qr_code", None)
-
-            # if event.get("slug"):
-            #     event.pop("slug", None)
+            event.pop("collabrator_name", None)
+            event.pop("qr_code", None)
 
         return Response(serialized_data, status=status.HTTP_200_OK)
+
 
 
 

@@ -119,6 +119,7 @@ class BloodRequestModel(models.Model):
     province = models.CharField(max_length=30 , blank=False, null=False)
     district = models.CharField(max_length=30 , blank=False, null=False)
     city = models.CharField(max_length=30 , blank=False, null=False)
+    date = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return f"Blood request for {self.patient_name} - {self.blood_group}"

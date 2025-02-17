@@ -37,7 +37,7 @@ class BookingsAdmin(admin.ModelAdmin):
 @admin.register(BloodRequestModel)
 class BloodRequestAdmin(admin.ModelAdmin):
     list_display = ['patient_name', 'blood_group', 'district', 'province' ,  'user' , 'city']
-    search_fields = ['patient_name', 'blood_group', 'district', 'province' , 'user__email']
+    search_fields = ['patient_name', 'blood_group', 'district', 'province' , 'user__email' , 'date']
 
 
 
