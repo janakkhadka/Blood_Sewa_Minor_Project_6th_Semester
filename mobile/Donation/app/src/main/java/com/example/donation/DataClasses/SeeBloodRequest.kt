@@ -5,5 +5,8 @@ data class SeeBloodRequest(
     val patient_name : String,
     val contact : String,
     val blood_group : String,
-    val location : String
+    val province : String,
+    val district : String,
+    val city : String,
+    val date : String
 )

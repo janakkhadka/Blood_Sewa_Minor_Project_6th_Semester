@@ -148,7 +148,7 @@ fun NewRequestTab(dasta : SeeBloodRequest) {
             ) {
                 Text(text = " Name : ${dasta.user_name}")
                 Text(text = " Phone Number : ${dasta.contact}")
-                Text(text = " Address : ${dasta.location}")
+                Text(text = " Address : ${dasta.province}")
                 androidx.compose.material3.Button(
                     onClick = {
                         val number = dasta.contact

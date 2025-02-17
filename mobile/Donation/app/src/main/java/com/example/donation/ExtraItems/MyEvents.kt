@@ -1,7 +1,6 @@
 package com.example.donation.ExtraItems
 
 
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,27 +17,37 @@ import com.example.donation.BottomNavBar.CustomTopBar
 import com.example.donation.BottomNavBar.TopBarTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.example.donation.Navigation.Screens
+import com.example.donation.DataClasses.MyCreatedEvent
+import com.example.donation.DataClasses.MyJoinedEvents
 import com.example.donation.R
+import com.example.donation.ViewModels.SharedViewModel
 import com.example.donation.ui.theme.DarkGreen
 import com.example.donation.ui.theme.dRed
 
 @Composable
-fun MyEvents( navController : NavHostController) {
+fun MyEvents( navController : NavHostController,viewModel: SharedViewModel = viewModel()) {
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchEventHistory()
+    }
+    LaunchedEffect(Unit) {
+        viewModel.fetchCreatedEvents()
+    }
+
+
+    val joinedEvents by viewModel.historyListJoined.collectAsState()
+    val createdEvents by viewModel.createdEvents.collectAsState()
 
     // Tab state
     var selectedTabIndex by remember { mutableStateOf(0) }
@@ -81,8 +90,34 @@ fun MyEvents( navController : NavHostController) {
 
             // Tab content
             when (selectedTabIndex) {
-                0 -> MyCreatedEvents()
-                1 -> MyJoinedEvents()
+                0 -> {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(top = 10.dp,bottom = 20.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        items(createdEvents){requests ->
+                            MyCreatedEvents(requests)
+
+                        }
+
+                    }
+                }
+                1 ->  {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(top = 10.dp,bottom = 20.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        items(joinedEvents){requests ->
+                            MyJoinedEvents(requests)
+
+                        }
+
+                    }
+                }
             }
 
 
@@ -94,21 +129,50 @@ fun MyEvents( navController : NavHostController) {
 }
 
 @Composable
-fun MyCreatedEvents() {
-    Column(
+fun MyCreatedEvents(data : MyCreatedEvent) {
+    Box(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxWidth()
+            .shadow(elevation = 100.dp)
+            .padding(top = 20.dp, start = 10.dp, end = 10.dp, bottom = 20.dp)
+            .clip(shape = RoundedCornerShape(20.dp))
+            .background(White)
+            .clickable {
+            },
     ) {
-        Text(text = "My Events", style = MaterialTheme.typography.h6)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 15.dp, bottom = 15.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(R.drawable.donate),
+                contentDescription = "",
+                modifier = Modifier.size(60.dp)
+            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Text("Name: ${data.name}")
+                Text("Date: ${data.date}")
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(5.dp)
+                ){
+                    Text(text = "Volunteered :")
+                    Text(text = data.collabrator_name, color = DarkGreen )
+                }
+            }
 
+
+        }
     }
 }
 
 @Composable
-fun MyJoinedEvents() {
+fun MyJoinedEvents(data : MyJoinedEvents) {
     var showDialog by remember { mutableStateOf(false) }
 
     Box(
@@ -137,15 +201,15 @@ fun MyJoinedEvents() {
             Column(
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                Text("Name: ")
-                Text("Date: ")
-                Text("Location: ")
+                Text("Name: ${data.name}")
+                Text("Date: ${data.date}")
+                Text("Location: ${data.location}")
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(5.dp)
                 ){
                     Text(text = "Status :")
-                    Text(text = "t", color = DarkGreen )
+                    Text(text = "${data.status}", color = DarkGreen )
                 }
             }
 

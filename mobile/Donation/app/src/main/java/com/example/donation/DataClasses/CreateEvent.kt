@@ -5,5 +5,9 @@ data class CreateEvent(
     val description: String,
     val location : String,
     val collabrator : String,
-    val date : String
+    val date : String,
+    val startTime : String,
+    val endTime : String,
+    val volunteer_required_count : Int
+
 )

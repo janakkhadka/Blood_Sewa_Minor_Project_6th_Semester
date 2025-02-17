@@ -11,7 +11,9 @@ import com.example.donation.DataClasses.EventDonationHistory
 import com.example.donation.DataClasses.EventList
 import com.example.donation.DataClasses.JoinResponse
 import com.example.donation.DataClasses.MyBookings
-import com.example.donation.DataClasses.MyEventHistory
+import com.example.donation.DataClasses.MyCreatedEvent
+import com.example.donation.DataClasses.MyJoinedEvents
+import com.example.donation.DataClasses.MyVolunteeredEvents
 import com.example.donation.DataClasses.OrganizationInventory
 import com.example.donation.DataClasses.OrganizationList
 import com.example.donation.DataClasses.ScheduleTime
@@ -30,7 +32,6 @@ import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface BackendInterface {
 
@@ -147,11 +148,24 @@ interface BackendInterface {
 
 
    //my-event history
-   //myBookings ko lagi
-   @GET("my-event-history/")
+   @GET("my-events-history/")
    suspend fun getMyHistory(
       @Header("Authorization") authorization: String
-   ): List<MyEventHistory>
+   ): List<MyJoinedEvents>
+
+   @GET("my-volunteering-history/")
+   suspend fun getVolunteeredEvents(
+      @Header("Authorization") authorization: String
+   ): List<MyVolunteeredEvents>
+
+   //my created events  ko lagi
+   @GET("my-all-events/")
+   suspend fun getMyCreatedEvents(
+      @Header("Authorization") authorization: String
+   ): List<MyCreatedEvent>
+
+
+
 
 
 
