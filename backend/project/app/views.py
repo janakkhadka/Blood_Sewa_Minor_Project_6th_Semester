@@ -387,14 +387,14 @@ class PendingCollaborationListView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        """Fetch events where the logged-in user is the requested collaborator and status is pending"""
         
         # Fetch events where the user is a collaborator and the collaboration status is pending
         pending_events = Event.objects.filter(collabrator=request.user, collaboration_status="pending")
 
-        # Prepare the response data, including approval status (collaboration_status)
         response_data = [
             {
+                "slug":event.slug,
+                "organizer":event.organizer.name,
                 "event_name": event.name,
                 "event_date": event.date,
                 "event_location": event.location,
@@ -756,7 +756,26 @@ class MyeventInfo(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        my_events = Event.objects.filter(organizer=request.user)
+        # Fetch events where the user is either the organizer or a collaborator
+        my_events = Event.objects.filter(
+            Q(organizer=request.user)
+        )
+
+        serializers = MyEventSerializer(my_events, many=True)
+        
+        return Response(serializers.data , status=status.HTTP_200_OK)
+
+
+
+class MyColabEventInfo(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        # Fetch events where the user is either the organizer or a collaborator
+        my_events = Event.objects.filter(
+             Q(collabrator=request.user)
+        )
+
         serializers = MyEventSerializer(my_events, many=True)
         
         return Response(serializers.data , status=status.HTTP_200_OK)

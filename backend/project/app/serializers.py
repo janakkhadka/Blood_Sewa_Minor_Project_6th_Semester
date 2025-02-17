@@ -308,9 +308,10 @@ class EventSerializer(serializers.ModelSerializer):
 class MyEventSerializer(serializers.ModelSerializer):
     organizer = serializers.SerializerMethodField()
     collabrator_name = serializers.SerializerMethodField()
+    #collabrator_status = serializers.SerializerMethodField()
     class Meta:
         model = Event
-        fields = [ 'name','location', 'date', 'organizer', 'qr_code' , 'slug' , 'collabrator_name' , 'donor_attendee_count' , 'start_time' , 'end_time' , 'expected_donor_count' , 'volunteer_required_count', 'volunteer_attendee_count']
+        fields = [ 'name','location', 'date', 'organizer', 'qr_code' , 'slug' , 'collabrator_name' , 'donor_attendee_count' , 'start_time' , 'end_time' , 'expected_donor_count' , 'volunteer_required_count', 'volunteer_attendee_count' , 'collaboration_status']
         read_only_fields = ['organizer', 'qr_code']
 
     def get_organizer(self, obj):
@@ -325,6 +326,17 @@ class MyEventSerializer(serializers.ModelSerializer):
             return obj.collabrator.name
         except AttributeError:
             return None
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        
+        # Remove `collaboration_status` and `collabrator_name` if no collaborator
+        if not instance.collabrator:
+            data.pop('collaboration_status', None)
+            data.pop('collabrator_name', None)
+        
+        return data
+ 
 
 
 class UserEventSerializer(serializers.ModelSerializer):
