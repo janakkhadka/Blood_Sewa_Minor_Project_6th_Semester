@@ -180,10 +180,22 @@ function Events() {
                               // console.log('Event:', event.date),
                               <tr key={index}>
                                 <td>{format(event.date, "MMMM dd, yyyy")}</td> {/* Format date */}
-                                <td  className='table-data'>{event.title}</td>
+                                <td  className='table-data'>{event.name}</td>
                                 <td style={{paddingLeft:"40px"}}>10</td>
                                 <td  className='table-data'>{event.location}</td>
-                                <td><button className="notify-button" onClick={() => navigate("/past-event-detail", {state: {eventId:event.id}})}>Detail</button></td>
+                                <td><button className="notify-button" onClick={() => navigate("/past-event-detail", {state: {
+                                  eventId:index,
+                                  name: event.name,
+                                  date: event.date,
+                                  location: event.location,
+                                  donorNumber: event.donor_attendee_count,
+                                  volunteerNumber: event.volunteer_attendee_count,
+                                  slug: event.slug,
+                                  organizer: event.organizer,
+                                  }})}>
+                                    Detail
+                                  </button>
+                                </td>
                               </tr>
                             ))}
                       </tbody>
