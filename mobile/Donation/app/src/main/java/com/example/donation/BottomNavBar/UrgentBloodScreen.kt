@@ -64,13 +64,120 @@ fun UrgentBloodScreen(navController : NavHostController, viewModel: SharedViewMo
     var Bloodexpanded by remember { mutableStateOf(false) }
     var Bloodselected by remember { mutableStateOf("") }
     var contact by remember { mutableStateOf("") }
-    var address by remember { mutableStateOf("") }
+    var province by remember { mutableStateOf("") }
     var patient_name by remember { mutableStateOf("") }
+    var district by remember { mutableStateOf("") }
+    var city by remember { mutableStateOf("") }
     val scrollState = rememberScrollState()
+    var expanded by remember { mutableStateOf(false) }
+    var Districtexpanded by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    var currentDistricts by remember { mutableStateOf(listOf<String>()) }
     LaunchedEffect(Unit) {
         viewModel.fetchDataBloodGroup()
     }
+
+    val nepalProvinces = listOf(
+        "Province No. 1",
+        "Madhesh Province",
+        "Bagmati Province",
+        "Gandaki Province",
+        "Lumbini Province",
+        "Karnali Province",
+        "Sudurpashchim Province"
+    )
+
+    val province1Districts = listOf(
+        "Bhojpur",
+        "Dhankuta",
+        "Ilam",
+        "Jhapa",
+        "Khotang",
+        "Morang",
+        "Okhaldhunga",
+        "Panchthar",
+        "Sankhuwasabha",
+        "Solukhumbu",
+        "Sunsari",
+        "Taplejung",
+        "Terhathum",
+        "Udayapur"
+    )
+    val madheshProvinceDistricts = listOf(
+        "Bara",
+        "Dhanusha",
+        "Mahottari",
+        "Parsa",
+        "Rautahat",
+        "Saptari",
+        "Sarlahi",
+        "Siraha"
+    )
+    val bagmatiProvinceDistricts = listOf(
+        "Bhaktapur",
+        "Chitwan",
+        "Dhading",
+        "Dolakha",
+        "Kathmandu",
+        "Kavrepalanchok",
+        "Lalitpur",
+        "Makawanpur",
+        "Nuwakot",
+        "Ramechhap",
+        "Rasuwa",
+        "Sindhuli",
+        "Sindhupalchok"
+    )
+    val gandakiProvinceDistricts = listOf(
+        "Baglung",
+        "Gorkha",
+        "Kaski",
+        "Lamjung",
+        "Manang",
+        "Mustang",
+        "Myagdi",
+        "Nawalpur",
+        "Parbat",
+        "Syangja",
+        "Tanahun"
+    )
+    val lumbiniProvinceDistricts = listOf(
+        "Arghakhanchi",
+        "Banke",
+        "Bardiya",
+        "Dang",
+        "Gulmi",
+        "Kapilvastu",
+        "Parasi (Nawalparasi West)",
+        "Palpa",
+        "Pyuthan",
+        "Rolpa",
+        "Rukum (East)",
+        "Rupandehi"
+    )
+    val karnaliProvinceDistricts = listOf(
+        "Dailekh",
+        "Dolpa",
+        "Humla",
+        "Jajarkot",
+        "Jumla",
+        "Kalikot",
+        "Mugu",
+        "Rukum (West)",
+        "Salyan",
+        "Surkhet"
+    )
+    val sudurpashchimProvinceDistricts = listOf(
+        "Achham",
+        "Baitadi",
+        "Bajhang",
+        "Bajura",
+        "Dadeldhura",
+        "Darchula",
+        "Doti",
+        "Kailali",
+        "Kanchanpur"
+    )
 
     //tala gayera data haru laii show garne kaam
     val request = remember { mutableStateListOf<String>() }
@@ -105,7 +212,20 @@ fun UrgentBloodScreen(navController : NavHostController, viewModel: SharedViewMo
                 modifier = Modifier.padding(top = 20.dp)
             ) {
                 OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(.8f),
+                    value = patient_name,
+                    onValueChange = { patient_name = it },
+                    label = { Text("Patient Name") },
+                    shape = RoundedCornerShape(10.dp),
+                    modifier = Modifier.fillMaxWidth(.9f),
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = ""
+                        )
+                    }
+                )
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(.9f),
                     value = Bloodselected,
                     onValueChange = { Bloodselected = it },
                     readOnly = true,
@@ -123,7 +243,7 @@ fun UrgentBloodScreen(navController : NavHostController, viewModel: SharedViewMo
                 DropdownMenu(
                     expanded = Bloodexpanded,
                     onDismissRequest = { Bloodexpanded = false },
-                    modifier = Modifier.fillMaxWidth(.8f)
+                    modifier = Modifier.fillMaxWidth(.9f)
                 ) {
                     bloodOptions.forEach { option ->
                         DropdownMenuItem(
@@ -137,43 +257,123 @@ fun UrgentBloodScreen(navController : NavHostController, viewModel: SharedViewMo
 
                     }
                 }
+                Box(
+                    modifier = Modifier.fillMaxWidth(.9f)
+                ) {
+
+                    OutlinedTextField(
+                        value = province,
+                        onValueChange = { },
+                        readOnly = true,
+                        label = { Text("Select Province") },
+                        trailingIcon = {
+                            Icon(
+                                imageVector = if (expanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
+                                contentDescription = if (expanded) "Collapse Dropdown" else "Expand Dropdown",
+                                modifier = Modifier.clickable { expanded = !expanded }
+                            )
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
+                    Box(
+                        modifier = Modifier
+                            .matchParentSize()
+                            .clickable { expanded = true }
+                    )
+                }
+
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false },
+                    modifier = Modifier.fillMaxWidth(0.9f)
+                ) {
+                    nepalProvinces.forEach { option ->
+                        DropdownMenuItem(
+                            text = { Text(text = option) },
+                            onClick = {
+                                province = option
+                                expanded = false
+
+                                currentDistricts = when (province) {
+                                    "Province No. 1" -> province1Districts
+                                    "Madhesh Province" -> madheshProvinceDistricts
+                                    "Bagmati Province" -> bagmatiProvinceDistricts
+                                    "Gandaki Province" -> gandakiProvinceDistricts
+                                    "Lumbini Province" -> lumbiniProvinceDistricts
+                                    "Karnali Province" -> karnaliProvinceDistricts
+                                    "Sudurpashchim Province" -> sudurpashchimProvinceDistricts
+                                    else -> emptyList()
+                                }
+                            }
+                        )
+                    }
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                ) {
+                    OutlinedTextField(
+                        value = district,
+                        onValueChange = { },
+                        readOnly = true,
+                        label = { Text("Select District") },
+                        trailingIcon = {
+                            Icon(
+                                imageVector = if (Districtexpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,
+                                contentDescription = null
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+
+                    Box(
+                        modifier = Modifier
+                            .matchParentSize()
+                            .clickable { Districtexpanded = true }
+                    )
+                }
+
+                DropdownMenu(
+                    expanded = Districtexpanded,
+                    onDismissRequest = { Districtexpanded = false },
+                    modifier = Modifier.fillMaxWidth(0.9f)
+                ) {
+                    currentDistricts.forEach { option ->
+                        DropdownMenuItem(
+                            text = { Text(text = option) },
+                            onClick = {
+                                district = option
+                                Districtexpanded = false
+                            }
+                        )
+                    }
+                }
                 OutlinedTextField(
-                    value = address,
-                    onValueChange = { address = it },
-                    label = { Text("Enter address") },
+                    value = city,
+                    onValueChange = { city = it },
+                    label = { Text("Enter City") },
                     shape = RoundedCornerShape(10.dp),
-                    modifier = Modifier.fillMaxWidth(.8f),
+                    modifier = Modifier.fillMaxWidth(.9f),
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.LocationOn,
                             contentDescription = ""
                         )
                     }
+                )
 
-                )
-                OutlinedTextField(
-                    value = patient_name,
-                    onValueChange = { patient_name = it },
-                    label = { Text("Patient Name") },
-                    shape = RoundedCornerShape(10.dp),
-                    modifier = Modifier.fillMaxWidth(.8f),
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Default.Phone,
-                            contentDescription = ""
-                        )
-                    }
-                )
 
                 OutlinedTextField(
                     value = contact,
                     onValueChange = { contact = it },
                     label = { Text("Enter contact") },
                     shape = RoundedCornerShape(10.dp),
-                    modifier = Modifier.fillMaxWidth(.8f),
+                    modifier = Modifier.fillMaxWidth(.9f),
                     leadingIcon = {
                         Icon(
-                            imageVector = Icons.Default.Person,
+                            imageVector = Icons.Default.Phone,
                             contentDescription = ""
                         )
                     }
@@ -184,7 +384,7 @@ fun UrgentBloodScreen(navController : NavHostController, viewModel: SharedViewMo
 
 
                         try {
-                            viewModel.createBloodRequest(patient_name = patient_name,contact,Bloodselected,address)
+                            viewModel.createBloodRequest(patient_name = patient_name,contact,Bloodselected,province,district,city)
                             Toast.makeText(context,"Blood Requested Successfully",Toast.LENGTH_LONG).show()
                         } catch (e: Exception) {
                             Toast.makeText(context,"Blood Requested Successfully",Toast.LENGTH_LONG).show()
@@ -193,7 +393,7 @@ fun UrgentBloodScreen(navController : NavHostController, viewModel: SharedViewMo
                         }
                     },
                     modifier = Modifier
-                        .fillMaxWidth(.8f)
+                        .fillMaxWidth(.9f)
                         .padding(bottom = 30.dp,top = 20.dp)
                         .height(50.dp),
                     colors = ButtonDefaults.buttonColors(

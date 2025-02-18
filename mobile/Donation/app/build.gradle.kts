@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
 }
 
 android {
@@ -38,6 +39,7 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -64,6 +66,9 @@ dependencies {
     implementation(libs.androidx.espresso.core)
     implementation(libs.androidx.media3.common.ktx)
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.play.services.maps)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.constraintlayout)
 
 
 

@@ -60,7 +60,6 @@ fun ScheduleTime(navController: NavHostController, viewModel: SharedViewModel = 
     var shiftExpanded by remember { mutableStateOf(false) }
     var shiftSelected by remember { mutableStateOf("") }
     var donation_date by remember { mutableStateOf("") }
-    var selectedHospital by remember { mutableStateOf("") }
     val scrollState = rememberScrollState()
     val context = LocalContext.current
 //organization ko list haru ko lagi
@@ -146,7 +145,7 @@ fun ScheduleTime(navController: NavHostController, viewModel: SharedViewModel = 
                         value = shiftSelected,
                         onValueChange = { shiftSelected = it },
                         readOnly = true,
-                        label = { Text("Select Blood Bank") },
+                        label = { Text("Select Shift") },
                         trailingIcon = {
                             Icon(
                                 imageVector = if (shiftExpanded) Icons.Default.ArrowDropUp else Icons.Default.ArrowDropDown,

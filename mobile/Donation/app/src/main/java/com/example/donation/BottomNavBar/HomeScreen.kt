@@ -32,6 +32,7 @@ import androidx.compose.material.icons.filled.FindInPage
 import androidx.compose.material.icons.filled.LocalHospital
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PersonAddAlt1
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.PlaylistAdd
 import androidx.compose.material.icons.filled.Schedule
@@ -84,12 +85,12 @@ import java.time.LocalTime
 @Composable
 fun HomeScreen(navController : NavHostController,viewModel: SharedViewModel = viewModel()) {
 
-//    LaunchedEffect(Unit) {
-//        viewModel.fetchBloodRequests()
-//    }
-//    LaunchedEffect(Unit) {
-//        viewModel.fetchUpcomingEventsList()
-//    }
+    LaunchedEffect(Unit) {
+        viewModel.fetchBloodRequests()
+    }
+    LaunchedEffect(Unit) {
+        viewModel.fetchUpcomingEventsList()
+    }
     val bloodRequests by viewModel.bloodRequests.collectAsState()
     val eventlists by viewModel.eventUpList.collectAsState()
 
@@ -379,7 +380,7 @@ fun PersonItem(person: SeeBloodRequest, onClick : () -> Unit) {
                         imageVector = Icons.Default.LocalHospital,
                         contentDescription = ""
                     )
-                    Text(text = person.location)
+                    Text(text = person.province)
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth()
@@ -388,7 +389,7 @@ fun PersonItem(person: SeeBloodRequest, onClick : () -> Unit) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
-                        imageVector = Icons.Default.Place,
+                        imageVector = Icons.Default.Phone,
                         contentDescription = ""
                     )
                     Text(text = person.contact)
@@ -403,7 +404,7 @@ fun PersonItem(person: SeeBloodRequest, onClick : () -> Unit) {
                         imageVector = Icons.Default.CalendarMonth,
                         contentDescription = ""
                     )
-                    Text(text = "2081-10-12")
+                    Text(text = person.date)
                 }
 
 
@@ -449,7 +450,7 @@ fun IconWithLabel(icon: ImageVector, label: String,onClick :() ->Unit) {
 @Composable
 fun DialogBox(persons :SeeBloodRequest){
     val context = LocalContext.current
-    val contentToShare = "${persons.patient_name}\n${persons.contact}\n${persons.location}\n${persons.blood_group}"
+    val contentToShare = "${persons.patient_name}\n${persons.contact}\n${persons.province}\n${persons.blood_group}"
     Box(
         modifier = Modifier.height(300.dp)
             .clip(RoundedCornerShape(20.dp))
@@ -487,7 +488,7 @@ fun DialogBox(persons :SeeBloodRequest){
                 ) {
                     Text(text = "Contact Person : ${persons.patient_name}")
                     Text(text = "Phone : ${persons.contact}")
-                    Text(text = "Hospital : ${persons.location}")
+                    Text(text = "Hospital : ${persons.province}")
                     Text(text = "Case : ${persons.blood_group}")
 
                 }
@@ -504,7 +505,7 @@ fun DialogBox(persons :SeeBloodRequest){
                         onClick = {
                             if(persons.contact.isNotEmpty()){
                                 val intent = Intent(Intent.ACTION_DIAL).apply {
-                                    data = Uri.parse("9865445343")
+                                    data = Uri.parse(persons.contact)
                                 }
                                 try {
                                     context.startActivity(intent)

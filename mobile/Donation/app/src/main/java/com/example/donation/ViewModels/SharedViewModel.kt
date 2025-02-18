@@ -2,7 +2,6 @@ package com.example.donation.ViewModels
 
 import android.annotation.SuppressLint
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -20,7 +19,9 @@ import com.example.donation.DataClasses.EventDonationHistory
 import com.example.donation.DataClasses.EventList
 import com.example.donation.DataClasses.JoinResponse
 import com.example.donation.DataClasses.MyBookings
-import com.example.donation.DataClasses.MyEventHistory
+import com.example.donation.DataClasses.MyCreatedEvent
+import com.example.donation.DataClasses.MyJoinedEvents
+import com.example.donation.DataClasses.MyVolunteeredEvents
 import com.example.donation.DataClasses.OrganizationInventory
 import com.example.donation.DataClasses.ScheduleTime
 import com.example.donation.DataClasses.SeeBloodRequest
@@ -44,6 +45,13 @@ class SharedViewModel : ViewModel(){
     @SuppressLint("CompositionLocalNaming")
     val context = LocalContext
 
+    //created events ko lagi
+    private val _createdEvents = MutableStateFlow<List<MyCreatedEvent>>(emptyList())
+    val createdEvents : StateFlow<List<MyCreatedEvent>> = _createdEvents
+
+    //volunteering hostory ko lagi
+    private val _historyVolunteered = MutableStateFlow<List<MyVolunteeredEvents>>(emptyList())
+    val historyVolunteered: StateFlow<List<MyVolunteeredEvents>> = _historyVolunteered
 
     //event join garna ko lagi
     private val _joinEventStatus = MutableLiveData<Result<JoinResponse?>>()
@@ -75,8 +83,8 @@ class SharedViewModel : ViewModel(){
 
 
     //event history ko lagi
-    private val _historyList = MutableStateFlow<List<MyEventHistory>>(emptyList())
-    val historyList: StateFlow<List<MyEventHistory>> = _historyList
+    private val _historyListJoined = MutableStateFlow<List<MyJoinedEvents>>(emptyList())
+    val historyListJoined: StateFlow<List<MyJoinedEvents>> = _historyListJoined
 
     //event ko list haru herna laii
     private val _eventList = MutableStateFlow<List<EventList>>(emptyList())
@@ -157,7 +165,9 @@ class SharedViewModel : ViewModel(){
         patient_name : String,
         contact : String,
         blood_group: String,
-         location : String
+        province : String,
+        district : String,
+        city : String
     ) {
         viewModelScope.launch {
             try {
@@ -165,7 +175,9 @@ class SharedViewModel : ViewModel(){
                     patient_name = patient_name,
                     contact = contact,
                     blood_group = blood_group,
-                    location = location
+                    province = province,
+                    district = district,
+                    city = city
                 )
 
 
@@ -201,7 +213,10 @@ class SharedViewModel : ViewModel(){
         description: String,
         location : String,
         collaborator : String,
-        date : String
+        date : String,
+        startTime : String,
+        endTime : String,
+        volunteerReq : Int
     ){
         viewModelScope.launch {
             try{
@@ -210,7 +225,10 @@ class SharedViewModel : ViewModel(){
                     description = description,
                     location = location,
                     collabrator = collaborator,
-                    date = date
+                    date = date,
+                    endTime = endTime,
+                    startTime = startTime,
+                    volunteer_required_count = volunteerReq
                 )
                 val response = UserRegistration.authService.createEvent(
                     "Bearer $bearerToken",
@@ -441,12 +459,40 @@ fun fetchOrgData(){
     }
 
     //fetch my eveny history
-    //blood inventory ko lagi
     fun fetchEventHistory(){
         viewModelScope.launch {
             try {
                 val response = UserRegistration.authService.getMyHistory("Bearer $bearerToken")
-                _historyList.value = response
+                _historyListJoined.value = response
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("checkValue","${e.message}")
+            }
+
+        }
+    }
+
+
+    //fetch my volunteering hostory
+    fun fetchVolunteeringHistory(){
+        viewModelScope.launch {
+            try {
+                val response = UserRegistration.authService.getVolunteeredEvents("Bearer $bearerToken")
+                _historyVolunteered.value = response
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("checkValue","${e.message}")
+            }
+
+        }
+    }
+
+    //fetch my created events
+    fun fetchCreatedEvents(){
+        viewModelScope.launch {
+            try {
+                val response = UserRegistration.authService.getMyCreatedEvents("Bearer $bearerToken")
+                _createdEvents.value = response
             } catch (e: Exception) {
                 e.printStackTrace()
                 Log.e("checkValue","${e.message}")
