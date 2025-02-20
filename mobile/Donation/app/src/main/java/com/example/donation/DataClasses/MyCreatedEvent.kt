@@ -1,13 +1,12 @@
 package com.example.donation.DataClasses
 
-import java.io.File
 
 data class MyCreatedEvent(
     val name : String,
     val location : String,
     val date : String,
     val organizer : String,
-    val qr_code : File,
+    val qr_code : String,
     val slug : String,
     val collabrator_name : String,
     val donot_attendee_count : Int,

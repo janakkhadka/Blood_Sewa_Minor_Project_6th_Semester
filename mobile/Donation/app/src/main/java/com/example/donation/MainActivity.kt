@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             navController = rememberNavController()
-            //SetUpNavigation(navController)
+            SetUpNavigation(navController)
             //ViewEvents(navController)
             //BloodBanks(navController)
             //SearchDonors(navController)
@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
           //  MyBookings(navController)
 
            // EventViewExtended(navController)
-           MyEvents(navController)
+          // MyEvents(navController)
            // UrgentBloodScreen(navController)
            // CreateEvents(navController)
 

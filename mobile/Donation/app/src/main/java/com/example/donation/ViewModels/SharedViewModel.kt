@@ -2,6 +2,7 @@ package com.example.donation.ViewModels
 
 import android.annotation.SuppressLint
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.donation.DataClasses.BloodGroupSearch
 import com.example.donation.DataClasses.BloodRequest
 import com.example.donation.DataClasses.CheckedInEvent
@@ -27,9 +29,11 @@ import com.example.donation.DataClasses.ScheduleTime
 import com.example.donation.DataClasses.SeeBloodRequest
 import com.example.donation.DataClasses.TodaysEvent
 import com.example.donation.DataClasses.UpcomingEvents
+import com.example.donation.DataClasses.UpdateInformation
 import com.example.donation.backend.UserRegistration
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import retrofit2.Response
 import java.io.IOException
 
 
@@ -44,6 +48,11 @@ sealed class ResponseState {
 class SharedViewModel : ViewModel(){
     @SuppressLint("CompositionLocalNaming")
     val context = LocalContext
+
+
+    //profile update garna ko lagi
+    private val _updateProfile = MutableStateFlow<List<UpdateInformation>>(emptyList())
+    val updateProfile: StateFlow<List<UpdateInformation>>  = _updateProfile
 
     //created events ko lagi
     private val _createdEvents = MutableStateFlow<List<MyCreatedEvent>>(emptyList())
@@ -495,9 +504,28 @@ fun fetchOrgData(){
                 _createdEvents.value = response
             } catch (e: Exception) {
                 e.printStackTrace()
-                Log.e("checkValue","${e.message}")
+                Log.e("checkmessage","${e.message}")
             }
 
+        }
+    }
+
+    //update the profile
+    fun updateUser(phoneNumber: String, password: String) {
+        viewModelScope.launch {
+            try {
+                val request = UpdateInformation(phone_number = phoneNumber, password = password)
+                val response = UserRegistration.authService.updateProfile("Bearer $bearerToken",request)
+                if (response.isSuccessful) {
+                    _responseMessage.value = "Profile updated successfully!"
+
+                    Log.d("Update", "User updated successfully")
+                } else {
+                    Log.e("Update", "Error: ${response.errorBody()?.string()}")
+                }
+            } catch (e: Exception) {
+                Log.e("Update Error", "Exception: ${e.localizedMessage}")
+            }
         }
     }
 
