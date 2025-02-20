@@ -45,6 +45,8 @@ function EventDetail() {
   const slug = loc.state?.slug
   console.log(slug)
 
+  const [barList, setBarList] = useState([]); 
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -136,6 +138,56 @@ function EventDetail() {
   
       //return () => clearInterval(intervalId);
     },[slug, orgAuthToken]);
+
+
+
+  //fetching inventory data
+  useEffect(() => {
+    if(!orgAuthToken){
+      setError('No auth token found. Please log in');
+      setLoading(false);
+      return;
+    }
+
+    const fetchData = async () => {
+      try {
+        const response = await fetch(api+'event/'+slug+'/details/',{
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${orgAuthToken}`,
+          },
+        });
+
+        if (!response.ok) {
+          const errorResponse = await response.json();
+          console.log(errorResponse);
+        throw new Error(`Error: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log(result)
+        const newBarList = Object.entries(result.collected_blood)
+          .filter(([key]) =>
+            ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].includes(key)
+          )
+          .map(([type, pint]) => ({ type, pint }));
+
+        setBarList(newBarList);
+        console.log(newBarList)
+
+      }catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+
+   // const intervalId = setInterval(fetchData, 3000);
+
+    //return () => clearInterval(intervalId);
+  },[slug, orgAuthToken]);
   
   return (
     <div className="event-details-wrapper">
@@ -183,7 +235,7 @@ function EventDetail() {
                         <span>Pint value greater than 25</span>
                     </div>
                 </div>
-                <MyBarChart width={700} height={220} className='bar-chart'/>
+                <MyBarChart width={700} height={220} className='bar-chart' barList={barList}/>
               </div>
             </section>
           </div>
