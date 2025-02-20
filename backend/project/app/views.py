@@ -226,16 +226,52 @@ class UserProfileUpdateView(APIView):
 
 
 
+# class BloodRequestCreateView(APIView):
+#     permission_classes = [permissions.IsAuthenticated]
+
+#     def post(self, request):
+#         serializer = BloodRequestSerializer(data=request.data, context={'request': request})
+#         if serializer.is_valid():
+#             # Associate the current user with the blood request
+#             serializer.save(user=request.user)
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+from rest_framework import permissions, status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+import json
+from app.serializers import BloodRequestSerializer
+
 class BloodRequestCreateView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
         serializer = BloodRequestSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
-            # Associate the current user with the blood request
-            serializer.save(user=request.user)
+            # Save the blood request
+            blood_request = serializer.save(user=request.user)
+
+            # Prepare WebSocket message
+            message = {
+                "message": f"New Blood Request: {blood_request.blood_group} needed in {blood_request.city}, {blood_request.district}."
+            }
+
+            # Send WebSocket notification
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)(
+                "blood_requests",  # Group name from the consumer
+                {
+                    "type": "send_notification",
+                    "message": json.dumps(message),
+                },
+            )
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class PublicBloodRequestCreateView(APIView):

@@ -129,6 +129,23 @@ class BloodRequestSerializer(serializers.ModelSerializer):
         validated_data['user'] = self.context['request'].user
         return super().create(validated_data)
 
+    # def create(self, validated_data):
+    #     blood_request = BloodRequestModel.objects.create(**validated_data)
+
+    #     # Send WebSocket Notification
+    #     channel_layer = get_channel_layer()
+    #     async_to_sync(channel_layer.group_send)(
+    #         "notifications",
+    #         {
+    #             "type": "send_blood_request",
+    #             "message": f"Urgent Blood Request for {blood_request.patient_name}!",
+    #             "blood_group": blood_request.blood_group,
+    #             "location": f"{blood_request.city}, {blood_request.district}, {blood_request.province}",
+    #         }
+    #     )
+
+    #     return blood_request
+
 
 class PublicBloodRequestSerializer(serializers.ModelSerializer):
     user_name = serializers.CharField(read_only=True)  # Display name of the user or Anonymous
@@ -372,6 +389,9 @@ class BulkBloodRequestSerializer(serializers.ModelSerializer):
             # Treat the entire payload as the `blood_request`
             return {'blood_request': data}
         return super().to_internal_value(data)
+
+
+
 
 
 

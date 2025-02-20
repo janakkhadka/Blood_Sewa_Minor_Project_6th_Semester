@@ -204,6 +204,7 @@ class UserEvent(models.Model):
         return f"{self.user.name} - {self.event.name}"
 
 
+
 class Volunteer(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     event = models.ForeignKey('Event', on_delete=models.CASCADE, related_name='volunteers')
