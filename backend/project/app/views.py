@@ -1199,3 +1199,43 @@ class MyEventAccToSlugView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+
+
+
+
+class SendBloodForRequestView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, organization_name):
+        # Replace hyphens with spaces for organization name
+        organization_name = organization_name.replace('-', ' ')
+
+        # Get the bulk request associated with the given organization
+        bulk_request = get_object_or_404(BulkRequestmodel, organization__name=organization_name)
+
+        # Get the blood sent data from the request
+        sent_blood = request.data.get("send_blood", {})
+
+        if not sent_blood:
+            return Response({"message": "No blood data provided."}, status=400)
+
+        # Deduct blood from the bulk request's blood_request field
+        for blood_type, amount in sent_blood.items():
+            # Check if the blood type exists in the bulk request's blood_request field
+            current_amount = bulk_request.blood_request.get(blood_type, 0)
+
+            if current_amount < amount:
+                return Response({"message": f"Not enough {blood_type} blood in inventory."}, status=400)
+
+            # Deduct blood from the bulk request's blood_request
+            bulk_request.blood_request[blood_type] -= amount
+
+        # Save the updated blood request field
+        bulk_request.save()
+
+        # Return success response
+        return Response({"message": "Blood sent successfully and inventory updated."}, status=200)
+
+
+
+
