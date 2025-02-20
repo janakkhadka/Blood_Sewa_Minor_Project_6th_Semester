@@ -49,7 +49,7 @@ fun SetUpNavigation(navController : NavHostController) {
 
         NavHost(
             navController = navController,
-            startDestination = Screens.OnBoarding.route
+            startDestination = Screens.BottomNavBar.route
         ) {
             composable(Screens.OnBoarding.route) {
                 OnBoardingScreen(navController)

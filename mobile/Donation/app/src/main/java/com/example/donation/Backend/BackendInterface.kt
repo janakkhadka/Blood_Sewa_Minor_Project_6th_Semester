@@ -12,6 +12,7 @@ import com.example.donation.DataClasses.EventList
 import com.example.donation.DataClasses.JoinResponse
 import com.example.donation.DataClasses.MyBookings
 import com.example.donation.DataClasses.MyCreatedEvent
+import com.example.donation.DataClasses.MyDonationInformation
 import com.example.donation.DataClasses.MyJoinedEvents
 import com.example.donation.DataClasses.MyVolunteeredEvents
 import com.example.donation.DataClasses.OrganizationInventory
@@ -20,6 +21,8 @@ import com.example.donation.DataClasses.ScheduleTime
 import com.example.donation.DataClasses.SeeBloodRequest
 import com.example.donation.DataClasses.TodaysEvent
 import com.example.donation.DataClasses.UpcomingEvents
+import com.example.donation.DataClasses.UpdateInformation
+import com.example.donation.DataClasses.updateResponse
 import com.example.donation.backend.login.LoginRequest
 import com.example.donation.backend.login.LoginResponse
 import com.example.donation.backend.registration.PostResponse
@@ -31,6 +34,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface BackendInterface {
@@ -163,6 +167,18 @@ interface BackendInterface {
    suspend fun getMyCreatedEvents(
       @Header("Authorization") authorization: String
    ): List<MyCreatedEvent>
+
+   @PUT("user/profile/update/")
+   suspend fun updateProfile(
+      @Header("Authorization") authorization: String,
+      @Body request: UpdateInformation
+   ) : Response<Unit>
+
+   //my donation information
+   @GET("my-donation-info/")
+   suspend fun getMyDonationInfo(
+      @Header("Authorization") authorization: String
+   ): List<MyDonationInformation>
 
 
 

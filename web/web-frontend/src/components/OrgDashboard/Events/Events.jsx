@@ -37,7 +37,6 @@ function Events() {
     setComingEvent(true);
   };
 
-  const [pastEventData, setPastEventData] = useState();
   const [pastEventList, setPastEventList] = useState([]);
 
   //fetching all my events data from server and storing to specific states
@@ -145,7 +144,7 @@ function Events() {
                               <td>{format(event.date, "MMMM dd, yyyy")}</td> {/* Format date */}
                               <td  className='table-data'>{event.name}</td>
                               <td  className='table-data'>{event.location}</td>
-                              <td><button className="notify-button" onClick={()=>handleEventClick(event.id)}>Detail</button></td>
+                              <td><button className="notify-button" onClick={()=>handleEventClick(index)}>Detail</button></td>
                             </tr>
                           ))}
                         </tbody>
