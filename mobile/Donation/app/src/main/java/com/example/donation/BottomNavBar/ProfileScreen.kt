@@ -1,6 +1,7 @@
 package com.example.donation.BottomNavBar
 
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -59,6 +60,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.donation.DataClasses.EventDonationHistory
+import com.example.donation.DataClasses.MyDonationInformation
 import com.example.donation.DataClasses.MyEventHistory
 import com.example.donation.Navigation.Screens
 import com.example.donation.R
@@ -87,6 +89,11 @@ fun ProfileScreen(navController : NavHostController,viewModel: SharedViewModel =
     LaunchedEffect(Unit) {
         viewModel.fetchEventHistory()
     }
+    LaunchedEffect(Unit) {
+        viewModel.fetchMyDonationInformation()
+    }
+
+    val donationInformation by viewModel.myDonationInformation.collectAsState()
 
 
     //badge ko lagi
@@ -114,13 +121,6 @@ fun ProfileScreen(navController : NavHostController,viewModel: SharedViewModel =
 
     )
 
-    val dummyHistroy = listOf(
-        EventDonationHistory(
-            even_name = "campaign",
-            date = "jan-02,2024",
-            activity = "donated"
-        )
-    )
 
 
     Scaffold(
@@ -354,6 +354,10 @@ fun ProfileScreen(navController : NavHostController,viewModel: SharedViewModel =
 
 
                     DonationActivityHeading()
+                    donationInformation.forEach(){data ->
+                        DonationActivity(data)
+
+                    }
                     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
 
                 }
@@ -446,16 +450,16 @@ fun DonationActivityHeading(){
 
 }
 @Composable
-fun DonationActivity(data: MyEventHistory){
+fun DonationActivity(data:MyDonationInformation){
 
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ){
-        Text(text = data.joined_on, fontSize = 14.sp, color = dRed)
-        Text(text = data.event_name,fontSize = 14.sp, color = dRed)
-       // Text(text = data.Donated,fontSize = 14.sp, color = dRed)
+        Text(text = data.last_donation_date, fontSize = 14.sp, color = dRed)
+        Text(text = data.last_donation_event,fontSize = 14.sp, color = dRed)
+        Text(text = "Donated",fontSize = 14.sp, color = dRed)
 
     }
 

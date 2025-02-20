@@ -22,6 +22,7 @@ import com.example.donation.DataClasses.EventList
 import com.example.donation.DataClasses.JoinResponse
 import com.example.donation.DataClasses.MyBookings
 import com.example.donation.DataClasses.MyCreatedEvent
+import com.example.donation.DataClasses.MyDonationInformation
 import com.example.donation.DataClasses.MyJoinedEvents
 import com.example.donation.DataClasses.MyVolunteeredEvents
 import com.example.donation.DataClasses.OrganizationInventory
@@ -90,6 +91,10 @@ class SharedViewModel : ViewModel(){
     private val _inventory = MutableStateFlow<List<OrganizationInventory>>(emptyList())
     val inventory : StateFlow<List<OrganizationInventory>> = _inventory
 
+
+    //my donation information ko lagi
+    private val _myDonationInformation = MutableStateFlow<List<MyDonationInformation>>(emptyList())
+    val myDonationInformation : StateFlow<List<MyDonationInformation>> = _myDonationInformation
 
     //event history ko lagi
     private val _historyListJoined = MutableStateFlow<List<MyJoinedEvents>>(emptyList())
@@ -526,6 +531,23 @@ fun fetchOrgData(){
             } catch (e: Exception) {
                 Log.e("Update Error", "Exception: ${e.localizedMessage}")
             }
+        }
+    }
+
+    //get my donation information
+
+    fun fetchMyDonationInformation(){
+        viewModelScope.launch {
+            try {
+                val response = UserRegistration.authService.getMyDonationInfo("Bearer $bearerToken")
+                _myDonationInformation.value = response
+                Log.d("Response", response.toString())
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("checkValue","${e.message}")
+            }
+
         }
     }
 

@@ -409,7 +409,7 @@ private fun initiateScanner(
             barcode.rawValue?.let { onScanned(it) }
             barcode.displayValue?.let {
                 viewModel.checkInEvent(it)
-                viewModel.checkInVolunteer(it)
+//                viewModel.checkInVolunteer(it)
                 Log.d(TAG, "initiateScanner: Display slug ${it}")
             }
             when (barcode.valueType) {

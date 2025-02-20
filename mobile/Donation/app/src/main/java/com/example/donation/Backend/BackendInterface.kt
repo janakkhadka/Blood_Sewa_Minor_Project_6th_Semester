@@ -175,7 +175,7 @@ interface BackendInterface {
    ) : Response<Unit>
 
    //my donation information
-   @GET("my-all-events/")
+   @GET("my-donation-info/")
    suspend fun getMyDonationInfo(
       @Header("Authorization") authorization: String
    ): List<MyDonationInformation>
