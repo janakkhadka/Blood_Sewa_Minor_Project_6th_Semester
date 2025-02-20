@@ -24,7 +24,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.timezone import now
 from datetime import date , timedelta , datetime
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
-from .serializers import (PublicBloodRequestSerializer,UserSerializer,LoginSerializer, UserProfileUpdateSerializer, BloodRequestSerializer , LimitedUserSerializer , EventSerializer, MyEventSerializer , UserEventSerializer , OrganizationSerializer , BloodInventorySerializer , BookingSerializer , OrganizationBookingSerializer , UserEventCreateSerializer)
+from .serializers import (EventUpdateSerializer , PublicBloodRequestSerializer,UserSerializer,LoginSerializer, UserProfileUpdateSerializer, BloodRequestSerializer , LimitedUserSerializer , EventSerializer, MyEventSerializer , UserEventSerializer , OrganizationSerializer , BloodInventorySerializer , BookingSerializer , OrganizationBookingSerializer , UserEventCreateSerializer)
 
 
 class RegisterUserView(APIView):
@@ -758,7 +758,7 @@ class MyeventInfo(APIView):
     def get(self, request):
         # Fetch events where the user is either the organizer or a collaborator
         my_events = Event.objects.filter(
-            Q(organizer=request.user)
+            Q(organizer=request.user) | Q(collabrator=request.user)
         )
 
         serializers = MyEventSerializer(my_events, many=True)
@@ -767,18 +767,7 @@ class MyeventInfo(APIView):
 
 
 
-class MyColabEventInfo(APIView):
-    permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request):
-        # Fetch events where the user is either the organizer or a collaborator
-        my_events = Event.objects.filter(
-             Q(collabrator=request.user)
-        )
-
-        serializers = MyEventSerializer(my_events, many=True)
-        
-        return Response(serializers.data , status=status.HTTP_200_OK)
 
 
 
@@ -1170,12 +1159,43 @@ class MyVolunteeringHistory(APIView):
 
 
 
+class UpdateEventView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    def patch(self , request , slug):
+        event = get_object_or_404(Event, slug=slug)
+        serializer = EventUpdateSerializer(evnt , data = request.data , partial = True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+class DeleteventView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    def delete(self , request , slug):
+        event = get_object_or_404(Event, slug=slug)
+        
+        if event.date > now().date():
+            event.delete()
+            return Response({"message": "Event deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+        
+        else:
+            return Response(
+                {"message": "Cannot delete past or ongoing events"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 
 
 
+class MyEventAccToSlugView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
 
+    def get(self , request , slug):
 
-
+        event = get_object_or_404(Event, slug=slug)
+        serializer = MyEventSerializer(event)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 

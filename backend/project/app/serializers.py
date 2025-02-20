@@ -311,7 +311,7 @@ class MyEventSerializer(serializers.ModelSerializer):
     #collabrator_status = serializers.SerializerMethodField()
     class Meta:
         model = Event
-        fields = [ 'name','location', 'date', 'organizer', 'qr_code' , 'slug' , 'collabrator_name' , 'donor_attendee_count' , 'start_time' , 'end_time' , 'expected_donor_count' , 'volunteer_required_count', 'volunteer_attendee_count' , 'collaboration_status']
+        fields = [ 'name','location', 'date', 'organizer', 'qr_code' , 'slug' , 'collabrator_name' , 'donor_attendee_count' , 'start_time' , 'end_time' , 'expected_donor_count' , 'volunteer_required_count', 'volunteer_attendee_count' , 'collaboration_status' , 'collected_blood']
         read_only_fields = ['organizer', 'qr_code']
 
     def get_organizer(self, obj):
@@ -428,5 +428,11 @@ class OrganizationBookingSerializer(serializers.ModelSerializer):
 
 
 
-
+class EventUpdateSerializer(serializers.ModelSerializer):
+     class Meta:
+        model = Event
+        fields = ['collected_blood']
+        extra_kwargs = {
+            'collected_blood': {'required': False}  # Allow partial update
+        }
 

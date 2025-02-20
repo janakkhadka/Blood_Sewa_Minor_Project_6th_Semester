@@ -149,6 +149,7 @@ class Event(models.Model):
     status = models.BooleanField(default=False)
     expected_donor_count = models.IntegerField(default=0)
     collaboration_status = models.CharField(max_length=10, choices=COLLABORATION_STATUS_CHOICES, default='pending')
+    collected_blood = models.JSONField(default=dict)
 
 
 
