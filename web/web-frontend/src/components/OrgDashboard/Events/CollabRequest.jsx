@@ -21,8 +21,6 @@ function CollabRequest() {
   const [error, setError] = useState(null);
 
   const [collabRequest, setCollabRequest] = useState([]);
-  const [isAccepted, setIsAccepted] = useState(false);
-  const [isRejected, setIsRejected] = useState(false);
 
    //fetching all my events data from server and storing to specific states
     useEffect(() => {
@@ -63,53 +61,46 @@ function CollabRequest() {
     },[orgAuthToken]);
     
 
-    const handleAccept = (collabEventID) => {
-      setIsAccepted(true);
-      const collabEvent = collabRequest.find((event) => event.id === collabEventID);
-      console.log(collabEvent);
-    }
+    const handleAction = async ( slug, isAccepted) => {
+      //e.preventDefault();
+      var createEventData = {}
+      if(isAccepted){
+        createEventData = {
+          "action": "approve"
+      }
+      }
+      if(!isAccepted){
+        createEventData = {
+          "action": "reject"
+      }
+      }
+      
+      console.log(JSON.stringify(createEventData))
 
-      //create event garda ko lagi
-        const handleCollabResponse = async (e) => {
-            e.preventDefault();
-            var createEventData = {}
-            if(isAccepted){
-              createEventData = {
-                "action": "approve"
-            }
-            }
-            if(isRejected){
-              createEventData = {
-                "action": "reject"
-            }
-            }
-            
-            console.log(JSON.stringify(createEventData))
-    
-            try {
-                // server maa data pathauna lai update garda
-                const response = await fetch(api + 'events/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${orgAuthToken}`,
-                    },
-                    body: JSON.stringify(createEventData),
-                });;
-                const responseData = await response.json();
-    
-                if (response.ok) {
-                    console.log('Server Response:', responseData);
-                } else {
-                    console.log(response)
-                    console.error(responseData);
-                    // alert(responseData);
-                }
-            } catch (error) {
-                console.error('Catch:', error);
-                // alert('catch: ' + error);
-            }
-        };
+      try {
+          // server maa data pathauna lai update garda
+          const response = await fetch(api + 'event/'+slug+'/manage/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${orgAuthToken}`,
+              },
+              body: JSON.stringify(createEventData),
+          });;
+          const responseData = await response.json();
+
+          if (response.ok) {
+              console.log('Server Response:', responseData);
+          } else {
+              console.log(response)
+              console.error(responseData);
+              // alert(responseData);
+          }
+      } catch (error) {
+          console.error('Catch:', error);
+          // alert('catch: ' + error);
+      }
+    }
   return (
     <div className="collaboration-request-wrapper">
       <div className="syringe">
@@ -151,8 +142,8 @@ function CollabRequest() {
                   <td  className='table-data'>{request.event_location}</td>
                   <td>
                     <div className="decesion-button">
-                      <button><TiTick/></button>
-                      <button><TiTimes /></button>
+                      <button  onClick = {() => handleAction(request.slug, true)}><TiTick/></button>
+                      <button  onClick = {() => handleAction(request.slug, false)}><TiTimes /></button>
                     </div>
                   </td>
                 </tr>
