@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -94,10 +95,13 @@ fun ProfileScreen(navController : NavHostController,viewModel: SharedViewModel =
     }
 
     val donationInformation by viewModel.myDonationInformation.collectAsState()
+    Log.d("DonationInformation", donationInformation.toString())
+
+    var donationCount = donationInformation?.donation_count?: 0
 
 
     //badge ko lagi
-    val donationCount by remember { mutableIntStateOf(8) }
+
     val badgeDetails = when (donationCount) {
         in 0..10 -> BadgeDetails(R.drawable.bronze, "Bronze", 0, 10)
         in 11..20 -> BadgeDetails(R.drawable.silver, "Silver", 11, 20)
@@ -169,8 +173,8 @@ fun ProfileScreen(navController : NavHostController,viewModel: SharedViewModel =
                             modifier = Modifier.size(60.dp)
                         )
                         Column() {
-                            Text(text = "Kiran Acharya", fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                            Text(text = "kiran.211720@ncit.edu.np", fontSize = 16.sp)
+                            Text(text = "Bishal Parajuli", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                            Text(text = "bishal@gmail.com", fontSize = 16.sp)
                         }
                     }
 
@@ -234,7 +238,7 @@ fun ProfileScreen(navController : NavHostController,viewModel: SharedViewModel =
                                 ) {
                                 Text(text = "Progress in ${badgeText}")
                                 Spacer(modifier = Modifier.width(30.dp))
-                                Text(text = "${(progress * 100).toInt()}%%", fontWeight = FontWeight.Bold)
+                                Text(text = "${(progress * 100).toInt()}%", fontWeight = FontWeight.Bold)
 
                             }
                             Spacer(modifier = Modifier.height(10.dp))
@@ -287,9 +291,9 @@ fun ProfileScreen(navController : NavHostController,viewModel: SharedViewModel =
                 ) {
                     Text(text = " Donation Information", fontWeight = FontWeight.Bold, color = dRed, fontSize = 22.sp)
 
-                    Details(Icons.Default.Countertops, "Donation Count:", "21")
-                    Details(Icons.Default.CalendarMonth, "Last Donation Date:", "December 1, 2024")
-                    Details(Icons.Default.LocationOn, "Last Donation Event:", "KMC Hospital")
+                    Details(Icons.Default.Countertops, "Donation Count:", "${donationInformation?.donation_count}")
+                    Details(Icons.Default.CalendarMonth, "Last Donation Date:", "${donationInformation?.last_donation_date}")
+                    Details(Icons.Default.LocationOn, "Last Donation Event:", "${donationInformation?.last_donation_event}")
 
                     Text(
                         text = " Your are currently elligible to Donate Blood",
@@ -354,10 +358,9 @@ fun ProfileScreen(navController : NavHostController,viewModel: SharedViewModel =
 
 
                     DonationActivityHeading()
-                    donationInformation.forEach(){data ->
-                        DonationActivity(data)
 
-                    }
+
+
                     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
 
                 }

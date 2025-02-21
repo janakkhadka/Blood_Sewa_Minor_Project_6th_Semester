@@ -33,6 +33,7 @@ import com.example.donation.Verification.OtpVerification
 import com.example.donation.Verification.SignUp
 import com.example.donation.datastore.DataStoreManager
 import com.example.donation.ExtraItems.ScheduleTime
+import com.example.donation.OnBoardingScreens.AnonymousUser
 
 
 @Composable
@@ -49,7 +50,7 @@ fun SetUpNavigation(navController : NavHostController) {
 
         NavHost(
             navController = navController,
-            startDestination = Screens.BottomNavBar.route
+            startDestination = Screens.OnBoarding.route
         ) {
             composable(Screens.OnBoarding.route) {
                 OnBoardingScreen(navController)
@@ -108,6 +109,11 @@ fun SetUpNavigation(navController : NavHostController) {
             composable(Screens.updateProfile.route) {
 
                 UpdateProfile(navController)
+            }
+
+            composable(Screens.anynomous.route) {
+
+                AnonymousUser(navController)
             }
 
 

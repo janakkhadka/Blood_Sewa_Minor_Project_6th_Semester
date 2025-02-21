@@ -178,7 +178,12 @@ interface BackendInterface {
    @GET("my-donation-info/")
    suspend fun getMyDonationInfo(
       @Header("Authorization") authorization: String
-   ): List<MyDonationInformation>
+   ):MyDonationInformation
+
+   @POST("public/blood-request/")
+   suspend fun createAnonymousRequest(
+      @Body bloodRequest: BloodRequest
+   ): Response<Unit>
 
 
 
