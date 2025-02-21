@@ -261,7 +261,7 @@ class BloodRequestCreateView(APIView):
             # Send WebSocket notification
             channel_layer = get_channel_layer()
             async_to_sync(channel_layer.group_send)(
-                "blood_requests",  # Group name from the consumer
+                "blood_requests",  # Group name from
                 {
                     "type": "send_notification",
                     "message": json.dumps(message),
