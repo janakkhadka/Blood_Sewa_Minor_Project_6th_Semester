@@ -1,26 +1,61 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 
 
-import { FaHome } from "react-icons/fa";
-import { MdNotificationsActive, MdNotifications, MdDashboard } from "react-icons/md";
-import { IoPersonCircle } from "react-icons/io5";
 
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { MdNotifications, MdDashboard } from "react-icons/md";
+
+import { Link,useNavigate } from "react-router-dom";
 
 
 //organization dashboard ko lagi
 export const OrgDashboardNavbarRightLeft = () => {
     const [toggle, setToggle] = useState(false)
+    const [number, setNumber] = useState(0)
+    const socketRef = useRef(null);
     const setToggleChange = () => {
       setToggle(prevToggle => !prevToggle)
     }
+
+    useEffect(() => {
+      if (!socketRef.current) {
+        socketRef.current = new WebSocket("ws://172.16.12.242:8000/ws/notifications/");
+        
+        socketRef.current.onopen = () => {
+          console.log("WebSocket connection established");
+        };
+  
+        socketRef.current.onclose = () => {
+          console.log("WebSocket connection closed");
+        };
+  
+        socketRef.current.onmessage = (event) => {
+          const data = JSON.parse(event.data);
+          console.log("Notification received:", data.message);
+          setNumber((prevNumber) => prevNumber + 1);
+        };
+      }
+  
+      return () => {
+        if (socketRef.current) {
+          socketRef.current.close();
+          socketRef.current = null;
+        }
+      };
+    }, []);
+
+  
     return(
       <div className="navbar-right-left">
           <div className="icons-wrapper">
             
-            <button className="notification-button" onClick={setToggleChange}>
-                <MdNotifications className='icon'/>
-            </button>
+          <div className="notification-wrapper" onClick={setToggleChange}>
+              <div className="circle">
+                {number}
+              </div>
+              <button className="notification-button">
+                  <MdNotifications className='icon'/>
+              </button>
+            </div>
             {toggle && (
             <div className="notification-list">
                 <Link
@@ -97,10 +132,15 @@ export const OrgDashboardNavbarRightRight = () => {
             <Link to= "/org-dashboard" state={{ loginState: true }}>
                 <MdDashboard className='icon'/>
             </Link>
+            <div className="notification-wrapper"  onClick={setToggleChange}>
+              <div className="circle">
+                0
+              </div>
+              <button className="notification-button">
+                  <MdNotifications className='icon'/>
+              </button>
+            </div>
             
-            <button className="notification-button" onClick={setToggleChange}>
-                <MdNotifications className='icon'/>
-            </button>
             {toggle && (
             <div className="notification-list">
                 <Link
