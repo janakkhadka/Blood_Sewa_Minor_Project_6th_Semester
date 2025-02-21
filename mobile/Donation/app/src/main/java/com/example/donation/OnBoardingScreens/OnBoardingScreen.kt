@@ -47,7 +47,7 @@ fun OnBoardingScreen(navController : NavHostController){
 
                             pageState.animateScrollToPage(pageState.currentPage + 1)
                         }else{
-                            navController.navigate(Screens.Signup.route)
+                            navController.navigate(Screens.anynomous.route)
                         }
                     }
 

@@ -113,6 +113,10 @@ dependencies {
 
     implementation(libs.androidx.runtime.livedata.v150)
     implementation(libs.androidx.ui.v150)
+
+    //websocket dependencies
+    implementation(libs.androidx.lifecycle.runtime.ktx.v271)
+    implementation(libs.androidx.lifecycle.service)
 }
 
 

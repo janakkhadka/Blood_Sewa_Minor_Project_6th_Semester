@@ -93,8 +93,8 @@ class SharedViewModel : ViewModel(){
 
 
     //my donation information ko lagi
-    private val _myDonationInformation = MutableStateFlow<List<MyDonationInformation>>(emptyList())
-    val myDonationInformation : StateFlow<List<MyDonationInformation>> = _myDonationInformation
+    private val _myDonationInformation = MutableStateFlow<MyDonationInformation?>(null)
+    val myDonationInformation: StateFlow<MyDonationInformation?> = _myDonationInformation
 
     //event history ko lagi
     private val _historyListJoined = MutableStateFlow<List<MyJoinedEvents>>(emptyList())
@@ -536,18 +536,59 @@ fun fetchOrgData(){
 
     //get my donation information
 
-    fun fetchMyDonationInformation(){
+    fun fetchMyDonationInformation() {
         viewModelScope.launch {
             try {
+                Log.d("FetchDonationInfo", "Fetching donation info...")
                 val response = UserRegistration.authService.getMyDonationInfo("Bearer $bearerToken")
+                Log.d("FetchDonationInfo", "Response: $response")
                 _myDonationInformation.value = response
-                Log.d("Response", response.toString())
+            } catch (e: Exception) {
+                Log.e("FetchDonationInfo", "Error: ${e.message}", e)
+            }
+        }
+    }
+    //create anonymous request
+    fun createAnonymousBloodRequest(
+        patient_name : String,
+        contact : String,
+        blood_group: String,
+        province : String,
+        district : String,
+        city : String
+    ) {
+        viewModelScope.launch {
+            try {
+                val requestBlood = BloodRequest(
+                    patient_name = patient_name,
+                    contact = contact,
+                    blood_group = blood_group,
+                    province = province,
+                    district = district,
+                    city = city
+                )
 
+
+                Log.d("ScheduleTimeRequest", "Sending: $requestBlood")
+
+                val response = UserRegistration.authService.createAnonymousRequest(requestBlood)
+
+
+                if (response.isSuccessful) {
+                    _responseMessage.value = "Schedule time created successfully!"
+                    Log.d("RequestBlood", "Success: ${response.body()}")
+                } else {
+                    _responseMessage.value = "Error: ${response.message()}"
+                    Log.e("CreateEventError", "Error: ${response.errorBody()?.string()}")
+                    _responseState.value = ResponseState.Error("Failed to create event: ${response.errorBody()?.string()}")
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
-                Log.e("checkValue","${e.message}")
+                _responseMessage.value = "Error: ${e.message}"
+                Log.e("RequestBlood", "Exception: ${e.message}")
+                _responseState.value = ResponseState.Error("An error occurred: ${e.message}")
+                Log.e("CheckValue","${_responseState.value}")
             }
-
         }
     }
 
