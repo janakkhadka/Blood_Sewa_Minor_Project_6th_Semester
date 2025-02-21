@@ -129,6 +129,23 @@ class BloodRequestSerializer(serializers.ModelSerializer):
         validated_data['user'] = self.context['request'].user
         return super().create(validated_data)
 
+    # def create(self, validated_data):
+    #     blood_request = BloodRequestModel.objects.create(**validated_data)
+
+    #     # Send WebSocket Notification
+    #     channel_layer = get_channel_layer()
+    #     async_to_sync(channel_layer.group_send)(
+    #         "notifications",
+    #         {
+    #             "type": "send_blood_request",
+    #             "message": f"Urgent Blood Request for {blood_request.patient_name}!",
+    #             "blood_group": blood_request.blood_group,
+    #             "location": f"{blood_request.city}, {blood_request.district}, {blood_request.province}",
+    #         }
+    #     )
+
+    #     return blood_request
+
 
 class PublicBloodRequestSerializer(serializers.ModelSerializer):
     user_name = serializers.CharField(read_only=True)  # Display name of the user or Anonymous
@@ -311,7 +328,7 @@ class MyEventSerializer(serializers.ModelSerializer):
     #collabrator_status = serializers.SerializerMethodField()
     class Meta:
         model = Event
-        fields = [ 'name','location', 'date', 'organizer', 'qr_code' , 'slug' , 'collabrator_name' , 'donor_attendee_count' , 'start_time' , 'end_time' , 'expected_donor_count' , 'volunteer_required_count', 'volunteer_attendee_count' , 'collaboration_status']
+        fields = [ 'name','location', 'date', 'organizer', 'qr_code' , 'slug' , 'collabrator_name' , 'donor_attendee_count' , 'start_time' , 'end_time' , 'expected_donor_count' , 'volunteer_required_count', 'volunteer_attendee_count' , 'collaboration_status' , 'collected_blood']
         read_only_fields = ['organizer', 'qr_code']
 
     def get_organizer(self, obj):
@@ -380,6 +397,9 @@ class BulkBloodRequestSerializer(serializers.ModelSerializer):
 
 
 
+
+
+
 class BookingSerializer(serializers.ModelSerializer):
     User = get_user_model
     organization = serializers.CharField() 
@@ -428,5 +448,11 @@ class OrganizationBookingSerializer(serializers.ModelSerializer):
 
 
 
-
+class EventUpdateSerializer(serializers.ModelSerializer):
+     class Meta:
+        model = Event
+        fields = ['collected_blood']
+        extra_kwargs = {
+            'collected_blood': {'required': False}  # Allow partial update
+        }
 

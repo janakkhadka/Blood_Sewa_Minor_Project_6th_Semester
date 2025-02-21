@@ -149,6 +149,7 @@ class Event(models.Model):
     status = models.BooleanField(default=False)
     expected_donor_count = models.IntegerField(default=0)
     collaboration_status = models.CharField(max_length=10, choices=COLLABORATION_STATUS_CHOICES, default='pending')
+    collected_blood = models.JSONField(default=dict)
 
 
 
@@ -201,6 +202,7 @@ class UserEvent(models.Model):
 
     def __str__(self):
         return f"{self.user.name} - {self.event.name}"
+
 
 
 class Volunteer(models.Model):

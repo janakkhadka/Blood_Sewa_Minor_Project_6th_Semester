@@ -24,7 +24,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.timezone import now
 from datetime import date , timedelta , datetime
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
-from .serializers import (PublicBloodRequestSerializer,UserSerializer,LoginSerializer, UserProfileUpdateSerializer, BloodRequestSerializer , LimitedUserSerializer , EventSerializer, MyEventSerializer , UserEventSerializer , OrganizationSerializer , BloodInventorySerializer , BookingSerializer , OrganizationBookingSerializer , UserEventCreateSerializer)
+from .serializers import (EventUpdateSerializer , PublicBloodRequestSerializer,UserSerializer,LoginSerializer, UserProfileUpdateSerializer, BloodRequestSerializer , LimitedUserSerializer , EventSerializer, MyEventSerializer , UserEventSerializer , OrganizationSerializer , BloodInventorySerializer , BookingSerializer , OrganizationBookingSerializer , UserEventCreateSerializer)
 
 
 class RegisterUserView(APIView):
@@ -226,16 +226,52 @@ class UserProfileUpdateView(APIView):
 
 
 
+# class BloodRequestCreateView(APIView):
+#     permission_classes = [permissions.IsAuthenticated]
+
+#     def post(self, request):
+#         serializer = BloodRequestSerializer(data=request.data, context={'request': request})
+#         if serializer.is_valid():
+#             # Associate the current user with the blood request
+#             serializer.save(user=request.user)
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+from rest_framework import permissions, status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+import json
+from app.serializers import BloodRequestSerializer
+
 class BloodRequestCreateView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
         serializer = BloodRequestSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
-            # Associate the current user with the blood request
-            serializer.save(user=request.user)
+            # Save the blood request
+            blood_request = serializer.save(user=request.user)
+
+            # Prepare WebSocket message
+            message = {
+                "message": f"New Blood Request: {blood_request.blood_group} needed in {blood_request.city}, {blood_request.district}."
+            }
+
+            # Send WebSocket notification
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)(
+                "blood_requests",  # Group name from
+                {
+                    "type": "send_notification",
+                    "message": json.dumps(message),
+                },
+            )
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class PublicBloodRequestCreateView(APIView):
@@ -758,7 +794,7 @@ class MyeventInfo(APIView):
     def get(self, request):
         # Fetch events where the user is either the organizer or a collaborator
         my_events = Event.objects.filter(
-            Q(organizer=request.user)
+            Q(organizer=request.user) | Q(collabrator=request.user)
         )
 
         serializers = MyEventSerializer(my_events, many=True)
@@ -767,18 +803,7 @@ class MyeventInfo(APIView):
 
 
 
-class MyColabEventInfo(APIView):
-    permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request):
-        # Fetch events where the user is either the organizer or a collaborator
-        my_events = Event.objects.filter(
-             Q(collabrator=request.user)
-        )
-
-        serializers = MyEventSerializer(my_events, many=True)
-        
-        return Response(serializers.data , status=status.HTTP_200_OK)
 
 
 
@@ -1170,11 +1195,82 @@ class MyVolunteeringHistory(APIView):
 
 
 
+class UpdateEventView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    def patch(self , request , slug):
+        event = get_object_or_404(Event, slug=slug)
+        serializer = EventUpdateSerializer(evnt , data = request.data , partial = True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+class DeleteventView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    def delete(self , request , slug):
+        event = get_object_or_404(Event, slug=slug)
+        
+        if event.date > now().date():
+            event.delete()
+            return Response({"message": "Event deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+        
+        else:
+            return Response(
+                {"message": "Cannot delete past or ongoing events"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+
+
+
+class MyEventAccToSlugView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self , request , slug):
+
+        event = get_object_or_404(Event, slug=slug)
+        serializer = MyEventSerializer(event)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 
 
 
+
+class SendBloodForRequestView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, organization_name):
+        # Replace hyphens with spaces for organization name
+        organization_name = organization_name.replace('-', ' ')
+
+        # Get the bulk request associated with the given organization
+        bulk_request = get_object_or_404(BulkRequestmodel, organization__name=organization_name)
+
+        # Get the blood sent data from the request
+        sent_blood = request.data.get("send_blood", {})
+
+        if not sent_blood:
+            return Response({"message": "No blood data provided."}, status=400)
+
+        # Deduct blood from the bulk request's blood_request field
+        for blood_type, amount in sent_blood.items():
+            # Check if the blood type exists in the bulk request's blood_request field
+            current_amount = bulk_request.blood_request.get(blood_type, 0)
+
+            if current_amount < amount:
+                return Response({"message": f"Not enough {blood_type} blood in inventory."}, status=400)
+
+            # Deduct blood from the bulk request's blood_request
+            bulk_request.blood_request[blood_type] -= amount
+
+        # Save the updated blood request field
+        bulk_request.save()
+
+        # Return success response
+        return Response({"message": "Blood sent successfully and inventory updated."}, status=200)
 
 
 

@@ -31,6 +31,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework_simplejwt.token_blacklist',
     "channels",
+    "daphne",
+
 ]
 
 # MIDDLEWARE = [
@@ -181,7 +183,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [('127.0.0.1', 6379)],  # Adjust if Redis is hosted elsewhere
+            'hosts': [('127.0.0.1', 6379)], 
         },
     },
 }

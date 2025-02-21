@@ -30,9 +30,9 @@ function Events() {
 
   const [upcomingEventList, setUpcomingEventList] = useState([]);
    
-  const [selectedEvent, setSelectedEvent] = useState(events[0]);
+  const [selectedEvent, setSelectedEvent] = useState({});
   const handleEventClick = (eventId) => {
-    const event = upcomingEventList.find(e => e.id === eventId);
+    const event = upcomingEventList[eventId];
     setSelectedEvent(event);
     setComingEvent(true);
   };
@@ -84,6 +84,37 @@ function Events() {
     fetchData();
   },[orgAuthToken]);
 
+  const handleDeleteEvent = async (slug) => {
+    if(!orgAuthToken){
+      setError('No auth token found. Please log in');
+      setLoading(false);
+      return;
+    }
+
+    try {
+        // server maa data pathauna lai update garda
+        const response = await fetch(api + 'events/'+slug+'/delete/', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${orgAuthToken}`,
+            },
+        });;
+        //const responseData = await response.json();
+        console.log('Server Response:', response);
+        
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            console.log(response)
+            // alert(responseData);
+        }
+    } catch (error) {
+        console.error('Catch:', error);
+        // alert('catch: ' + error);
+    }
+
+  }
   
   // if (loading) return <p>Loading...</p>;
   // if (error) return <p>Error: {error}</p>;
@@ -214,7 +245,7 @@ function Events() {
                       <div className="event-info">
                         <div className="info-list-wrapper">
                           <FaDiamond/>
-                          <span>Event Name: <span style={{fontWeight:"bold"}}>{selectedEvent.title}</span> </span>
+                          <span>Event Name: <span style={{fontWeight:"bold"}}>{selectedEvent.name}</span> </span>
                         </div>
                         <div className="info-list-wrapper">
                           <FaDiamond/>
@@ -226,15 +257,15 @@ function Events() {
                         </div>
                         <div className="info-list-wrapper">
                           <FaDiamond/>
-                          <span>Expected Donor Number: <span style={{fontWeight:"bold"}}>{selectedEvent.donorNumber}</span></span>
+                          <span>Expected Donor Number: <span style={{fontWeight:"bold"}}>{selectedEvent.expected_donor_count}</span></span>
                         </div>
                         <div className="info-list-wrapper">
                           <FaDiamond/>
-                          <span>Expected Volunteer Number: <span style={{fontWeight:"bold"}}>{selectedEvent.volunteerNumber}</span></span>
+                          <span>Required Volunteer Number: <span style={{fontWeight:"bold"}}>{selectedEvent.volunteer_required_count}</span></span>
                         </div>
                       </div>
                       <div className='delete-button-wrapper'>
-                        <button type='submit'   className="delete-button">
+                        <button type='submit'   className="delete-button" onClick={() => handleDeleteEvent(selectedEvent.slug)}>
                             Delete Event
                         </button>
                       </div>
