@@ -254,9 +254,8 @@ class BloodRequestCreateView(APIView):
             blood_request = serializer.save(user=request.user)
 
             # Prepare WebSocket message
-            message = {
-                "New Blood Request: {blood_request.blood_group} needed in {blood_request.city}, {blood_request.district}."
-            }
+            message =  f"New Blood Request: {blood_request.blood_group} needed in {blood_request.city}, {blood_request.district}."
+
 
             # Send WebSocket notification
             channel_layer = get_channel_layer()
@@ -264,7 +263,7 @@ class BloodRequestCreateView(APIView):
                 "blood_requests",  # Group name from
                 {
                     "type": "send_notification",
-                    "Urgent Blood Required": json.dumps(message),
+                    "message": json.dumps(message),
                 },
             )
 
@@ -284,9 +283,7 @@ class PublicBloodRequestCreateView(APIView):
             blood_request = serializer.save(user=request.user)
 
             # Prepare WebSocket message
-            message = {
-                "New Blood Request: {blood_request.blood_group} needed in {blood_request.city}, {blood_request.district}."
-            }
+            message =  f"New Blood Request: {blood_request.blood_group} needed in {blood_request.city}, {blood_request.district}."
 
             # Send WebSocket notification
             channel_layer = get_channel_layer()
@@ -294,7 +291,7 @@ class PublicBloodRequestCreateView(APIView):
                 "blood_requests",  # Group name from
                 {
                     "type": "send_notification",
-                    "Urgent Blood Required": json.dumps(message),
+                    "message": json.dumps(message),
                 },
             )
 
@@ -383,6 +380,8 @@ class LogoutView(APIView):
 #             event = serializer.save(organizer=request.user)
 #             return Response(EventSerializer(event).data, status=status.HTTP_201_CREATED)
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 class UserEventCreateView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -478,10 +477,10 @@ class CreateEventView(APIView):
 
             channel_layer = get_channel_layer()
             async_to_sync(channel_layer.group_send)(
-                "events",  # WebSocket group name
+                "blood_requests",  
                 {
-                    "type": "send_event_notification",
-                    "message": json.dumps(message),  # Fix: Correctly passing the message as a string
+                    "type": "send_notification",
+                    "message": json.dumps(message),
                 },
             )
             return Response(EventSerializer(event).data, status=status.HTTP_201_CREATED)
