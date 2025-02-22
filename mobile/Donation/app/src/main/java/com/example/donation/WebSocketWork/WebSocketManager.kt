@@ -1,16 +1,17 @@
 package com.example.bloodsewa
 
-import android.content.Context
+
 import android.util.Log
 import okhttp3.*
 import okio.ByteString
-import java.util.concurrent.TimeUnit
+import android.app.NotificationManager
+import android.content.Context
+import androidx.core.app.NotificationCompat
+import com.example.donation.R
 
 class WebSocketManager(private val context: Context, private val serverUrl: String) {
     private var webSocket: WebSocket? = null
-    private val client = OkHttpClient.Builder()
-        .pingInterval(30, TimeUnit.SECONDS)  // Set a ping interval to keep connection alive
-        .build()
+    private val client = OkHttpClient()
 
     fun connect(onMessageReceived: (String) -> Unit) {
         val request = Request.Builder().url(serverUrl).build()
@@ -21,7 +22,8 @@ class WebSocketManager(private val context: Context, private val serverUrl: Stri
 
             override fun onMessage(webSocket: WebSocket, text: String) {
                 Log.d("WebSocket", "📩 New Message: $text")
-                onMessageReceived(text)  // Send the received message to the UI
+                onMessageReceived(text)
+                showNotification(text)
             }
 
             override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
@@ -34,10 +36,23 @@ class WebSocketManager(private val context: Context, private val serverUrl: Stri
 
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
                 Log.e("WebSocket", "⚠️ Error: ${t.message}")
-                // Handle connection failure, possibly retry
             }
         })
     }
+
+    private fun showNotification(message: String) {
+        val notificationBuilder = NotificationCompat.Builder(context, "websocket_channel")
+            .setSmallIcon(R.drawable.donate)
+            .setContentTitle("Urgently Required Blood!!")
+            .setContentText(message)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
+
+        val notificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.notify(2, notificationBuilder.build())
+    }
+
 
     fun disconnect() {
         webSocket?.close(1000, "Goodbye!")
