@@ -40,7 +40,7 @@ fun OnBoardingScreen(navController: NavHostController) {
     val context = LocalContext.current
 
     //notification
-    val webSocketUrl = "wss://s13712.nyc1.piesocket.com/v3/1?api_key=v4WYtVWBmAcBPxYckPQKD8qp5TLX1AhnmQCwQjw4&notify_self=1"
+    val webSocketUrl = "ws://192.168.1.15:8000/ws/notifications/"
     val webSocketManager = remember { WebSocketManager(context, webSocketUrl) }
     var message by remember { mutableStateOf("No messages yet") }
     LaunchedEffect(Unit) {

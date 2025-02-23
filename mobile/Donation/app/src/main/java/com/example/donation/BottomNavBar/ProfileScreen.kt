@@ -257,6 +257,9 @@ fun ProfileScreen(navController : NavHostController,viewModel: SharedViewModel =
                             )
                             Spacer(modifier = Modifier.height(10.dp))
                             Details(Icons.Default.Bloodtype, "Blood Type", "AB-")
+                            Text(
+                                text = "you will be elligible in: ${donationInformation?.days_left}"
+                            )
                         }
                         Image(
                             painter = painterResource(imageRes),
@@ -358,6 +361,8 @@ fun ProfileScreen(navController : NavHostController,viewModel: SharedViewModel =
 
 
                     DonationActivityHeading()
+                    donationInformation?.let { DonationActivity(it.last_donation_date,
+                        donationInformation!!.last_donation_event) }
 
 
 
@@ -453,15 +458,16 @@ fun DonationActivityHeading(){
 
 }
 @Composable
-fun DonationActivity(data:MyDonationInformation){
+fun DonationActivity(date:String,event : String){
 
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ){
-        Text(text = data.last_donation_date, fontSize = 14.sp, color = dRed)
-        Text(text = data.last_donation_event,fontSize = 14.sp, color = dRed)
+        Text(text = date, fontSize = 14.sp, color = dRed)
+        Log.d("lastDonation",event)
+        Text(text = event,fontSize = 14.sp, color = dRed)
         Text(text = "Donated",fontSize = 14.sp, color = dRed)
 
     }
@@ -490,11 +496,10 @@ fun DonationReport(
 
 @Preview(showBackground = true)
 @Composable
-fun show(){
+fun DataShow(){
     val navController = rememberNavController()
-    ProfileScreen(navController = navController)
+    ProfileScreen(navController)
 }
-
 
 
 

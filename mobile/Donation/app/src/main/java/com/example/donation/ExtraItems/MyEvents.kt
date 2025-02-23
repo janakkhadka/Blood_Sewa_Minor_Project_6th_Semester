@@ -1,6 +1,7 @@
 package com.example.donation.ExtraItems
 
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,14 +27,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.donation.DataClasses.MyCreatedEvent
 import com.example.donation.DataClasses.MyJoinedEvents
 import com.example.donation.R
 import com.example.donation.ViewModels.SharedViewModel
 import com.example.donation.ui.theme.DarkGreen
 import com.example.donation.ui.theme.dRed
+import com.google.android.gms.common.internal.ShowFirstParty
 
 @Composable
 fun MyEvents( navController : NavHostController,viewModel: SharedViewModel = viewModel()) {
@@ -157,11 +161,13 @@ fun MyCreatedEvents(data : MyCreatedEvent) {
             ) {
                 Text("Name: ${data.name}")
                 Text("Date: ${data.date}")
+                Log.d("Name", data.name)
+                Log.d("Name", data.date)
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(5.dp)
                 ){
-                    Text(text = "Volunteered :")
+                    Text(text = "Collaboration With :")
                     Text(text = data.collabrator_name, color = DarkGreen )
                 }
             }
@@ -204,6 +210,9 @@ fun MyJoinedEvents(data : MyJoinedEvents) {
                 Text("Name: ${data.name}")
                 Text("Date: ${data.date}")
                 Text("Location: ${data.location}")
+                Log.d("Name", data.name)
+                Log.d("Name", data.date)
+                Log.d("Name", data.location)
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(5.dp)
@@ -216,6 +225,14 @@ fun MyJoinedEvents(data : MyJoinedEvents) {
 
         }
     }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun ShoData(){
+    val navController = rememberNavController()
+    MyEvents(navController)
 }
 
 
